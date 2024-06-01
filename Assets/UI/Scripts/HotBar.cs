@@ -6,7 +6,7 @@ public class HotBar : MonoBehaviour {
     [Range(0, 9)]
     int selected;
 
-    GameObject[] slots;
+    public GameObject[] slots;
 
     // Start is called before the first frame update
     void Start() {
