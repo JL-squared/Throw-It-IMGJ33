@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void Jump(InputAction.CallbackContext context) {
-        if (context.performed) {
+        if (context.performed && movement.cc.isGrounded) {
             movement.isJumping = true;
         }
     }
