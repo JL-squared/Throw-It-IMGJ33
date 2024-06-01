@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 2092706069864007635}
   - component: {fileID: 6047890321943996974}
   - component: {fileID: 8267247879346996897}
+  - component: {fileID: 8669513143636214874}
   - component: {fileID: 8428834152011970357}
   m_Layer: 0
   m_Name: Player
@@ -286,13 +287,29 @@ MonoBehaviour:
   speed: 7
   localWishMovement: {x: 0, y: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
-  airControl: 0.7
+  airControl: 15
+  groundControl: 25
   jump: 5
-  gravity: -9.81
+  gravity: -20
   isJumping: 0
   pushForce: 8
   maxPushForce: 20
   cc: {fileID: 0}
+--- !u!114 &8669513143636214874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e75a771f6823bb45a64c8d1b997b2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outsideTemperature: -10
+  targetReachSpeed: 4
+  outsideReachSpeed: 0.03
 --- !u!143 &8428834152011970357
 CharacterController:
   m_ObjectHideFlags: 0

@@ -8,13 +8,16 @@ public class EntityMovement : MonoBehaviour {
     public float speed = 7f;
     [HideInInspector]
     public Vector2 localWishMovement;
+    private Vector2 localMovement;
     private Vector3 movement;
     [HideInInspector]
     public Quaternion localWishRotation;
 
     [Header("Gravity")]
-    [Range(0.01f, 1f)]
-    public float airControl = 0.7f;
+    [Min(0.01f)]
+    public float airControl = 15;
+    [Min(0.01f)]
+    public float groundControl = 25;
     public float jump = 5.0F;
     public float gravity = -9.81f;
     [HideInInspector]
@@ -33,10 +36,10 @@ public class EntityMovement : MonoBehaviour {
 
     // FixedUpdate is called each physics timestep
     void Update() {
-        localWishMovement.Normalize();
-
-        movement.x = speed * localWishMovement.x;
-        movement.z = speed * localWishMovement.y;
+        float control = cc.isGrounded ? groundControl : airControl;
+        localMovement = Vector2.Lerp(localMovement, localWishMovement, Time.deltaTime * control);
+        movement.x = speed * localMovement.x;
+        movement.z = speed * localMovement.y;
         movement = transform.TransformDirection(movement);
         movement.y += gravity * Time.deltaTime;
 
@@ -47,9 +50,6 @@ public class EntityMovement : MonoBehaviour {
                 movement.y = jump;
                 isJumping = false;
             }
-        } else {
-            movement.x *= airControl;
-            movement.z *= airControl;
         }
 
         cc.Move(movement * Time.deltaTime);
