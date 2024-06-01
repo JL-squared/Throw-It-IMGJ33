@@ -1,6 +1,7 @@
 using Andicraft.VolumetricFog;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ public class WeatherManager : MonoBehaviour {
     public float windyNoiseScale = 0.2f;
     public float snowyNoiseScale = 0.2f;
     public float stormyNoiseScale = 0.2f;
+
+    public float windyParticlesNoiseScale = 0.2f;
+    public float windyParticlesNoiseFactor = 0.2f;
+    public ParticleSystemForceField field;
+
     public VolumetricFog fog;
     public AnimationCurve densityFogCurve;
     public AnimationCurve extinctionCoefficientCurve;
@@ -70,5 +76,11 @@ public class WeatherManager : MonoBehaviour {
         windy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * windyNoiseScale + 32.412f));
         snowy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * snowyNoiseScale + 3214.32f));
         stormy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * stormyNoiseScale - 654.12f));
+
+        Vector2 windEffect = new Vector2(Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale - 43.432f), Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale + 243.432f));
+        windEffect = windEffect * 2.0f - Vector2.one;
+        Debug.Log(windEffect);
+        field.directionX = windEffect.x * windyParticlesNoiseFactor * windy;
+        field.directionZ = windEffect.y * windyParticlesNoiseFactor * windy;
     }
 }

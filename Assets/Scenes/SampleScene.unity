@@ -634,6 +634,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!330 &910800817 stripped
+ParticleSystemForceField:
+  m_CorrespondingSourceObject: {fileID: 6787259401343288416, guid: 48e2f2103aa5c9945ac555e37167a823,
+    type: 3}
+  m_PrefabInstance: {fileID: 992625917639264763}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &980298348
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,6 +1588,56 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: ExternalForcesModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624129142068695749, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676692344385997879, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676692344385997879, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676692344385997879, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 6216006554208934372, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1632,10 +1688,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6787259401343288416, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_Parameters.m_GravityFocus
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6787259401343288416, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_Parameters.m_GravityCurve.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7738069126821496426, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: m_Name
       value: Game Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 910800817}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: windyParticlesNoiseScale
+      value: 153.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: windyParticlesNoiseFactor
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
