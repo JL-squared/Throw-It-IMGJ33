@@ -718,10 +718,35 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 112753935254720293, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.11146631
+      objectReference: {fileID: 0}
+    - target: {fileID: 112753935254720293, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.091847636
+      objectReference: {fileID: 0}
+    - target: {fileID: 112753935254720293, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.4528302
+      objectReference: {fileID: 0}
     - target: {fileID: 6209234615295935239, guid: 63f74ddd5f988984ab565c394b0ef86f,
         type: 3}
       propertyPath: m_Name
       value: UI Master
+      objectReference: {fileID: 0}
+    - target: {fileID: 7665322645003267670, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: lerpSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7665322645003267670, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: actualPosition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7724788413444536234, guid: 63f74ddd5f988984ab565c394b0ef86f,
         type: 3}
