@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotBar : MonoBehaviour {
+public class HotbarUI : MonoBehaviour {
     [Range(0, 9)]
     int selected;
 
@@ -16,5 +16,9 @@ public class HotBar : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         
+    }
+
+    public void Select(int slot) {
+
     }
 }

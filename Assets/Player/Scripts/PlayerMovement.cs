@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour {
     EntityMovement movement;
     Vector2 wishHeadDir;
     public Transform head;
-    public float mouseSensivity = 1.0f;
+    public float mouseSensitivity = 1.0f;
     
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void Look(InputAction.CallbackContext context) {
-        wishHeadDir += context.ReadValue<Vector2>() * mouseSensivity * 0.02f;
+        wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
         movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
