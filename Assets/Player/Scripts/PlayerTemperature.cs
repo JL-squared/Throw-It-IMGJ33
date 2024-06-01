@@ -5,7 +5,7 @@ using UnityEngine;
 // Player temperature system using nearby heat sources and 
 public class PlayerTemperature : MonoBehaviour {
     public const float TargetTemperature = 37.0f;
-    public float outsideTemperature;
+    private float outsideTemperature;
     private float heatSourcesTemperature; 
     private float bodyTemperature = TargetTemperature;
     public float targetReachSpeed = 0.5f;
@@ -28,6 +28,9 @@ public class PlayerTemperature : MonoBehaviour {
 
             heatSourcesTemperature += source.sourceTemperature * invLerp;
         }
+
+        // Get outside temp from weather system
+        outsideTemperature = GameManager.Singleton.weatherManager.GetOutsideTemperature();
 
         // Actual value that we must try to reach
         float totalTemp = Mathf.Max(outsideTemperature, heatSourcesTemperature);

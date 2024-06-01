@@ -95,7 +95,7 @@ namespace Andicraft.VolumetricFog
             Shader.SetGlobalTexture(s_VFogBlueNoise, blueNoise);
         }
 
-        void UpdateValues()
+        public void UpdateValues()
         {
             Shader.SetGlobalFloat(s_VFogDensity, density);
             Shader.SetGlobalColor(s_VFogColor, fogColor);
