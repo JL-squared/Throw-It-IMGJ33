@@ -40,4 +40,8 @@ public class WeatherManager : MonoBehaviour {
                 return WeatherType.SnowyWindy;
         }
     }
+
+    public void Update() {
+        
+    }
 }
