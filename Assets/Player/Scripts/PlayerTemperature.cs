@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Player temperature system using nearby heat sources and 
 public class PlayerTemperature : MonoBehaviour {
     public const float TargetTemperature = 37.0f;
     public float outsideTemperature;
