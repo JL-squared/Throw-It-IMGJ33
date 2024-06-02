@@ -24,3 +24,26 @@ public struct Voxel {
         _padding = 0,
     };
 }
+
+// Voxel container with custom dispose methods
+// Each chunk could either have it's own unique container (after being edited once)
+// Or have a temp container used from reading back the map data
+public abstract class VoxelTempContainer {
+    public NativeArray<Voxel> voxels;
+    public VoxelChunk chunk;
+
+    // Dispose of the voxel container
+    public abstract void TempDispose();
+}
+
+// Cached voxel chunk container for chunks with their own temp voxels (for modifs)
+public class UniqueVoxelChunkContainer : VoxelTempContainer {
+    public override void TempDispose() {
+    }
+}
+
+// Temporary voxel container for reading back map data
+public class MapReadbackTempContainer : VoxelTempContainer {
+    public override void TempDispose() {
+    }
+}

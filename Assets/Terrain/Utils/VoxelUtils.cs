@@ -23,18 +23,6 @@ public static class VoxelUtils {
     // Doesn't actually represent the actual size of the voxel (since we do some scaling anyways)
     public static float VoxelSizeFactor => 1F / Mathf.Pow(2F, VoxelSizeReduction);
 
-    // Should we calculate per vertex normals
-    public static bool PerVertexNormals { get; internal set; }
-
-    // Full control over how the ambient occlusion is calculated
-    public static float AmbientOcclusionOffset { get; internal set; }
-    public static float AmbientOcclusionPower { get; internal set; }
-    public static float AmbientOcclusionSpread { get; internal set; }
-    public static float AmbientOcclusionGlobalOffset { get; internal set; }
-
-    // Should we calculate per vertex density and ambient occlusion?
-    public static bool PerVertexUvs { get; internal set; }
-
     // Max possible number of materials supported by the terrain mesh
     public const int MAX_MATERIAL_COUNT = 256;
 
@@ -100,143 +88,16 @@ public static class VoxelUtils {
         return math.select(r, r + Size, r < 0);
     }
 
-    // Convert an index to a 3D position
+    // Convert an index to a 3D position (morton coding)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint3 IndexToPos(int index) {
-        uint index2 = (uint)index;
-
-        // N(ABC) -> N(A) x N(BC)
-        uint y = index2 / (Size * Size);   // x in N(A)
-        uint w = index2 % (Size * Size);  // w in N(BC)
-
-        // N(BC) -> N(B) x N(C)
-        uint z = w / Size;        // y in N(B)
-        uint x = w % Size;        // z in N(C)
-        return new uint3(x, y, z);
+        return Morton.DecodeMorton32((uint)index);
     }
 
-    // Convert a 3D position into an index
+    // Convert a 3D position into an index (morton coding)
     [return: AssumeRange(0u, 262144)]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int PosToIndex(uint3 position) {
-        return (int)math.round((position.y * Size * Size + (position.z * Size) + position.x));
-    }
-
-    // Sampled the voxel grid using trilinear filtering
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static half SampleGridInterpolated(float3 position, ref NativeArray<Voxel> voxels) {
-        float3 frac = math.frac(position);
-        uint3 voxPos = (uint3)math.floor(position);
-        voxPos = math.min(voxPos, math.uint3(Size - 2));
-        voxPos = math.max(voxPos, math.uint3(0));
-
-        float d000 = voxels[PosToIndex(voxPos)].density;
-        float d100 = voxels[PosToIndex(voxPos + math.uint3(1, 0, 0))].density;
-        float d010 = voxels[PosToIndex(voxPos + math.uint3(0, 1, 0))].density;
-        float d110 = voxels[PosToIndex(voxPos + math.uint3(0, 0, 1))].density;
-
-        float d001 = voxels[PosToIndex(voxPos + math.uint3(0, 0, 1))].density;
-        float d101 = voxels[PosToIndex(voxPos + math.uint3(1, 0, 1))].density;
-        float d011 = voxels[PosToIndex(voxPos + math.uint3(0, 1, 1))].density;
-        float d111 = voxels[PosToIndex(voxPos + math.uint3(1, 1, 1))].density;
-
-        float mixed0 = math.lerp(d000, d100, frac.x);
-        float mixed1 = math.lerp(d010, d110, frac.x);
-        float mixed2 = math.lerp(d001, d101, frac.x);
-        float mixed3 = math.lerp(d011, d111, frac.x);
-
-        float mixed4 = math.lerp(mixed0, mixed2, frac.z);
-        float mixed5 = math.lerp(mixed1, mixed3, frac.z);
-
-        float mixed6 = math.lerp(mixed4, mixed5, frac.y);
-
-        return (half)mixed6;
-    }
-
-    // Calculate the normals at a specific position
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float3 SampleGridNormal(uint3 position, ref NativeArray<Voxel> voxels) {
-        position = math.min(position, math.uint3(Size - 2));
-
-        float baseVal = voxels[PosToIndex(position)].density;
-        float xVal = voxels[PosToIndex(position + math.uint3(1, 0, 0))].density;
-        float yVal = voxels[PosToIndex(position + math.uint3(0, 1, 0))].density;
-        float zVal = voxels[PosToIndex(position + math.uint3(0, 0, 1))].density;
-
-        return new float3(baseVal - xVal, baseVal - yVal, baseVal - zVal);
-    }
-
-    // Calculate ambient occlusion around a specific point
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float CalculateVertexAmbientOcclusion(float3 position, ref NativeArray<Voxel> voxels, float offset, float power, float spread, float globalOffset) {
-        float ao = 0.0f;
-        float minimum = 200000;
-        
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; z <= 1; z++) {
-                    // 2 => 0.5
-                    // 1 = 1.5
-                    float density = SampleGridInterpolated(position + new float3(x, y, z) * spread + new float3(globalOffset), ref voxels);
-                    density = math.min(density, 0);
-                    ao += density;
-                    minimum = math.min(minimum, density);
-                }
-            }
-        }
-
-        ao = ao / (3 * 3 * 3 * (minimum + 0.001f));
-        ao = math.clamp(1 - math.pow(ao + offset, power), 0, 1);
-        return ao;
-    }
-
-    // Check if we can use delta compression using the current and last densities
-    // Basically checks if the 9 bit MSBs are equal
-    public static bool CouldDelta(ushort last, ushort current) {
-        int test1 = last & ~0x7F;
-        int test2 = current & ~0x7F;
-        return test1 == test2;
-    }
-
-    // Encode delta values for the density (7 LSbs)
-    public static byte EncodeDelta(ushort density) {
-        return (byte)(0b1 << 7 | density & 0x7F);
-    }
-
-    // Decode delta values for the density (7 LSbs)
-    public static ushort DecodeDelta(byte encoded) {
-        return (ushort)(encoded & 0x7F);
-    }
-
-    // Normalize a density value to it's compressed, lossy form
-    public static half NormalizeHalf(half val) {
-        return val;
-    }
-
-    // Convert a half to a ushort
-    public static ushort AsUshort(half val) {
-        return val.value;
-    }
-
-    // Convert a ushort to a half
-    public static half AsHalf(ushort val) {
-        return new half {
-            value = (ushort)(val)
-        };
-    }
-
-    // Convert a ushort to two bytes
-    public static (byte, byte) UshortToBytes(ushort val) {
-        return ((byte)(val >> 8), (byte)(val & 0xFF));
-    }
-
-    // Convert a uint to four bytes
-    public static (byte, byte, byte, byte) UintToBytes(uint val) {
-        return ((byte)(val >> 16), (byte)(val >> 16), (byte)(val >> 8), (byte)(val & 0xFF));
-    }
-
-    // Convert two bytes to a ushort
-    public static ushort BytesToUshort(byte first, byte second) {
-        return (ushort)(first << 8 | second);
+        return (int)Morton.EncodeMorton32(position);
     }
 }
