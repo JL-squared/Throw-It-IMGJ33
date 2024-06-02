@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     public WaveManager waveManager;
     public static GameManager Singleton;
+    public GameObject player;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
@@ -15,5 +16,7 @@ public class GameManager : MonoBehaviour {
         if (Singleton == null) {
             Singleton = this;
         }
+
+        player = GameObject.FindGameObjectWithTag("PlayerTag");
     }
 }

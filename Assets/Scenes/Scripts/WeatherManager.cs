@@ -19,7 +19,8 @@ public class WeatherManager : MonoBehaviour {
 
     public float windyParticlesNoiseScale = 0.2f;
     public float windyParticlesNoiseFactor = 0.2f;
-    public ParticleSystemForceField field;
+    public ParticleSystemForceField windParticleField;
+    public Transform snowParticleSystem;
 
     public VolumetricFog fog;
     public AnimationCurve densityFogCurve;
@@ -79,8 +80,10 @@ public class WeatherManager : MonoBehaviour {
 
         Vector2 windEffect = new Vector2(Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale - 43.432f), Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale + 243.432f));
         windEffect = windEffect * 2.0f - Vector2.one;
-        Debug.Log(windEffect);
-        field.directionX = windEffect.x * windyParticlesNoiseFactor * windy;
-        field.directionZ = windEffect.y * windyParticlesNoiseFactor * windy;
+        windParticleField.directionX = windEffect.x * windyParticlesNoiseFactor * windy;
+        windParticleField.directionZ = windEffect.y * windyParticlesNoiseFactor * windy;
+
+        windParticleField.transform.position = GameManager.Singleton.player.transform.position;
+        snowParticleSystem.transform.position = GameManager.Singleton.player.transform.position;
     }
 }

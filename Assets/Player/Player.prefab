@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 8428834152011970357}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: PlayerTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 921606742461663924}
-  mouseSensivity: 1
+  mouseSensitivity: 1
 --- !u!114 &6047890321943996974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8c007f53-4be4-438f-ab69-37995d7de8df
     m_ActionName: Player Map/Crouch[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e59b8ad8-4ade-435b-b7e4-51c49c8b9e5c
+    m_ActionName: Player Map/Build Button Temp[/Keyboard/b]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -307,7 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e75a771f6823bb45a64c8d1b997b2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outsideTemperature: -10
   targetReachSpeed: 4
   outsideReachSpeed: 0.03
 --- !u!143 &8428834152011970357
