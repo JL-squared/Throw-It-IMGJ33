@@ -1,8 +1,4 @@
 using Andicraft.VolumetricFog;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 // Simple weather system that affects each wave

@@ -76,6 +76,9 @@ public struct VertexJob : IJobParallelFor {
         uint enabledCorners = enabled[index];
         bool empty = enabledCorners == 0 || enabledCorners == 255;
 
+        // Early check to quit if the cell if full / empty
+        if (empty) return;
+
         // Doing some marching cube shit here
         uint code = VoxelUtils.EdgeMasks[enabledCorners];
         int count = math.countbits(code);
@@ -102,6 +105,8 @@ public struct VertexJob : IJobParallelFor {
                 float value = math.unlerp(startVoxel.density, endVoxel.density, 0);
                 vertex += math.lerp(startOffset, endOffset, value) - math.float3(0.5);
             }
+        } else {
+            count = 1;
         }
 
         // Must be offset by vec3(1, 1, 1)
