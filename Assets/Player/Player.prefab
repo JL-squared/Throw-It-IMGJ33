@@ -65,7 +65,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 90
   orthographic: 0
@@ -146,7 +146,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4392259301960969222}
-  - component: {fileID: 2092706069864007635}
   - component: {fileID: 6047890321943996974}
   - component: {fileID: 8267247879346996897}
   - component: {fileID: 8669513143636214874}
@@ -175,20 +174,6 @@ Transform:
   - {fileID: 8839413808973732309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2092706069864007635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6914026416981438280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c048d8e82f3bfc4bbd42af829ab7ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  head: {fileID: 921606742461663924}
-  mouseSensitivity: 1
 --- !u!114 &6047890321943996974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,8 +202,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092706069864007635}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
         m_MethodName: Movement
         m_Mode: 0
         m_Arguments:
@@ -233,8 +218,8 @@ MonoBehaviour:
     m_ActionName: Player Map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092706069864007635}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
         m_MethodName: Look
         m_Mode: 0
         m_Arguments:
@@ -249,8 +234,8 @@ MonoBehaviour:
     m_ActionName: Player Map/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092706069864007635}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -268,9 +253,53 @@ MonoBehaviour:
     m_ActionId: 8c007f53-4be4-438f-ab69-37995d7de8df
     m_ActionName: Player Map/Crouch[/Keyboard/ctrl]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: TempActivateBuildingMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e59b8ad8-4ade-435b-b7e4-51c49c8b9e5c
     m_ActionName: Player Map/Build Button Temp[/Keyboard/b]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: Scroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 630afdc7-1af8-4eb8-b9e9-7c6194781048
+    m_ActionName: Player Map/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: SelectSlot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f19177ee-7fb3-4ba3-b0ff-54fca7bd271b
+    m_ActionName: Player Map/Select Slot[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -313,6 +342,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetReachSpeed: 4
   outsideReachSpeed: 0.03
+  isBuilding: 0
+  placementGhost: {fileID: 0}
+  selected: 0
+  selectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  slotUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  movement: {fileID: 0}
+  head: {fileID: 921606742461663924}
+  gameCamera: {fileID: 2262149761271955649}
+  mouseSensitivity: 1
 --- !u!143 &8428834152011970357
 CharacterController:
   m_ObjectHideFlags: 0
