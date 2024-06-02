@@ -343,6 +343,7 @@ MonoBehaviour:
   targetReachSpeed: 4
   outsideReachSpeed: 0.03
   isBuilding: 0
+  selectedBuildPrefab: {fileID: 0}
   placementGhost: {fileID: 0}
   selected: 0
   selectedEvent:

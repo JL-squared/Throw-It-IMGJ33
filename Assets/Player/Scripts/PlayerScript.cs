@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,9 +22,17 @@ public class PlayerScript : MonoBehaviour {
 
     [Header("Building")]
     public bool isBuilding;
+    List<Transform> tempSnapPoints1 = new List<Transform>();
+    List<Transform> tempSnapPoints2 = new List<Transform>();
+    List<Piece> tempPieces = new List<Piece>();
+    public GameObject selectedBuildPrefab;
+
+    int placeRayMask;
 
     [SerializeField]
     private GameObject placementGhost;
+    private bool placementStatus = false;
+    private float placementRotation = 0f;
 
     [Header("Inventory")]
     Item[] items = new Item[10];
@@ -57,6 +67,8 @@ public class PlayerScript : MonoBehaviour {
         } else {
             singleton = this;
         }
+
+        placeRayMask = LayerMask.GetMask("Default", "Piece");
     }
 
     // Start is called before the first frame update
@@ -64,10 +76,13 @@ public class PlayerScript : MonoBehaviour {
         bodyTemperature = TargetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
+
+        SetupPlacementGhost();
     }
 
     private void Update() {
         UpdateTemperature();
+        if(isBuilding) UpdatePlacementGhost();
     }
 
     private void UpdateTemperature() {
@@ -154,7 +169,7 @@ public class PlayerScript : MonoBehaviour {
             scroll /= 120;
 
             if (isBuilding) {
-                // do the rotato
+                placementRotation += scroll * 22.5f;
             } else {
                 int newSelected = (Selected + scroll.ConvertTo<int>()) % 10;
                 Selected = (newSelected < 0) ? 9 : newSelected;
@@ -170,14 +185,18 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {
-        if (context.performed)
+        if (context.performed) {
             isBuilding = !isBuilding;
+            placementGhost.SetActive(false);
+        }
     }
 
+    // Test for placement location
     private bool PieceRayTest(out Vector3 point, out Vector3 normal, out Piece piece) {
-        //int layerMask = m_placeRayMask;
+        int layerMask = placeRayMask;
 
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, 50f)) {
+        // Send a raycast
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, 50f, layerMask)) {
             float num = 30f;
             if ((bool)placementGhost) {
                 Piece component = placementGhost.GetComponent<Piece>();
@@ -192,9 +211,135 @@ public class PlayerScript : MonoBehaviour {
                 return true;
             }
         }
+
+        // If raycast fails, return nothing
         point = Vector3.zero;
         normal = Vector3.zero;
         piece = null;
         return false;
+    }
+
+    private void SetupPlacementGhost() {
+        if (selectedBuildPrefab == null) {
+            placementGhost.SetActive(false);
+        } else {
+            placementGhost = Instantiate(selectedBuildPrefab);
+        }
+
+        Transform[] componentsInChildren = placementGhost.GetComponentsInChildren<Transform>();
+        int layer = LayerMask.NameToLayer("Ghost");
+        Transform[] array = componentsInChildren;
+        for (int i = 0; i < array.Length; i++) {
+            array[i].gameObject.layer = layer;
+        }
+    }
+
+    private void UpdatePlacementGhost() {
+        bool flag = false; // manual placement mode btw
+
+        if (PieceRayTest(out var point, out var normal, out Piece piece)) {
+            placementGhost.SetActive(true);
+            placementStatus = true;
+            Collider[] componentsInChildren = placementGhost.GetComponentsInChildren<Collider>();
+
+            Quaternion quaternion = Quaternion.Euler(new Vector3(0f, placementRotation, 0f));
+
+            // now it's true time freaky true (piss)
+            if (componentsInChildren.Length != 0) {
+                placementGhost.transform.position = point + normal * 50f;
+                placementGhost.transform.rotation = quaternion;
+                Vector3 vector = Vector3.zero;
+                float num2 = 999999f;
+                Collider[] array = componentsInChildren;
+                foreach (Collider collider in array) {
+                    if (collider.isTrigger || !collider.enabled) {
+                        continue;
+                    }
+                    MeshCollider meshCollider = collider as MeshCollider;
+                    if (!(meshCollider != null) || meshCollider.convex) {
+                        Vector3 vector2 = collider.ClosestPoint(point);
+                        float num3 = Vector3.Distance(vector2, point);
+                        if (num3 < num2) {
+                            vector = vector2;
+                            num2 = num3;
+                        }
+                    }
+                }
+                Vector3 vector3 = placementGhost.transform.position - vector;
+                placementGhost.transform.position = point + vector3;
+                placementGhost.transform.rotation = quaternion;
+            }
+
+            if (!flag) {
+                tempPieces.Clear();
+                Debug.Log("Checking for the snapping...");
+                if (FindClosestSnapPoints(placementGhost.transform, 0.5f, out var a, out var b, tempPieces)) {
+                    Debug.Log("Some kind of snapping is occuring");
+                    _ = b.parent.position;
+                    Vector3 vector4 = b.position - (a.position - placementGhost.transform.position);
+                    placementGhost.transform.position = vector4;
+                    //if (!IsOverlappingOtherPiece(vector4, m_placementGhost.transform.rotation, m_placementGhost.name, m_tempPieces, component.m_allowRotatedOverlap)) {
+                    //    placementGhost.transform.position = vector4;
+                    //} in the next episode, this will be critical
+                }
+            }
+        } else {
+            placementGhost.SetActive(false);
+        }
+    }
+
+    public void BuildAction(InputAction.CallbackContext context) {
+        if(context.performed && isBuilding && placementStatus) {
+            GameObject builtPiece = Instantiate(selectedBuildPrefab);
+            builtPiece.transform.SetPositionAndRotation(placementGhost.transform.position, placementGhost.transform.rotation);
+            builtPiece.SetActive(true);
+            builtPiece.layer = LayerMask.NameToLayer("Piece");
+        }
+    }
+
+    private bool FindClosestSnapPoints(Transform ghost, float maxSnapDistance, out Transform a, out Transform b, List<Piece> pieces) {
+        Debug.Log("this better be WORKING!!");
+
+        tempSnapPoints1.Clear();
+        ghost.GetComponent<Piece>().GetSnapPoints(tempSnapPoints1);
+        Debug.Log(tempSnapPoints1.ToString());
+        tempSnapPoints2.Clear();
+        tempPieces.Clear();
+        Piece.GetSnapPoints(ghost.transform.position, 10f, tempSnapPoints2, tempPieces);
+        float num = 9999999f;
+        a = null;
+        b = null;
+        /*
+        if (m_manualSnapPoint >= 0) {
+            if (FindClosestSnappoint(tempSnapPoints1[manualSnapPoint].position, tempSnapPoints2, maxSnapDistance, out var closest, out var _)) {
+                a = tempSnapPoints1[manualSnapPoint];
+                b = closest;
+                return true;
+            }
+            return false;
+        }
+        */
+        foreach (Transform item in tempSnapPoints1) {
+            if (FindClosestSnappoint(item.position, tempSnapPoints2, maxSnapDistance, out var closest2, out var distance2) && distance2 < num) {
+                Debug.Log("please vro");
+                num = distance2;
+                a = item;
+                b = closest2;
+            }
+        }
+        return a != null;
+    }
+
+    private bool FindClosestSnappoint(Vector3 p, List<Transform> snapPoints, float maxDistance, out Transform closest, out float distance) {
+        closest = null;
+        distance = 999999f;
+        foreach (Transform snapPoint in snapPoints) {
+            float num = Vector3.Distance(snapPoint.position, p);
+            if (!(num > maxDistance) && num < distance) {
+                closest = snapPoint;
+                distance = num;
+            }
+        }
+        return closest != null;
     }
 }

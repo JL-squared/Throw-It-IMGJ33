@@ -26,4 +26,8 @@ public class Item {
         this.count = count;
         this.data = data;
     }
+
+    public static void SpawnInWorld(Vector3 p) {
+
+    }
 }
