@@ -13,14 +13,18 @@ public class WeatherManager : MonoBehaviour {
     [Range(0, 1)] public float windy;
     [Range(0, 1)] public float snowy;
     [Range(0, 1)] public float stormy;
+    public bool noisyParams = false;
     public float windyNoiseScale = 0.2f;
     public float snowyNoiseScale = 0.2f;
     public float stormyNoiseScale = 0.2f;
+    public float globalTimeScale = 1.0f;
+    [Range(0, 2000)] public int minSnowEmissionRate;
+    [Range(0, 2000)] public int maxSnowEmissionRate;
 
     public float windyParticlesNoiseScale = 0.2f;
     public float windyParticlesNoiseFactor = 0.2f;
     public ParticleSystemForceField windParticleField;
-    public Transform snowParticleSystem;
+    public ParticleSystem snowParticleSystem;
 
     public VolumetricFog fog;
     public AnimationCurve densityFogCurve;
@@ -69,21 +73,34 @@ public class WeatherManager : MonoBehaviour {
     }
 
     public void Update() {
+        // Update volumetric fog settings
+        // TODO: Fix cases where it just disapears
         float x = GetFogLerp();
         fog.density = densityFogCurve.Evaluate(x);
         fog.extinctionCoefficient = extinctionCoefficientCurve.Evaluate(x);
         fog.UpdateValues();
 
-        windy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * windyNoiseScale + 32.412f));
-        snowy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * snowyNoiseScale + 3214.32f));
-        stormy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(Time.time * stormyNoiseScale - 654.12f));
+        // Calculate parameters based on game time
+        float time = globalTimeScale * Time.time;
+        if (noisyParams) {
+            windy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(time * windyNoiseScale + 32.412f));
+            snowy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(time * snowyNoiseScale + 3214.32f));
+            stormy = effectsScalingFactor.Evaluate(Mathf.PerlinNoise1D(time * stormyNoiseScale - 654.12f));
+        }
 
-        Vector2 windEffect = new Vector2(Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale - 43.432f), Mathf.PerlinNoise1D(Time.time * windyParticlesNoiseScale + 243.432f));
+        // Global wind effector
+        Vector2 windEffect = new Vector2(Mathf.PerlinNoise1D(time * windyParticlesNoiseScale - 43.432f), Mathf.PerlinNoise1D(time * windyParticlesNoiseScale + 243.432f));
         windEffect = windEffect * 2.0f - Vector2.one;
         windParticleField.directionX = windEffect.x * windyParticlesNoiseFactor * windy;
         windParticleField.directionZ = windEffect.y * windyParticlesNoiseFactor * windy;
 
+        // Keep the snow particles around the player at all times
         windParticleField.transform.position = GameManager.Singleton.player.transform.position;
         snowParticleSystem.transform.position = GameManager.Singleton.player.transform.position;
+
+        // Change quantity of particles based on snow amount
+        float snowEmissionRate = Mathf.Lerp(minSnowEmissionRate, maxSnowEmissionRate, snowy);
+        var emission = snowParticleSystem.emission;
+        emission.rateOverTime = snowEmissionRate;
     }
 }
