@@ -9,9 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 614364528203010559}
-  - component: {fileID: 8864248659817458308}
-  - component: {fileID: 655447942010771595}
-  - component: {fileID: 7104324036622746894}
   - component: {fileID: 6993251342674415073}
   m_Layer: 0
   m_Name: Terrain
@@ -35,47 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8864248659817458308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641725862436210956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb62873528725134cbe08f063638b5a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshJobsPerFrame: 1
-  voxelMaterials:
-  - {fileID: 2100000, guid: b44896b408f9844438a304180739fb88, type: 2}
---- !u!114 &655447942010771595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641725862436210956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20256e90155a7734083dddb5e6281140, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generateCollisions: 0
---- !u!114 &7104324036622746894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 641725862436210956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76da5864a56740a43a8949630a9bc0c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugGizmos: 0
 --- !u!114 &6993251342674415073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab634c5cfe24e246ba13e0e181896db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voxelMesher: {fileID: 0}
-  voxelCollisions: {fileID: 0}
-  voxelEdits: {fileID: 0}
+  meshJobsPerFrame: 1
+  voxelMaterials: []
+  debugGizmos: 0
+  chunkPrefab: {fileID: 1197487948121969908, guid: a41016ef5e12c8b42871006de5c202b5,
+    type: 3}

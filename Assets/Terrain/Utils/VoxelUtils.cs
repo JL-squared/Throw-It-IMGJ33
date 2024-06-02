@@ -1,9 +1,7 @@
 using System.Runtime.CompilerServices;
 using Unity.Burst.CompilerServices;
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 // Common terrain utility methods
 public static class VoxelUtils {
@@ -17,26 +15,14 @@ public static class VoxelUtils {
     public const float VertexScaling = (float)Size / ((float)Size - 3.0F);
 
     // Voxel scaling size
-    public const int VoxelSizeReduction = 1;
+    public const int VoxelSizeReduction = 0;
 
     // Scaling factor when using voxel size reduction
     // Doesn't actually represent the actual size of the voxel (since we do some scaling anyways)
-    public static float VoxelSizeFactor => 1F / Mathf.Pow(2F, VoxelSizeReduction);
+    public static readonly float VoxelSizeFactor = 1F / Mathf.Pow(2F, VoxelSizeReduction);
 
     // Max possible number of materials supported by the terrain mesh
-    public const int MAX_MATERIAL_COUNT = 256;
-
-    // Offsets used for octree generation
-    public static readonly int3[] OctreeChildOffset = {
-        new int3(0, 0, 0),
-        new int3(0, 0, 1),
-        new int3(1, 0, 0),
-        new int3(1, 0, 1),
-        new int3(0, 1, 0),
-        new int3(0, 1, 1),
-        new int3(1, 1, 0),
-        new int3(1, 1, 1),
-    };
+    public const int MaxMaterialCount = 256;
 
     // Stolen from https://gist.github.com/dwilliamson/c041e3454a713e58baf6e4f8e5fffecd
     public static readonly ushort[] EdgeMasks = new ushort[] {

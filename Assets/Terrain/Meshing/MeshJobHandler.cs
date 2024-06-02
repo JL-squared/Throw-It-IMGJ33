@@ -20,7 +20,6 @@ internal class MeshJobHandler {
     public NativeArray<int> indices;
     public NativeArray<byte> enabled;
     public NativeMultiCounter countersQuad;
-    public NativeMultiCounter chunkCullingFaceCounters;
     public NativeCounter counter;
     public NativeMultiCounter voxelCounters;
 
@@ -38,7 +37,7 @@ internal class MeshJobHandler {
 
     internal MeshJobHandler() {
         // Native buffers for mesh data
-        int materialCount = VoxelUtils.MAX_MATERIAL_COUNT;
+        int materialCount = VoxelUtils.MaxMaterialCount;
         voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         vertices = new NativeArray<float3>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         tempTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
@@ -49,7 +48,6 @@ internal class MeshJobHandler {
         indices = new NativeArray<int>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         enabled = new NativeArray<byte>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         countersQuad = new NativeMultiCounter(materialCount, Allocator.Persistent);
-        chunkCullingFaceCounters = new NativeMultiCounter(6, Allocator.Persistent);
         counter = new NativeCounter(Allocator.Persistent);
 
         // Native buffer for handling multiple materials
@@ -71,7 +69,6 @@ internal class MeshJobHandler {
     // Begin the vertex + quad job that will generate the mesh
     internal JobHandle BeginJob(JobHandle dependency) {
         countersQuad.Reset();
-        chunkCullingFaceCounters.Reset();
         counter.Count = 0;
         materialCounter.Count = 0;
         materialHashSet.Clear();
@@ -83,7 +80,6 @@ internal class MeshJobHandler {
             voxels = voxels,
             enabled = enabled,
             size = VoxelUtils.Size,
-            intersectingCases = chunkCullingFaceCounters,
         };
 
         // Calculates the number of materials within the mesh
@@ -146,10 +142,10 @@ internal class MeshJobHandler {
         JobHandle quadJobHandle = quadJob.Schedule(VoxelUtils.Volume, 2048 * 16, merged);
 
         // Start the sum job 
-        JobHandle sumJobHandle = sumJob.Schedule(VoxelUtils.MAX_MATERIAL_COUNT, 32, quadJobHandle);
+        JobHandle sumJobHandle = sumJob.Schedule(VoxelUtils.MaxMaterialCount, 32, quadJobHandle);
 
         // Start the copy job
-        JobHandle copyJobHandle = copyJob.Schedule(VoxelUtils.MAX_MATERIAL_COUNT, 1, sumJobHandle);
+        JobHandle copyJobHandle = copyJob.Schedule(VoxelUtils.MaxMaterialCount, 1, sumJobHandle);
 
         finalJobHandle = copyJobHandle;
         return finalJobHandle;
@@ -233,7 +229,6 @@ internal class MeshJobHandler {
         materialHashMap.Dispose();
         materialHashSet.Dispose();
         materialSegmentOffsets.Dispose();
-        chunkCullingFaceCounters.Dispose();
         enabled.Dispose();
         voxelCounters.Dispose();
     }

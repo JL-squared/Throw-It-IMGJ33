@@ -30,9 +30,6 @@ public struct CornerJob : IJobParallelFor {
         )
     };
 
-    // Used for checking for culling ig
-    public NativeMultiCounter.Concurrent intersectingCases;
-
     // Static settings
     [ReadOnly] public int size;
 

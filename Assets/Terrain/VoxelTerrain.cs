@@ -3,29 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class VoxelTerrain : MonoBehaviour {
     [Range(1, 8)]
     public int meshJobsPerFrame = 1;
     public Material[] voxelMaterials;
-    public bool generateCollisions = false;
     public bool debugGizmos = false;
+    public GameObject chunkPrefab;
 
-    internal Queue<PendingMeshJob> pendingMeshJobs;
-    internal List<(JobHandle, VoxelChunk, VoxelMesh)> ongoingBakeJobs;
-    internal List<MeshJobHandler> handlers;
-    internal Queue<IVoxelEdit> tempVoxelEdits;
+    private Queue<PendingMeshJob> pendingMeshJobs;
+    private List<(JobHandle, VoxelChunk, VoxelMesh)> ongoingBakeJobs;
+    private List<MeshJobHandler> handlers;
+    private List<GameObject> pooledChunkGameObjects;
 
     // Initialize the required voxel behaviours
     void Start() {
         ongoingBakeJobs = new List<(JobHandle, VoxelChunk, VoxelMesh)>();
-        tempVoxelEdits = new Queue<IVoxelEdit>();
         handlers = new List<MeshJobHandler>(meshJobsPerFrame);
         pendingMeshJobs = new Queue<PendingMeshJob>();
+        pooledChunkGameObjects = new List<GameObject>();
 
         for (int i = 0; i < meshJobsPerFrame; i++) {
             handlers.Add(new MeshJobHandler());
+        }
+
+        for (int x = -3; x <= 3; x++) {
+            for (int y = -3; y <= 3; y++) {
+                GameObject newChunk = FetchPooledChunk();
+                VoxelChunk voxelChunk = newChunk.GetComponent<VoxelChunk>();
+                newChunk.transform.position = new Vector3(x * VoxelUtils.Size, -VoxelUtils.Size, y * VoxelUtils.Size);
+                voxelChunk.memoryTypeTemp = false;
+                voxelChunk.hasCollisions = true;
+                voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
+                TerrainTestJob job = new TerrainTestJob { voxels = voxelChunk.voxels.Value };
+                job.Run(VoxelUtils.Volume);
+                voxelChunk.Remesh(this);
+            }
         }
     }
 
@@ -46,7 +61,7 @@ public class VoxelTerrain : MonoBehaviour {
                 */
 
                 // Begin a new collision baking jobs
-                if (voxelMesh.VertexCount > 0 && voxelMesh.TriangleCount > 0 && voxelMesh.ComputeCollisions && generateCollisions) {
+                if (voxelMesh.VertexCount > 0 && voxelMesh.TriangleCount > 0 && voxelMesh.ComputeCollisions) {
                     BakeJob bakeJob = new BakeJob {
                         meshId = voxelChunk.sharedMesh.GetInstanceID(),
                     };
@@ -77,15 +92,14 @@ public class VoxelTerrain : MonoBehaviour {
 
                 MeshJobHandler handler = handlers[i];
                 handler.chunk = request.chunk;
-                handler.voxels.CopyFrom(request.chunk.container.voxels);
+                handler.voxels.CopyFrom(request.chunk.voxels.Value);
                 handler.colissions = request.collisions;
                 handler.maxFrames = request.maxFrames;
                 handler.startingFrame = Time.frameCount;
 
                 // Pass through the edit system for any chunks that should be modified
                 handler.voxelCounters.Reset();
-                //JobHandle voxelEdit = terrain.VoxelEdits.TryGetApplyVoxelEditJobDependency(request.chunk, ref handler.voxels, handler.voxelCounters, dynamicEdit);
-                handler.BeginJob(new JobHandle());
+                handler.BeginJob(default);
             }
         }
 
@@ -99,11 +113,18 @@ public class VoxelTerrain : MonoBehaviour {
         ongoingBakeJobs.RemoveAll(item => item.Item1.IsCompleted);
     }
 
+    // Dispose of all the voxel behaviours
+    private void OnApplicationQuit() {
+        foreach (MeshJobHandler handler in handlers) {
+            handler.Complete(new Mesh());
+            handler.Dispose();
+        }
+    }
 
     // Begin generating the mesh data using the given chunk and voxel container
     // Automatically creates a dependency from the editing system if it is editing modified chunks
     public void GenerateMesh(VoxelChunk chunk, bool collisions, int maxFrames = 5) {
-        if (chunk.container == null)
+        if (chunk.voxels == null)
             return;
 
         var job = new PendingMeshJob {
@@ -117,15 +138,6 @@ public class VoxelTerrain : MonoBehaviour {
 
         pendingMeshJobs.Enqueue(job);
     }
-
-    // Dispose of all the voxel behaviours
-    private void OnApplicationQuit() {
-        foreach (MeshJobHandler handler in handlers) {
-            handler.Complete(new Mesh());
-            handler.Dispose();
-        }
-    }
-
 
     // Give the chunk's resources back to the main pool
     private void PoolChunkBack(VoxelChunk voxelChunk) {
@@ -176,8 +188,6 @@ public class VoxelTerrain : MonoBehaviour {
 
     // Fetches a pooled chunk, or creates a new one from scratch
     private GameObject FetchPooledChunk() {
-        return null;
-        /*
         GameObject chunk;
 
         if (pooledChunkGameObjects.Count == 0) {
@@ -195,12 +205,6 @@ public class VoxelTerrain : MonoBehaviour {
 
         chunk.SetActive(true);
         return chunk;
-        */
-    }
-
-    // Fetches a voxel native array, or allocates one from scratch
-    private UniqueVoxelChunkContainer FetchVoxelChunkContainer() {
-        return null;
     }
 
     // Reference that we can use to fetch modified data of a voxel edit
@@ -214,6 +218,7 @@ public class VoxelTerrain : MonoBehaviour {
     public delegate void VoxelEditCounterCallback(int[] changed);
 
     // Apply a voxel edit to the terrain world
+    // Could either be used in game (for destructible terrain) or in editor for creating the terrain map
     public void ApplyVoxelEdit(IVoxelEdit edit, bool neverForget = false, bool immediate = false, VoxelEditCounterCallback callback = null) {
         /*
         // Custom job to find all the octree nodes that touch the bounds
@@ -226,77 +231,6 @@ public class VoxelTerrain : MonoBehaviour {
             chunk.voxelCountersHandle = countersHandle;
             countersHandle.pending++;
             chunk.Remesh(terrain, immediate ? 0 : 5);
-        }
-        */
-    }
-
-    // Check if a chunk contains voxel edits
-    public bool IsChunkAffectedByVoxelEdits(VoxelChunk chunk) {
-        return false;
-    }
-
-    // Create an apply job dependeny for a chunk that has voxel edits
-    public JobHandle TryGetApplyVoxelEditJobDependency(VoxelChunk chunk, ref NativeArray<Voxel> voxels, NativeMultiCounter counters, JobHandle dependency) {
-        return default;
-        /*
-        if (!IsChunkAffectedByVoxelEdits(chunk)) {
-            if (chunk.voxelCountersHandle != null) {
-                chunk.voxelCountersHandle.pending--;
-                chunk.voxelCountersHandle = null;
-            }
-            
-            return dependency;
-        }
-
-        VoxelEditOctreeNode.RawNode raw = new VoxelEditOctreeNode.RawNode {
-            position = chunk.node.position,
-            depth = chunk.node.depth,
-            size = chunk.node.size,
-        };
-
-        int index = chunkLookup[raw];
-        SparseVoxelDeltaData data = sparseVoxelData[index];
-
-        JobHandle newDep = JobHandle.CombineDependencies(dependency, data.applyJobHandle);
-
-        VoxelEditApplyJob job = new VoxelEditApplyJob {
-            data = data,
-            voxels = voxels,
-            counters = counters,
-        };
-        return job.Schedule(VoxelUtils.Volume, 2048 * 8, newDep);
-        */
-    }
-
-    // Update the modified voxel counters of a chunk after finishing meshing
-    internal void UpdateCounters(MeshJobHandler handler, VoxelChunk voxelChunk) {
-        /*
-        VoxelEditCountersHandle handle = voxelChunk.voxelCountersHandle;
-        if (handle != null)
-        {
-            handle.pending--;
-            int lookup = chunkLookup[new VoxelEditOctreeNode.RawNode
-            {
-                position = voxelChunk.node.position,
-                depth = voxelChunk.node.depth,
-                size = voxelChunk.node.size,
-            }];
-
-            // Check current values, update them
-            SparseVoxelDeltaData data = sparseVoxelData[lookup];
-            NativeArray<int> lastValues = data.lastCounters;
-
-            // Store the data back into the sparse voxel array
-            for (int i = 0; i < terrain.VoxelMesher.voxelMaterials.Length; i++) {
-                int newValue = handler.voxelCounters[i];
-                int delta = newValue - lastValues[i];
-                handle.changed[i] += delta;
-                data.lastCounters[i] = newValue;
-            }
-
-            // Call the callback when we finished modifiying all requested chunks
-            if (handle.pending == 0)
-                handle.callback?.Invoke(handle.changed);            
         }
         */
     }

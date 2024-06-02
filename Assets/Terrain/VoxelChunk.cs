@@ -1,11 +1,14 @@
+using System;
+using Unity.Collections;
 using UnityEngine;
 
 // Script added to all game objects that represent a chunk
 public class VoxelChunk : MonoBehaviour {
-    // Either the chunk's own voxel data (in case collisions are enabled) 
-    // OR the voxel request data (temp)
-    // If null it means the chunk cannot be generated (no voxel data!!)
-    public VoxelTempContainer container;
+    // Either temporary data when loading map from disk
+    // Or permamnent chunk data for modified chunks
+    public NativeArray<Voxel>? voxels;
+    public bool memoryTypeTemp = false;
+    public bool hasCollisions = false;
 
     // Callback that we must invoke when we finish meshing this voxel chunk
     internal VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;
@@ -24,25 +27,17 @@ public class VoxelChunk : MonoBehaviour {
 
     // Remesh the chunk given the parent terrain
     public void Remesh(VoxelTerrain terrain, int maxFrames = 5) {
-        /*
-        if (container is UniqueVoxelChunkContainer) {
-            // Regenerate the mesh based on the unique voxel container
-            terrain.VoxelMesher.GenerateMesh(this, node.depth == VoxelUtils.MaxDepth, maxFrames);
+        if (!voxels.HasValue) {
+            return;
+        }
+
+        if (memoryTypeTemp) {
+            // Simply fetch map data again and regenerate it
+            // Just do it????
+            //throw new NotImplementedException();
         } else {
-            // If not, simply fetch map data again and regenerate it
-            terrain.VoxelGenerator.GenerateVoxels(this);
+            // Regenerate the mesh based on the unique voxel container
+            terrain.GenerateMesh(this, hasCollisions, maxFrames);
         }
-        */
-    }
-
-    // Convert a specific sub-mesh index (from physics collision for example) to voxel material index
-    public bool TryGetVoxelMaterialFromSubmesh(int submeshIndex, out int voxelMaterialIndex) {
-        if (voxelMaterialsLookup != null && submeshIndex < voxelMaterialsLookup.Length) {
-            voxelMaterialIndex = voxelMaterialsLookup[submeshIndex];
-            return true;
-        }
-
-        voxelMaterialIndex = -1;
-        return false;
     }
 }
