@@ -14,8 +14,8 @@ public class WeatherManager : MonoBehaviour {
     public float snowyNoiseScale = 0.2f;
     public float stormyNoiseScale = 0.2f;
     public float globalTimeScale = 1.0f;
-    [Range(0, 2000)] public int minSnowEmissionRate;
-    [Range(0, 2000)] public int maxSnowEmissionRate;
+    [Range(0, 10000)] public int minSnowEmissionRate;
+    [Range(0, 10000)] public int maxSnowEmissionRate;
 
     public float windyParticlesNoiseScale = 0.2f;
     public float windyParticlesNoiseFactor = 0.2f;

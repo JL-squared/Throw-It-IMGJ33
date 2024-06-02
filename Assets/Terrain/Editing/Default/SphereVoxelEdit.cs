@@ -11,6 +11,10 @@ public struct SphereVoxelEdit : IVoxelEdit {
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
 
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels) {
+        return IVoxelEdit.ApplyGeneric(this, offset, voxels);
+    }
+
     public Bounds GetBounds() {
         return new Bounds {
             center = center,
@@ -18,11 +22,10 @@ public struct SphereVoxelEdit : IVoxelEdit {
         };
     }
 
-    public Voxel Modify(float3 position, Voxel lastDelta) {
-        Voxel voxel = lastDelta;
+    public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
         voxel.material = (density < 1.0F && writeMaterial) ? material : voxel.material;
-        voxel.density = (density < 0.0F) ? (half)(density * strength) : lastDelta.density;
+        voxel.density = (density < 0.0F) ? (half)(density * strength) : voxel.density;
         return voxel;
     }
 }

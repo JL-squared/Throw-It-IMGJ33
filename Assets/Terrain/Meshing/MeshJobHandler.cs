@@ -8,9 +8,6 @@ using UnityEngine.Rendering;
 // Contains the allocation data for a single job
 // There are multiple instances of this class stored inside the voxel mesher to saturate the other threads
 internal class MeshJobHandler {
-    // Copy of the voxel data that we will use for meshing
-    public NativeArray<Voxel> voxels;
-
     // Native buffers for mesh data
     public NativeArray<float3> vertices;
     public NativeArray<int> tempTriangles;
@@ -38,7 +35,6 @@ internal class MeshJobHandler {
     internal MeshJobHandler() {
         // Native buffers for mesh data
         int materialCount = VoxelUtils.MaxMaterialCount;
-        voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         vertices = new NativeArray<float3>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         tempTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         permTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
@@ -67,7 +63,7 @@ internal class MeshJobHandler {
     public bool Free { get; private set; } = true;
 
     // Begin the vertex + quad job that will generate the mesh
-    internal JobHandle BeginJob(JobHandle dependency) {
+    internal JobHandle BeginJob(JobHandle dependency, NativeArray<Voxel> voxels) {
         countersQuad.Reset();
         counter.Count = 0;
         materialCounter.Count = 0;
@@ -153,7 +149,7 @@ internal class MeshJobHandler {
 
     // Complete the jobs and return a mesh
     internal VoxelMesh Complete(Mesh mesh) {
-        if (voxels == null || chunk == null) {
+        if (chunk == null) {
             return VoxelMesh.Empty;
         }
 
@@ -218,7 +214,6 @@ internal class MeshJobHandler {
 
     // Dispose of the underlying memory allocations
     internal void Dispose() {
-        voxels.Dispose();
         indices.Dispose();
         vertices.Dispose();
         counter.Dispose();

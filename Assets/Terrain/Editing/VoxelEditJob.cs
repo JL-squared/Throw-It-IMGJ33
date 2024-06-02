@@ -8,7 +8,7 @@ using Unity.Mathematics;
 [BurstCompile(CompileSynchronously = true)]
 struct VoxelEditJob<T> : IJobParallelFor
     where T : struct, IVoxelEdit {
-    [ReadOnly] public float3 chunkOffset;
+    [ReadOnly] public float3 offset;
 
     public T edit;
     public NativeArray<Voxel> voxels;
@@ -17,25 +17,16 @@ struct VoxelEditJob<T> : IJobParallelFor
         uint3 id = VoxelUtils.IndexToPos(index);
         float3 position = (math.float3(id));
 
-        /*
         // Needed for voxel size reduction
-        position *= voxelScale;
-        position -= 1.5f * voxelScale;
+        position *= VoxelUtils.VoxelSizeFactor;
+        position -= 1.5f * VoxelUtils.VoxelSizeFactor;
 
         //position -= math.float3(1);
-        position *= vertexScaling;
-        position *= scalingFactor;
-        position += chunkOffset;
-
-        // Chunk offsets + vertex scaling
-        //position += math.float3((chunkOffset - (scalingFactor * size / (size - 3.0f)) * 0.5f));
+        position *= VoxelUtils.VertexScaling;
+        position += offset;
 
         // Read, modify, write
-        byte material = materials[index];
-        half density = VoxelUtils.NormalizeHalf(densities[index]);
-        Voxel output = edit.Modify(position, new Voxel { material = material, density = density });
-        materials[index] = output.material;
-        densities[index] = VoxelUtils.NormalizeHalf(output.density);
-        */
+        Voxel voxel = voxels[index];
+        voxels[index] = edit.Modify(position, voxel);
     }
 }

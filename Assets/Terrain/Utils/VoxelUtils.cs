@@ -15,7 +15,7 @@ public static class VoxelUtils {
     public const float VertexScaling = (float)Size / ((float)Size - 3.0F);
 
     // Voxel scaling size
-    public const int VoxelSizeReduction = 0;
+    public const int VoxelSizeReduction = 1;
 
     // Scaling factor when using voxel size reduction
     // Doesn't actually represent the actual size of the voxel (since we do some scaling anyways)

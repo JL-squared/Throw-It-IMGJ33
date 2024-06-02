@@ -13,6 +13,10 @@ public struct FlattenVoxelEdit : IVoxelEdit {
     [ReadOnly] public float strength;
     [ReadOnly] public float radius;
 
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels) {
+        return IVoxelEdit.ApplyGeneric(this, offset, voxels);
+    }
+
     public Bounds GetBounds() {
         return new Bounds {
             center = center,
@@ -20,13 +24,12 @@ public struct FlattenVoxelEdit : IVoxelEdit {
         };
     }
 
-    public Voxel Modify(float3 position, Voxel lastDelta) {
-        Voxel voxel = lastDelta;
+    public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
         float mask = math.saturate(density);
-        float oldDensity = lastDelta.density;
+        float oldDensity = voxel.density;
         float planeDensity = math.dot(normal, position - center);
-        float newDensity = (half)(lastDelta.density + strength * planeDensity);
+        float newDensity = (half)(voxel.density + strength * planeDensity);
         voxel.density = (half)math.lerp(newDensity, oldDensity, mask);
         
         

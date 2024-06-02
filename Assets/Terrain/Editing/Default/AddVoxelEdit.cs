@@ -13,6 +13,9 @@ public struct AddVoxelEdit : IVoxelEdit {
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
 
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels) {
+        return IVoxelEdit.ApplyGeneric(this, offset, voxels);
+    }
 
     public Bounds GetBounds() {
         return new Bounds {
@@ -21,11 +24,10 @@ public struct AddVoxelEdit : IVoxelEdit {
         };
     }
 
-    public Voxel Modify(float3 position, Voxel lastDelta) {
-        Voxel voxel = lastDelta;
+    public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
         voxel.material = (density < 1.0F && writeMaterial && strength < 0) ? material : voxel.material;
-        voxel.density = (density < 0.0F) ? (half)(lastDelta.density + strength) : lastDelta.density;
+        voxel.density += (half)(density < 0.0F ? strength : 0f);
         return voxel;
     }
 }

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SimpleTerrainMat
+  m_Name: SimpleTerrainMat 1
   m_Shader: {fileID: -6465566751694194690, guid: df1d4cd81e696a84780bbcbe6b2abb17,
     type: 3}
   m_Parent: {fileID: 0}
@@ -38,12 +38,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Metallic: 0
+    - _Metallic: 0.8
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.2
+    - _Smoothness: 0.8
     m_Colors:
-    - _Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0}
+    - _Color: {r: 0.5754717, g: 0.13300997, b: 0.13300997, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2277881586222555867
 MonoBehaviour:
