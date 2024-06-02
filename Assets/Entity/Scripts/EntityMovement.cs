@@ -64,6 +64,11 @@ public class EntityMovement : MonoBehaviour {
             Vector3 scaled = hit.moveDirection * hit.rigidbody.mass;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
             hit.rigidbody.AddForce(scaled * pushForce);
+
+            // Ok IDFK what im doing here ngl
+            if(hit.rigidbody.isKinematic) {
+               // cc.attachedRigidbody.AddForce(-scaled * pushForce, ForceMode.Impulse);
+            }
         }
     }
 }

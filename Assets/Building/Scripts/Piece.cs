@@ -14,4 +14,12 @@ public class Piece : MonoBehaviour {
     {
         
     }
+
+    public void GetSnapPoints(List<Transform> listOut) {
+        for (int i = 0; i < transform.childCount; i++) {
+            Transform child = transform.GetChild(i);
+            if (child.CompareTag("Snappoint"))
+                listOut.Add(child);
+        }
+    }
 }
