@@ -15,7 +15,9 @@ public interface IVoxelEdit {
     public Bounds GetBounds();
 
     // MUST CALL THE "ApplyGeneric" function because we can't hide away generics
-    public JobHandle Apply();
+    public JobHandle Apply() {
+        return default;
+    }
 
     // Apply any generic voxel edit onto oncoming data
     internal static JobHandle ApplyGeneric<T>(T edit) where T : struct, IVoxelEdit {

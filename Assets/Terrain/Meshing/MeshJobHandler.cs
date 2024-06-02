@@ -69,7 +69,7 @@ internal class MeshJobHandler {
     public bool Free { get; private set; } = true;
 
     // Begin the vertex + quad job that will generate the mesh
-    internal JobHandle BeginJob(JobHandle dependency, Vector3Int chunk) {
+    internal JobHandle BeginJob(JobHandle dependency) {
         countersQuad.Reset();
         chunkCullingFaceCounters.Reset();
         counter.Count = 0;

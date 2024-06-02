@@ -11,10 +11,6 @@ public struct SphereVoxelEdit : IVoxelEdit {
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
 
-    public JobHandle Apply() {
-        return IVoxelEdit.ApplyGeneric(this);
-    }
-
     public Bounds GetBounds() {
         return new Bounds {
             center = center,

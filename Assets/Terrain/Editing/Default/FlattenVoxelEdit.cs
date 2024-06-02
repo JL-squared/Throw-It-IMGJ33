@@ -13,10 +13,6 @@ public struct FlattenVoxelEdit : IVoxelEdit {
     [ReadOnly] public float strength;
     [ReadOnly] public float radius;
 
-    public JobHandle Apply() {
-        return IVoxelEdit.ApplyGeneric(this);
-    }
-
     public Bounds GetBounds() {
         return new Bounds {
             center = center,

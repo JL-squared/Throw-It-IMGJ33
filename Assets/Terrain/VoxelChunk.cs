@@ -8,7 +8,7 @@ public class VoxelChunk : MonoBehaviour {
     public VoxelTempContainer container;
 
     // Callback that we must invoke when we finish meshing this voxel chunk
-    internal VoxelEdits.VoxelEditCountersHandle voxelCountersHandle;
+    internal VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;
 
     // Shared generated mesh
     public Mesh sharedMesh;
