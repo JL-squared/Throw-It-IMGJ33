@@ -22,7 +22,6 @@ public class Piece : MonoBehaviour {
     public static void GetSnapPoints(Vector3 point, float radius, List<Transform> points, List<Piece> pieces) {
         int num = Physics.OverlapSphereNonAlloc(point, radius, pieceColliders, pieceRayMask);
         for (int i = 0; i < num; i++) {
-            Debug.Log("Oh yeah we have snap points");
             Piece componentInParent = pieceColliders[i].GetComponentInParent<Piece>();
             if (componentInParent != null) {
                 componentInParent.GetSnapPoints(points);
@@ -34,7 +33,6 @@ public class Piece : MonoBehaviour {
     public void GetSnapPoints(List<Transform> listOut) {
         for (int i = 0; i < transform.childCount; i++) {
             Transform child = transform.GetChild(i);
-            Debug.Log("Oh yeah we have snap point");
             if (child.CompareTag("Snappoint"))
                 listOut.Add(child);
         }

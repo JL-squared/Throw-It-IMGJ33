@@ -226,9 +226,19 @@ public class PlayerScript : MonoBehaviour {
             placementGhost = Instantiate(selectedBuildPrefab);
         }
 
-        Transform[] componentsInChildren = placementGhost.GetComponentsInChildren<Transform>();
+        /*
+        Collider[] componentsInChildren1 = placementGhost.GetComponentsInChildren<Collider>();
+        foreach (Collider collider in componentsInChildren1) {
+            if (((1 << collider.gameObject.layer) & placeRayMask) == 0) {
+                collider.enabled = false;
+            }
+        }
+        */
+
+
+        Transform[] componentsInChildren2 = placementGhost.GetComponentsInChildren<Transform>();
         int layer = LayerMask.NameToLayer("Ghost");
-        Transform[] array = componentsInChildren;
+        Transform[] array = componentsInChildren2;
         for (int i = 0; i < array.Length; i++) {
             array[i].gameObject.layer = layer;
         }
@@ -272,9 +282,7 @@ public class PlayerScript : MonoBehaviour {
 
             if (!flag) {
                 tempPieces.Clear();
-                Debug.Log("Checking for the snapping...");
                 if (FindClosestSnapPoints(placementGhost.transform, 0.5f, out var a, out var b, tempPieces)) {
-                    Debug.Log("Some kind of snapping is occuring");
                     _ = b.parent.position;
                     Vector3 vector4 = b.position - (a.position - placementGhost.transform.position);
                     placementGhost.transform.position = vector4;
@@ -298,11 +306,8 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private bool FindClosestSnapPoints(Transform ghost, float maxSnapDistance, out Transform a, out Transform b, List<Piece> pieces) {
-        Debug.Log("this better be WORKING!!");
-
         tempSnapPoints1.Clear();
         ghost.GetComponent<Piece>().GetSnapPoints(tempSnapPoints1);
-        Debug.Log(tempSnapPoints1.ToString());
         tempSnapPoints2.Clear();
         tempPieces.Clear();
         Piece.GetSnapPoints(ghost.transform.position, 10f, tempSnapPoints2, tempPieces);
@@ -321,7 +326,6 @@ public class PlayerScript : MonoBehaviour {
         */
         foreach (Transform item in tempSnapPoints1) {
             if (FindClosestSnappoint(item.position, tempSnapPoints2, maxSnapDistance, out var closest2, out var distance2) && distance2 < num) {
-                Debug.Log("please vro");
                 num = distance2;
                 a = item;
                 b = closest2;
