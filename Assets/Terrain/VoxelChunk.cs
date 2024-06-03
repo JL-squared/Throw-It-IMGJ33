@@ -10,7 +10,7 @@ public class VoxelChunk : MonoBehaviour {
     public NativeArray<Voxel> voxels;
     public bool memoryTypeTemp = false;
     public bool hasCollisions = false;
-    public NativeArray<int> lastCounters;
+    public NativeMultiCounter lastCounters;
 
     // Pending voxel edit job occuring on this chunk
     public JobHandle pendingVoxelEditJob = default;

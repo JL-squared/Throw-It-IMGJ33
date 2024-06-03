@@ -253,9 +253,10 @@ public class VoxelTerrain : MonoBehaviour {
 
     // Apply a voxel edit to the terrain world
     // Could either be used in game (for destructible terrain) or in editor for creating the terrain map
-    public void ApplyVoxelEdit(IVoxelEdit edit, bool immediate = false, VoxelEditCounterCallback callback = null) {
+    public void ApplyVoxelEdit(IVoxelEdit edit, bool neverForget = false, bool immediate = false, VoxelEditCounterCallback callback = null) {
         if (!handlers.All(x => x.Free)) {
-                    tempVoxelEdits.Enqueue(edit);
+            if (neverForget)
+                tempVoxelEdits.Enqueue(edit);
             return;
         }
 
@@ -275,10 +276,10 @@ public class VoxelTerrain : MonoBehaviour {
                 voxelChunk.pendingVoxelEditJob.Complete();
                 
                 if (!voxelChunk.lastCounters.IsCreated) {
-                    voxelChunk.lastCounters = new NativeArray<int>(voxelMaterials.Length, Allocator.Persistent);
+                    voxelChunk.lastCounters = new NativeMultiCounter(voxelMaterials.Length, Allocator.Persistent);
                 }
                 
-                JobHandle dep = edit.Apply(chunk.transform.position, voxelChunk.voxels);
+                JobHandle dep = edit.Apply(chunk.transform.position, voxelChunk.voxels, voxelChunk.lastCounters);
                 voxelChunk.pendingVoxelEditJob = dep;
                 voxelChunk.voxelCountersHandle = countersHandle;
                 countersHandle.pending++;
@@ -295,7 +296,7 @@ public class VoxelTerrain : MonoBehaviour {
             handle.pending--;
 
             // Check current values, update them
-            NativeArray<int> lastValues = voxelChunk.lastCounters;
+            NativeMultiCounter lastValues = voxelChunk.lastCounters;
 
             // Store the data back into the sparse voxel array
             for (int i = 0; i < voxelMaterials.Length; i++) {

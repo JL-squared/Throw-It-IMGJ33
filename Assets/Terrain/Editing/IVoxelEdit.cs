@@ -15,14 +15,15 @@ public interface IVoxelEdit {
     public Bounds GetBounds();
 
     // MUST CALL THE "ApplyGeneric" function because we can't hide away generics
-    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels);
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters);
 
     // Apply any generic voxel edit onto oncoming data
-    public static JobHandle ApplyGeneric<T>(T edit, float3 offset, NativeArray<Voxel> voxels) where T : struct, IVoxelEdit {
+    public static JobHandle ApplyGeneric<T>(T edit, float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) where T : struct, IVoxelEdit {
         VoxelEditJob<T> job = new VoxelEditJob<T> {
             offset = offset,
             edit = edit,
             voxels = voxels,
+            counters = counters
         };
         return job.Schedule(VoxelUtils.Volume, 2048 * 16);
     }

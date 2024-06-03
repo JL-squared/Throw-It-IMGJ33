@@ -13,8 +13,8 @@ public struct FlattenVoxelEdit : IVoxelEdit {
     [ReadOnly] public float strength;
     [ReadOnly] public float radius;
 
-    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels) {
-        return IVoxelEdit.ApplyGeneric(this, offset, voxels);
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
+        return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
     }
 
     public Bounds GetBounds() {

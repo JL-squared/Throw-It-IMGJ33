@@ -13,8 +13,8 @@ public struct AddVoxelEdit : IVoxelEdit {
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
 
-    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels) {
-        return IVoxelEdit.ApplyGeneric(this, offset, voxels);
+    public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
+        return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
     }
 
     public Bounds GetBounds() {

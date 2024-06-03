@@ -22,7 +22,7 @@ public class PlayerControllerScript : MonoBehaviour {
     void Update() {
         if (Physics.Raycast(head.transform.position + head.transform.forward * 1, head.transform.forward * 2, out RaycastHit hit, 5000.0F)) {
             bool add = Input.GetKey(KeyCode.LeftShift);
-            float temp = add ? -1F : 1F;
+            float temp = add ? -1F : 1F * Time.deltaTime * 20.0f;
             target += Input.GetKeyDown(KeyCode.K) ? 1 : 0;
             target = target % 3;
 
@@ -44,7 +44,7 @@ public class PlayerControllerScript : MonoBehaviour {
                             radius = sizeRadius,
                             strength = 10.0F * temp,
                             writeMaterial = true,
-                            material = 1,
+                            material = 0,
                         };
 
                         VoxelTerrain.Instance.ApplyVoxelEdit(edit2, callback: Callback);
@@ -55,7 +55,7 @@ public class PlayerControllerScript : MonoBehaviour {
                             radius = sizeRadius,
                             strength = 10.0F * temp,
                             writeMaterial = true,
-                            material = 1,
+                            material = 0,
                         };
 
                         VoxelTerrain.Instance.ApplyVoxelEdit(edit3, callback: Callback);
@@ -64,12 +64,21 @@ public class PlayerControllerScript : MonoBehaviour {
             }
 
             if (Input.GetMouseButton(1)) {
+                /*
+                var edit2 = new FlattenVoxelEdit {
+                    center = hit.point,
+                    normal = hit.normal,
+                    radius = sizeRadius,
+                    strength = temp * 10,
+                };
+                */
+
                 var edit2 = new AddVoxelEdit {
                     center = math.float3(hit.point.x, hit.point.y, hit.point.z),
                     radius = sizeRadius,
                     strength = 0.7F * temp,
                     writeMaterial = true,
-                    material = 1,
+                    material = 0,
                 };
 
                 VoxelTerrain.Instance.ApplyVoxelEdit(edit2, callback: Callback);

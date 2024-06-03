@@ -1,3 +1,4 @@
+using System.Runtime.ConstrainedExecution;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -12,7 +13,9 @@ struct VoxelEditJob<T> : IJobParallelFor
 
     public T edit;
     public NativeArray<Voxel> voxels;
-    
+
+    public NativeMultiCounter.Concurrent counters;
+
     public void Execute(int index) {
         uint3 id = VoxelUtils.IndexToPos(index);
         float3 position = (math.float3(id));
@@ -26,7 +29,17 @@ struct VoxelEditJob<T> : IJobParallelFor
         position += offset;
 
         // Read, modify, write
-        Voxel voxel = voxels[index];
-        voxels[index] = edit.Modify(position, voxel);
+        Voxel oldVoxel = voxels[index];
+        Voxel newVoxel = edit.Modify(position, oldVoxel);
+        voxels[index] = newVoxel;
+
+        // Keep track the number of valid voxels of each materials
+        half oldDensity = oldVoxel.density;
+        half newDensity = newVoxel.density;
+        if (newDensity > 0.0f && oldDensity < 0.0f) {
+            counters.Increment(newVoxel.material);
+        } else if (newDensity < 0.0f && oldDensity > 0.0f) {
+            counters.Decrement(newVoxel.material);
+        }
     }
 }

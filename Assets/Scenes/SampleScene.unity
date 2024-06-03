@@ -1898,6 +1898,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 524385166999783149, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
+      propertyPath: noiseTexture
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 524385166999783149, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
       propertyPath: extinctionCoefficient
       value: 0.02
       objectReference: {fileID: 0}
