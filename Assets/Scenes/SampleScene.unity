@@ -852,8 +852,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bf574eb5a001f4db906c738fd8b835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brushStrength: 0.39
-  brushRadius: 56.5
+  heldShift: 0
+  heldCtrl: 0
+  brushStrength: 1.87
+  brushRadius: 21.4
+  currentBrush: 5
+  noiseType: 0
+  noiseDimensionality: 0
+  noiseScale: 0.05
+  targetDensity: 20
+  targetHeight: 45.56
 --- !u!1 &1322084848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,7 +1703,7 @@ PrefabInstance:
     - target: {fileID: 6993251342674415073, guid: 35ab3b9feded2f04c9a032a70a56b303,
         type: 3}
       propertyPath: meshJobsPerFrame
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

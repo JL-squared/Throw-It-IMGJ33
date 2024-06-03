@@ -11,12 +11,17 @@ public class VoxelEditor : MonoBehaviour {
     private Vector3 point;
     private Vector3 normal;
     private Vector3 heldNormal;
-    private bool heldShift;
-    private bool heldCtrl;
+    public bool heldShift = false;
+    public bool heldCtrl = false;
     public float brushStrength;
     public float brushRadius;
     private float direction;
     public BrushType currentBrush;
+    public NoiseVoxelEdit.NoiseType noiseType;
+    public NoiseVoxelEdit.Dimensionality noiseDimensionality;
+    public float noiseScale;
+    public float targetDensity;
+    public float targetHeight;
 
     public enum BrushType {
         AddRemove,
@@ -24,9 +29,9 @@ public class VoxelEditor : MonoBehaviour {
         Sphere,
         Cube,
         Flatten,
-        Noise1,
-        Noise2,
-        Noise3,
+        Noise,
+        SetDensity,
+        SetHeight,
     }
 
 
@@ -89,6 +94,13 @@ public class VoxelEditor : MonoBehaviour {
                 };
                 break;
             case BrushType.RaiseLower:
+                edit = new RaiseVoxelEdit {
+                    center = point,
+                    radius = brushRadius,
+                    strength = brushStrength * direction,
+                    writeMaterial = true,
+                    material = 0,
+                };
                 break;
             case BrushType.Sphere:
                 edit = new SphereVoxelEdit {
@@ -116,11 +128,29 @@ public class VoxelEditor : MonoBehaviour {
                     normal = heldNormal,
                 };
                 break;
-            case BrushType.Noise1:
+            case BrushType.Noise:
+                edit = new NoiseVoxelEdit {
+                    center = point,
+                    radius = brushRadius,
+                    strength = brushStrength * direction,
+                    noiseScale = noiseScale,
+                    noiseType = noiseType,
+                    dimensionality = noiseDimensionality,
+                };
                 break;
-            case BrushType.Noise2:
+            case BrushType.SetDensity:
+                edit = new SetDensityVoxelEdit {
+                    center = point,
+                    radius = brushRadius,
+                    targetDensity = targetDensity,
+                };
                 break;
-            case BrushType.Noise3:
+            case BrushType.SetHeight:
+                edit = new SetHeightVoxelEdit {
+                    center = point,
+                    radius = brushRadius,
+                    targetHeight = targetHeight,
+                };
                 break;
             default:
                 break;
@@ -139,6 +169,7 @@ public class VoxelEditor : MonoBehaviour {
                 Gizmos.DrawWireSphere(point, brushRadius);
                 break;
             case BrushType.RaiseLower:
+                Gizmos.DrawWireSphere(point, brushRadius);
                 break;
             case BrushType.Sphere:
                 Gizmos.DrawWireSphere(point, brushRadius);
@@ -154,11 +185,15 @@ public class VoxelEditor : MonoBehaviour {
 
                 Gizmos.DrawWireSphere(point, brushRadius);
                 break;
-            case BrushType.Noise1:
+            case BrushType.Noise:
+                Gizmos.DrawWireSphere(point, brushRadius);
                 break;
-            case BrushType.Noise2:
+            case BrushType.SetDensity:
+                Gizmos.DrawWireSphere(point, brushRadius);
                 break;
-            case BrushType.Noise3:
+            case BrushType.SetHeight:
+                Gizmos.DrawWireSphere(point, brushRadius);
+                Gizmos.DrawWireCube(new Vector3(point.x, targetHeight, point.z), new Vector3(1, 0.05f, 1.0f) * brushRadius);
                 break;
             default:
                 break;
