@@ -26,6 +26,7 @@ public class PlayerScript : MonoBehaviour {
     List<Transform> tempSnapPoints2 = new List<Transform>();
     List<Piece> tempPieces = new List<Piece>();
     public GameObject selectedBuildPrefab;
+    public GameObject selectedTemp2Prefab;
 
     int placeRayMask;
 
@@ -77,7 +78,7 @@ public class PlayerScript : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
 
-        SetupPlacementGhost();
+        SetupPlacementGhost(selectedBuildPrefab);
     }
 
     private void Update() {
@@ -219,11 +220,12 @@ public class PlayerScript : MonoBehaviour {
         return false;
     }
 
-    private void SetupPlacementGhost() {
-        if (selectedBuildPrefab == null) {
+    private void SetupPlacementGhost(GameObject prefab) {
+        if (prefab == null) {
             placementGhost.SetActive(false);
         } else {
-            placementGhost = Instantiate(selectedBuildPrefab);
+            Destroy(placementGhost);
+            placementGhost = Instantiate(prefab);
         }
 
         /*
@@ -298,10 +300,20 @@ public class PlayerScript : MonoBehaviour {
 
     public void BuildAction(InputAction.CallbackContext context) {
         if(context.performed && isBuilding && placementStatus) {
-            GameObject builtPiece = Instantiate(selectedBuildPrefab);
+            GameObject builtPiece = Instantiate(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
             builtPiece.transform.SetPositionAndRotation(placementGhost.transform.position, placementGhost.transform.rotation);
             builtPiece.SetActive(true);
             builtPiece.layer = LayerMask.NameToLayer("Piece");
+        }
+    }
+
+    bool whichThing = true;
+
+    public void BuildAction2(InputAction.CallbackContext context) {
+        if(context.performed && isBuilding) {
+            Debug.Log("switched");
+            whichThing = !whichThing;
+            SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
         }
     }
 
