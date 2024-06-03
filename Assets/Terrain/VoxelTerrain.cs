@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class VoxelTerrain : MonoBehaviour {
     public static VoxelTerrain Instance { get; private set; }

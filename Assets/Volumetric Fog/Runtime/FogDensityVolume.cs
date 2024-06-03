@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Andicraft.VolumetricFog
-{
+namespace Andicraft.VolumetricFog {
     [ExecuteAlways]
     public class FogDensityVolume : MonoBehaviour
     {

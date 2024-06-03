@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Rendering;
 
-namespace Andicraft.VolumetricFog
-{
+namespace Andicraft.VolumetricFog {
     [ExecuteAlways]
     public class VolumetricFog : MonoBehaviour
     {

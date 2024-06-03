@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour {

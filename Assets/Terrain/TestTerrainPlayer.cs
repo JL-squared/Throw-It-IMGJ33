@@ -1,7 +1,4 @@
-﻿using System.IO;
-using Unity.Collections;
-using Unity.Mathematics;
-using Unity.VisualScripting;
+﻿using Unity.Mathematics;
 using UnityEngine;
 
 // Sample script for editing terrain, loading/saving, and modifying props

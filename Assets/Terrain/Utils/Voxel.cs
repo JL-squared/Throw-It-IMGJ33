@@ -1,6 +1,4 @@
 using System.Runtime.InteropServices;
-using Unity.Collections;
-using Unity.Jobs;
 using Unity.Mathematics;
 
 // CPU representation of what a voxel is. The most important value here is the density value
