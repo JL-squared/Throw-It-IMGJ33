@@ -8,6 +8,7 @@ using UnityEngine;
 public class VoxelTerrain : MonoBehaviour {
     public static VoxelTerrain Instance { get; private set; }
 
+    public Vector3Int mapChunkSize;
     [Range(1, 8)]
     public int meshJobsPerFrame = 1;
     public Material[] voxelMaterials;
@@ -20,9 +21,12 @@ public class VoxelTerrain : MonoBehaviour {
     private List<MeshJobHandler> handlers;
     private List<GameObject> pooledChunkGameObjects;
     private List<GameObject> totalChunks;
+    private bool alrDisposed = false;
 
-    // Initialize the required voxel behaviours
-    void Start() {
+    public void Init() {
+        Dispose();
+        alrDisposed = false;
+        Debug.Log("Editor causes this Awake");
         Instance = this;
         tempVoxelEdits = new Queue<IVoxelEdit>();
         ongoingBakeJobs = new List<(JobHandle, VoxelChunk, VoxelMesh)>();
@@ -34,11 +38,48 @@ public class VoxelTerrain : MonoBehaviour {
         for (int i = 0; i < meshJobsPerFrame; i++) {
             handlers.Add(new MeshJobHandler());
         }
+    }
 
-        // TODO: Supposedly a mem leak here??
-        for (int x = -3; x <= 3; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -3; z <= 3; z++) {
+    public void Dispose() {
+        if (alrDisposed)
+            return;
+        alrDisposed = true;
+
+        if (handlers != null) {
+            foreach (MeshJobHandler handler in handlers) {
+                handler.Complete(new Mesh());
+                handler.Dispose();
+            }
+        }
+
+        if (totalChunks != null) {
+            foreach (var chunk in totalChunks) {
+                if (chunk != null) {
+                    var voxelChunk = chunk.GetComponent<VoxelChunk>();
+
+                    if (voxelChunk.voxels.IsCreated) {
+                        voxelChunk.voxels.Dispose();
+                    }
+
+                    if (voxelChunk.lastCounters.IsCreated) {
+                        voxelChunk.lastCounters.Dispose();
+                    }
+                }
+            }
+        }
+    }
+
+    // Initialize the required voxel behaviours
+    void Start() {
+        KillChildren();
+        Init();
+    }
+
+    // Generate a bunch of chunks in a specific area
+    public void GenerateMapChunksBase() {
+        for (int x = -mapChunkSize.x; x <= mapChunkSize.x; x++) {
+            for (int y = -mapChunkSize.y; y <= mapChunkSize.y; y++) {
+                for (int z = -mapChunkSize.z; z <= mapChunkSize.z; z++) {
                     GameObject newChunk = FetchPooledChunk();
                     VoxelChunk voxelChunk = newChunk.GetComponent<VoxelChunk>();
                     newChunk.transform.position = new Vector3(x, y, z) * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor;
@@ -54,28 +95,27 @@ public class VoxelTerrain : MonoBehaviour {
         }
     }
 
+    public void KillChildren() {
+        while (transform.childCount > 0) {
+            DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+    }
+
     // Dispose of all the native memory that we allocated
     private void OnApplicationQuit() {
-        foreach (MeshJobHandler handler in handlers) {
-            handler.Complete(new Mesh());
-            handler.Dispose();
-        }
-
-        foreach (var chunk in totalChunks) {
-            var voxelChunk = chunk.GetComponent<VoxelChunk>();
-
-            if (voxelChunk.voxels.IsCreated) {
-                voxelChunk.voxels.Dispose();
-            }
-
-            if (voxelChunk.lastCounters.IsCreated) {
-                voxelChunk.lastCounters.Dispose();
-            }
-        }
+        Dispose();
     }
 
     // Handle completing finished jobs and initiating new ones
     void Update() {
+        UpdateHook();
+    }
+
+    public void UpdateHook() {
+        if (ongoingBakeJobs == null) {
+            Init();
+        }
+
         // Complete the bake jobs that have completely finished
         foreach (var (handle, voxelChunk, mesh) in ongoingBakeJobs) {
             if (handle.IsCompleted) {
@@ -94,7 +134,7 @@ public class VoxelTerrain : MonoBehaviour {
                     return;
 
                 var voxelMesh = handler.Complete(voxelChunk.sharedMesh);
-                
+
                 // Update counters yea!!!!
                 if (voxelChunk.voxelCountersHandle != null)
                     UpdateCounters(handler, voxelChunk);

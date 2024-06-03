@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab634c5cfe24e246ba13e0e181896db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshJobsPerFrame: 1
-  voxelMaterials: []
-  debugGizmos: 0
+  mapChunkSize: {x: 0, y: 0, z: 0}
+  meshJobsPerFrame: 5
+  voxelMaterials:
+  - {fileID: 2100000, guid: b44896b408f9844438a304180739fb88, type: 2}
+  - {fileID: 2100000, guid: f32bd9b5de9e36a4eb9f0142318d5720, type: 2}
+  debugGUI: 1
   chunkPrefab: {fileID: 1197487948121969908, guid: a41016ef5e12c8b42871006de5c202b5,
     type: 3}

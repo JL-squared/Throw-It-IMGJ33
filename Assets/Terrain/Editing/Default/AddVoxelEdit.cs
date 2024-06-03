@@ -27,7 +27,9 @@ public struct AddVoxelEdit : IVoxelEdit {
     public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
         voxel.material = (density < 1.0F && writeMaterial && strength < 0) ? material : voxel.material;
-        voxel.density += (half)(density < 0.0F ? strength : 0f);
+
+        float falloff = math.saturate(-(density / radius));
+        voxel.density += (half)(strength * falloff);
         return voxel;
     }
 }
