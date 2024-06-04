@@ -52,12 +52,14 @@ Material:
     m_Floats:
     - _Blend: 20
     - _Metallic: 0.2
+    - _Mul: 20
+    - _Offset: -9.25
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0.4
     - _Tile: 0.1
     m_Colors:
-    - _Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 0}
+    - _Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2277881586222555867
 MonoBehaviour:

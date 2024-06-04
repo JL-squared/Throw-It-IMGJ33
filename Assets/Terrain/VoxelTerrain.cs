@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using UnityEngine.TerrainUtils;
 
 public class VoxelTerrain : MonoBehaviour {
     public static VoxelTerrain Instance { get; private set; }
@@ -14,6 +17,7 @@ public class VoxelTerrain : MonoBehaviour {
     public Material[] voxelMaterials;
     public bool debugGUI = false;
     public GameObject chunkPrefab;
+    public TextAsset savedMap;
 
     private Queue<IVoxelEdit> tempVoxelEdits = new Queue<IVoxelEdit>();
     private Queue<PendingMeshJob> pendingMeshJobs;
@@ -21,12 +25,13 @@ public class VoxelTerrain : MonoBehaviour {
     private List<MeshJobHandler> handlers;
     private List<GameObject> pooledChunkGameObjects;
     private List<GameObject> totalChunks;
+
     private bool alrDisposed = false;
 
+    // Initialize buffers and required memory
     public void Init() {
         Dispose();
         alrDisposed = false;
-        Debug.Log("Editor causes this Awake");
         Instance = this;
         tempVoxelEdits = new Queue<IVoxelEdit>();
         ongoingBakeJobs = new List<(JobHandle, VoxelChunk, VoxelMesh)>();
@@ -40,6 +45,7 @@ public class VoxelTerrain : MonoBehaviour {
         }
     }
 
+    // Dispose of all allocated memory
     public void Dispose() {
         if (alrDisposed)
             return;
@@ -69,30 +75,69 @@ public class VoxelTerrain : MonoBehaviour {
         }
     }
 
-    // Initialize the required voxel behaviours
+    // Initialize the required voxel behaviours and load the map
     void Start() {
         KillChildren();
         Init();
+        LoadMap();
     }
 
-    // Generate a bunch of chunks in a specific area
-    public void GenerateMapChunksBase() {
-        for (int x = -mapChunkSize.x; x <= mapChunkSize.x; x++) {
-            for (int y = -mapChunkSize.y; y <= mapChunkSize.y; y++) {
-                for (int z = -mapChunkSize.z; z <= mapChunkSize.z; z++) {
+    // Generate the fixed size map with a specific callback to execute for each chunk
+    public void GenerateWith(Action<VoxelChunk, int> callback) {
+        int index = 0;
+        for (int x = -mapChunkSize.x; x < mapChunkSize.x; x++) {
+            for (int y = -mapChunkSize.y; y < mapChunkSize.y; y++) {
+                for (int z = -mapChunkSize.z; z < mapChunkSize.z; z++) {
                     GameObject newChunk = FetchPooledChunk();
                     VoxelChunk voxelChunk = newChunk.GetComponent<VoxelChunk>();
                     newChunk.transform.position = new Vector3(x, y, z) * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor;
-                    voxelChunk.memoryTypeTemp = false;
-                    voxelChunk.hasCollisions = true;
-                    voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
-                    TerrainTestJob job = new TerrainTestJob { voxels = voxelChunk.voxels, offset = newChunk.transform.position };
-                    voxelChunk.pendingVoxelEditJob = job.Schedule(VoxelUtils.Volume, 2048 * 16);
-                    voxelChunk.Remesh(this);
+                    callback.Invoke(voxelChunk, index);
                     totalChunks.Add(newChunk);
+                    index++;
                 }
             }
         }
+    }
+
+    // Load the terrain from the compressed data stored in editor
+    // This will take the mat/density repr and combine them to actual voxel data
+    public bool LoadMap() {
+        if (savedMap == null) {
+            Debug.LogWarning("No map set!!");
+            return false;
+        }
+
+        byte[] bytes = savedMap.bytes;
+        
+        void DecompressionCallback(VoxelChunk voxelChunk, int index) {
+            int startIndex = index * VoxelUtils.Volume * Voxel.size;
+            ReadOnlySpan<byte> testByteSpan = new ReadOnlySpan<byte>(bytes, startIndex, VoxelUtils.Volume * Voxel.size);
+            ReadOnlySpan<Voxel> voxels = MemoryMarshal.Cast<byte, Voxel>(testByteSpan);
+
+            voxelChunk.hasCollisions = true;
+            voxelChunk.voxels = new NativeArray<Voxel>(voxels.ToArray(), Allocator.Persistent);
+            voxelChunk.Remesh();
+        }
+
+        KillChildren();
+        GenerateWith(DecompressionCallback);
+        return true;
+    }
+
+    // Save the current map into the compressed data list to be loaded at runtime
+    // This will also split the voxel data to the mat/density repr and compress them
+    public void SaveMap(FileStream writeStream) {
+
+        for (int i = 0; i < totalChunks.Count; i++) {
+            NativeArray<Voxel> voxels = totalChunks[i].GetComponent<VoxelChunk>().voxels;
+            NativeSlice<byte> readOnly = voxels.Slice().SliceConvert<byte>();
+
+            writeStream.Write(readOnly.ToArray());
+        }
+
+        writeStream.Flush();
+        writeStream.Close();
+        Debug.Log("Successfully saved the map!!");
     }
 
     public void KillChildren() {
@@ -111,6 +156,7 @@ public class VoxelTerrain : MonoBehaviour {
         UpdateHook();
     }
 
+    // Separate function since it needs to get called inside the editor
     public void UpdateHook() {
         if (ongoingBakeJobs == null) {
             Init();
@@ -150,13 +196,14 @@ public class VoxelTerrain : MonoBehaviour {
                 }
 
                 // Set chunk renderer settings
-                voxelChunk.pendingVoxelEditJob = default;
+                voxelChunk.dependency = default;
                 var renderer = voxelChunk.GetComponent<MeshRenderer>();
                 voxelChunk.GetComponent<MeshFilter>().sharedMesh = voxelChunk.sharedMesh;
                 voxelChunk.voxelMaterialsLookup = voxelMesh.VoxelMaterialsLookup;
                 renderer.materials = voxelMesh.VoxelMaterialsLookup.Select(x => voxelMaterials[x]).ToArray();
 
-                // Set renderer bounds
+                // Set mesh and renderer bounds
+                voxelChunk.sharedMesh.bounds = new Bounds { min = Vector3.zero, max = Vector3.one * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor };
                 renderer.bounds = voxelChunk.GetBounds();
             }
         }
@@ -186,13 +233,12 @@ public class VoxelTerrain : MonoBehaviour {
 
                 // Pass through the edit system for any chunks that should be modified
                 handler.voxelCounters.Reset();
-                handler.BeginJob(request.chunk.pendingVoxelEditJob, request.chunk.voxels);
+                handler.BeginJob(request.chunk.dependency, request.chunk.voxels);
             }
         }
     }
 
     // Begin generating the mesh data using the given chunk and voxel container
-    // Automatically creates a dependency from the editing system if it is editing modified chunks
     public void GenerateMesh(VoxelChunk chunk, bool collisions, int maxFrames = 5) {
         if (chunk.voxels == null)
             return;
@@ -208,53 +254,6 @@ public class VoxelTerrain : MonoBehaviour {
 
         pendingMeshJobs.Enqueue(job);
     }
-
-    // Give the chunk's resources back to the main pool
-    private void PoolChunkBack(VoxelChunk voxelChunk) {
-        /*
-        voxelChunk.gameObject.SetActive(false);
-        pooledChunkGameObjects.Add(voxelChunk.gameObject);
-
-        if (voxelChunk.container != null && voxelChunk.container is UniqueVoxelChunkContainer) {
-            pooledVoxelChunkContainers.Add((UniqueVoxelChunkContainer)voxelChunk.container);
-        }
-
-        if (voxelChunk.container is VoxelReadbackRequest) {
-            voxelChunk.container.TempDispose();
-        }
-
-        voxelChunk.container = null;
-        */
-
-        /*
-        GameObject gameObject = FetchPooledChunk();
-
-            float size = item.scalingFactor;
-            gameObject.GetComponent<MeshRenderer>().enabled = false;
-            gameObject.transform.position = item.position;
-            gameObject.transform.localScale = new Vector3(size, size, size);
-            
-            // RESETS ALL THE OLD CACHED PROPERTIES OF THE CHUNK
-            VoxelChunk chunk = gameObject.GetComponent<VoxelChunk>();
-            chunk.node = item;
-            chunk.voxelCountersHandle = null;
-            chunk.voxelMaterialsLookup = null;
-
-            // Only generate chunk voxel data for chunks at lowest depth
-            chunk.container = null;
-            if (item.depth == VoxelUtils.MaxDepth) {
-                chunk.container = FetchVoxelChunkContainer();
-                chunk.container.chunk = chunk;
-            }
-
-            // Begin the voxel pipeline by generating the voxels for this chunk
-            VoxelGenerator.GenerateVoxels(chunk);
-            Chunks.TryAdd(item, chunk);
-            toMakeVisible.Add(chunk);
-            onChunkAdded?.Invoke(chunk);
-         */
-    }
-
 
     // Fetches a pooled chunk, or creates a new one from scratch
     private GameObject FetchPooledChunk() {
@@ -309,17 +308,17 @@ public class VoxelTerrain : MonoBehaviour {
             var voxelChunk = chunk.GetComponent<VoxelChunk>();
 
             if (voxelChunk.GetBounds().Intersects(editBounds)) {
-                voxelChunk.pendingVoxelEditJob.Complete();
+                voxelChunk.dependency.Complete();
                 
                 if (!voxelChunk.lastCounters.IsCreated) {
                     voxelChunk.lastCounters = new NativeMultiCounter(voxelMaterials.Length, Allocator.Persistent);
                 }
                 
                 JobHandle dep = edit.Apply(chunk.transform.position, voxelChunk.voxels, voxelChunk.lastCounters);
-                voxelChunk.pendingVoxelEditJob = dep;
+                voxelChunk.dependency = dep;
                 voxelChunk.voxelCountersHandle = countersHandle;
                 countersHandle.pending++;
-                voxelChunk.Remesh(this, immediate ? 0 : 5);
+                voxelChunk.Remesh(immediate ? 0 : 5);
             }
         }
     }

@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 303b279d9fe884549b50c2a91fbc278a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
@@ -50,12 +50,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blend: 0
-    - _Metallic: 0.8
+    - _Blend: 1
+    - _Metallic: 0.2
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.8
-    - _Tile: 0
+    - _Smoothness: 0.2
+    - _Tile: 0.2
     m_Colors:
     - _Color: {r: 0.5754717, g: 0.13300997, b: 0.13300997, a: 0}
   m_BuildTextureStacks: []

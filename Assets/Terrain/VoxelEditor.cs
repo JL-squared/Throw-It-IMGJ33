@@ -22,7 +22,11 @@ public class VoxelEditor : MonoBehaviour {
     public float noiseScale;
     public float targetDensity;
     public float targetHeight;
+    public byte material;
+    
 
+    [HideInInspector] public bool allowedToEdit = false;
+    [HideInInspector] public bool dirtyEdits = false;
     public enum BrushType {
         AddRemove,
         RaiseLower,
@@ -65,19 +69,6 @@ public class VoxelEditor : MonoBehaviour {
         } else if (heldCtrl) {
             direction = -1.0f;
         }
-        /*
-        if (guiEvent.type == EventType.KeyDown) {
-            switch (guiEvent.keyCode) {
-                case KeyCode.LeftShift:
-                    direction = 1.0f;
-                    break;
-
-                case KeyCode.LeftControl:
-                    direction = -1.0f;
-                    break;
-            }
-        }
-        */
 
         VoxelTerrain terrain = GetComponent<VoxelTerrain>();
 
@@ -90,7 +81,7 @@ public class VoxelEditor : MonoBehaviour {
                     radius = brushRadius,
                     strength = brushStrength * direction,
                     writeMaterial = true,
-                    material = 0,
+                    material = material,
                 };
                 break;
             case BrushType.RaiseLower:
@@ -99,7 +90,7 @@ public class VoxelEditor : MonoBehaviour {
                     radius = brushRadius,
                     strength = brushStrength * direction,
                     writeMaterial = true,
-                    material = 0,
+                    material = material,
                 };
                 break;
             case BrushType.Sphere:
@@ -108,7 +99,7 @@ public class VoxelEditor : MonoBehaviour {
                     radius = brushRadius,
                     strength = brushStrength * direction,
                     writeMaterial = true,
-                    material = 0,
+                    material = material,
                 };
                 break;
             case BrushType.Cube:
@@ -117,7 +108,7 @@ public class VoxelEditor : MonoBehaviour {
                     halfExtents = Vector3.one * brushRadius,
                     strength = brushStrength * direction,
                     writeMaterial = true,
-                    material = 0,
+                    material = material,
                 };
                 break;
             case BrushType.Flatten:
@@ -156,13 +147,19 @@ public class VoxelEditor : MonoBehaviour {
                 break;
         }
 
-        if (direction != 0.0f) {
+        if (direction != 0.0f && allowedToEdit) {
             terrain.ApplyVoxelEdit(edit, false, false);
+            dirtyEdits = true;
         }
     }
 
     private void OnDrawGizmosSelected() {
-        Gizmos.color = direction < 0.0f ? Color.green : Color.red;
+        Gizmos.color = direction < 0.0f ? Color.red : Color.blue;
+
+        if (!allowedToEdit) {
+            Gizmos.color = Color.black;
+        }
+
 
         switch (currentBrush) {
             case BrushType.AddRemove:
@@ -175,7 +172,7 @@ public class VoxelEditor : MonoBehaviour {
                 Gizmos.DrawWireSphere(point, brushRadius);
                 break;
             case BrushType.Cube:
-                Gizmos.DrawWireCube(point, Vector3.one * brushRadius);
+                Gizmos.DrawWireCube(point, Vector3.one * brushRadius * 2.0f);
                 break;
             case BrushType.Flatten:
                 Matrix4x4 oldMatrix = Gizmos.matrix;
