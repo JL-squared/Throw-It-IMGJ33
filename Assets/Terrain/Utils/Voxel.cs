@@ -10,7 +10,6 @@ public struct Voxel {
 
     // Density of the voxel as a half to save some memory
     public half density;
-
     
     // Material of the voxel that depicts its color and other parameters
     public byte material;

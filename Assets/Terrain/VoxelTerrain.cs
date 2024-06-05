@@ -188,6 +188,9 @@ public class VoxelTerrain : MonoBehaviour {
             }
         }
 
+        EditorUtility.SetDirty(savedMap);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
         Debug.Log("Successfully saved the map!!");
     }
 #endif

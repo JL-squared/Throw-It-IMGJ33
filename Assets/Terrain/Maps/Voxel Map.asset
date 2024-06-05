@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d749a9d75d7cbea4194783c6102fe51e, type: 3}
   m_Name: Voxel Map
   m_EditorClassIdentifier: 
-  textAssets: []
-  mapSize: {x: 0, y: 0, z: 0}
+  textAssets:
+  - {fileID: 4900000, guid: 4437346cc0a819d4091bb47302237641, type: 3}
+  - {fileID: 4900000, guid: 91a82d0cbfc1033438a3c53f7cc76938, type: 3}
+  - {fileID: 4900000, guid: 28d2086ddd826b1429a9e9b981c231cc, type: 3}
+  - {fileID: 4900000, guid: 5c2677fc9ebfe86458028a2082f0cf38, type: 3}
+  - {fileID: 4900000, guid: dadbfbf731a0e6249b007da157147d6d, type: 3}
+  - {fileID: 4900000, guid: 65e806c4c5bd674439422b24eec0ec9c, type: 3}
+  - {fileID: 4900000, guid: c06fe840a80e7b74ebaeadc0e626679d, type: 3}
+  - {fileID: 4900000, guid: 1018acb8f792be6418114f7ee4c8d85a, type: 3}
+  - {fileID: 4900000, guid: d7bd9286467d75849903b4c003820a69, type: 3}
+  - {fileID: 4900000, guid: 541d8b3114d3a2d48b42612355042526, type: 3}
+  - {fileID: 4900000, guid: ce733e9a8a962ac4895271636a36e441, type: 3}
+  - {fileID: 4900000, guid: 8318a9e941851bd42b7c780580a4a0db, type: 3}
+  - {fileID: 4900000, guid: 544cf702db24aef40a703b921a4823bc, type: 3}
+  - {fileID: 4900000, guid: 80de9d0f73ea9ff458fbd96ab2804ea9, type: 3}
+  - {fileID: 4900000, guid: 892b69242bd082443ba07522746b2967, type: 3}
+  - {fileID: 4900000, guid: 7be3a654c5282034c853ed6ed0944d17, type: 3}
+  mapSize: {x: 4, y: 2, z: 4}

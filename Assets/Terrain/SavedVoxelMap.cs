@@ -9,9 +9,6 @@ using UnityEngine;
 public class SavedVoxelMap : ScriptableObject {
     public const int ChunksInRegion = 16;
     
-    [HideInInspector]
-    public TextAsset[] textAssets;
-    
-    [HideInInspector]
+    public TextAsset[] textAssets; 
     public Vector3Int mapSize;
 }
