@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9095389676983877583}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint6
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4666459569346638813}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint11
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 228388330461890709}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint2
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7824301135712853208}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint10
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5810864410762250263}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint9
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3579888565129468412}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint8
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 5348554039063984645}
   - component: {fileID: 3862092743452973259}
   - component: {fileID: 5612993854864577866}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Snow Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1743050545007623823}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint3
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 568195318843099633}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint5
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4116275356753101406}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint1
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8769797229774602851}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint7
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3789435019533153350}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint12
   m_TagString: Snappoint
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 5196424179219638843}
   - component: {fileID: 758207228349261388}
   - component: {fileID: 6672116428640552400}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: new
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5889068858462170834}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: snappoint4
   m_TagString: Snappoint
   m_Icon: {fileID: 0}

@@ -83,6 +83,9 @@ public class PlayerScript : MonoBehaviour {
 
     private void Update() {
         UpdateTemperature();
+    }
+
+    private void LateUpdate() {
         if(isBuilding) UpdatePlacementGhost();
     }
 
@@ -221,22 +224,20 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void SetupPlacementGhost(GameObject prefab) {
-        if (prefab == null) {
-            placementGhost.SetActive(false);
-        } else {
+        if ((bool)placementGhost) {
             Destroy(placementGhost);
-            placementGhost = Instantiate(prefab);
+            placementGhost = null;
         }
 
-        /*
+        placementGhost = Instantiate(prefab);
+
         Collider[] componentsInChildren1 = placementGhost.GetComponentsInChildren<Collider>();
         foreach (Collider collider in componentsInChildren1) {
             if (((1 << collider.gameObject.layer) & placeRayMask) == 0) {
+                Debug.Log("Disabling " + collider.gameObject.name + "  " + LayerMask.LayerToName(collider.gameObject.layer));
                 collider.enabled = false;
             }
         }
-        */
-
 
         Transform[] componentsInChildren2 = placementGhost.GetComponentsInChildren<Transform>();
         int layer = LayerMask.NameToLayer("Ghost");
@@ -244,6 +245,8 @@ public class PlayerScript : MonoBehaviour {
         for (int i = 0; i < array.Length; i++) {
             array[i].gameObject.layer = layer;
         }
+
+        placementGhost.transform.position = transform.position;
     }
 
     private void UpdatePlacementGhost() {
@@ -264,9 +267,12 @@ public class PlayerScript : MonoBehaviour {
                 float num2 = 999999f;
                 Collider[] array = componentsInChildren;
                 foreach (Collider collider in array) {
+                    collider.enabled = true;
                     if (collider.isTrigger || !collider.enabled) {
+                        //Debug.Log("this is porn");
                         continue;
                     }
+
                     MeshCollider meshCollider = collider as MeshCollider;
                     if (!(meshCollider != null) || meshCollider.convex) {
                         Vector3 vector2 = collider.ClosestPoint(point);
@@ -275,6 +281,7 @@ public class PlayerScript : MonoBehaviour {
                             vector = vector2;
                             num2 = num3;
                         }
+                        collider.enabled = false;
                     }
                 }
                 Vector3 vector3 = placementGhost.transform.position - vector;
@@ -288,11 +295,17 @@ public class PlayerScript : MonoBehaviour {
                     _ = b.parent.position;
                     Vector3 vector4 = b.position - (a.position - placementGhost.transform.position);
                     placementGhost.transform.position = vector4;
-                    //if (!IsOverlappingOtherPiece(vector4, m_placementGhost.transform.rotation, m_placementGhost.name, m_tempPieces, component.m_allowRotatedOverlap)) {
-                    //    placementGhost.transform.position = vector4;
-                    //} in the next episode, this will be critical
+                    if (!IsOverlappingOtherPiece(vector4, placementGhost.transform.rotation, placementGhost.name, tempPieces, true)) {
+                        placementGhost.transform.position = vector4;
+                    }
                 }
             }
+
+            if(TestGhostClipping(placementGhost, 0.2f)) {
+                Debug.Log("Fuck it's clipping");
+                placementStatus = false;
+            }
+
         } else {
             placementGhost.SetActive(false);
         }
@@ -357,5 +370,30 @@ public class PlayerScript : MonoBehaviour {
             }
         }
         return closest != null;
+    }
+
+    private bool TestGhostClipping(GameObject ghost, float maxPenetration) {
+        Collider[] componentsInChildren = ghost.GetComponentsInChildren<Collider>();
+        Collider[] array = Physics.OverlapSphere(ghost.transform.position, 10f, placeRayMask);
+        Collider[] array2 = componentsInChildren;
+        foreach (Collider collider in array2) {
+            Collider[] array3 = array;
+            foreach (Collider collider2 in array3) {
+                if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation, collider2, collider2.transform.position, collider2.transform.rotation, out var _, out var distance) && distance > maxPenetration) {
+                    Debug.Log("Distance: " + distance);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool IsOverlappingOtherPiece(Vector3 p, Quaternion rotation, string pieceName, List<Piece> pieces, bool allowRotatedOverlap) {
+        foreach (Piece tempPiece in tempPieces) {
+            if (Vector3.Distance(p, tempPiece.transform.position) < 0.05f && (!allowRotatedOverlap || !(Quaternion.Angle(tempPiece.transform.rotation, rotation) > 10f))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
