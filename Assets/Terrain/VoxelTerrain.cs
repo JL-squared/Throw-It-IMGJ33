@@ -6,7 +6,10 @@ using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
-using UnityEngine.TerrainUtils;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class VoxelTerrain : MonoBehaviour {
     public static VoxelTerrain Instance { get; private set; }
@@ -17,7 +20,7 @@ public class VoxelTerrain : MonoBehaviour {
     public Material[] voxelMaterials;
     public bool debugGUI = false;
     public GameObject chunkPrefab;
-    public TextAsset savedMap;
+    public SavedVoxelMap savedMap;
 
     private Queue<IVoxelEdit> tempVoxelEdits = new Queue<IVoxelEdit>();
     private Queue<PendingMeshJob> pendingMeshJobs;
@@ -99,19 +102,37 @@ public class VoxelTerrain : MonoBehaviour {
         }
     }
 
-    // Load the terrain from the compressed data stored in editor
-    // This will take the mat/density repr and combine them to actual voxel data
+    // Load the map from the saved voxel map representation
     public bool LoadMap() {
         if (savedMap == null) {
             Debug.LogWarning("No map set!!");
             return false;
         }
 
-        byte[] bytes = savedMap.bytes;
-        
+        MemoryStream regionStream = null;
+
+        if (savedMap.mapSize != mapChunkSize) {
+            Debug.LogWarning("Current map size does not match up with saved map size");
+            Debug.LogWarning("Saved: " + savedMap.mapSize);
+            Debug.LogWarning("Current: " + mapChunkSize);
+            return false;
+        }
+
+        Debug.Log(savedMap.textAssets == null);
+
+        int currentRegionIndex = 0;
+
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
-            int startIndex = index * VoxelUtils.Volume * Voxel.size;
-            ReadOnlySpan<byte> testByteSpan = new ReadOnlySpan<byte>(bytes, startIndex, VoxelUtils.Volume * Voxel.size);
+            if (index % SavedVoxelMap.ChunksInRegion == 0) {
+                Debug.Log(savedMap.textAssets[currentRegionIndex].bytes == null);
+                regionStream = new MemoryStream(savedMap.textAssets[currentRegionIndex].bytes);
+                currentRegionIndex++;
+            }
+
+            int test = VoxelUtils.Volume * Voxel.size;
+            Span<byte> testByteSpan = new Span<byte>(new byte[test]);
+            regionStream.Read(testByteSpan);
+
             ReadOnlySpan<Voxel> voxels = MemoryMarshal.Cast<byte, Voxel>(testByteSpan);
 
             voxelChunk.hasCollisions = true;
@@ -124,21 +145,52 @@ public class VoxelTerrain : MonoBehaviour {
         return true;
     }
 
-    // Save the current map into the compressed data list to be loaded at runtime
-    // This will also split the voxel data to the mat/density repr and compress them
-    public void SaveMap(FileStream writeStream) {
+    // CAN ONLY BE EXECUTED IN THE EDITOR
+#if UNITY_EDITOR
+    public void SaveMap() {
+        savedMap.mapSize = mapChunkSize;
+        int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
 
-        for (int i = 0; i < totalChunks.Count; i++) {
-            NativeArray<Voxel> voxels = totalChunks[i].GetComponent<VoxelChunk>().voxels;
-            NativeSlice<byte> readOnly = voxels.Slice().SliceConvert<byte>();
-
-            writeStream.Write(readOnly.ToArray());
+        string soPath = AssetDatabase.GetAssetPath(savedMap);
+        if (!Directory.Exists(soPath + "-regions")) {
+            Directory.CreateDirectory(soPath + "-regions");
         }
 
-        writeStream.Flush();
-        writeStream.Close();
+        List<FileStream> streamWriters = new List<FileStream>();
+        for (int i = 0; i < maxRegionFiles; i++) {
+            string p = soPath + "-regions/reg" + i + ".bytes";
+            streamWriters.Add(File.Open(p, FileMode.Create));
+        }
+
+        for (int i = 0; i < totalChunks.Count; i++) {
+            int currentRegionFile = i / SavedVoxelMap.ChunksInRegion;
+            FileStream writer = streamWriters[currentRegionFile];
+
+            VoxelChunk chunk = totalChunks[i].GetComponent<VoxelChunk>();
+            NativeArray<Voxel> voxels = chunk.voxels;
+            NativeSlice<byte> readOnly = voxels.Slice().SliceConvert<byte>();
+            byte[] bytes = readOnly.ToArray();
+            Debug.Log(bytes.Length);
+            writer.Write(bytes);
+        }
+
+        for (int i = 0; i < maxRegionFiles; i++) {
+            streamWriters[i].Dispose();
+        }
+        AssetDatabase.Refresh();
+
+        savedMap.textAssets = new TextAsset[maxRegionFiles];
+        for (int i = 0; i < maxRegionFiles; i++) { 
+            savedMap.textAssets[i] = AssetDatabase.LoadAssetAtPath<TextAsset>(soPath + "-regions/reg" + i + ".bytes");
+
+            if (savedMap.textAssets[i] == null) {
+                Debug.LogError("NOT GOOD");
+            }
+        }
+
         Debug.Log("Successfully saved the map!!");
     }
+#endif
 
     public void KillChildren() {
         while (transform.childCount > 0) {

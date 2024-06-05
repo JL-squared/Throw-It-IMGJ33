@@ -16,7 +16,7 @@ public class VoxelEditorCustomEditor : Editor {
 
         editor.currentBrush = (VoxelEditor.BrushType)EditorGUILayout.EnumPopup("Current Brush", editor.currentBrush);
         editor.brushStrength = EditorGUILayout.Slider("Brush Strength", editor.brushStrength, 0.0f, 10.0f);
-        editor.brushRadius = EditorGUILayout.Slider("Brush Radius", editor.brushRadius, 0.0f, 100.0f);
+        editor.brushRadius = EditorGUILayout.Slider("Brush Radius", editor.brushRadius, 0.0f, 10.0f);
         editor.material = (byte)Mathf.Clamp(EditorGUILayout.IntField("Material", editor.material), 0, 255);
 
         switch (editor.currentBrush) {

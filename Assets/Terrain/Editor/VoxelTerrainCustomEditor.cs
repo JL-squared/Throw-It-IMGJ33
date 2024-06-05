@@ -73,20 +73,8 @@ public class VoxelTerrainCustomEditor : Editor {
     }
 
     private static void SaveUwu(VoxelTerrain terrain) {
-        if (terrain.savedMap == null) {
-            string path = EditorUtility.SaveFilePanelInProject("Save Voxel Map", "map", "txt", "Rizzy with it...");
-
-            if (path != "") {
-                File.Create(path);
-                AssetDatabase.Refresh();
-                terrain.savedMap = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
-            }
-        }
-
-        string newPath = AssetDatabase.GetAssetPath(terrain.savedMap);
-        using (FileStream stream = File.Open(newPath, FileMode.Create)) {
-            terrain.SaveMap(stream);
-            AssetDatabase.Refresh();
+        if (terrain.savedMap != null) {
+            terrain.SaveMap();
         }
     }
 
