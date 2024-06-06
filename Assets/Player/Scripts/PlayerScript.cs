@@ -205,6 +205,7 @@ public class PlayerScript : MonoBehaviour {
         if(context.performed && !paused) {
             inventoryOpen = !inventoryOpen;
             UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
+            UpdateUIStuff();
         }
     }
 
@@ -214,9 +215,14 @@ public class PlayerScript : MonoBehaviour {
                 paused = false;
             } else if (inventoryOpen) {
                 inventoryOpen = false;
-                UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
             }
+            UpdateUIStuff();
         }
+    }
+
+    public void UpdateUIStuff() {
+        UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
+        Cursor.lockState = paused || inventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     /// <summary>

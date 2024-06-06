@@ -10,5 +10,6 @@ public class UIMaster : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         Instance = this;
+        inGameHUD.craftingMenuObject.SetActive(false);
     }
 }

@@ -162,6 +162,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7724788413444536234}
     m_Modifications:
+    - target: {fileID: 1890220983338609338, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890220983338609338, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890220983338609338, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3332189152704719837, guid: efb91e131be66fd4192caf215831b756,
         type: 3}
       propertyPath: m_Name
@@ -267,6 +282,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5443713577991897232, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6379316079238259799, guid: efb91e131be66fd4192caf215831b756,
         type: 3}
       propertyPath: m_Color.b
@@ -281,6 +301,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.r
       value: 0.4528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784455444445637740, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784455444445637740, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
