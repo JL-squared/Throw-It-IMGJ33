@@ -4,6 +4,8 @@ using UnityEngine.Rendering;
 public class EntityHealth : MonoBehaviour {
     public float maxHealth;
 
+    public bool DeleteOnKill;
+
     [HideInInspector]
     public float health;
 
@@ -15,6 +17,7 @@ public class EntityHealth : MonoBehaviour {
 
     public void Start() {
         health = maxHealth;
+        if (DeleteOnKill) onKilled += () => { Destroy(gameObject); };
     }
 
     public void Damage(float damage) {
