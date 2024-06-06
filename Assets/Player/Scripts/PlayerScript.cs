@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
+using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 // Full Player script holding all necessary functions and variables
 public class PlayerScript : MonoBehaviour {
@@ -113,18 +111,35 @@ public class PlayerScript : MonoBehaviour {
         GUI.Label(new Rect(0, 0, 1000, 20), "Body Temperature: " + bodyTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 20, 1000, 20), "Scene Temperature: " + outsideTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 40, 1000, 20), "Sources Temperature: " + heatSourcesTemperature.ToString("F3"));
+        GUI.Label(new Rect(0, 60, 1000, 20), "Selected Piece: " + placementGhost.name);
     }
 
     /// <summary>
-    /// Add item to inventory if possible
+    /// Add item to inventory if possible,
+    /// DO NOT INSERT INVALID STACK COUNT ITEM
     /// </summary>
     /// <param name="itemIn"></param>
     public void addItem(ref Item itemIn) {
+        int firstEmpty = -1;
+        int i = 0;
         foreach (Item item in items) {
-            if (itemIn.data.id == item.data.id) {
-                item.Count += itemIn.Count; // TODO ; ACTUAL STACK SIZE LOL
-                itemIn.Count = 0;
+            if (itemIn.data.id == item.data.id && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
+                int transferSize = itemIn.Count - item.data.stackSize; // amount we can fit in here
+
+                item.Count += transferSize; // transfer
+                itemIn.Count -= transferSize;
+                if (itemIn.IsEmpty()) {
+                    return; // break when done adding into partial stacks
+                }
+            } else if (item.IsEmpty() && firstEmpty != -1) {
+                firstEmpty = i;
             }
+            i++;
+        }
+        // by this point we should have exited if everything is handled, otherwise;
+        if(firstEmpty != -1) {
+            items[firstEmpty] = itemIn.Clone();
+            itemIn.MakeEmpty();
         }
     }
 
@@ -138,7 +153,7 @@ public class PlayerScript : MonoBehaviour {
         int i = 0;
 
         foreach (Item item in items) {
-            if (item.Count == count && item.data.id == id) {
+            if (item.Count >= count && item.data.id == id) {
                 return i;
             }
             i++;
@@ -147,23 +162,37 @@ public class PlayerScript : MonoBehaviour {
         return -1;
     }
 
+    /// <summary>
+    /// Input receiver for movement
+    /// </summary>
     public void Movement(InputAction.CallbackContext context) {
         movement.localWishMovement = context.ReadValue<Vector2>();
     }
 
+    /// <summary>
+    /// Input receiver for camera movement
+    /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
-        wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
-        head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
-        movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
+        if(Cursor.lockState != CursorLockMode.None) {
+            wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
+            wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
+            head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
+            movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
+        }
     }
 
+    /// <summary>
+    /// Input receiver for jumping
+    /// </summary>
     public void Jump(InputAction.CallbackContext context) {
         if (context.performed && movement.cc.isGrounded) {
             movement.isJumping = true;
         }
     }
 
+    /// <summary>
+    /// Input receiver for hotbar 
+    /// </summary>
     public void Scroll(InputAction.CallbackContext context) {
         if(context.performed) {
             float scroll = -context.ReadValue<float>();
