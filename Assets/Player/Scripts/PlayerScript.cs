@@ -88,6 +88,11 @@ public class PlayerScript : MonoBehaviour {
         currentCharge = minCharge;
 
         SetupPlacementGhost(selectedBuildPrefab);
+
+        EntityHealth health = GetComponent<EntityHealth>();
+        health.onHealthUpdated += (float p) => {
+            UIMaster.Instance.healthBar.actualPosition = p;
+        };
     }
 
     private void Update() {

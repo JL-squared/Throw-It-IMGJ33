@@ -5,6 +5,7 @@ using UnityEngine;
 public class SnowballThrower : MonoBehaviour {
     public GameObject snowball;
     public Transform spawnHolster;
+    public GameObject particles;
     public float startingSpeed;
     public float offsetDistance = 2.0f;
 
@@ -18,7 +19,9 @@ public class SnowballThrower : MonoBehaviour {
             startingVelocity += em.cc.velocity;
         }
 
-        spawned.GetComponent<Snowball>().ApplySpawn(startingPos, startingVelocity);
+        Snowball snowballs = spawned.GetComponent<Snowball>();
+        snowballs.ApplySpawn(startingPos, startingVelocity);
+        snowballs.particles = particles;
     }
 
     private void OnDrawGizmosSelected() {
