@@ -21,6 +21,27 @@ MonoBehaviour:
   selfShadowing: 0
   directionalShadowSteps: 1
   additionalLightShadowSteps: 1
+--- !u!114 &-5978235500969302305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42b236c2f6002b4ea4a45ed62b25ca2, type: 3}
+  m_Name: VolumetricFogFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  raymarchSteps: 16
+  maxDistance: 250
+  lowestMipDistance: 100
+  lowestMip: 1
+  blurDepthFalloff: 1
+  selfShadowing: 0
+  directionalShadowSteps: 2
+  additionalLightShadowSteps: 2
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +95,8 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  - {fileID: -8845582155217100659}
-  m_RendererFeatureMap: adc0de57c6d2eee58d20c04ee52d3e85
+  - {fileID: -5978235500969302305}
+  m_RendererFeatureMap: adc0de57c6d2eee5df6618657c0a09ad
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace Andicraft.VolumetricFog
-{
+namespace Andicraft.VolumetricFog {
     public class VolumetricFogFeature : ScriptableRendererFeature
     {
         private VolumetricFogRenderPass renderPass;
