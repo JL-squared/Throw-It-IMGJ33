@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ItemData : ScriptableObject {
     [Tooltip("Item ID; use minecraft's snake_case")]
