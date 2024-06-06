@@ -7,7 +7,8 @@ public class EntityMovement : MonoBehaviour {
     [HideInInspector]
     public Vector2 localWishMovement;
     private Vector2 localMovement;
-    private Vector3 movement;
+    [HideInInspector]
+    public Vector3 movement;
     [HideInInspector]
     public Quaternion localWishRotation;
 
@@ -18,6 +19,7 @@ public class EntityMovement : MonoBehaviour {
     public float groundControl = 25;
     public float jump = 5.0F;
     public float gravity = -9.81f;
+    public float groudedOffsetVelocity = -2.5f;
     [HideInInspector]
     public bool isJumping;
     [Header("Rigidbody Interaction")]
@@ -42,7 +44,7 @@ public class EntityMovement : MonoBehaviour {
         movement.y += gravity * Time.deltaTime;
 
         if (cc.isGrounded) {
-            movement.y = -2.5f;
+            movement.y = groudedOffsetVelocity;
 
             if (isJumping) {
                 movement.y = jump;

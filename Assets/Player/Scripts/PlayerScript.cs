@@ -60,6 +60,12 @@ public class PlayerScript : MonoBehaviour {
     public Camera gameCamera;
     public float mouseSensitivity = 1.0f;
 
+    [Header("Throwing")]
+    private float currentCharge;
+    private bool isCharging;
+    public float chargeSpeed;
+    public float minCharge;
+
     private void Awake() {
         if (singleton != null && singleton != this) {
             Destroy(gameObject);
@@ -75,16 +81,25 @@ public class PlayerScript : MonoBehaviour {
         bodyTemperature = TargetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
+        currentCharge = minCharge;
 
         SetupPlacementGhost(selectedBuildPrefab);
     }
 
     private void Update() {
         UpdateTemperature();
+        UpdateCharging();
     }
 
     private void LateUpdate() {
         if(isBuilding) UpdatePlacementGhost();
+    }
+
+    private void UpdateCharging() {
+        if (isCharging) {
+            currentCharge += Time.deltaTime * chargeSpeed;
+            currentCharge = Mathf.Clamp01(currentCharge);
+        }
     }
 
     private void UpdateTemperature() {
@@ -115,6 +130,7 @@ public class PlayerScript : MonoBehaviour {
         GUI.Label(new Rect(0, 20, 1000, 20), "Scene Temperature: " + outsideTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 40, 1000, 20), "Sources Temperature: " + heatSourcesTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 60, 1000, 20), "Selected Piece: " + placementGhost.name);
+        GUI.Label(new Rect(0, 80, 1000, 20), "Current Snowball Charge: " + currentCharge);
     }
 
     /// <summary>
@@ -341,23 +357,49 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
-    public void BuildAction(InputAction.CallbackContext context) {
-        if(context.performed && isBuilding && placementStatus) {
-            GameObject builtPiece = Instantiate(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
-            builtPiece.transform.SetPositionAndRotation(placementGhost.transform.position, placementGhost.transform.rotation);
-            builtPiece.SetActive(true);
-            builtPiece.layer = LayerMask.NameToLayer("Piece");
+    public void PrimaryAction(InputAction.CallbackContext context) {
+        if (isBuilding) {
+            if (placementStatus && context.performed)
+                BuildAction();
+        } else {
+            if (context.performed) {
+                isCharging = true;
+            } else {
+                // need to have this check since it seems like unity
+                // context.performed is FALSE when pressing down for the first time
+                // idk, weird
+                if (isCharging) {
+                    isCharging = false;
+                    GetComponent<SnowballThrower>().Throw(currentCharge);
+                    currentCharge = minCharge;
+                }
+            }
         }
+    }
+
+    private void BuildAction() {
+        GameObject builtPiece = Instantiate(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
+        builtPiece.transform.SetPositionAndRotation(placementGhost.transform.position, placementGhost.transform.rotation);
+        builtPiece.SetActive(true);
+        builtPiece.layer = LayerMask.NameToLayer("Piece");
     }
 
     bool whichThing = true;
 
-    public void BuildAction2(InputAction.CallbackContext context) {
-        if(context.performed && isBuilding) {
-            Debug.Log("switched");
-            whichThing = !whichThing;
-            SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
+    public void SecondaryAction(InputAction.CallbackContext context) {
+        if(context.performed) {
+            if (isBuilding) {
+                BuildAction2();
+            } else {
+                // secondary action that isn't build
+            }
         }
+    }
+
+    private void BuildAction2() {
+        Debug.Log("switched");
+        whichThing = !whichThing;
+        SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
     }
 
     private bool FindClosestSnapPoints(Transform ghost, float maxSnapDistance, out Transform a, out Transform b, List<Piece> pieces) {
