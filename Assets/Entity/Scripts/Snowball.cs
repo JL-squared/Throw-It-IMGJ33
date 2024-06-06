@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,6 +13,7 @@ public class Snowball : MonoBehaviour {
         rb.position = pos;
         transform.position = pos;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.rotation = UnityEngine.Random.rotation;
         Destroy(gameObject, 15.0f);
     }
 }
