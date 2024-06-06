@@ -840,6 +840,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1110464075 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 921606742461663924, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8436874151242609756}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1270864743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1937,7 +1943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &992625917639264763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2634,6 +2640,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4582007016999259786, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: spawnHolster
+      value: 
+      objectReference: {fileID: 1110464075}
+    - target: {fileID: 4582007016999259786, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: startingSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582007016999259786, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: offsetDistance
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6047890321943996974, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
@@ -2702,12 +2723,12 @@ PrefabInstance:
     - target: {fileID: 6047890321943996974, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BuildAction
+      value: PrimaryAction
       objectReference: {fileID: 0}
     - target: {fileID: 6047890321943996974, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BuildAction2
+      value: SecondaryAction
       objectReference: {fileID: 0}
     - target: {fileID: 6047890321943996974, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
@@ -2748,6 +2769,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: minCharge
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: chargeSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
