@@ -211,9 +211,9 @@ public class PlayerScript : MonoBehaviour {
 
     public void ExitButton(InputAction.CallbackContext context) {
         if(context.performed) {
-            if(paused) {
-                paused = false;
-            } else if (inventoryOpen) {
+            if(!inventoryOpen) {
+                paused = !paused;
+            } else {
                 inventoryOpen = false;
             }
             UpdateUIStuff();
