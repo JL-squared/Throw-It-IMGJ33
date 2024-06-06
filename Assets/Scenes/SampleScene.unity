@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18263784, g: 0.2283489, b: 0.30714524, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1003,7 +1003,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.99999976, z: 0.99999976}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2105466534}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1296618348
 SphereCollider:
@@ -2534,8 +2534,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heldShift: 0
   heldCtrl: 0
-  brushStrength: 0.2
-  brushRadius: 6.75
+  brushStrength: 2.07
+  brushRadius: 4.34
   currentBrush: 0
   noiseType: 2
   noiseDimensionality: 0
@@ -2544,7 +2544,7 @@ MonoBehaviour:
   targetHeight: 13.19
   material: 0
   allowedToEdit: 0
-  dirtyEdits: 1
+  dirtyEdits: 0
 --- !u!114 &6993251341746947169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2792,3 +2792,6 @@ SceneRoots:
   - {fileID: 980298352}
   - {fileID: 1270864743}
   - {fileID: 1790051161}
+  - {fileID: 294042737}
+  - {fileID: 1296618347}
+  - {fileID: 614364529959901311}

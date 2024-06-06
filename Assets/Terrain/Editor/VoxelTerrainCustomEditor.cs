@@ -3,10 +3,25 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 [CustomEditor(typeof(VoxelTerrain))]
 public class VoxelTerrainCustomEditor : Editor {
+    private void OnEnable() {
+        EditorSceneManager.sceneSaving += OnSavingScene;
+    }
+
+    private void OnSavingScene(UnityEngine.SceneManagement.Scene scene, string path) {
+        /*
+        VoxelTerrain terrain = (VoxelTerrain)target;
+        VoxelEditor editor = terrain.GetComponent<VoxelEditor>();
+        terrain.KillChildren();
+        editor.dirtyEdits = false;
+        SaveUwu(terrain);
+        */
+    }
+
     private void OnDisable() {
         if (target != null) {
             VoxelTerrain terrain = (VoxelTerrain)target;

@@ -118,13 +118,10 @@ public class VoxelTerrain : MonoBehaviour {
             return false;
         }
 
-        Debug.Log(savedMap.textAssets == null);
-
         int currentRegionIndex = 0;
 
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
             if (index % SavedVoxelMap.ChunksInRegion == 0) {
-                Debug.Log(savedMap.textAssets[currentRegionIndex].bytes == null);
                 regionStream = new MemoryStream(savedMap.textAssets[currentRegionIndex].bytes);
                 currentRegionIndex++;
             }
