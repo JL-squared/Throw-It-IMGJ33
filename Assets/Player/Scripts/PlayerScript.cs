@@ -200,6 +200,7 @@ public class PlayerScript : MonoBehaviour {
     public void ToggleInventory(InputAction.CallbackContext context) {
         if(context.performed && !paused) {
             inventoryOpen = !inventoryOpen;
+            UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
         }
     }
 
@@ -209,6 +210,7 @@ public class PlayerScript : MonoBehaviour {
                 paused = false;
             } else if (inventoryOpen) {
                 inventoryOpen = false;
+                UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
             }
         }
     }

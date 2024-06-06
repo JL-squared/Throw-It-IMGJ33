@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class UIMaster : MonoBehaviour {
-    public GameObject inGameHUD;
+    public IngameHUD inGameHUD;
     public GameObject menu;
     public HealthBar healthBar;
 
