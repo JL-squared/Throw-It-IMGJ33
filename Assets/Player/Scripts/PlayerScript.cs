@@ -259,6 +259,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
         placementGhost = Instantiate(prefab);
+        placementGhost.name = prefab.name;
 
         Collider[] componentsInChildren1 = placementGhost.GetComponentsInChildren<Collider>();
         foreach (Collider collider in componentsInChildren1) {

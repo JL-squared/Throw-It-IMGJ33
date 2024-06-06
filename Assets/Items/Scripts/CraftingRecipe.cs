@@ -21,4 +21,8 @@ public class CraftingRecipe : ScriptableObject {
 
         return requirementsLeft == 0;
     }
+
+    public CraftingRecipe Clone() {
+        return (CraftingRecipe)MemberwiseClone();
+    }
 }
