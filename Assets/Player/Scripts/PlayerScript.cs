@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour {
     [Header("Temperature")]
     public const float TargetTemperature = 37.0f;
     private float outsideTemperature;
-    private float heatSourcesTemperature; 
+    private float heatSourcesTemperature;
     private float bodyTemperature = TargetTemperature;
     public float targetReachSpeed = 0.5f;
     public float outsideReachSpeed = 0.5f;
@@ -34,7 +34,7 @@ public class PlayerScript : MonoBehaviour {
     private float placementRotation = 0f;
 
     [Header("Inventory")]
-    Item[] items = new Item[10];
+    List<Item> items = new List<Item>();
 
     [SerializeField]
     private int selected;
@@ -49,7 +49,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public UnityEvent<int> selectedEvent;
-
+    public UnityEvent<List<Item>> inventoryUpdateEvent;
     public UnityEvent<int, bool> slotUpdateEvent;
 
     [Header("Movement")]
@@ -97,6 +97,16 @@ public class PlayerScript : MonoBehaviour {
         health.onKilled += () => {
             Debug.Log("Skill issue, you dead");
         };
+
+        for(int i = 0; i < 10; i++) {
+            Item temp = new Item();
+            items.Add(temp);
+            temp.updateEvent?.AddListener(UpdateInventory);
+        }
+    }
+
+    public void UpdateInventory(Item item) {
+        inventoryUpdateEvent.Invoke(items);
     }
 
     private void Update() {
@@ -437,6 +447,11 @@ public class PlayerScript : MonoBehaviour {
         Debug.Log("switched");
         whichThing = !whichThing;
         SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
+    }
+
+
+    public void Craft(CraftingRecipe recipe) {
+        recipe.CraftItem(items);
     }
 
     private bool FindClosestSnapPoints(Transform ghost, float maxSnapDistance, out Transform a, out Transform b, List<Piece> pieces) {

@@ -14,6 +14,7 @@ public class CraftingMenu : MonoBehaviour {
     void Start () {
         // load all necessary recipes
         // hook onto inventory change
+        PlayerScript.singleton.inventoryUpdateEvent.AddListener(Refresh);
     }
 
     void Update () {
