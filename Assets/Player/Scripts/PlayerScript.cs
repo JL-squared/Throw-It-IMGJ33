@@ -93,6 +93,10 @@ public class PlayerScript : MonoBehaviour {
         health.onHealthUpdated += (float p) => {
             UIMaster.Instance.healthBar.actualPosition = p;
         };
+
+        health.onKilled += () => {
+            Debug.Log("Skill issue, you dead");
+        };
     }
 
     private void Update() {
