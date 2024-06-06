@@ -67,7 +67,8 @@ public class PlayerScript : MonoBehaviour {
     public float minCharge;
 
     [Header("UI")]
-    public bool shitted;
+    public bool inventoryOpen;
+    public bool paused;
 
     private void Awake() {
         if (singleton != null && singleton != this) {
@@ -191,11 +192,27 @@ public class PlayerScript : MonoBehaviour {
         movement.localWishMovement = context.ReadValue<Vector2>();
     }
 
+    public void ToggleInventory(InputAction.CallbackContext context) {
+        if(context.performed && !paused) {
+            inventoryOpen = !inventoryOpen;
+        }
+    }
+
+    public void ExitButton(InputAction.CallbackContext context) {
+        if(context.performed) {
+            if(paused) {
+                paused = false;
+            } else if (inventoryOpen) {
+                inventoryOpen = false;
+            }
+        }
+    }
+
     /// <summary>
     /// Input receiver for camera movement
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        if(Cursor.lockState != CursorLockMode.None) {
+        if(Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused) {
             wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
             head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
@@ -207,7 +224,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for jumping
     /// </summary>
     public void Jump(InputAction.CallbackContext context) {
-        if (context.performed && movement.cc.isGrounded) {
+        if (context.performed && movement.cc.isGrounded && !inventoryOpen && !paused) {
             movement.isJumping = true;
         }
     }
