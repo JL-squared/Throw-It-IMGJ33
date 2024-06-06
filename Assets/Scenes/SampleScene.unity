@@ -1100,6 +1100,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1521327182 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8267247879346996897, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8436874151242609756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6607515291658fa41869d18899cd5500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1755820909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2721,6 +2733,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
+      propertyPath: paused
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: movement
+      value: 
+      objectReference: {fileID: 1521327182}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
       propertyPath: minCharge
       value: 0.2
       objectReference: {fileID: 0}
@@ -2733,7 +2755,22 @@ PrefabInstance:
         type: 3}
       propertyPath: placementGhost
       value: 
-      objectReference: {fileID: 1790051160}
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiveringDelay
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiverMeTimbers
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: minShiveringTemp
+      value: 36
+      objectReference: {fileID: 0}
     - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: selectedBuildPrefab
@@ -2746,6 +2783,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
         type: 3}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiveringShakeScale
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiveringCurrentTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiveringShakeFactor
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: shiveringShakeRotationFactor
+      value: 0.01
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3224392276405333999, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4, type: 3}
     m_RemovedGameObjects: []

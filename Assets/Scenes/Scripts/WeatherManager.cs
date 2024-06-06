@@ -64,7 +64,7 @@ public class WeatherManager : MonoBehaviour {
         float windyFactor = windy * 4.0f;
         float snowyFactor = snowy * 4.0f;
         float stormyFactor = stormy * 12.0f;
-        float baseTemp = 5.0f; 
+        float baseTemp = -20.0f; 
         return baseTemp - (windyFactor + snowyFactor + stormyFactor);
     }
 

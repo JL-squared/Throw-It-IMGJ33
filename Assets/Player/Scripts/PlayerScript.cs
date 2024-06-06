@@ -17,6 +17,13 @@ public class PlayerScript : MonoBehaviour {
     private float bodyTemperature = TargetTemperature;
     public float targetReachSpeed = 0.5f;
     public float outsideReachSpeed = 0.5f;
+    public float shiverMeTimbers = 0.0f;
+    public float shiveringCurrentTime = 10.0f;
+    public float shiveringDelay = 10.0f;
+    public float minShiveringTemp = 36.0f;
+    public float shiveringShakeScale = 0.3f;
+    public float shiveringShakeFactor = 2.0f;
+    public float shiveringShakeRotationFactor = 2.0f;
 
     [Header("Building")]
     public bool isBuilding;
@@ -101,6 +108,7 @@ public class PlayerScript : MonoBehaviour {
 
     private void Update() {
         UpdateTemperature();
+        UpdateShivering();
         UpdateCharging();
     }
 
@@ -136,6 +144,29 @@ public class PlayerScript : MonoBehaviour {
         // Body temperature calculations (DOES NOT CONSERVE ENERGY)
         bodyTemperature = Mathf.Lerp(bodyTemperature, totalTemp, outsideReachSpeed * Time.deltaTime);
         bodyTemperature = Mathf.Lerp(bodyTemperature, TargetTemperature, targetReachSpeed * Time.deltaTime);
+    }
+
+    private void UpdateShivering() {
+        if (bodyTemperature < minShiveringTemp) {
+            shiveringCurrentTime += Time.deltaTime;
+        } else {
+            shiveringCurrentTime = 0.0f;
+        }
+
+        if (shiveringCurrentTime > shiveringDelay) {
+            shiverMeTimbers += Time.deltaTime;
+        } else {
+            shiverMeTimbers -= Time.deltaTime;
+        }
+        shiverMeTimbers = Mathf.Clamp01(shiverMeTimbers);
+
+
+        Vector3 localCamPos = new Vector3(Mathf.PerlinNoise1D(Time.time * shiveringShakeScale + 32.123f) - 0.5f, Mathf.PerlinNoise1D(Time.time * shiveringShakeScale - 2.123f) - 0.5f, 0.0f);
+        localCamPos *= shiverMeTimbers;
+        localCamPos *= shiveringShakeFactor;
+        gameCamera.transform.localPosition = localCamPos;
+        gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
+        
     }
 
     private void OnGUI() {
