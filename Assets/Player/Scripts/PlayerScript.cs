@@ -81,6 +81,7 @@ public class PlayerScript : MonoBehaviour {
         bodyTemperature = TargetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
+        currentCharge = minCharge;
 
         SetupPlacementGhost(selectedBuildPrefab);
     }
