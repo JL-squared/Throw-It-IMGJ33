@@ -66,6 +66,9 @@ public class PlayerScript : MonoBehaviour {
     public float chargeSpeed;
     public float minCharge;
 
+    [Header("UI")]
+    public bool shitted;
+
     private void Awake() {
         if (singleton != null && singleton != this) {
             Destroy(gameObject);

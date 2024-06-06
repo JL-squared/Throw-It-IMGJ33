@@ -9,7 +9,7 @@ public class CraftingMenu : MonoBehaviour {
     public Button craftingButton;
     Text title;
     Text description;
-    Sprite sprite;
+    Image image;
 
     void Start () {
         // load all necessary recipes
@@ -26,17 +26,22 @@ public class CraftingMenu : MonoBehaviour {
         }
 
         if(selectedRecipe != null) {
-            // put the requirements in the visual slots
+            craftingButton.interactable = selectedRecipe.CheckForRequirements(items);
         }
     }
 
     void SelectRecipe(CraftingRecipe recipe) {
+        if(!image.gameObject.activeSelf) {
+            image.gameObject.SetActive(true);
+        }
+
         selectedRecipe = recipe.Clone();
         // refresh the thingy stuff
         title.text = recipe.output.data.name;
         description.text = recipe.output.data.description;
-        sprite = recipe.output.data.itemIcon;
+        image.sprite = recipe.output.data.itemIcon;
         // this is when we put in requirements into the requirement slot
-        // this is when we update the status of the crafting button (this will require that we scan the inventory)
+        // this is when we update the status of the crafting button (this will require that we scan the inventory) (we need an inventory reference probably)
+        
     }
 }
