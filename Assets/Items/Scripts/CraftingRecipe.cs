@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "CraftingRecipe", menuName = "ScriptableObjects/New Crafting Recipe", order = 2)]
 public class CraftingRecipe : ScriptableObject {
     public List<Item> requirements;
     public Item output;
