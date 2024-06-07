@@ -205,18 +205,19 @@ public class PlayerScript : MonoBehaviour {
 
     /// <summary>
     /// Add item to inventory if possible,
-    /// DO NOT INSERT INVALID STACK COUNT ITEM
+    /// DO NOT INSERT INVALID STACK COUNT ITEM,
+    /// THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
     /// </summary>
     /// <param name="itemIn"></param>
-    public void addItem(ref Item itemIn) {
+    public void addItem(Item itemIn) {
         int firstEmpty = -1;
         int i = 0;
         foreach (Item item in items) {
             if (item.IsEmpty() && firstEmpty == -1) {
-                Debug.Log("IT WAS EMPTY!!! WAHOO");
                 firstEmpty = i;
             } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
-                int transferSize = itemIn.Count - item.Data.stackSize; // amount we can fit in here
+                int transferSize = item.Data.stackSize - item.Count; // amount we can fit in here
+                transferSize = Mathf.Min(transferSize, itemIn.Count);
 
                 item.Count += transferSize; // transfer
                 itemIn.Count -= transferSize;
@@ -231,47 +232,6 @@ public class PlayerScript : MonoBehaviour {
             Debug.Log("oh yeah, slot was empty. It's sex time...");
             items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
-        }
-    }
-
-    public void addItem(Item itemIn) {
-        int firstEmpty = -1;
-        int i = 0;
-
-        foreach (Item item in items) {
-            if (item.IsEmpty() && firstEmpty == -1) {
-                Debug.Log("IT WAS EMPTY!!! WAHOO");
-                firstEmpty = i;
-            } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
-                Debug.Log("WHAT THE FUCK!!");
-                int transferSize = item.Data.stackSize - item.Count; // amount we can fit in here
-                transferSize = Mathf.Min(transferSize, itemIn.Count);
-
-                item.Count += transferSize; // transfer
-                itemIn.Count -= transferSize;
-                if (itemIn.IsEmpty()) {
-                    Debug.Log("Time for some logan debugging muhahaha");
-                    i = 0;
-                    foreach(Item _item in items) {
-                        Debug.Log($"Slot {i}:" + _item);
-                        i++;
-                    }
-                    return; // break when done adding into partial stacks
-                }
-            }
-            i++;
-        }
-        // by this point we should have exited if everything is handled, otherwise;
-        if(firstEmpty != -1) {
-            Debug.Log("oh yeah, slot was empty. It's sex time...");
-            items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
-        }
-
-        Debug.Log("Time for some logan debugging muhahaha");
-        i = 0;
-        foreach(Item item in items) {
-            Debug.Log($"Slot {i}:" + item);
-            i++;
         }
     }
 
