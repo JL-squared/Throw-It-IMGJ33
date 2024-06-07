@@ -75,6 +75,8 @@ public class PlayerScript : MonoBehaviour {
     private bool isCharging;
     public float chargeSpeed;
     public float minCharge;
+    public float maxThrowDelay;
+    public float throwDelay;
 
     [Header("UI")]
     public bool inventoryOpen;
@@ -144,9 +146,13 @@ public class PlayerScript : MonoBehaviour {
         if (isCharging) {
             currentCharge += Time.deltaTime * chargeSpeed;
             currentCharge = Mathf.Clamp01(currentCharge);
+        } else if (throwDelay > 0.0f) {
+            throwDelay -= Time.deltaTime * 1.0f;
         }
 
-        UIMaster.Instance.inGameHUD.UpdateChargeMeter(currentCharge);
+        throwDelay = Mathf.Clamp(throwDelay, 0.0f, maxThrowDelay);
+
+        UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? Mathf.InverseLerp(.2f, 1.0f, currentCharge) : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
     }
 
     private void UpdateTemperature() {
@@ -462,7 +468,7 @@ public class PlayerScript : MonoBehaviour {
                 BuildAction();
         } else {
             if (context.performed) {
-                isCharging = true;
+                if(throwDelay == 0.0f) isCharging = true;
             } else {
                 // need to have this check since it seems like unity
                 // context.performed is FALSE when pressing down for the first time
@@ -471,6 +477,7 @@ public class PlayerScript : MonoBehaviour {
                 if (isCharging) {
                     isCharging = false;
                     GetComponent<SnowballThrower>().Throw(currentCharge);
+                    throwDelay = maxThrowDelay * currentCharge;
                     currentCharge = minCharge;
                 }
                 // this should eventually just point to the primary action of the currently selected item
