@@ -7,7 +7,7 @@ public class ItemData : ScriptableObject {
 
     public int stackSize;
 
-    public Sprite itemIcon;
+    public Sprite icon;
     public GameObject worldItem;
 
     public string title;

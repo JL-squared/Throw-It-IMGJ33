@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingMenu : MonoBehaviour {
-    List<CraftingListEntry> craftingListEntries;
+    List<CraftingListEntry> craftingListEntries = new List<CraftingListEntry>();
     public CraftingRecipe selectedRecipe;
     public Button craftingButton;
-    Text title;
-    Text description;
-    Image image;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI description;
+    public Image image;
 
     void Start () {
         // load all necessary recipes
@@ -38,9 +39,9 @@ public class CraftingMenu : MonoBehaviour {
 
         selectedRecipe = recipe.Clone();
         // refresh the thingy stuff
-        title.text = recipe.output.data.name;
-        description.text = recipe.output.data.description;
-        image.sprite = recipe.output.data.itemIcon;
+        title.text = recipe.output.Data.name;
+        description.text = recipe.output.Data.description;
+        image.sprite = recipe.output.Data.icon;
         // this is when we put in requirements into the requirement slot
         // this is when we update the status of the crafting button (this will require that we scan the inventory) (we need an inventory reference probably)
         
