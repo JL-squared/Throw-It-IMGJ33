@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingMenu : MonoBehaviour {
-    List<CraftingListEntry> craftingListEntries;
+    List<CraftingListEntry> craftingListEntries = new List<CraftingListEntry>();
     public CraftingRecipe selectedRecipe;
     public Button craftingButton;
     public TextMeshProUGUI title;

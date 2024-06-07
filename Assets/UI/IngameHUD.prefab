@@ -257,16 +257,16 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4913775210359699641}
-  - {fileID: 2010540716330051343}
-  - {fileID: 7207941433795008584}
-  - {fileID: 2755523485592159075}
-  - {fileID: 2100942886203443081}
-  - {fileID: 4253804592535293527}
-  - {fileID: 9208744283491191568}
-  - {fileID: 8757787292384031368}
-  - {fileID: 6853510016378519765}
   - {fileID: 7662211530681443171}
+  - {fileID: 6853510016378519765}
+  - {fileID: 8757787292384031368}
+  - {fileID: 9208744283491191568}
+  - {fileID: 4253804592535293527}
+  - {fileID: 2100942886203443081}
+  - {fileID: 2755523485592159075}
+  - {fileID: 7207941433795008584}
+  - {fileID: 2010540716330051343}
+  - {fileID: 4913775210359699641}
   m_Father: {fileID: 3734082230488827711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2580,11 +2580,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6058106132917529816}
     m_Modifications:
-    - target: {fileID: 682437584828090626, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1111507699116483377, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2689,21 +2684,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Item Slot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Maskable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9144068659138085045, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3048,11 +3028,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6058106132917529816}
     m_Modifications:
-    - target: {fileID: 682437584828090626, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1111507699116483377, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3345,11 +3320,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6058106132917529816}
     m_Modifications:
-    - target: {fileID: 682437584828090626, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1111507699116483377, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3454,21 +3424,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Item Slot (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Maskable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9144068659138085045, guid: 22691d68fd1d33833a68529082dddaad,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
