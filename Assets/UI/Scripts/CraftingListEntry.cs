@@ -9,8 +9,8 @@ public class CraftingListEntry : MonoBehaviour {
     public CraftingRecipe recipe;
 
     public void Initialize(CraftingRecipe recipe) {
-        image.sprite = recipe.output.data.itemIcon;
-        title.text = recipe.output.data.name;
+        image.sprite = recipe.output.Data.icon;
+        title.text = recipe.output.Data.name;
         this.recipe = recipe;
     }
 

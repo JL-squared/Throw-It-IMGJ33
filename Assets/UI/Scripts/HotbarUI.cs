@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HotbarUI : MonoBehaviour {
-    public GameObject[] slots;
-    Image[] slotIcons;
+    public VisualSlot[] slots;
     public readonly Color deselected = new Color(0f, 0f, 0f, .73f);
     public readonly Color selected = new Color(.1f, .1f, .1f, .73f);
 
@@ -15,23 +15,25 @@ public class HotbarUI : MonoBehaviour {
     void Start() {
         PlayerScript.singleton.selectedEvent?.AddListener(Select);
         Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
-        foreach(GameObject slot in slots) {
-            
-        }
+        PlayerScript.singleton.inventoryUpdateEvent?.AddListener(Refresh);
     }
 
-    // Update is called once per frame
-    void Update() {
-
+    // This code kinda sucks but it's okay
+    void Refresh(List<Item> items) {
+        int i = 0;
+        foreach(VisualSlot slot in slots) {
+            slot.Refresh(items[i]);
+            i++;
+        }
     }
 
     public void Select(int slot) {
-        foreach(GameObject _slot in slots) {
-            _slot.GetComponent<Image>().color = deselected;
+        foreach(VisualSlot _slot in slots) {
+            _slot.background.color = deselected;
             _slot.GetComponent<RectTransform>().sizeDelta = new Vector2(43, 43);
         }
 
-        slots[slot].GetComponent<Image>().color = selected;
+        slots[slot].background.color = selected;
         slots[slot].GetComponent<RectTransform>().sizeDelta = new Vector2(45, 45);
     }
 }

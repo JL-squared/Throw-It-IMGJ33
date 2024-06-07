@@ -27,7 +27,7 @@ public class Snowball : MonoBehaviour {
     }
 
     private float CalculateDamage() {
-        return 10.0f;
+        return 3.0f * rb.velocity.magnitude;
     }
 
     public void OnCollisionEnter(Collision collision) {

@@ -126,6 +126,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void UpdateInventory(Item item) {
+        Debug.Log("Update inventory is being called!!");
         inventoryUpdateEvent.Invoke(items);
     }
 
@@ -144,6 +145,8 @@ public class PlayerScript : MonoBehaviour {
             currentCharge += Time.deltaTime * chargeSpeed;
             currentCharge = Mathf.Clamp01(currentCharge);
         }
+
+        UIMaster.Instance.inGameHUD.UpdateChargeMeter(currentCharge);
     }
 
     private void UpdateTemperature() {
@@ -209,25 +212,69 @@ public class PlayerScript : MonoBehaviour {
         int firstEmpty = -1;
         int i = 0;
         foreach (Item item in items) {
-            if (itemIn.data.id == item.data.id && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
-                int transferSize = itemIn.Count - item.data.stackSize; // amount we can fit in here
+            if (item.IsEmpty() && firstEmpty == -1) {
+                Debug.Log("IT WAS EMPTY!!! WAHOO");
+                firstEmpty = i;
+            } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
+                int transferSize = itemIn.Count - item.Data.stackSize; // amount we can fit in here
 
                 item.Count += transferSize; // transfer
                 itemIn.Count -= transferSize;
                 if (itemIn.IsEmpty()) {
                     return; // break when done adding into partial stacks
                 }
-            } else if (item.IsEmpty() && firstEmpty != -1) {
-                firstEmpty = i;
             }
             i++;
         }
         // by this point we should have exited if everything is handled, otherwise;
         if(firstEmpty != -1) {
-            items[firstEmpty] = itemIn.Clone();
+            Debug.Log("oh yeah, slot was empty. It's sex time...");
+            items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
         }
     }
+
+    public void addItem(Item itemIn) {
+        int firstEmpty = -1;
+        int i = 0;
+
+        foreach (Item item in items) {
+            if (item.IsEmpty() && firstEmpty == -1) {
+                Debug.Log("IT WAS EMPTY!!! WAHOO");
+                firstEmpty = i;
+            } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
+                Debug.Log("WHAT THE FUCK!!");
+                int transferSize = item.Data.stackSize - item.Count; // amount we can fit in here
+                transferSize = Mathf.Min(transferSize, itemIn.Count);
+
+                item.Count += transferSize; // transfer
+                itemIn.Count -= transferSize;
+                if (itemIn.IsEmpty()) {
+                    Debug.Log("Time for some logan debugging muhahaha");
+                    i = 0;
+                    foreach(Item _item in items) {
+                        Debug.Log($"Slot {i}:" + _item);
+                        i++;
+                    }
+                    return; // break when done adding into partial stacks
+                }
+            }
+            i++;
+        }
+        // by this point we should have exited if everything is handled, otherwise;
+        if(firstEmpty != -1) {
+            Debug.Log("oh yeah, slot was empty. It's sex time...");
+            items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
+        }
+
+        Debug.Log("Time for some logan debugging muhahaha");
+        i = 0;
+        foreach(Item item in items) {
+            Debug.Log($"Slot {i}:" + item);
+            i++;
+        }
+    }
+
 
     /// <summary>
     /// Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
@@ -239,7 +286,7 @@ public class PlayerScript : MonoBehaviour {
         int i = 0;
 
         foreach (Item item in items) {
-            if (item.Count >= count && item.data.id == id) {
+            if (item.Count >= count && item.Data.id == id) {
                 return i;
             }
             i++;
@@ -439,7 +486,7 @@ public class PlayerScript : MonoBehaviour {
             }
 
             if(TestGhostClipping(placementGhost, 0.2f)) {
-                Debug.Log("Fuck it's clipping");
+                //Debug.Log("Fuck it's clipping");
                 placementStatus = false;
             }
 
@@ -459,12 +506,14 @@ public class PlayerScript : MonoBehaviour {
             } else {
                 // need to have this check since it seems like unity
                 // context.performed is FALSE when pressing down for the first time
+                // that's cause performed runs on release right??
                 // idk, weird
                 if (isCharging) {
                     isCharging = false;
                     GetComponent<SnowballThrower>().Throw(currentCharge);
                     currentCharge = minCharge;
                 }
+                // this should eventually just point to the primary action of the currently selected item
             }
         }
     }

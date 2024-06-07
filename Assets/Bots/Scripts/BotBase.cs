@@ -32,7 +32,7 @@ public class BotBase : MonoBehaviour {
             Vector3 direction = GetAppropriateDir(path.corners);
             direction.y = 0;
             Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime); // why is this logging
             float speedMult = Mathf.Clamp(direction.magnitude / 5.0f, 0.5f, 1.0f);
             em.localWishMovement = Vector2.up * speedMult;
         } else {
