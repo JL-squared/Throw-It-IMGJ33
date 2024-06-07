@@ -14,11 +14,15 @@ public class BotBase : MonoBehaviour {
     public GameObject rightEyeHolster;
     public GameObject hatHolster;
     public GameObject neckHolster;
+    public GameObject noseHolster;
 
-    public float movementSpeed = 7;
-    public float attackSpeed = 5;
-    public float bodyHealth = 50;
-    public float headHealth = 20;
+    public GameObject angryFace;
+    public GameObject happyFace;
+
+    public float movementSpeed = 0;
+    public float attackSpeed = 0;
+    public float bodyHealth = 0;
+    public float headHealth = 0;
     public float damageResistence = 0;
 
     private EntityMovement entityMovement;
@@ -54,6 +58,7 @@ public class BotBase : MonoBehaviour {
             if (Random.value < part.spawnChance) {
                 Instantiate(part.prefab, holster.transform);
                 ApplyModifiers(part.modifiers);
+                return;
             }
         }
     }
@@ -64,6 +69,12 @@ public class BotBase : MonoBehaviour {
 
     private void SpawnParts() {
         BotData data = datas[0];
+
+        movementSpeed = data.baseMovementSpeed;
+        attackSpeed = data.baseAttackSpeed;
+        bodyHealth = data.baseBodyHealth;
+        headHealth = data.baseHeadHealth;
+        damageResistence = data.baseDamageResistence;
         
         // Base weapons / attribute modifiers
         SpawnPartsForHolsterType(backHolster, data.back);
@@ -75,7 +86,20 @@ public class BotBase : MonoBehaviour {
         // Cute Cosmetics :3
         SpawnPartsForHolsterType(hatHolster, data.hat);
         SpawnPartsForHolsterType(neckHolster, data.neck);
+        SpawnPartsForHolsterType(noseHolster, data.nose);
+
         leftHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
+        leftEyeHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
+    }
+
+    private void ApplyAngry() {
+        bool angy = Random.value < datas[0].angryChance;
+        happyFace.SetActive(!angy);
+        angryFace.SetActive(angy);
+
+        if (angy) {
+            ApplyModifiers(datas[0].angryModifiers);
+        }
     }
 
     public void Start() {
@@ -83,6 +107,7 @@ public class BotBase : MonoBehaviour {
         entityMovement = GetComponent<EntityMovement>();
 
         SpawnParts();
+        ApplyAngry();
         ApplyAttributes();
     }
 }

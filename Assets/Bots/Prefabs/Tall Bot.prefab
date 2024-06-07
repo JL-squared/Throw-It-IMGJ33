@@ -163,6 +163,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222d65eb5654da24a8deb7c3c5e6bac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2984254924271180433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4002758096420211559}
+  - component: {fileID: 198363270666410188}
+  m_Layer: 0
+  m_Name: Nose
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4002758096420211559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2984254924271180433}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.15, z: 0.232}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8742717674536080720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &198363270666410188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2984254924271180433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222d65eb5654da24a8deb7c3c5e6bac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4150261059762255681
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +321,7 @@ Transform:
   - {fileID: 9094063474700004797}
   - {fileID: 1910789122626093447}
   - {fileID: 4087162837004350109}
+  - {fileID: 4002758096420211559}
   - {fileID: 2570737002553099411}
   - {fileID: 2904802934462797689}
   - {fileID: 3901910804211142723}
@@ -304,7 +349,7 @@ MonoBehaviour:
   groundControl: 25
   jump: 5
   gravity: -9.81
-  groudedOffsetVelocity: -2.5
+  groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
   maxPushForce: 20
@@ -346,6 +391,9 @@ MonoBehaviour:
   rightEyeHolster: {fileID: 2119079139128084970}
   hatHolster: {fileID: 986971301723011619}
   neckHolster: {fileID: 7092741416679020478}
+  noseHolster: {fileID: 2984254924271180433}
+  angryFace: {fileID: 5852821980638977676}
+  happyFace: {fileID: 2404815702975916908}
   movementSpeed: 7
   attackSpeed: 5
   bodyHealth: 50
@@ -762,6 +810,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2148618982f4724ebb4088aa8f13d28, type: 3}
+--- !u!1 &2404815702975916908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2482757773858779815, guid: c2148618982f4724ebb4088aa8f13d28,
+    type: 3}
+  m_PrefabInstance: {fileID: 8995069264354862645}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5852821980638977676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5913928613212555079, guid: c2148618982f4724ebb4088aa8f13d28,
+    type: 3}
+  m_PrefabInstance: {fileID: 8995069264354862645}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8889646807191814622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c2148618982f4724ebb4088aa8f13d28,

@@ -11,6 +11,10 @@ public class BotData : ScriptableObject {
     public List<BotPart> neck;
     public List<BotPart> leftEye;
     public List<BotPart> rightEye;
+    public List<BotPart> nose;
+
+    public float angryChance = 0.5f;
+    public List<BotAttributeModifier> angryModifiers;
 
     public float baseMovementSpeed = 7;
     public float baseAttackSpeed = 5;
