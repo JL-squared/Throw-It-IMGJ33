@@ -14,12 +14,12 @@ public class BotBase : MonoBehaviour {
     }
 
     private Vector3 GetAppropriateDir(Vector3[] corners) {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Mathf.Min(3, corners.Length); i++) {
             Vector3 first = corners[i];
             Vector3 direction = -(transform.position - first);
             Vector2 local = new Vector2(direction.x, direction.z);
 
-            if (local.magnitude > 0.3) {
+            if (local.magnitude > 0.05 && direction.magnitude > 1.0) {
                 return direction;
             }
         }
