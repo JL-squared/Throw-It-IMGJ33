@@ -6,6 +6,7 @@ public class UIMaster : MonoBehaviour {
     public HealthBar healthBar;
     public GameObject deathScreen;
     bool dead;
+    float timeSinceDeath;
 
     public static UIMaster Instance;
 
@@ -22,7 +23,10 @@ public class UIMaster : MonoBehaviour {
 
     public void Update() {
         if (dead) {
-            deathScreen.GetComponent<CanvasGroup>().alpha += Time.deltaTime * 0.2f;
+            timeSinceDeath += Time.unscaledDeltaTime * .1f;
+            Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
+
+            deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, timeSinceDeath);
         }
     }
 }
