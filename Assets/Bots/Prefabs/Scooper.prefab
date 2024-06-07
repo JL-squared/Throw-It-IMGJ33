@@ -110,7 +110,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: scooper
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2223639932434330405, guid: 36da95b545ce032409c1860cdaa44d23, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

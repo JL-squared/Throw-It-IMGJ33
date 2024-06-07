@@ -19,7 +19,7 @@ public class EntityMovement : MonoBehaviour {
     public float groundControl = 25;
     public float jump = 5.0F;
     public float gravity = -9.81f;
-    public float groudedOffsetVelocity = -2.5f;
+    public float groundedOffsetVelocity = -2.5f;
     [HideInInspector]
     public bool isJumping;
     [Header("Rigidbody Interaction")]
@@ -37,14 +37,14 @@ public class EntityMovement : MonoBehaviour {
     // FixedUpdate is called each physics timestep
     void Update() {
         float control = cc.isGrounded ? groundControl : airControl;
-        localMovement = Vector2.Lerp(localMovement, localWishMovement, Time.deltaTime * control);
+        localMovement = Vector2.Lerp(localMovement, localWishMovement.normalized, Time.deltaTime * control);
         movement.x = speed * localMovement.x;
         movement.z = speed * localMovement.y;
         movement = transform.TransformDirection(movement);
         movement.y += gravity * Time.deltaTime;
 
         if (cc.isGrounded) {
-            movement.y = groudedOffsetVelocity;
+            movement.y = groundedOffsetVelocity;
 
             if (isJumping) {
                 movement.y = jump;
