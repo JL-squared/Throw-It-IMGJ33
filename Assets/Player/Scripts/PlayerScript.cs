@@ -108,6 +108,7 @@ public class PlayerScript : MonoBehaviour {
             head.transform.parent = null;
             GetComponent<CharacterController>().height = 0;
             Destroy(GetComponentInChildren<MeshRenderer>());
+            UIMaster.Instance.OnDeath();
         };
 
         for(int i = 0; i < 10; i++) {
