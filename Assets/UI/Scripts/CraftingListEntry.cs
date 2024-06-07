@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingListEntry : MonoBehaviour {
-    public Sprite sprite;
+    public Image image;
     public Text title;
     public CraftingRecipe recipe;
 
     public void Initialize(CraftingRecipe recipe) {
-        sprite = recipe.output.data.itemIcon;
+        image.sprite = recipe.output.data.itemIcon;
         title.text = recipe.output.data.name;
+        this.recipe = recipe;
     }
 
     public void Refresh(bool active) {

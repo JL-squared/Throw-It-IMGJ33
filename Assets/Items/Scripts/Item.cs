@@ -22,7 +22,8 @@ public class Item {
         }
     }
 
-    UnityEvent emptyEvent;
+    public UnityEvent emptyEvent;
+    public UnityEvent<Item> updateEvent;
 
     public ItemData data;
 
@@ -45,6 +46,10 @@ public class Item {
 
     public Item Clone() {
         return (Item)MemberwiseClone();
+    }
+
+    public bool Equals(Item other) {
+        return other.data == data && other.count >= count;
     }
 
     public void MakeEmpty() {

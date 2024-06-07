@@ -10,10 +10,13 @@ using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour {
     public static PlayerScript singleton;
 
+    public AudioSource ambatakamChoir;
+    public bool isDead;
+
     [Header("Temperature")]
     public const float TargetTemperature = 37.0f;
     private float outsideTemperature;
-    private float heatSourcesTemperature; 
+    private float heatSourcesTemperature;
     private float bodyTemperature = TargetTemperature;
     public float targetReachSpeed = 0.5f;
     public float outsideReachSpeed = 0.5f;
@@ -41,7 +44,7 @@ public class PlayerScript : MonoBehaviour {
     private float placementRotation = 0f;
 
     [Header("Inventory")]
-    Item[] items = new Item[10];
+    List<Item> items = new List<Item>();
 
     [SerializeField]
     private int selected;
@@ -56,7 +59,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public UnityEvent<int> selectedEvent;
-
+    public UnityEvent<List<Item>> inventoryUpdateEvent;
     public UnityEvent<int, bool> slotUpdateEvent;
 
     [Header("Movement")]
@@ -95,6 +98,7 @@ public class PlayerScript : MonoBehaviour {
         currentCharge = minCharge;
 
         SetupPlacementGhost(selectedBuildPrefab);
+        placementGhost.SetActive(false);
 
         EntityHealth health = GetComponent<EntityHealth>();
         health.onHealthUpdated += (float p) => {
@@ -102,8 +106,27 @@ public class PlayerScript : MonoBehaviour {
         };
 
         health.onKilled += () => {
+            isDead = true;
             Debug.Log("Skill issue, you dead");
+            ambatakamChoir.Play();
+            Rigidbody rb = head.AddComponent<Rigidbody>();
+            rb.AddForce(Random.insideUnitCircle, ForceMode.Impulse);
+            head.AddComponent<SphereCollider>();
+            head.transform.parent = null;
+            GetComponent<CharacterController>().height = 0;
+            Destroy(GetComponentInChildren<MeshRenderer>());
+            UIMaster.Instance.OnDeath();
         };
+
+        for(int i = 0; i < 10; i++) {
+            Item temp = new Item();
+            items.Add(temp);
+            temp.updateEvent?.AddListener(UpdateInventory);
+        }
+    }
+
+    public void UpdateInventory(Item item) {
+        inventoryUpdateEvent.Invoke(items);
     }
 
     private void Update() {
@@ -229,11 +252,11 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for movement
     /// </summary>
     public void Movement(InputAction.CallbackContext context) {
-        movement.localWishMovement = context.ReadValue<Vector2>();
+        if(!isDead) movement.localWishMovement = context.ReadValue<Vector2>();
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if(context.performed && !paused) {
+        if(context.performed && !paused && !isDead) {
             inventoryOpen = !inventoryOpen;
             UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
             UpdateUIStuff();
@@ -260,7 +283,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for camera movement
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        if(Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused) {
+        if(Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused && !isDead) {
             wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
             head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
@@ -272,7 +295,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for jumping
     /// </summary>
     public void Jump(InputAction.CallbackContext context) {
-        if (context.performed && movement.cc.isGrounded && !inventoryOpen && !paused) {
+        if (context.performed && movement.cc.isGrounded && !inventoryOpen && !paused && !isDead) {
             movement.isJumping = true;
         }
     }
@@ -426,6 +449,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
+        if(!isDead)
         if (isBuilding) {
             if (placementStatus && context.performed)
                 BuildAction();
@@ -455,7 +479,7 @@ public class PlayerScript : MonoBehaviour {
     bool whichThing = true;
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if(context.performed) {
+        if(context.performed && !isDead) {
             if (isBuilding) {
                 BuildAction2();
             } else {
@@ -468,6 +492,11 @@ public class PlayerScript : MonoBehaviour {
         Debug.Log("switched");
         whichThing = !whichThing;
         SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
+    }
+
+
+    public void Craft(CraftingRecipe recipe) {
+        recipe.CraftItem(items);
     }
 
     private bool FindClosestSnapPoints(Transform ghost, float maxSnapDistance, out Transform a, out Transform b, List<Piece> pieces) {

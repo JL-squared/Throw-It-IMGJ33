@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 5348554039063984645}
   - component: {fileID: 3862092743452973259}
   - component: {fileID: 5612993854864577866}
+  - component: {fileID: 76371231796988630}
   m_Layer: 6
   m_Name: Small Snow Brick
   m_TagString: Untagged
@@ -168,6 +169,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 0.6, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &76371231796988630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3016930163665873526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f664d39d160acb541831dd4381c70601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  DeleteOnKill: 1
+  health: 0
 --- !u!1 &3508740440833404533
 GameObject:
   m_ObjectHideFlags: 0
