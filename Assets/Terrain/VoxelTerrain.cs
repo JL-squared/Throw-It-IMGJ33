@@ -30,6 +30,11 @@ public class VoxelTerrain : MonoBehaviour {
     private List<GameObject> totalChunks;
 
     private bool alrDisposed = false;
+    private int pendingChunks;
+    private bool firstGen = true;
+
+    public delegate void InitGen();
+    public event InitGen Finished;
 
     // Initialize buffers and required memory
     public void Init() {
@@ -119,7 +124,7 @@ public class VoxelTerrain : MonoBehaviour {
         }
 
         int currentRegionIndex = 0;
-
+        firstGen = true;
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
             if (index % SavedVoxelMap.ChunksInRegion == 0) {
                 regionStream = new MemoryStream(savedMap.textAssets[currentRegionIndex].bytes);
@@ -135,6 +140,7 @@ public class VoxelTerrain : MonoBehaviour {
             voxelChunk.hasCollisions = true;
             voxelChunk.voxels = new NativeArray<Voxel>(voxels.ToArray(), Allocator.Persistent);
             voxelChunk.Remesh();
+            pendingChunks++;
         }
 
         KillChildren();
@@ -206,6 +212,11 @@ public class VoxelTerrain : MonoBehaviour {
     // Handle completing finished jobs and initiating new ones
     void Update() {
         UpdateHook();
+
+        if (pendingChunks == 0 && firstGen) {
+            firstGen = false;
+            Finished?.Invoke();
+        }
     }
 
     // Separate function since it needs to get called inside the editor
@@ -257,6 +268,9 @@ public class VoxelTerrain : MonoBehaviour {
                 // Set mesh and renderer bounds
                 voxelChunk.sharedMesh.bounds = new Bounds { min = Vector3.zero, max = Vector3.one * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor };
                 renderer.bounds = voxelChunk.GetBounds();
+                
+                if (firstGen)
+                    pendingChunks -= 1;
             }
         }
 
