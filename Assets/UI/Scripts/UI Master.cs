@@ -22,7 +22,7 @@ public class UIMaster : MonoBehaviour {
 
     public void Update() {
         if (dead) {
-            deathScreen.GetComponent<CanvasGroup>().alpha += Time.deltaTime;
+            deathScreen.GetComponent<CanvasGroup>().alpha += Time.deltaTime * 0.2f;
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2262149761271955649}
   - component: {fileID: 2108564500758409750}
   - component: {fileID: 6683454675366619724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 4582007016999259786}
   - component: {fileID: 8669513143636214874}
   - component: {fileID: 8428834152011970357}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: PlayerTag
   m_Icon: {fileID: 0}
@@ -302,6 +302,70 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f19177ee-7fb3-4ba3-b0ff-54fca7bd271b
     m_ActionName: Player Map/Select Slot[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: PrimaryAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 37107d33-1622-4550-8dd9-03630b24d67f
+    m_ActionName: Player Map/Primary Action[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: SecondaryAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 148c65b4-7587-4030-9ec2-ed8546279833
+    m_ActionName: Player Map/Secondary Action[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: ExitButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bfd21d64-7a7f-4a06-878c-2869d298fa26
+    m_ActionName: Player Map/Exit Button[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+        m_MethodName: ToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a4ef294a-99c6-40c0-a971-079ab75ae310
+    m_ActionName: Player Map/Inventory Toggle[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -345,6 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  DeleteOnKill: 0
   health: 100
 --- !u!114 &4582007016999259786
 MonoBehaviour:
@@ -360,9 +425,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snowball: {fileID: 5488373698599033194, guid: b9e102afdbf683a4092ac606c7b350be,
     type: 3}
-  spawnHolster: {fileID: 0}
-  startingSpeed: 10
-  offsetDistance: 2
+  spawnHolster: {fileID: 921606742461663924}
+  particles: {fileID: 6059710334257849518, guid: 707ea22e782edfb44a979424256e1b2f,
+    type: 3}
+  startingSpeed: 20
+  offsetDistance: 1.2
+  collider: {fileID: 0}
 --- !u!114 &8669513143636214874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,26 +443,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e75a771f6823bb45a64c8d1b997b2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ambatakamChoir: {fileID: 2071300713959991023}
+  isDead: 0
   targetReachSpeed: 4
   outsideReachSpeed: 0.03
+  shiverMeTimbers: 0
+  shiveringCurrentTime: 0
+  shiveringDelay: 20
+  minShiveringTemp: 36
+  shiveringShakeScale: 10
+  shiveringShakeFactor: 0.01
+  shiveringShakeRotationFactor: 0.01
   isBuilding: 0
-  selectedBuildPrefab: {fileID: 0}
-  selectedTemp2Prefab: {fileID: 0}
+  selectedBuildPrefab: {fileID: 3016930163665873526, guid: b1ff6a5848d200649b8499bae06f2253,
+    type: 3}
+  selectedTemp2Prefab: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
+    type: 3}
   placementGhost: {fileID: 0}
   selected: 0
   selectedEvent:
     m_PersistentCalls:
       m_Calls: []
+  inventoryUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
   slotUpdateEvent:
     m_PersistentCalls:
       m_Calls: []
-  movement: {fileID: 0}
+  movement: {fileID: 8267247879346996897}
   head: {fileID: 921606742461663924}
   gameCamera: {fileID: 2262149761271955649}
   mouseSensitivity: 1
-  chargeSpeed: 0
-  minCharge: 0
-  shitted: 0
+  chargeSpeed: 1
+  minCharge: 0.2
+  inventoryOpen: 0
+  paused: 0
 --- !u!143 &8428834152011970357
 CharacterController:
   m_ObjectHideFlags: 0
@@ -432,8 +515,7 @@ GameObject:
   - component: {fileID: 8839413808973732309}
   - component: {fileID: 5363673760127486619}
   - component: {fileID: 5671619806476930392}
-  - component: {fileID: 3224392276405333999}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,29 +587,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3224392276405333999
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7052703045771101861}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8274589430038261866
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +596,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 921606742461663924}
-  m_Layer: 0
+  - component: {fileID: 2071300713959991023}
+  m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,3 +620,99 @@ Transform:
   - {fileID: 8958385453144995485}
   m_Father: {fileID: 4392259301960969222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &2071300713959991023
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274589430038261866}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 914ba10134356b345964123e1561d2e0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
