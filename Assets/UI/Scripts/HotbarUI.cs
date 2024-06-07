@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class HotbarUI : MonoBehaviour {
     public GameObject[] slots;
+    Image[] slotIcons;
     public readonly Color deselected = new Color(0f, 0f, 0f, .73f);
     public readonly Color selected = new Color(.1f, .1f, .1f, .73f);
 
@@ -14,6 +15,9 @@ public class HotbarUI : MonoBehaviour {
     void Start() {
         PlayerScript.singleton.selectedEvent?.AddListener(Select);
         Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
+        foreach(GameObject slot in slots) {
+            
+        }
     }
 
     // Update is called once per frame

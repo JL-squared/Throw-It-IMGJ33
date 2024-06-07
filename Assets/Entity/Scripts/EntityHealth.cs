@@ -21,10 +21,10 @@ public class EntityHealth : MonoBehaviour {
     }
 
     public void Damage(float damage) {
-        health -= damage;
+        health = Mathf.Clamp(health - damage, 0, maxHealth);
 
         onHealthUpdated?.Invoke(health / maxHealth);
-        if (health < 0) {
+        if (health == 0) {
             onKilled?.Invoke();
         }
     }

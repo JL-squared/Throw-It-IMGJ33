@@ -6,6 +6,8 @@ public class HealthBar : MonoBehaviour {
     [Range(0f, 1f)]
     public float actualPosition;
 
+    public float lastFrameActualPosition;
+
     public float tBar;
     public float tLinger;
     public RectTransform bar;
@@ -27,6 +29,10 @@ public class HealthBar : MonoBehaviour {
         bar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tBar), 1f);
         lingerBar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tLinger), 1f);
 
+        if (actualPosition != lastFrameActualPosition) {
+            lastPosition = Mathf.SmoothStep(lastPosition, lastFrameActualPosition, tBar);
+        }
+
         if(tBar >= 1.0f) {
             if (tLinger >= 1.0f) {
                 // Reset state
@@ -39,6 +45,8 @@ public class HealthBar : MonoBehaviour {
         } else if (lastPosition != actualPosition) {
             tBar += lerpSpeed * Time.deltaTime;
         }
+
+        lastFrameActualPosition = actualPosition;
     }
 
     public void ProcessHealthUpdate(float newHealth) {
