@@ -31,6 +31,7 @@ public class HealthBar : MonoBehaviour {
 
         if (actualPosition != lastFrameActualPosition) {
             lastPosition = Mathf.SmoothStep(lastPosition, lastFrameActualPosition, tBar);
+            tBar = 0;
         }
 
         if(tBar >= 1.0f) {
