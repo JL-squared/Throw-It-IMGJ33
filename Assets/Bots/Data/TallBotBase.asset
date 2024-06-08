@@ -22,18 +22,20 @@ MonoBehaviour:
   left:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.5
     modifiers: []
   right:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.5
     modifiers: []
   hat:
   - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
       type: 3}
-    spawnChance: 0.5
-    modifiers: []
+    spawnChance: 0
+    modifiers:
+    - attribute: 2
+      delta: 10
   neck:
   - prefab: {fileID: 8665893292947025873, guid: 725e6bb2aee5a2a41b81e96b0bc352f7,
       type: 3}
@@ -69,7 +71,7 @@ MonoBehaviour:
   angryModifiers:
   - attribute: 0
     delta: 2
-  baseMovementSpeed: 0
+  baseMovementSpeed: 5
   baseAttackSpeed: 5
   baseBodyHealth: 50
   baseHeadHealth: 20

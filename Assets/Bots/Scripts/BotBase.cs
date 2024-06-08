@@ -77,8 +77,16 @@ public class BotBase : MonoBehaviour {
         return null;
     }
 
+    private void OnDamage(ref float damage) {
+        damage *= (1 - damageResistence);
+    }
+
     private void ApplyAttributes() {
         entityMovement.speed = movementSpeed;
+        _bodyHealth.maxHealth = bodyHealth;
+        _bodyHealth.health = bodyHealth;
+        _headHealth.maxHealth = headHealth;
+        _headHealth.health = headHealth;
     }
 
     private void SpawnParts() {
@@ -128,10 +136,21 @@ public class BotBase : MonoBehaviour {
         }
     }
 
+    private void OnKilled(bool headshot) {
+        Destroy(gameObject);
+    }
+
     public void Start() {
         worldParts = new List<BotWorldPart>();
         pathfinder = GetComponent<BotPathfinder>();
         entityMovement = GetComponent<EntityMovement>();
+        _bodyHealth = GetComponent<EntityHealth>();
+        _headHealth = head.GetComponent<EntityHealth>();
+
+        _bodyHealth.OnDamaged += OnDamage;
+        _headHealth.OnDamaged += OnDamage;
+        _bodyHealth.OnKilled += () => { OnKilled(false); };
+        _headHealth.OnKilled += () => { OnKilled(true); };
 
         SpawnParts();
         ApplyAngry();

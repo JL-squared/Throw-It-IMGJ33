@@ -103,11 +103,11 @@ public class PlayerScript : MonoBehaviour {
         placementGhost.SetActive(false);
 
         EntityHealth health = GetComponent<EntityHealth>();
-        health.onHealthUpdated += (float p) => {
+        health.OnHealthUpdated += (float p) => {
             UIMaster.Instance.healthBar.actualPosition = p;
         };
 
-        health.onKilled += () => {
+        health.OnKilled += () => {
             isDead = true;
             Debug.Log("Skill issue, you dead");
             ambatakamChoir.Play();
