@@ -30,6 +30,7 @@ public class BotPathfinder : MonoBehaviour {
     }
 
     public void Update() {
+        target = GameObject.FindGameObjectWithTag("PlayerTag").transform.position;
         if (NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path)) {
             Vector3 direction = GetAppropriateDir(path.corners);
             direction.y = 0;

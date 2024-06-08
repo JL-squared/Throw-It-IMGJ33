@@ -4,14 +4,14 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "BotData", menuName = "ScriptableObjects/New Bot Type", order = 1)]
 public class BotData : ScriptableObject {
-    public List<BotPart> back;
-    public List<BotPart> left;
-    public List<BotPart> right;
-    public List<BotPart> hat;
-    public List<BotPart> neck;
-    public List<BotPart> leftEye;
-    public List<BotPart> rightEye;
-    public List<BotPart> nose;
+    public List<BotPartData> back;
+    public List<BotPartData> left;
+    public List<BotPartData> right;
+    public List<BotPartData> hat;
+    public List<BotPartData> neck;
+    public List<BotPartData> leftEye;
+    public List<BotPartData> rightEye;
+    public List<BotPartData> nose;
 
     public bool spawnAtLeastOneDefaultEye = true;
     public GameObject defaultEye;

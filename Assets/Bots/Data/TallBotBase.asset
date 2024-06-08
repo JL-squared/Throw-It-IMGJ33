@@ -15,19 +15,19 @@ MonoBehaviour:
   back:
   - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 0
     modifiers:
     - attribute: 0
       delta: 0.5
   left:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 0.2
+    spawnChance: 1
     modifiers: []
   right:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 0.2
+    spawnChance: 1
     modifiers: []
   hat:
   - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
@@ -65,11 +65,11 @@ MonoBehaviour:
   spawnAtLeastOneDefaultEye: 1
   defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
     type: 3}
-  angryChance: 0.5
+  angryChance: 0
   angryModifiers:
   - attribute: 0
     delta: 2
-  baseMovementSpeed: 3
+  baseMovementSpeed: 0
   baseAttackSpeed: 5
   baseBodyHealth: 50
   baseHeadHealth: 20

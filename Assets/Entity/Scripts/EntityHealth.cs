@@ -15,7 +15,10 @@ public class EntityHealth : MonoBehaviour {
     public delegate void HealthUpdated(float percentage);
     public event HealthUpdated onHealthUpdated;
 
+    private bool alrKilled;
+
     public void Start() {
+        alrKilled = false;
         health = maxHealth;
         if (DeleteOnKill) onKilled += () => { Destroy(gameObject); };
     }
@@ -24,7 +27,8 @@ public class EntityHealth : MonoBehaviour {
         health = Mathf.Clamp(health - damage, 0, maxHealth);
 
         onHealthUpdated?.Invoke(health / maxHealth);
-        if (health == 0) {
+        if (health == 0 && !alrKilled) {
+            alrKilled = true;
             onKilled?.Invoke();
         }
     }

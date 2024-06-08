@@ -30,6 +30,8 @@ public class BotBase : MonoBehaviour {
     private EntityHealth _bodyHealth;
     private BotPathfinder pathfinder;
 
+    private List<BotWorldPart> worldParts;
+
     private void ApplyModifiers(List<BotAttributeModifier> modifiers) {
         foreach (var modifier in modifiers) {
             float delta = modifier.delta;
@@ -53,12 +55,18 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-    private void SpawnPart(GameObject holster, BotPart part) {
-        Instantiate(part.prefab, holster.transform);
+    private void SpawnPart(GameObject holster, BotPartData part) {
+        GameObject spawned = Instantiate(part.prefab, holster.transform);
         ApplyModifiers(part.modifiers);
+
+        BotWorldPart worldPart = spawned.GetComponent<BotWorldPart>();
+        if (worldPart != null) {
+            worldPart.botBase = this;
+            worldParts.Add(worldPart);
+        }
     }
 
-    private BotPart PickPartForHolsterType(GameObject holster, List<BotPart> parts) {
+    private BotPartData PickPartForHolsterType(GameObject holster, List<BotPartData> parts) {
         foreach (var part in parts) {
             if (Random.value < part.spawnChance) {
                 SpawnPart(holster, part);
@@ -91,9 +99,9 @@ public class BotBase : MonoBehaviour {
         if (data.spawnAtLeastOneDefaultEye) {
             if (Random.value > 0.5) {
                 PickPartForHolsterType(leftEyeHolster, data.leftEye);
-                SpawnPart(rightEyeHolster, new BotPart(data.defaultEye));
+                SpawnPart(rightEyeHolster, new BotPartData(data.defaultEye));
             } else {
-                SpawnPart(leftEyeHolster, new BotPart(data.defaultEye));
+                SpawnPart(leftEyeHolster, new BotPartData(data.defaultEye));
                 PickPartForHolsterType(rightEyeHolster, data.rightEye);
             }
         } else {
@@ -121,6 +129,7 @@ public class BotBase : MonoBehaviour {
     }
 
     public void Start() {
+        worldParts = new List<BotWorldPart>();
         pathfinder = GetComponent<BotPathfinder>();
         entityMovement = GetComponent<EntityMovement>();
 
