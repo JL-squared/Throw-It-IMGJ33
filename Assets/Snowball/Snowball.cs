@@ -21,13 +21,15 @@ public class Snowball : MonoBehaviour {
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.rotation = UnityEngine.Random.rotation;
         Destroy(gameObject, 15.0f);
-        snowballThrowerPos = snowballThrower.transform.position;
-        snowballThrowerCollider = snowballThrower.collider;
-        Physics.IgnoreCollision(collider, snowballThrowerCollider, true);
+        if (snowballThrower.collider != null) {
+            snowballThrowerPos = snowballThrower.transform.position;
+            snowballThrowerCollider = snowballThrower.collider;
+            Physics.IgnoreCollision(collider, snowballThrowerCollider, true);
+        }
     }
 
     private float CalculateDamage() {
-        return 10.0f;
+        return 3.0f * rb.velocity.magnitude;
     }
 
     public void OnCollisionEnter(Collision collision) {
@@ -43,7 +45,7 @@ public class Snowball : MonoBehaviour {
     }
 
     public void Update() {
-        if(Vector3.Distance(transform.position, snowballThrowerPos) >= 2.0f) {
+        if(snowballThrowerCollider != null && Vector3.Distance(transform.position, snowballThrowerPos) >= 2.0f) {
             Physics.IgnoreCollision(collider, snowballThrowerCollider, false);
         }
     }

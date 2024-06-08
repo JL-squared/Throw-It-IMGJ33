@@ -5,17 +5,27 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AutoPathMesher : MonoBehaviour {
-    public NavMeshSurface surface;
+public class NavMeshRebuilder : MonoBehaviour {
+    public NavMeshSurface testSurface;
+    public NavMeshSurface terrainSurface;
     public LayerMask mask;
     private AsyncOperation op;
     private bool hooked = false;
 
     private void Start() {
-        surface.navMeshData = new NavMeshData();
+        terrainSurface.navMeshData = new NavMeshData();
+        testSurface.navMeshData = new NavMeshData();
     }
 
     void UpdateNavMesh() {
+        NavMeshSurface surface = null;
+
+        if (terrainSurface.gameObject.activeSelf) {
+            surface = terrainSurface;
+        } else {
+            surface = testSurface;
+        }
+
         NavMeshBuildSettings settings = surface.GetBuildSettings();
         settings.maxJobWorkers = 2;
         Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 2000);

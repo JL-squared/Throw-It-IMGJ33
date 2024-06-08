@@ -6,9 +6,9 @@ public class EntityMovement : MonoBehaviour {
     public float speed = 7f;
     [HideInInspector]
     public Vector2 localWishMovement;
-    private Vector2 localMovement;
+    private Vector3 movement;
     [HideInInspector]
-    public Vector3 movement;
+    public Vector3 wishMovement;
     [HideInInspector]
     public Quaternion localWishRotation;
 
@@ -19,7 +19,7 @@ public class EntityMovement : MonoBehaviour {
     public float groundControl = 25;
     public float jump = 5.0F;
     public float gravity = -9.81f;
-    public float groudedOffsetVelocity = -2.5f;
+    public float groundedOffsetVelocity = -2.5f;
     [HideInInspector]
     public bool isJumping;
     [Header("Rigidbody Interaction")]
@@ -37,14 +37,19 @@ public class EntityMovement : MonoBehaviour {
     // FixedUpdate is called each physics timestep
     void Update() {
         float control = cc.isGrounded ? groundControl : airControl;
-        localMovement = Vector2.Lerp(localMovement, localWishMovement, Time.deltaTime * control);
-        movement.x = speed * localMovement.x;
-        movement.z = speed * localMovement.y;
-        movement = transform.TransformDirection(movement);
-        movement.y += gravity * Time.deltaTime;
 
+        Vector2 normalized = localWishMovement.normalized;
+        wishMovement.x = speed * normalized.x;
+        wishMovement.z = speed * normalized.y;
+        wishMovement = transform.TransformDirection(wishMovement);
+
+        // bypass y value as that must remain unchanged
+        wishMovement.y = movement.y;
+
+        movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
+        movement.y += gravity * Time.deltaTime;
         if (cc.isGrounded) {
-            movement.y = groudedOffsetVelocity;
+            movement.y = groundedOffsetVelocity;
 
             if (isJumping) {
                 movement.y = jump;

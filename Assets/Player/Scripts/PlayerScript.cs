@@ -75,6 +75,8 @@ public class PlayerScript : MonoBehaviour {
     private bool isCharging;
     public float chargeSpeed;
     public float minCharge;
+    public float maxThrowDelay;
+    public float throwDelay;
 
     [Header("UI")]
     public bool inventoryOpen;
@@ -101,11 +103,11 @@ public class PlayerScript : MonoBehaviour {
         placementGhost.SetActive(false);
 
         EntityHealth health = GetComponent<EntityHealth>();
-        health.onHealthUpdated += (float p) => {
+        health.OnHealthUpdated += (float p) => {
             UIMaster.Instance.healthBar.actualPosition = p;
         };
 
-        health.onKilled += () => {
+        health.OnKilled += () => {
             isDead = true;
             Debug.Log("Skill issue, you dead");
             ambatakamChoir.Play();
@@ -126,6 +128,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void UpdateInventory(Item item) {
+        Debug.Log("Update inventory is being called!!");
         inventoryUpdateEvent.Invoke(items);
     }
 
@@ -143,7 +146,13 @@ public class PlayerScript : MonoBehaviour {
         if (isCharging) {
             currentCharge += Time.deltaTime * chargeSpeed;
             currentCharge = Mathf.Clamp01(currentCharge);
+        } else if (throwDelay > 0.0f) {
+            throwDelay -= Time.deltaTime * 1.0f;
         }
+
+        throwDelay = Mathf.Clamp(throwDelay, 0.0f, maxThrowDelay);
+
+        UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? Mathf.InverseLerp(.2f, 1.0f, currentCharge) : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
     }
 
     private void UpdateTemperature() {
@@ -202,32 +211,36 @@ public class PlayerScript : MonoBehaviour {
 
     /// <summary>
     /// Add item to inventory if possible,
-    /// DO NOT INSERT INVALID STACK COUNT ITEM
+    /// DO NOT INSERT INVALID STACK COUNT ITEM,
+    /// THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
     /// </summary>
     /// <param name="itemIn"></param>
-    public void addItem(ref Item itemIn) {
+    public void addItem(Item itemIn) {
         int firstEmpty = -1;
         int i = 0;
         foreach (Item item in items) {
-            if (itemIn.data.id == item.data.id && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
-                int transferSize = itemIn.Count - item.data.stackSize; // amount we can fit in here
+            if (item.IsEmpty() && firstEmpty == -1) {
+                firstEmpty = i;
+            } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
+                int transferSize = item.Data.stackSize - item.Count; // amount we can fit in here
+                transferSize = Mathf.Min(transferSize, itemIn.Count);
 
                 item.Count += transferSize; // transfer
                 itemIn.Count -= transferSize;
                 if (itemIn.IsEmpty()) {
                     return; // break when done adding into partial stacks
                 }
-            } else if (item.IsEmpty() && firstEmpty != -1) {
-                firstEmpty = i;
             }
             i++;
         }
         // by this point we should have exited if everything is handled, otherwise;
         if(firstEmpty != -1) {
-            items[firstEmpty] = itemIn.Clone();
+            Debug.Log("oh yeah, slot was empty. It's sex time...");
+            items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
         }
     }
+
 
     /// <summary>
     /// Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
@@ -239,7 +252,7 @@ public class PlayerScript : MonoBehaviour {
         int i = 0;
 
         foreach (Item item in items) {
-            if (item.Count >= count && item.data.id == id) {
+            if (item.Count >= count && item.Data.id == id) {
                 return i;
             }
             i++;
@@ -439,7 +452,7 @@ public class PlayerScript : MonoBehaviour {
             }
 
             if(TestGhostClipping(placementGhost, 0.2f)) {
-                Debug.Log("Fuck it's clipping");
+                //Debug.Log("Fuck it's clipping");
                 placementStatus = false;
             }
 
@@ -455,16 +468,19 @@ public class PlayerScript : MonoBehaviour {
                 BuildAction();
         } else {
             if (context.performed) {
-                isCharging = true;
+                if(throwDelay == 0.0f) isCharging = true;
             } else {
                 // need to have this check since it seems like unity
                 // context.performed is FALSE when pressing down for the first time
+                // that's cause performed runs on release right??
                 // idk, weird
                 if (isCharging) {
                     isCharging = false;
                     GetComponent<SnowballThrower>().Throw(currentCharge);
+                    throwDelay = maxThrowDelay * currentCharge;
                     currentCharge = minCharge;
                 }
+                // this should eventually just point to the primary action of the currently selected item
             }
         }
     }

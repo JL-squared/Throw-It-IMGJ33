@@ -3,29 +3,34 @@ using UnityEngine.Rendering;
 
 public class EntityHealth : MonoBehaviour {
     public float maxHealth;
-
-    public bool DeleteOnKill;
-
-    [HideInInspector]
     public float health;
 
+    public bool DeleteOnKill;
     public delegate void Killed();
-    public event Killed onKilled;
+    public event Killed OnKilled;
 
     public delegate void HealthUpdated(float percentage);
-    public event HealthUpdated onHealthUpdated;
+    public event HealthUpdated OnHealthUpdated;
+
+    public delegate void DamageModif(ref float damage);
+    public event DamageModif OnDamaged;
+
+    private bool alrKilled;
 
     public void Start() {
+        alrKilled = false;
         health = maxHealth;
-        if (DeleteOnKill) onKilled += () => { Destroy(gameObject); };
+        if (DeleteOnKill) OnKilled += () => { Destroy(gameObject); };
     }
 
     public void Damage(float damage) {
+        OnDamaged?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
 
-        onHealthUpdated?.Invoke(health / maxHealth);
-        if (health == 0) {
-            onKilled?.Invoke();
+        OnHealthUpdated?.Invoke(health / maxHealth);
+        if (health == 0 && !alrKilled) {
+            alrKilled = true;
+            OnKilled?.Invoke();
         }
     }
 }

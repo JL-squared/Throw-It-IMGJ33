@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 278e8b01da2784d4eb38c0962ccdff07, type: 3}
+  m_Name: BotBase
+  m_EditorClassIdentifier: 
+  back:
+  - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
+      type: 3}
+    spawnChance: 0
+    modifiers:
+    - attribute: 0
+      delta: 0.5
+  left:
+  - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
+      type: 3}
+    spawnChance: 0.5
+    modifiers: []
+  right:
+  - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
+      type: 3}
+    spawnChance: 0.5
+    modifiers: []
+  hat:
+  - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
+      type: 3}
+    spawnChance: 0
+    modifiers:
+    - attribute: 2
+      delta: 10
+  neck:
+  - prefab: {fileID: 8665893292947025873, guid: 725e6bb2aee5a2a41b81e96b0bc352f7,
+      type: 3}
+    spawnChance: 0.5
+    modifiers: []
+  leftEye:
+  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+      type: 3}
+    spawnChance: 0.2
+    modifiers: []
+  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
+      type: 3}
+    spawnChance: 1
+    modifiers: []
+  rightEye:
+  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+      type: 3}
+    spawnChance: 0.2
+    modifiers: []
+  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
+      type: 3}
+    spawnChance: 1
+    modifiers: []
+  nose:
+  - prefab: {fileID: 3953031840982891585, guid: 7d724eb4a29256f49811b18df36f2840,
+      type: 3}
+    spawnChance: 1
+    modifiers: []
+  spawnAtLeastOneDefaultEye: 1
+  defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+    type: 3}
+  angryChance: 0
+  angryModifiers:
+  - attribute: 0
+    delta: 2
+  baseMovementSpeed: 2
+  baseAttackSpeed: 5
+  baseBodyHealth: 50
+  baseHeadHealth: 20
+  baseDamageResistence: 0
