@@ -13,6 +13,9 @@ public class BotData : ScriptableObject {
     public List<BotPart> rightEye;
     public List<BotPart> nose;
 
+    public bool spawnAtLeastOneDefaultEye = true;
+    public GameObject defaultEye;
+
     public float angryChance = 0.5f;
     public List<BotAttributeModifier> angryModifiers;
 

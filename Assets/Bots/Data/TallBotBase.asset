@@ -42,30 +42,33 @@ MonoBehaviour:
   leftEye:
   - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 0.2
     modifiers: []
   - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 1
     modifiers: []
   rightEye:
   - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 0.2
     modifiers: []
   - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 1
     modifiers: []
   nose:
   - prefab: {fileID: 3953031840982891585, guid: 7d724eb4a29256f49811b18df36f2840,
       type: 3}
     spawnChance: 1
     modifiers: []
+  spawnAtLeastOneDefaultEye: 1
+  defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+    type: 3}
   angryChance: 0.5
   angryModifiers:
   - attribute: 0
-    delta: 3
+    delta: 2
   baseMovementSpeed: 3
   baseAttackSpeed: 5
   baseBodyHealth: 50

@@ -53,14 +53,20 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-    private void SpawnPartsForHolsterType(GameObject holster, List<BotPart> parts) {
+    private void SpawnPart(GameObject holster, BotPart part) {
+        Instantiate(part.prefab, holster.transform);
+        ApplyModifiers(part.modifiers);
+    }
+
+    private BotPart PickPartForHolsterType(GameObject holster, List<BotPart> parts) {
         foreach (var part in parts) {
             if (Random.value < part.spawnChance) {
-                Instantiate(part.prefab, holster.transform);
-                ApplyModifiers(part.modifiers);
-                return;
+                SpawnPart(holster, part);
+                return part;
             }
         }
+
+        return null;
     }
 
     private void ApplyAttributes() {
@@ -77,16 +83,28 @@ public class BotBase : MonoBehaviour {
         damageResistence = data.baseDamageResistence;
         
         // Base weapons / attribute modifiers
-        SpawnPartsForHolsterType(backHolster, data.back);
-        SpawnPartsForHolsterType(leftHolster, data.left);
-        SpawnPartsForHolsterType(rightHolster, data.right);
-        SpawnPartsForHolsterType(leftEyeHolster, data.leftEye);
-        SpawnPartsForHolsterType(rightEyeHolster, data.rightEye);
+        PickPartForHolsterType(backHolster, data.back);
+        PickPartForHolsterType(leftHolster, data.left);
+        PickPartForHolsterType(rightHolster, data.right);
+
+        // Spawns at LEAST one default eye if needed
+        if (data.spawnAtLeastOneDefaultEye) {
+            if (Random.value > 0.5) {
+                PickPartForHolsterType(leftEyeHolster, data.leftEye);
+                SpawnPart(rightEyeHolster, new BotPart(data.defaultEye));
+            } else {
+                SpawnPart(leftEyeHolster, new BotPart(data.defaultEye));
+                PickPartForHolsterType(rightEyeHolster, data.rightEye);
+            }
+        } else {
+            PickPartForHolsterType(leftEyeHolster, data.leftEye);
+            PickPartForHolsterType(rightEyeHolster, data.rightEye);
+        }
 
         // Cute Cosmetics :3
-        SpawnPartsForHolsterType(hatHolster, data.hat);
-        SpawnPartsForHolsterType(neckHolster, data.neck);
-        SpawnPartsForHolsterType(noseHolster, data.nose);
+        PickPartForHolsterType(hatHolster, data.hat);
+        PickPartForHolsterType(neckHolster, data.neck);
+        PickPartForHolsterType(noseHolster, data.nose);
 
         leftHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
         leftEyeHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
