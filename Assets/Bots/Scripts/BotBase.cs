@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class BotBase : MonoBehaviour {
-    public List<BotData> datas;
+    public BotData data;
     public GameObject head;
     public GameObject backHolster;
     public GameObject leftHolster;
@@ -90,14 +90,12 @@ public class BotBase : MonoBehaviour {
     }
 
     private void SpawnParts() {
-        BotData data = datas[0];
-
         movementSpeed = data.baseMovementSpeed;
         attackSpeed = data.baseAttackSpeed;
         bodyHealth = data.baseBodyHealth;
         headHealth = data.baseHeadHealth;
         damageResistence = data.baseDamageResistence;
-        
+
         // Base weapons / attribute modifiers
         PickPartForHolsterType(backHolster, data.back);
         PickPartForHolsterType(leftHolster, data.left);
@@ -127,12 +125,12 @@ public class BotBase : MonoBehaviour {
     }
 
     private void ApplyAngry() {
-        bool angy = Random.value < datas[0].angryChance;
+        bool angy = Random.value < data.angryChance;
         happyFace.SetActive(!angy);
         angryFace.SetActive(angy);
 
         if (angy) {
-            ApplyModifiers(datas[0].angryModifiers);
+            ApplyModifiers(data.angryModifiers);
         }
     }
 

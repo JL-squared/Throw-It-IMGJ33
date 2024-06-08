@@ -8,6 +8,7 @@ public class BotPathfinder : MonoBehaviour {
     public float rotationSmoothing;
     public float speedDistFalloff;
     private NavMeshPath path;
+    public LayerMask mask;
     public Vector3 target;
 
     public void Start() {
@@ -31,15 +32,18 @@ public class BotPathfinder : MonoBehaviour {
 
     public void Update() {
         target = GameObject.FindGameObjectWithTag("PlayerTag").transform.position;
-        if (NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path)) {
-            Vector3 direction = GetAppropriateDir(path.corners);
-            direction.y = 0;
-            Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
-            float speedMult = Mathf.Clamp(direction.magnitude / speedDistFalloff, 0.5f, 1.0f);
-            em.localWishMovement = Vector2.up * speedMult;
-        } else {
-            em.localWishMovement = Vector2.zero;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, 10000f, mask)) {
+            if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, NavMesh.AllAreas, path)) {
+                Vector3 direction = GetAppropriateDir(path.corners);
+                direction.y = 0;
+                Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
+                float speedMult = Mathf.Clamp(direction.magnitude / speedDistFalloff, 0.5f, 1.0f);
+                em.localWishMovement = Vector2.up * speedMult;
+            } else {
+                em.localWishMovement = Vector2.zero;
+            }
         }
     }
 }
