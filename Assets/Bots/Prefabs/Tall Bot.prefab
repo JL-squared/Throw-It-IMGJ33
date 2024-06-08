@@ -53,6 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2570737002553099411}
+  - component: {fileID: 2269152106932263584}
   m_Layer: 0
   m_Name: Hat
   m_TagString: Untagged
@@ -68,13 +69,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986971301723011619}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.361, z: 0}
+  m_LocalRotation: {x: -0.22920047, y: 0, z: 0, w: 0.97337925}
+  m_LocalPosition: {x: 0, y: 1.3, z: -0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8742717674536080720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -26.5, y: 0, z: 0}
+--- !u!114 &2269152106932263584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986971301723011619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222d65eb5654da24a8deb7c3c5e6bac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2119079139128084970
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +384,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSmoothing: 20
   speedDistFalloff: 10
+  mask:
+    serializedVersion: 2
+    m_Bits: 639
   target: {x: 0, y: 0, z: 0}
 --- !u!114 &4958769060511696096
 MonoBehaviour:
@@ -399,8 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6397ddab1a27848bb77d90b224b1dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datas:
-  - {fileID: 11400000, guid: ebd060475d811b3419835ba21486cce2, type: 2}
+  data: {fileID: 11400000, guid: dc8c885041695744fa547a296ef44650, type: 2}
   head: {fileID: 7388793179954581256}
   backHolster: {fileID: 4409276882689525740}
   leftHolster: {fileID: 7959931128270589725}
@@ -896,6 +911,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: antenna-head
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2f970e27ce7e1f642b9aa77331a903c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
