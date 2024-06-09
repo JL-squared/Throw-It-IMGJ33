@@ -86,4 +86,14 @@ public static class VoxelUtils {
     public static int PosToIndex(uint3 position) {
         return (int)Morton.EncodeMorton32(position);
     }
+
+    // Convert a ushort to two bytes
+    public static (byte, byte) UshortToBytes(ushort val) {
+        return ((byte)(val >> 8), (byte)(val & 0xFF));
+    }
+
+    // Convert two bytes to a ushort
+    public static ushort BytesToUshort(byte first, byte second) {
+        return (ushort)(first << 8 | second);
+    }
 }

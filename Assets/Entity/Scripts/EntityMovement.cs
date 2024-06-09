@@ -57,7 +57,11 @@ public class EntityMovement : MonoBehaviour {
             }
         }
 
-        cc.Move(movement * Time.deltaTime);
+        CollisionFlags flags = cc.Move(movement * Time.deltaTime);
+
+        if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
+            movement.y = 0;
+        }
 
         if (localWishRotation.normalized != Quaternion.identity) {
             transform.rotation = localWishRotation.normalized;

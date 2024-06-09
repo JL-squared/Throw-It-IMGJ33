@@ -7,7 +7,7 @@ using UnityEngine;
 // We have to do this so that Git doesn't scream at us telling us we don't have LFS
 [CreateAssetMenu(fileName = "Voxel Map", menuName = "Voxel Terrain")]
 public class SavedVoxelMap : ScriptableObject {
-    public const int ChunksInRegion = 16;
+    public const int ChunksInRegion = 32;
     
     public TextAsset[] textAssets; 
     public Vector3Int mapSize;

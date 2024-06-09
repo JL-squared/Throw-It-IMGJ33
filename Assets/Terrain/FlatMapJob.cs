@@ -7,6 +7,7 @@ using Unity.Mathematics;
 public struct FlatMapJob : IJobParallelFor {
     public float3 offset;
     public NativeArray<Voxel> voxels;
+    public int totalMats;
     
     public void Execute(int index) {
         uint3 id = VoxelUtils.IndexToPos(index);
@@ -21,8 +22,12 @@ public struct FlatMapJob : IJobParallelFor {
         position += offset;
 
         Voxel output = voxels[index];
-        output.material = 0;
-        output.density = (half)(position.y);
+
+        float minHeight = -1f;
+        float stoneHardness = (noise.snoise(position.xz * 0.01f) * 0.5f + 0.5f) * 10 + 2.0f;
+
+        output.material = (byte)(position.y > minHeight ? 0 : 1);
+        output.density = (half)(position.y * (position.y > minHeight ? 1 : stoneHardness));
         voxels[index] = output;
     }
 }

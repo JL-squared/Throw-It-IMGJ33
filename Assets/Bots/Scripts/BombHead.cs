@@ -6,6 +6,8 @@ public class BombHead : BotWorldPart {
     public float timer = 10;
     public float boutToBlowTimer = 2;
     private bool boutaBlow = false;
+    public float explosionEditStrength;
+    public float explosionEditRadius;
     private BotTextToSpeech tts;
     
     public void Start() {
@@ -21,9 +23,9 @@ public class BombHead : BotWorldPart {
             Destroy(botBase.gameObject);
             IVoxelEdit edit = new SphereVoxelEdit {
                 center = transform.position,
-                strength = -1000.0f,
+                strength = -explosionEditStrength,
                 material = 0,
-                radius = 7.0f,
+                radius = explosionEditRadius,
                 writeMaterial = false,
             };
 
@@ -32,7 +34,7 @@ public class BombHead : BotWorldPart {
 
         if (timer < boutToBlowTimer && !boutaBlow) {
             boutaBlow = true;
-            tts.SayString("I am about to blow up. Indeed so. Get ready");
+            tts.SayString("I am about to blow up. Indeed so. Get ready. Kabooeoeoeoeom");
         } else if (!boutaBlow) {
             tts.SayString("laalalallaaaalalalaa", overwritePlaying: false);
         }

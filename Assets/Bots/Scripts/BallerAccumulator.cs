@@ -25,6 +25,7 @@ public class BallerAccumulator : MonoBehaviour {
         radius = Mathf.Sqrt(volume / 4 * Mathf.PI);
         cc.center = Vector3.up * (-radius);
         cc.height = 1f + 2 * radius;
+        cc.radius = radius;
         ball.localScale = Vector3.one * radius * 2f;
         ball.localPosition = -Vector3.up * (radius + 0.5f);
 
@@ -36,7 +37,6 @@ public class BallerAccumulator : MonoBehaviour {
     }
 
     public void Update() {
-
         if (cc.isGrounded) {
             Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
             volume += increaseFactor * Time.deltaTime * mov2d.magnitude;

@@ -6,6 +6,16 @@ using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using System.IO.Compression;
+using System.Threading.Tasks;
+using UnityEditor.VersionControl;
+using Task = System.Threading.Tasks.Task;
+using FileMode = System.IO.FileMode;
+
+
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -114,8 +124,6 @@ public class VoxelTerrain : MonoBehaviour {
             return false;
         }
 
-        MemoryStream regionStream = null;
-
         if (savedMap.mapSize != mapChunkSize) {
             Debug.LogWarning("Current map size does not match up with saved map size");
             Debug.LogWarning("Saved: " + savedMap.mapSize);
@@ -123,28 +131,34 @@ public class VoxelTerrain : MonoBehaviour {
             return false;
         }
 
-        int currentRegionIndex = 0;
-        firstGen = true;
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
-            if (index % SavedVoxelMap.ChunksInRegion == 0) {
-                regionStream = new MemoryStream(savedMap.textAssets[currentRegionIndex].bytes);
-                currentRegionIndex++;
-            }
-
-            int test = VoxelUtils.Volume * Voxel.size;
-            Span<byte> testByteSpan = new Span<byte>(new byte[test]);
-            regionStream.Read(testByteSpan);
-
-            ReadOnlySpan<Voxel> voxels = MemoryMarshal.Cast<byte, Voxel>(testByteSpan);
-
             voxelChunk.hasCollisions = true;
-            voxelChunk.voxels = new NativeArray<Voxel>(voxels.ToArray(), Allocator.Persistent);
-            voxelChunk.Remesh();
-            pendingChunks++;
+            voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
         }
 
         KillChildren();
         GenerateWith(DecompressionCallback);
+
+        List<BufferedStream> cachedStreams = new List<BufferedStream>();
+
+        for (int i = 0; i < savedMap.textAssets.Length; i++) {
+            var memoryStream = new MemoryStream(savedMap.textAssets[i].bytes);
+            var regionStream = new GZipStream(memoryStream, CompressionMode.Decompress);
+            cachedStreams.Add(new BufferedStream(regionStream));
+        }
+
+        VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks);
+
+        for (int i = 0; i < savedMap.textAssets.Length; i++) {
+            cachedStreams[i].Dispose();
+        }
+
+        for (int i = 0; i < totalChunks.Count; i++) {
+            VoxelChunk voxelChunk = totalChunks[i].GetComponent<VoxelChunk>();
+            voxelChunk.Remesh();
+            pendingChunks++;
+        }
+
         return true;
     }
 
@@ -159,41 +173,47 @@ public class VoxelTerrain : MonoBehaviour {
             Directory.CreateDirectory(soPath + "-regions");
         }
 
-        List<FileStream> streamWriters = new List<FileStream>();
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        List<BufferedStream> streamWriters = new List<BufferedStream>();
         for (int i = 0; i < maxRegionFiles; i++) {
             string p = soPath + "-regions/reg" + i + ".bytes";
-            streamWriters.Add(File.Open(p, FileMode.Create));
+            FileStream fileStream = File.Open(p, FileMode.Create);
+            GZipStream gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
+            BufferedStream bufferedStream = new BufferedStream(gzipStream, 1024 * 1024 * 8);
+            streamWriters.Add(bufferedStream);
         }
 
-        for (int i = 0; i < totalChunks.Count; i++) {
-            int currentRegionFile = i / SavedVoxelMap.ChunksInRegion;
-            FileStream writer = streamWriters[currentRegionFile];
+        Debug.Log("Created Files: " + sw.Elapsed);
 
-            VoxelChunk chunk = totalChunks[i].GetComponent<VoxelChunk>();
-            NativeArray<Voxel> voxels = chunk.voxels;
-            NativeSlice<byte> readOnly = voxels.Slice().SliceConvert<byte>();
-            byte[] bytes = readOnly.ToArray();
-            Debug.Log(bytes.Length);
-            writer.Write(bytes);
-        }
+        VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks);
 
+        Debug.Log("Serialization: " + sw.Elapsed);
+
+        List<Task> tasks = new List<Task>();
         for (int i = 0; i < maxRegionFiles; i++) {
-            streamWriters[i].Dispose();
+            streamWriters[i].FlushAsync();
+            Task t = streamWriters[i].DisposeAsync().AsTask();
+            tasks.Add(t);
         }
-        AssetDatabase.Refresh();
 
+        Debug.Log("Disposal: " + sw.Elapsed);
+        Task.WhenAll(tasks).Wait();
+
+        AssetDatabase.Refresh();
         savedMap.textAssets = new TextAsset[maxRegionFiles];
-        for (int i = 0; i < maxRegionFiles; i++) { 
+        for (int i = 0; i < maxRegionFiles; i++) {
             savedMap.textAssets[i] = AssetDatabase.LoadAssetAtPath<TextAsset>(soPath + "-regions/reg" + i + ".bytes");
 
             if (savedMap.textAssets[i] == null) {
                 Debug.LogError("NOT GOOD");
             }
         }
-
+        Debug.Log("Load asset at path: " + sw.Elapsed);
         EditorUtility.SetDirty(savedMap);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        Debug.Log("Last: " + sw.Elapsed);
         Debug.Log("Successfully saved the map!!");
     }
 #endif
@@ -263,7 +283,7 @@ public class VoxelTerrain : MonoBehaviour {
                 var renderer = voxelChunk.GetComponent<MeshRenderer>();
                 voxelChunk.GetComponent<MeshFilter>().sharedMesh = voxelChunk.sharedMesh;
                 voxelChunk.voxelMaterialsLookup = voxelMesh.VoxelMaterialsLookup;
-                renderer.materials = voxelMesh.VoxelMaterialsLookup.Select(x => voxelMaterials[x]).ToArray();
+                renderer.materials = voxelMesh.VoxelMaterialsLookup.Where(x => x < voxelMaterials.Length).Select(x => voxelMaterials[x]).ToArray();
 
                 // Set mesh and renderer bounds
                 voxelChunk.sharedMesh.bounds = new Bounds { min = Vector3.zero, max = Vector3.one * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor };

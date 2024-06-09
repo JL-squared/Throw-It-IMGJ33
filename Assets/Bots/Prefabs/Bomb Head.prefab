@@ -49,6 +49,8 @@ MonoBehaviour:
   botBase: {fileID: 0}
   timer: 10
   boutToBlowTimer: 5
+  explosionEditStrength: 5
+  explosionEditRadius: 5
 --- !u!1 &5964723677888720244
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,7 +802,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.05
+      value: 0.025
       mode: 0
       spread: 0
       speed:

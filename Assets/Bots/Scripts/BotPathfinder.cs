@@ -10,10 +10,24 @@ public class BotPathfinder : MonoBehaviour {
     private NavMeshPath path;
     public LayerMask mask;
     public Vector3 target;
+    public string agentType = "Bot";
 
     public void Start() {
         em = GetComponent<EntityMovement>();
         path = new NavMeshPath();
+    }
+
+    // https://forum.unity.com/threads/how-do-i-get-the-int-value-of-a-navigation-agent-type.472340/
+    private int GetNavMeshAgentID(string name) {
+        for (int i = 0; i < NavMesh.GetSettingsCount(); i++) {
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(index: i);
+            if (name == NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID)) {
+                return settings.agentTypeID;
+            }
+        }
+
+        Debug.LogError("Could not find navmesh agent id");
+        return 0;
     }
 
     private Vector3 GetAppropriateDir(Vector3[] corners) {
@@ -32,9 +46,13 @@ public class BotPathfinder : MonoBehaviour {
 
     public void Update() {
         target = GameObject.FindGameObjectWithTag("PlayerTag").transform.position;
+        NavMeshQueryFilter filter = new NavMeshQueryFilter();
+        filter.agentTypeID = GetNavMeshAgentID(agentType);
+        filter.SetAreaCost(0, 1f);
+        filter.areaMask = NavMesh.AllAreas;
 
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, 10000f, mask)) {
-            if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, NavMesh.AllAreas, path)) {
+            if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, filter, path)) {
                 Vector3 direction = GetAppropriateDir(path.corners);
                 direction.y = 0;
                 Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
