@@ -8,6 +8,7 @@ using UnityEngine;
 public class Scooper : BotWorldPart {
     public Transform fakeSnowball;
     public Transform origin;
+    public Transform spawnHolster;
     public float speedModifier;
     public float angle;
     public ElasticValueTweener tweener;
@@ -28,6 +29,15 @@ public class Scooper : BotWorldPart {
     public override void AttributesUpdated() {
         base.AttributesUpdated();
         speedModifier *= botBase.attackSpeed;
+    }
+
+    public override void TargetChanged(Vector3 target, Vector3 velocity) {
+        base.TargetChanged(target, velocity);
+        // TODO: Actually predict time of flight using projectile motion?
+        float lookAhead = 0.2f;
+        
+        Vector3 newTarget = target + velocity * lookAhead;
+        spawnHolster.rotation = Quaternion.LookRotation((newTarget - spawnHolster.position).normalized);
     }
 
     public void Start() {

@@ -45,7 +45,6 @@ public class BotPathfinder : MonoBehaviour {
     }
 
     public void Update() {
-        target = GameObject.FindGameObjectWithTag("PlayerTag").transform.position;
         NavMeshQueryFilter filter = new NavMeshQueryFilter();
         filter.agentTypeID = GetNavMeshAgentID(agentType);
         filter.SetAreaCost(0, 1f);

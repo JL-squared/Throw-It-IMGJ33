@@ -7,7 +7,7 @@
       "dependencies": {
         "com.unity.render-pipelines.universal": "7.0.0"
       },
-      "hash": "937dbf71a066613cafa0b256ff8385a75e515bb5"
+      "hash": "a1543e38097784c7f6d710d65a7e3248ad530521"
     },
     "com.unity.ai.navigation": {
       "version": "1.1.5",

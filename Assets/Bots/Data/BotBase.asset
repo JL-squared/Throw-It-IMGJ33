@@ -25,13 +25,13 @@ MonoBehaviour:
   left:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 1
     tags: []
     modifiers: []
   right:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 0
     tags: []
     modifiers: []
   hat:
@@ -109,7 +109,7 @@ MonoBehaviour:
     delta: 2
   - attribute: 1
     delta: 2
-  baseMovementSpeed: 3
+  baseMovementSpeed: -200
   baseAttackSpeed: 1
   baseBodyHealth: 50
   baseHeadHealth: 20

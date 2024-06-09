@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering.LookDev;
+using static UnityEngine.GraphicsBuffer;
 
 public class BotBase : MonoBehaviour {
     public BotData data;
@@ -36,6 +37,7 @@ public class BotBase : MonoBehaviour {
     private BotTextToSpeech tts;
 
     private List<BotWorldPart> worldParts;
+    private Vector3 target;
 
     private void ApplyModifiers(List<BotAttributeModifier> modifiers) {
         foreach (var modifier in modifiers) {
@@ -181,5 +183,16 @@ public class BotBase : MonoBehaviour {
         SpawnParts();
         ApplyAngry();
         ApplyAttributes();
+    }
+
+    public void Update() {
+        GameObject player = GameObject.FindGameObjectWithTag("PlayerTag");
+        Vector3 velocity = player.GetComponent<EntityMovement>().cc.velocity;
+        target = player.transform.position;
+        pathfinder.target = target;
+
+        foreach (var part in worldParts) {
+            part.TargetChanged(target, velocity);
+        }
     }
 }
