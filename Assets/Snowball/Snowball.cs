@@ -41,7 +41,10 @@ public class Snowball : MonoBehaviour {
         Destroy(gameObject);
         GameObject prts = Instantiate(particles);
         prts.transform.position = transform.position;
-        prts.transform.rotation = Quaternion.LookRotation(collision.impulse, Vector3.up);
+
+        if (collision.impulse.magnitude > 0.1) {
+            prts.transform.rotation = Quaternion.LookRotation(collision.impulse);
+        }
     }
 
     public void Update() {

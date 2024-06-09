@@ -69,6 +69,6 @@ MonoBehaviour:
     delta: 2
   baseMovementSpeed: 2
   baseAttackSpeed: 5
-  baseBodyHealth: 50
-  baseHeadHealth: 20
+  baseBodyHealth: 500
+  baseHeadHealth: 200
   baseDamageResistence: 0

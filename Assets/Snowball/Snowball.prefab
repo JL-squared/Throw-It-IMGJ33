@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -8984028548373348783}
   - component: {fileID: 8793629792860420648}
   - component: {fileID: 4728520491981583619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Snowball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb8dd9c31f7ef641bdb4044960aa2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particles: {fileID: 0}
 --- !u!1001 &2232885810548923308
 PrefabInstance:
   m_ObjectHideFlags: 0

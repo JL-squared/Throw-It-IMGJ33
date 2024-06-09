@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.LookDev;
 
 public class BotBase : MonoBehaviour {
     public BotData data;
@@ -19,6 +20,7 @@ public class BotBase : MonoBehaviour {
     public GameObject angryFace;
     public GameObject happyFace;
 
+
     public float movementSpeed = 0;
     public float attackSpeed = 0;
     public float bodyHealth = 0;
@@ -29,6 +31,7 @@ public class BotBase : MonoBehaviour {
     private EntityHealth _headHealth;
     private EntityHealth _bodyHealth;
     private BotPathfinder pathfinder;
+    private BotTextToSpeech tts;
 
     private List<BotWorldPart> worldParts;
 
@@ -79,6 +82,13 @@ public class BotBase : MonoBehaviour {
 
     private void OnDamage(ref float damage) {
         damage *= (1 - damageResistence);
+
+        
+        tts.SayString("ouch");
+    }
+
+    private void OnHeadDamage(ref float damage) {
+        tts.SayString("bruh", new TextToSpeech.DeltaAttribs { speed = -40, pitch = -30 }, srcVolume: Mathf.Clamp01(damage / 10.0f));
     }
 
     private void ApplyAttributes() {
@@ -144,9 +154,10 @@ public class BotBase : MonoBehaviour {
         entityMovement = GetComponent<EntityMovement>();
         _bodyHealth = GetComponent<EntityHealth>();
         _headHealth = head.GetComponent<EntityHealth>();
+        tts = GetComponent<BotTextToSpeech>();
 
         _bodyHealth.OnDamaged += OnDamage;
-        _headHealth.OnDamaged += OnDamage;
+        _headHealth.OnDamaged += OnHeadDamage;
         _bodyHealth.OnKilled += () => { OnKilled(false); };
         _headHealth.OnKilled += () => { OnKilled(true); };
 
