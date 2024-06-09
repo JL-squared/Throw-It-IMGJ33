@@ -12,6 +12,7 @@ public class BotData : ScriptableObject {
     public List<BotPartData> leftEye;
     public List<BotPartData> rightEye;
     public List<BotPartData> nose;
+    public List<BotPartData> heads;
 
     public bool spawnAtLeastOneDefaultEye = true;
     public GameObject defaultEye;

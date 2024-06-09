@@ -7,7 +7,6 @@ using UnityEngine.Rendering.LookDev;
 
 public class BotBase : MonoBehaviour {
     public BotData data;
-    public GameObject head;
     public GameObject backHolster;
     public GameObject leftHolster;
     public GameObject rightHolster;
@@ -16,6 +15,9 @@ public class BotBase : MonoBehaviour {
     public GameObject hatHolster;
     public GameObject neckHolster;
     public GameObject noseHolster;
+    
+    public GameObject headMeshHolster;
+    public GameObject healthHeadEntity;
 
     public GameObject angryFace;
     public GameObject happyFace;
@@ -83,16 +85,16 @@ public class BotBase : MonoBehaviour {
     private void OnDamage(ref float damage) {
         damage *= (1 - damageResistence);
 
-        
+        // , srcVolume: Mathf.Clamp01(damage / 10.0f)
         tts.SayString("ouch");
     }
 
     private void OnHeadDamage(ref float damage) {
-        tts.SayString("bruh", new TextToSpeech.DeltaAttribs { speed = -40, pitch = -30 }, srcVolume: Mathf.Clamp01(damage / 10.0f));
+        tts.SayString("bruh");
     }
 
     private void ApplyAttributes() {
-        entityMovement.speed = movementSpeed;
+        entityMovement.speed = Mathf.Max(movementSpeed, 0);
         _bodyHealth.maxHealth = bodyHealth;
         _bodyHealth.health = bodyHealth;
         _headHealth.maxHealth = headHealth;
@@ -125,10 +127,17 @@ public class BotBase : MonoBehaviour {
             PickPartForHolsterType(rightEyeHolster, data.rightEye);
         }
 
+        // Check if we have a head we can apply hats on
+        if (PickPartForHolsterType(headMeshHolster, data.heads).tags.Contains("hattable")) {
+            PickPartForHolsterType(hatHolster, data.hat);
+        }
+
         // Cute Cosmetics :3
-        PickPartForHolsterType(hatHolster, data.hat);
         PickPartForHolsterType(neckHolster, data.neck);
         PickPartForHolsterType(noseHolster, data.nose);
+
+        
+
 
         leftHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
         leftEyeHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
@@ -153,8 +162,12 @@ public class BotBase : MonoBehaviour {
         pathfinder = GetComponent<BotPathfinder>();
         entityMovement = GetComponent<EntityMovement>();
         _bodyHealth = GetComponent<EntityHealth>();
-        _headHealth = head.GetComponent<EntityHealth>();
+        _headHealth = healthHeadEntity.GetComponent<EntityHealth>();
         tts = GetComponent<BotTextToSpeech>();
+
+        healthHeadEntity.transform.position = headMeshHolster.transform.position;
+        Destroy(headMeshHolster.GetComponent<MeshFilter>());
+        Destroy(headMeshHolster.GetComponent<MeshRenderer>());
 
         _bodyHealth.OnDamaged += OnDamage;
         _headHealth.OnDamaged += OnHeadDamage;

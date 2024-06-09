@@ -14,5 +14,6 @@ public class BotPartData {
     public GameObject prefab;
     public float spawnChance;
 
+    public List<string> tags;
     public List<BotAttributeModifier> modifiers;
 }

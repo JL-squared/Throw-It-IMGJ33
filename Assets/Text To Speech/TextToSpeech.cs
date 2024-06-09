@@ -24,22 +24,28 @@ public class TextToSpeech: MonoBehaviour {
         public int throat;
     }
 
-    public float updateStep = 0.1f;
-    public int sampleDataLength = 256;
+    private float updateStep = 0.1f;
+    private int sampleDataLength = 256;
     private float currentUpdateTime = 0f;
     private float clipLoudness;
     private float[] clipSampleData;
 
     public void Start() {
         source = GetComponent<AudioSource>();
-        SayString("Damn this is crazy vro");
         clipSampleData = new float[sampleDataLength];
     }
 
     public void Update() {
         currentUpdateTime += Time.deltaTime;
-        if (currentUpdateTime >= updateStep) {
+        if (currentUpdateTime >= updateStep && source.clip != null) {
+            if (source.timeSamples + sampleDataLength > source.clip.samples) {
+                return;
+            }
+
             currentUpdateTime = 0f;
+
+            // TODO: Error coming from here. Dunno why...
+            //Debug.Log("L: " + clipSampleData.Length + ", TS: " + source.timeSamples + "S: " + source.clip.samples);
             source.clip.GetData(clipSampleData, source.timeSamples);
 
             if (source.timeSamples > 0) {
@@ -56,10 +62,12 @@ public class TextToSpeech: MonoBehaviour {
         }
     }
 
-    public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f) {
-        if (source.isPlaying) {
+    public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
+        if (source.isPlaying && overwritePlaying) {
             source.Stop();
             source.timeSamples = 0;
+        } else if (source.isPlaying) {
+            return;
         }
 
         UnitySAM.SetSpeed(speed + deltas.speed);
