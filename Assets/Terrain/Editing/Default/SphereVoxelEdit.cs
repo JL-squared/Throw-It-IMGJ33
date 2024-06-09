@@ -10,6 +10,7 @@ public struct SphereVoxelEdit : IVoxelEdit {
     [ReadOnly] public float strength;
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
+    [ReadOnly] public bool paintOnly;
 
     public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
         return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
@@ -25,7 +26,9 @@ public struct SphereVoxelEdit : IVoxelEdit {
     public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
         voxel.material = (density < 1.0F && writeMaterial) ? material : voxel.material;
-        voxel.density = (density < 0.0F) ? (half)(density * strength) : voxel.density;
+        if (!paintOnly) {
+            voxel.density = (density < 0.0F) ? (half)(density * strength) : voxel.density;
+        }
         return voxel;
     }
 }

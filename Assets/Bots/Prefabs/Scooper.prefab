@@ -50,18 +50,102 @@ MonoBehaviour:
   botBase: {fileID: 0}
   fakeSnowball: {fileID: 2815670362024921434}
   origin: {fileID: 1447788538758693849}
+  speedModifier: 2
+  angle: 0
   tweener:
     targetValue: 0
-    targetReachSpeed: 10
-    velocityDampeningSpeed: 0.5
-    maxAccel: 100
-  speed: 240
-  repeating: 1
+    targetReachSpeed: 20
+    velocityDampeningSpeed: 0.2
+    maxAccel: 30
+    velocity: 0
+    angular: 1
+  speed: 75
+  repeating: 0
   animCharge: 0
   fakeSnowballSize: 0
   groundPickupAngle: 90
   groundPickupAngleSpread: 30
   thrown: 0
+  maxTime: 5
+  curveThrowTime: 3.6
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 180
+      inSlope: 2.5988264
+      outSlope: 211.17393
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 0.71827924
+    - serializedVersion: 3
+      time: 0.9432426
+      value: 375.0717
+      inSlope: 206.80966
+      outSlope: 0
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.6254344
+      outWeight: 0.29834014
+    - serializedVersion: 3
+      time: 1.1432426
+      value: 375.2454
+      inSlope: -1.7601008
+      outSlope: -1.7601008
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.3432426
+      value: 374.36765
+      inSlope: 0
+      outSlope: Infinity
+      tangentMode: 97
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2
+      value: 350
+      inSlope: 0
+      outSlope: Infinity
+      tangentMode: 97
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2.75
+      value: 324.7982
+      inSlope: -0.7513671
+      outSlope: -7731.1367
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 1
+      outWeight: 0.016923415
+    - serializedVersion: 3
+      time: 3.5097656
+      value: 323.5878
+      inSlope: Infinity
+      outSlope: 10157.845
+      tangentMode: 7
+      weightedMode: 3
+      inWeight: 0.5939944
+      outWeight: 0.09606329
+    - serializedVersion: 3
+      time: 3.7
+      value: 450
+      inSlope: -1248.4396
+      outSlope: -215.55386
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0.60119617
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &3035267206977144409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,11 +270,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 36da95b545ce032409c1860cdaa44d23,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 785eaf7995215174f9998c58e9926caa, type: 2}
     - target: {fileID: 919132149155446097, guid: 36da95b545ce032409c1860cdaa44d23,
         type: 3}
       propertyPath: m_Name
       value: scooper
       objectReference: {fileID: 0}
+    - target: {fileID: 6162805940852258354, guid: 36da95b545ce032409c1860cdaa44d23,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 785eaf7995215174f9998c58e9926caa, type: 2}
     m_RemovedComponents:
     - {fileID: 2223639932434330405, guid: 36da95b545ce032409c1860cdaa44d23, type: 3}
     m_RemovedGameObjects: []

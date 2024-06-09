@@ -23,6 +23,7 @@ public class VoxelEditor : MonoBehaviour {
     public float targetDensity;
     public float targetHeight;
     public byte material;
+    public bool paintOnly;
     
 
     [HideInInspector] public bool allowedToEdit = false;
@@ -100,6 +101,7 @@ public class VoxelEditor : MonoBehaviour {
                     strength = brushStrength * direction,
                     writeMaterial = true,
                     material = material,
+                    paintOnly = paintOnly,
                 };
                 break;
             case BrushType.Cube:
@@ -109,6 +111,7 @@ public class VoxelEditor : MonoBehaviour {
                     strength = brushStrength * direction,
                     writeMaterial = true,
                     material = material,
+                    paintOnly = paintOnly,
                 };
                 break;
             case BrushType.Flatten:

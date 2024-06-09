@@ -5440,6 +5440,7 @@ GameObject:
   - component: {fileID: 3711022125120825706}
   - component: {fileID: 8780433711588789733}
   - component: {fileID: 4127310177993036285}
+  - component: {fileID: 6575133725039191861}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -5479,6 +5480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weatherManager: {fileID: 0}
   waveManager: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &8780433711588789733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5494,9 +5496,17 @@ MonoBehaviour:
   windy: 0
   snowy: 0
   stormy: 0
+  noisyParams: 0
   windyNoiseScale: 0.02
   snowyNoiseScale: 0.01
   stormyNoiseScale: 0.004
+  globalTimeScale: 1
+  minSnowEmissionRate: 100
+  maxSnowEmissionRate: 5000
+  windyParticlesNoiseScale: 0.02
+  windyParticlesNoiseFactor: 0.2
+  windParticleField: {fileID: 6787259401343288416}
+  snowParticleSystem: {fileID: 1624129142068695749}
   fog: {fileID: 524385166999783149}
   densityFogCurve:
     serializedVersion: 2
@@ -5559,8 +5569,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.22920752
-      value: 0.29417914
+      time: 0.21358252
+      value: -0.012064755
       inSlope: 0.012199528
       outSlope: 0.012199528
       tangentMode: 0
@@ -5568,14 +5578,14 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.44116026
     - serializedVersion: 3
-      time: 0.43486595
-      value: 0.60717666
-      inSlope: 2.5091643
-      outSlope: 2.5091643
+      time: 0.5025743
+      value: 0.48842818
+      inSlope: -0.1431882
+      outSlope: -0.1431882
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.28411272
+      outWeight: 0.6844783
     - serializedVersion: 3
       time: 0.65000004
       value: 1
@@ -5609,3 +5619,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c3f2fb99ddf98478ce08071866d0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    botData: []
+  currentWave: 0
+--- !u!114 &6575133725039191861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738069126821496426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bfd9045c0d5a4ba27ed7cb13fc199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testSurface: {fileID: 0}
+  terrainSurface: {fileID: 0}
+  mask:
+    serializedVersion: 2
+    m_Bits: 591

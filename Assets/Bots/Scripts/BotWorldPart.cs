@@ -4,4 +4,5 @@ using UnityEngine;
 
 public abstract class BotWorldPart : MonoBehaviour {
     public BotBase botBase;
+    public virtual void AttributesUpdated() { }
 }

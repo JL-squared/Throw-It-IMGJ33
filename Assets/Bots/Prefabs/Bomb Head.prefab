@@ -49,7 +49,7 @@ MonoBehaviour:
   botBase: {fileID: 0}
   timer: 10
   boutToBlowTimer: 5
-  explosionEditStrength: 5
+  explosionEditStrength: 50
   explosionEditRadius: 5
 --- !u!1 &5964723677888720244
 GameObject:

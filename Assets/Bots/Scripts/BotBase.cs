@@ -99,6 +99,10 @@ public class BotBase : MonoBehaviour {
         _bodyHealth.health = bodyHealth;
         _headHealth.maxHealth = headHealth;
         _headHealth.health = headHealth;
+
+        foreach (var part in worldParts) {
+            part.AttributesUpdated();
+        }
     }
 
     private void SpawnParts() {

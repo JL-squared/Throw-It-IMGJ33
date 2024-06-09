@@ -19,7 +19,9 @@ MonoBehaviour:
     tags: []
     modifiers:
     - attribute: 0
-      delta: 0
+      delta: 1
+    - attribute: 1
+      delta: 1
   left:
   - prefab: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
       type: 3}
@@ -105,8 +107,10 @@ MonoBehaviour:
   angryModifiers:
   - attribute: 0
     delta: 2
-  baseMovementSpeed: -200
-  baseAttackSpeed: 5
+  - attribute: 1
+    delta: 2
+  baseMovementSpeed: 3
+  baseAttackSpeed: 1
   baseBodyHealth: 50
   baseHeadHealth: 20
   baseDamageResistence: 0

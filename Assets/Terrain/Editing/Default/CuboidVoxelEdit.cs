@@ -10,6 +10,7 @@ public struct CuboidVoxelEdit : IVoxelEdit {
     [ReadOnly] public float strength;
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
+    [ReadOnly] public bool paintOnly;
 
     public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
         return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
@@ -27,7 +28,9 @@ public struct CuboidVoxelEdit : IVoxelEdit {
         float density = math.length(math.max(q, 0.0F)) + math.min(math.max(q.x, math.max(q.y, q.z)), 0.0F);
 
         voxel.material = (density < 1.0F && writeMaterial) ? material : voxel.material;
-        voxel.density = (density < 0.0F) ? (half)(strength) : voxel.density;
+        if (!paintOnly) {
+            voxel.density = (density < 0.0F) ? (half)(density * strength) : voxel.density;
+        }
         return voxel;
     }
 }

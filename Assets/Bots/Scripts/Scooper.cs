@@ -8,7 +8,8 @@ using UnityEngine;
 public class Scooper : BotWorldPart {
     public Transform fakeSnowball;
     public Transform origin;
-    private float angle;
+    public float speedModifier;
+    public float angle;
     public ElasticValueTweener tweener;
     public float speed;
     public bool repeating;
@@ -20,6 +21,14 @@ public class Scooper : BotWorldPart {
     private SnowballThrower thrower;
     public bool thrown;
     private float time;
+    public float maxTime;
+    public float curveThrowTime;
+    public AnimationCurve curve;
+
+    public override void AttributesUpdated() {
+        base.AttributesUpdated();
+        speedModifier *= botBase.attackSpeed;
+    }
 
     public void Start() {
         thrower = GetComponent<SnowballThrower>();
@@ -31,9 +40,9 @@ public class Scooper : BotWorldPart {
     public void Update() {
         // Handle angle stuff
         if (repeating) {
-            angle += Time.deltaTime * speed;
+            angle += Time.deltaTime * speed * speedModifier;
         } else {
-            time += Time.deltaTime;
+            time += Time.deltaTime * speedModifier;
             // scoop up snow, overshoot a bit
             // ratchet back 2-3 times
             tweener.Update(Time.deltaTime, ref angle);
@@ -49,6 +58,14 @@ public class Scooper : BotWorldPart {
             }
         } else {
             // badoing... throw that shit
+            float localized = (time % maxTime);
+            tweener.targetValue = curve.Evaluate(localized);
+            normalized = (angle + 180) % 360.0f;
+
+            if (localized > curveThrowTime && !thrown) {
+                thrower.Throw();
+                thrown = true;
+            }
         }
 
         // Sizing the fake snowball size based on current angle

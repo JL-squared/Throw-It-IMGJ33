@@ -25,8 +25,10 @@ public class VoxelEditorCustomEditor : Editor {
             case VoxelEditor.BrushType.RaiseLower:
                 break;
             case VoxelEditor.BrushType.Sphere:
+                editor.paintOnly = EditorGUILayout.Toggle("Paint Only", editor.paintOnly);
                 break;
             case VoxelEditor.BrushType.Cube:
+                editor.paintOnly = EditorGUILayout.Toggle("Paint Only", editor.paintOnly);
                 break;
             case VoxelEditor.BrushType.Flatten:
                 break;

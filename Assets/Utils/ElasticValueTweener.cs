@@ -9,10 +9,23 @@ public class ElasticValueTweener {
     public float targetReachSpeed = 10f;
     public float velocityDampeningSpeed = 0.5f;
     public float maxAccel = 20.0f;
-    private float velocity;
+    public float velocity;
+    public bool angular;
+
+    public float AngleDifference(float angle1, float angle2) {
+        float diff = (angle2 - angle1 + 180) % 360 - 180;
+        return diff < -180 ? diff + 360 : diff;
+    }
 
     public void Update(float dt, ref float value) {
-        velocity += Mathf.Clamp(targetValue - value, -maxAccel, maxAccel) * targetReachSpeed;
+        float rawVel;
+
+        if (angular) {
+            rawVel = -AngleDifference(targetValue, value);
+        } else {
+            rawVel = targetValue - value;
+        }
+        velocity += Mathf.Clamp(rawVel, -maxAccel, maxAccel) * targetReachSpeed;
         velocity += -velocity * Mathf.Clamp01(velocityDampeningSpeed);
         value += dt * velocity;
     }

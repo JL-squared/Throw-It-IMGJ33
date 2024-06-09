@@ -29,7 +29,9 @@ public class BombHead : BotWorldPart {
                 writeMaterial = false,
             };
 
-            VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+            if (VoxelTerrain.Instance != null) {
+                VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+            }
         }
 
         if (timer < boutToBlowTimer && !boutaBlow) {
