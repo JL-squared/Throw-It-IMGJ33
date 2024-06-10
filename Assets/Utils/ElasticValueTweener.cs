@@ -12,6 +12,7 @@ public class ElasticValueTweener {
     public float velocity;
     public bool angular;
 
+    // https://stackoverflow.com/questions/28036652/finding-the-shortest-distance-between-two-angles
     public float AngleDifference(float angle1, float angle2) {
         float diff = (angle2 - angle1 + 180) % 360 - 180;
         return diff < -180 ? diff + 360 : diff;

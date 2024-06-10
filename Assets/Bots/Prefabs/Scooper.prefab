@@ -51,7 +51,7 @@ MonoBehaviour:
   fakeSnowball: {fileID: 2815670362024921434}
   origin: {fileID: 1447788538758693849}
   spawnHolster: {fileID: 3643799789739792537}
-  speedModifier: 2
+  secondsBetweenThrows: 5
   angle: 0
   tweener:
     targetValue: 0
@@ -60,7 +60,6 @@ MonoBehaviour:
     maxAccel: 30
     velocity: 0
     angular: 1
-  speed: 75
   repeating: 0
   animCharge: 0
   fakeSnowballSize: 0

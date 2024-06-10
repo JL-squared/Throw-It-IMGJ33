@@ -47,10 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  timer: 10
-  boutToBlowTimer: 5
-  explosionEditStrength: 50
-  explosionEditRadius: 5
+  timer: 2
+  boutToBlowTimer: 1
+  editStrength: 100
+  force: 7
+  damage: 50
+  radius: 7
 --- !u!1 &5964723677888720244
 GameObject:
   m_ObjectHideFlags: 0

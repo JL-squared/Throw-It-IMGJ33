@@ -6,8 +6,10 @@ public class BombHead : BotWorldPart {
     public float timer = 10;
     public float boutToBlowTimer = 2;
     private bool boutaBlow = false;
-    public float explosionEditStrength;
-    public float explosionEditRadius;
+    public float editStrength;
+    public float force;
+    public float damage;
+    public float radius;
     private BotTextToSpeech tts;
     
     public void Start() {
@@ -23,14 +25,36 @@ public class BombHead : BotWorldPart {
             Destroy(botBase.gameObject);
             IVoxelEdit edit = new SphereVoxelEdit {
                 center = transform.position,
-                strength = -explosionEditStrength,
+                strength = -editStrength,
                 material = 0,
-                radius = explosionEditRadius,
+                radius = radius,
                 writeMaterial = false,
             };
 
             if (VoxelTerrain.Instance != null) {
                 VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+            }
+
+            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+            foreach (Collider collider in colliders) {
+                var rb = collider.gameObject.GetComponent<Rigidbody>();
+                var health = collider.gameObject.GetComponent<EntityHealth>();
+                var movement = collider.gameObject.GetComponent<EntityMovement>();
+
+                if (rb != null) {
+                    rb.AddExplosionForce(force * 100f, transform.position, radius);
+                }
+
+                if (health != null) {
+                    float dist = Vector3.Distance(transform.position, collider.transform.position);
+                    float factor = -(dist - radius) / radius;
+                    factor = Mathf.Clamp01(factor);
+                    health.Damage(factor * damage);
+                }
+
+                if (movement != null) {
+                    movement.ExplosionAt(transform.position, force);
+                }
             }
         }
 

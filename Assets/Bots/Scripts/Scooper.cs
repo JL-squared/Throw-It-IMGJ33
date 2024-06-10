@@ -9,10 +9,9 @@ public class Scooper : BotWorldPart {
     public Transform fakeSnowball;
     public Transform origin;
     public Transform spawnHolster;
-    public float speedModifier;
+    public float secondsBetweenThrows;
     public float angle;
     public ElasticValueTweener tweener;
-    public float speed;
     public bool repeating;
     public float animCharge;
     public float fakeSnowballSize;
@@ -28,7 +27,7 @@ public class Scooper : BotWorldPart {
 
     public override void AttributesUpdated() {
         base.AttributesUpdated();
-        speedModifier *= botBase.attackSpeed;
+        secondsBetweenThrows /= botBase.attackSpeed;
     }
 
     public override void TargetChanged(Vector3 target, Vector3 velocity) {
@@ -54,9 +53,9 @@ public class Scooper : BotWorldPart {
     public void Update() {
         // Handle angle stuff
         if (repeating) {
-            angle += Time.deltaTime * speed * speedModifier;
+            angle += Time.deltaTime * 360f / secondsBetweenThrows;
         } else {
-            time += Time.deltaTime * speedModifier;
+            time += Time.deltaTime * maxTime / secondsBetweenThrows;
             // scoop up snow, overshoot a bit
             // ratchet back 2-3 times
             tweener.Update(Time.deltaTime, ref angle);

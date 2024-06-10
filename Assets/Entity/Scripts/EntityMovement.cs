@@ -28,6 +28,7 @@ public class EntityMovement : MonoBehaviour {
 
     [HideInInspector]
     public CharacterController cc;
+    private Vector3 explosion;
 
     // Start is called before the first frame update
     void Start() {
@@ -48,6 +49,7 @@ public class EntityMovement : MonoBehaviour {
 
         movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
         movement.y += gravity * Time.deltaTime;
+        
         if (cc.isGrounded) {
             movement.y = groundedOffsetVelocity;
 
@@ -57,7 +59,7 @@ public class EntityMovement : MonoBehaviour {
             }
         }
 
-        CollisionFlags flags = cc.Move(movement * Time.deltaTime);
+        CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
 
         if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
             movement.y = 0;
@@ -66,6 +68,14 @@ public class EntityMovement : MonoBehaviour {
         if (localWishRotation.normalized != Quaternion.identity) {
             transform.rotation = localWishRotation.normalized;
         }
+
+        // TODO: Actually write acceleration and integrate it instead of doing this goofy stuff
+        explosion = Vector3.Lerp(explosion, Vector3.zero, Time.deltaTime * 10);
+    }
+
+    public void ExplosionAt(Vector3 position, float force) {
+        Vector3 f = transform.position;
+        explosion = f * force;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {

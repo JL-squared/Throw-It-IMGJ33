@@ -84,14 +84,14 @@ MonoBehaviour:
   heads:
   - prefab: {fileID: 5837452873108282449, guid: f7c60b5bcc21c264990c5002c0c34ba0,
       type: 3}
-    spawnChance: 0.25
+    spawnChance: 0
     tags: []
     modifiers:
     - attribute: 2
       delta: -19.99
   - prefab: {fileID: 4849415490621601290, guid: af6a9dbd8c1f78d45b7f6a21b8c25878,
       type: 3}
-    spawnChance: 0.25
+    spawnChance: 1
     tags: []
     modifiers: []
   - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
