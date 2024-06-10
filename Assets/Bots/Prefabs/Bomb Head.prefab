@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  timer: 2
-  boutToBlowTimer: 1
+  timer: 10
+  boutToBlowTimer: 7
   editStrength: 100
   force: 7
   damage: 50

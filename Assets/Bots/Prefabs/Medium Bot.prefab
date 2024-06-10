@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a042ba931313ccc4f8c78feb372777e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSmoothing: 0.01
+  rotationSmoothing: 20
   speedDistFalloff: 10
   mask:
     serializedVersion: 2
