@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 internal class MeshJobHandler {
     // Native buffers for mesh data
     public NativeArray<float3> vertices;
+    public NativeArray<float2> uvs;
     public NativeArray<int> tempTriangles;
     public NativeArray<int> permTriangles;
 
@@ -36,6 +37,7 @@ internal class MeshJobHandler {
         // Native buffers for mesh data
         int materialCount = VoxelUtils.MaxMaterialCount;
         vertices = new NativeArray<float3>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
+        uvs = new NativeArray<float2>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         tempTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         permTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         voxelCounters = new NativeMultiCounter(materialCount, Allocator.Persistent);
@@ -53,9 +55,10 @@ internal class MeshJobHandler {
         materialCounter = new NativeCounter(Allocator.Persistent);
 
         VertexAttributeDescriptor positionDesc = new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, 3, 0);
+        VertexAttributeDescriptor uvDesc = new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, 2, 1);
 
         List<VertexAttributeDescriptor> descriptors = new List<VertexAttributeDescriptor> {
-            positionDesc
+            positionDesc, uvDesc
         };
         
         vertexAttributeDescriptors = descriptors.ToArray();
@@ -93,6 +96,7 @@ internal class MeshJobHandler {
             voxels = voxels,
             indices = indices,
             vertices = vertices,
+            uvs = uvs,
             counter = counter,
         };
 
@@ -175,7 +179,8 @@ internal class MeshJobHandler {
 
         mesh.SetVertexBufferParams(maxVertices, vertexAttributeDescriptors);
         mesh.SetVertexBufferData(vertices.Reinterpret<Vector3>(), 0, 0, maxVertices, 0, MeshUpdateFlags.DontValidateIndices);
-        
+        mesh.SetVertexBufferData(uvs.Reinterpret<Vector2>(), 0, 0, maxVertices, 1, MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices);
+
         // Set mesh indices
         mesh.SetIndexBufferParams(maxIndices, IndexFormat.UInt32);
         mesh.SetIndexBufferData(permTriangles, 0, 0, maxIndices);
@@ -215,6 +220,7 @@ internal class MeshJobHandler {
     // Dispose of the underlying memory allocations
     internal void Dispose() {
         indices.Dispose();
+        uvs.Dispose();
         vertices.Dispose();
         counter.Dispose();
         countersQuad.Dispose();

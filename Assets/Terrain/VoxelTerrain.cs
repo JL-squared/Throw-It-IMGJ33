@@ -136,7 +136,7 @@ public class VoxelTerrain : MonoBehaviour {
         for (int i = 0; i < savedMap.textAssets.Length; i++) {
             var memoryStream = new MemoryStream(savedMap.textAssets[i].bytes);
             var regionStream = new GZipStream(memoryStream, CompressionMode.Decompress);
-            cachedStreams.Add(new BufferedStream(regionStream));
+            cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024));
         }
 
         VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks);
@@ -176,11 +176,7 @@ public class VoxelTerrain : MonoBehaviour {
             streamWriters.Add(bufferedStream);
         }
 
-        Debug.Log("Created Files: " + sw.Elapsed);
-
         VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks);
-
-        Debug.Log("Serialization: " + sw.Elapsed);
 
         List<Task> tasks = new List<Task>();
         for (int i = 0; i < maxRegionFiles; i++) {
@@ -189,7 +185,6 @@ public class VoxelTerrain : MonoBehaviour {
             tasks.Add(t);
         }
 
-        Debug.Log("Disposal: " + sw.Elapsed);
         Task.WhenAll(tasks).Wait();
 
         AssetDatabase.Refresh();
@@ -201,11 +196,9 @@ public class VoxelTerrain : MonoBehaviour {
                 Debug.LogError("NOT GOOD");
             }
         }
-        Debug.Log("Load asset at path: " + sw.Elapsed);
         EditorUtility.SetDirty(savedMap);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("Last: " + sw.Elapsed);
         Debug.Log("Successfully saved the map!!");
     }
 #endif

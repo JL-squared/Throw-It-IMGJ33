@@ -50,6 +50,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Ao_Offset: 0.6
+    - _Ao_Power: 20
     - _Blend: 20
     - _Metallic: 0.2
     - _Mul: 20

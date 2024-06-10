@@ -249,12 +249,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a042ba931313ccc4f8c78feb372777e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSmoothing: 20
+  rotationSmoothing: 0.01
   speedDistFalloff: 10
   mask:
     serializedVersion: 2
     m_Bits: 255
   target: {x: 0, y: 0, z: 0}
+  agentType: Bot
 --- !u!114 &1941470059954994625
 MonoBehaviour:
   m_ObjectHideFlags: 0

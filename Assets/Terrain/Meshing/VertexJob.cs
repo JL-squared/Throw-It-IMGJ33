@@ -1,3 +1,4 @@
+using System.Drawing;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -58,6 +59,10 @@ public struct VertexJob : IJobParallelFor {
     [NativeDisableParallelForRestriction]
     public NativeArray<float3> vertices;
 
+    [WriteOnly]
+    [NativeDisableParallelForRestriction]
+    public NativeArray<float2> uvs;
+
     // Vertex Counter
     public NativeCounter.Concurrent counter;
 
@@ -113,9 +118,22 @@ public struct VertexJob : IJobParallelFor {
         int vertexIndex = counter.Increment();
         indices[index] = vertexIndex;
 
+
+        // Calculate per vertex ambient occlusion and apply it
+        const float aoSpread = 3f;
+        const float aoGlobalOffset = 1.5f;
+
         // Output vertex in object space
         float3 offset = (vertex / (float)count);
         float3 outputVertex = (offset - 1.0F) + position;
+        float ambientOcclusion = VoxelUtils.CalculateVertexAmbientOcclusion(outputVertex, ref voxels, aoSpread, aoGlobalOffset);
+
+        if (float.IsNaN(ambientOcclusion)) {
+            ambientOcclusion = 1;
+        }
+
+
         vertices[vertexIndex] = outputVertex * VoxelUtils.VertexScaling * VoxelUtils.VoxelSizeFactor;
+        uvs[vertexIndex] = new float2(ambientOcclusion, 0.0f);
     }
 }

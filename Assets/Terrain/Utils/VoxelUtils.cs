@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Unity.Burst.CompilerServices;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -95,5 +96,59 @@ public static class VoxelUtils {
     // Convert two bytes to a ushort
     public static ushort BytesToUshort(byte first, byte second) {
         return (ushort)(first << 8 | second);
+    }
+
+    // Sampled the voxel grid using trilinear filtering
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static half SampleGridInterpolated(float3 position, ref NativeArray<Voxel> voxels) {
+        float3 frac = math.frac(position);
+        uint3 voxPos = (uint3)math.floor(position);
+        voxPos = math.min(voxPos, math.uint3(Size - 2));
+        voxPos = math.max(voxPos, math.uint3(0));
+
+        float d000 = voxels[PosToIndex(voxPos)].density;
+        float d100 = voxels[PosToIndex(voxPos + math.uint3(1, 0, 0))].density;
+        float d010 = voxels[PosToIndex(voxPos + math.uint3(0, 1, 0))].density;
+        float d110 = voxels[PosToIndex(voxPos + math.uint3(0, 0, 1))].density;
+
+        float d001 = voxels[PosToIndex(voxPos + math.uint3(0, 0, 1))].density;
+        float d101 = voxels[PosToIndex(voxPos + math.uint3(1, 0, 1))].density;
+        float d011 = voxels[PosToIndex(voxPos + math.uint3(0, 1, 1))].density;
+        float d111 = voxels[PosToIndex(voxPos + math.uint3(1, 1, 1))].density;
+
+        float mixed0 = math.lerp(d000, d100, frac.x);
+        float mixed1 = math.lerp(d010, d110, frac.x);
+        float mixed2 = math.lerp(d001, d101, frac.x);
+        float mixed3 = math.lerp(d011, d111, frac.x);
+
+        float mixed4 = math.lerp(mixed0, mixed2, frac.z);
+        float mixed5 = math.lerp(mixed1, mixed3, frac.z);
+
+        float mixed6 = math.lerp(mixed4, mixed5, frac.y);
+
+        return (half)mixed6;
+    }
+
+    // Calculate ambient occlusion around a specific point
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float CalculateVertexAmbientOcclusion(float3 position, ref NativeArray<Voxel> voxels, float spread, float globalOffset) {
+        float ao = 0.0f;
+        float minimum = 200000;
+
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    // 2 => 0.5
+                    // 1 = 1.5
+                    float density = SampleGridInterpolated(position + new float3(x, y, z) * spread + new float3(globalOffset), ref voxels);
+                    density = math.min(density, 0);
+                    ao += density;
+                    minimum = math.min(minimum, density);
+                }
+            }
+        }
+
+        ao = ao / (3 * 3 * 3 * (minimum + 0.001f));
+        return ao;
     }
 }

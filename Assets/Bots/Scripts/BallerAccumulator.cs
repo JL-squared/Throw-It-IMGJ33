@@ -43,6 +43,8 @@ public class BallerAccumulator : MonoBehaviour {
             
             if (mov2d.magnitude > 0.01f) {
                 UpdateBallParams();
+            } else {
+                angularVelocity = Quaternion.identity;
             }
         } else {
             angularVelocity = Quaternion.identity;

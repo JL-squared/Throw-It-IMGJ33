@@ -362,6 +362,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 255
   target: {x: 0, y: 0, z: 0}
+  agentType: Bot
 --- !u!114 &1941470059954994625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6397ddab1a27848bb77d90b224b1dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: ebd060475d811b3419835ba21486cce2, type: 2}
+  data: {fileID: 11400000, guid: 7ec434253fbf1064aba059fdf1bc6efb, type: 2}
   backHolster: {fileID: 7976112143067828452}
   leftHolster: {fileID: 8245189526197812159}
   rightHolster: {fileID: 4018041634853001406}

@@ -38,6 +38,10 @@ public class Scooper : BotWorldPart {
         
         Vector3 newTarget = target + velocity * lookAhead;
         spawnHolster.rotation = Quaternion.LookRotation((newTarget - spawnHolster.position).normalized);
+        
+        if (Quaternion.Angle(spawnHolster.localRotation, Quaternion.LookRotation(Vector3.forward)) > 20) {
+            spawnHolster.localRotation = Quaternion.identity;
+        }
     }
 
     public void Start() {

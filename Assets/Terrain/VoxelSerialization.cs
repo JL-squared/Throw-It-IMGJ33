@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -44,39 +47,55 @@ public static class VoxelSerialization {
     }
 
     public static void DeserializeFromRegions<T>(List<T> streamReaders, List<GameObject> totalChunks) where T : Stream {
-        Span<byte> materials = new Span<byte>(new byte[VoxelUtils.Volume]);
-        Span<byte> densities = new Span<byte>(new byte[VoxelUtils.Volume * 2]);
+        List<VoxelChunk> chunks = totalChunks.Select((x) => x.GetComponent<VoxelChunk>()).ToList();
 
+        List<Task> actFinal = new List<Task>();
         for (int r = 0; r < streamReaders.Count; r++) {
             Stream reader = streamReaders[r];
-
             int offset = SavedVoxelMap.ChunksInRegion * r;
+            Task t = Task.Run(async () => {
+                for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
+                    VoxelChunk chunk = chunks[c + offset];
+                    Memory<byte> materials = new Memory<byte>(new byte[VoxelUtils.Volume]);
+                    Task task = reader.ReadAsync(materials).AsTask().ContinueWith((task) => {
 
-            for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
-                reader.Read(materials);
+                        NativeArray<Voxel> voxels = chunk.voxels;
 
-                VoxelChunk chunk = totalChunks[c + offset].GetComponent<VoxelChunk>();
-                NativeArray<Voxel> voxels = chunk.voxels;
-
-                for (int v = 0; v < voxels.Length; v++) {
-                    voxels[v] = new Voxel() { material = materials[v] };
+                        for (int v = 0; v < voxels.Length; v++) {
+                            voxels[v] = new Voxel() { material = materials.Span[v] };
+                        }
+                    });
                 }
-            }
 
-            for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
-                reader.Read(densities);
-                Span<half> halfs = MemoryMarshal.Cast<byte, half>(densities);
+                // ReadAsync seems to alr be blocking, no need to do shit? maybe idk
 
-                VoxelChunk chunk = totalChunks[c + offset].GetComponent<VoxelChunk>();
-                NativeArray<Voxel> voxels = chunk.voxels;
+                List<Task> final = new List<Task>();
+                for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
+                    Memory<byte> densities = new Memory<byte>(new byte[VoxelUtils.Volume * 2]);
+                    VoxelChunk chunk = chunks[c + offset];
 
-                for (int v = 0; v < voxels.Length; v++) {
-                    Voxel temp = voxels[v];
-                    //temp.density = half.zero;
-                    temp.density = halfs[v];
-                    voxels[v] = temp;
+                    Task task = reader.ReadAsync(densities).AsTask().ContinueWith((task) => {
+                        Span<half> halfs = MemoryMarshal.Cast<byte, half>(densities.Span);
+
+                        NativeArray<Voxel> voxels = chunk.voxels;
+
+                        for (int v = 0; v < voxels.Length; v++) {
+                            Voxel temp = voxels[v];
+                            temp.density = halfs[v];
+                            voxels[v] = temp;
+                        }
+                    });
+                    final.Add(task);
                 }
-            }
+
+                await Task.WhenAll(final);
+            });
+            actFinal.Add(t);
         }
+
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        Task.WhenAll(actFinal).Wait();
+        Debug.Log(sw.ElapsedMilliseconds);
     }
 }
