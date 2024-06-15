@@ -44,6 +44,13 @@ public class Snowball : MonoBehaviour {
 
         if (collision.impulse.magnitude > 0.1) {
             prts.transform.rotation = Quaternion.LookRotation(collision.impulse);
+
+            var system = prts.GetComponent<ParticleSystem>();
+            var velOverLifetime = system.velocityOverLifetime;
+            Vector3 vel = rb.velocity * 0.4f;
+            velOverLifetime.x = new ParticleSystem.MinMaxCurve(vel.x);
+            velOverLifetime.y = new ParticleSystem.MinMaxCurve(vel.y);
+            velOverLifetime.z = new ParticleSystem.MinMaxCurve(vel.z);
         }
     }
 

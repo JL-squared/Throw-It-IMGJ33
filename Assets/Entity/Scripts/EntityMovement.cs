@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Rigidbody based character controller
@@ -18,6 +19,7 @@ public class EntityMovement : MonoBehaviour {
     [Min(0.01f)]
     public float groundControl = 25;
     public float jump = 5.0F;
+    public float coyoteTime = 0.0f;
     public float gravity = -9.81f;
     public float groundedOffsetVelocity = -2.5f;
     [HideInInspector]
@@ -29,6 +31,8 @@ public class EntityMovement : MonoBehaviour {
     [HideInInspector]
     public CharacterController cc;
     private Vector3 explosion;
+    private float lastGroundedTime = 0;
+    private int jumpCounter = 0;
 
     // Start is called before the first frame update
     void Start() {
@@ -52,11 +56,15 @@ public class EntityMovement : MonoBehaviour {
         
         if (cc.isGrounded) {
             movement.y = groundedOffsetVelocity;
+            lastGroundedTime = Time.time;
+            jumpCounter = 0;
+        }
 
-            if (isJumping) {
-                movement.y = jump;
-                isJumping = false;
-            }
+        // could change the restriction on jumpCounter to enable double jumping
+        if (isJumping && jumpCounter == 0) {
+            movement.y = jump;
+            isJumping = false;
+            jumpCounter++;
         }
 
         CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
@@ -76,6 +84,12 @@ public class EntityMovement : MonoBehaviour {
     public void ExplosionAt(Vector3 position, float force) {
         Vector3 f = transform.position;
         explosion = f * force;
+    }
+
+    public void Jump() {
+        if ((Time.time - lastGroundedTime) <= coyoteTime) {
+            isJumping = true;
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {

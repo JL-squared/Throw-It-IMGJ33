@@ -6,24 +6,30 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Scooper : BotWorldPart {
-    public Transform fakeSnowball;
+
+    [Header("Main Params")]
     public Transform origin;
     public Transform spawnHolster;
     public float secondsBetweenThrows;
-    public float angle;
-    public ElasticValueTweener tweener;
     public bool repeating;
-    public float animCharge;
-    public float fakeSnowballSize;
+    
+    [Header("Snow Pickup Fake Snowball Params")]
+    public Transform fakeSnowball;
     public float groundPickupAngle = 270;
-    public float groundPickupAngleSpread = 60;
-    private Quaternion startingRot;
-    private SnowballThrower thrower;
-    public bool thrown;
-    private float time;
+    public float groundPickupAngleSpread = 60;    
+
+    [Header("Procedural Charge Back Params")]
+    public ElasticValueTweener tweener;
     public float maxTime;
     public float curveThrowTime;
     public AnimationCurve curve;
+
+    private Quaternion startingRot;
+    private SnowballThrower thrower;
+    private float time;
+    private bool thrown;
+    private float fakeSnowballSize;
+    private float angle;
 
     public override void AttributesUpdated() {
         base.AttributesUpdated();
@@ -58,6 +64,8 @@ public class Scooper : BotWorldPart {
             time += Time.deltaTime * maxTime / secondsBetweenThrows;
             // scoop up snow, overshoot a bit
             // ratchet back 2-3 times
+            float localized = (time % maxTime);
+            tweener.targetValue = curve.Evaluate(localized);
             tweener.Update(Time.deltaTime, ref angle);
         }
 
@@ -71,11 +79,7 @@ public class Scooper : BotWorldPart {
             }
         } else {
             // badoing... throw that shit
-            float localized = (time % maxTime);
-            tweener.targetValue = curve.Evaluate(localized);
-            normalized = (angle + 180) % 360.0f;
-
-            if (localized > curveThrowTime && !thrown) {
+            if ((time % maxTime) > curveThrowTime && !thrown) {
                 thrower.Throw();
                 thrown = true;
             }

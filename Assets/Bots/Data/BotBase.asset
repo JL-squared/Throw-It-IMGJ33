@@ -37,14 +37,17 @@ MonoBehaviour:
   hat:
   - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
       type: 3}
-    spawnChance: 0.5
+    spawnChance: 0.25
     tags: []
-    modifiers:
-    - attribute: 2
-      delta: 10
+    modifiers: []
   - prefab: {fileID: 3511950328461444712, guid: 15c1d62ce4ad37c4da4844f8e8a8fba1,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.25
+    tags: []
+    modifiers: []
+  - prefab: {fileID: 5909362994707921618, guid: 607416fe4c5a5f5479810a1e14e5a25e,
+      type: 3}
+    spawnChance: 0.25
     tags: []
     modifiers: []
   neck:

@@ -48,11 +48,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  fakeSnowball: {fileID: 2815670362024921434}
   origin: {fileID: 1447788538758693849}
   spawnHolster: {fileID: 3643799789739792537}
   secondsBetweenThrows: 5
-  angle: 0
+  repeating: 0
+  fakeSnowball: {fileID: 2815670362024921434}
+  groundPickupAngle: 90
+  groundPickupAngleSpread: 30
   tweener:
     targetValue: 0
     targetReachSpeed: 20
@@ -60,12 +62,6 @@ MonoBehaviour:
     maxAccel: 30
     velocity: 0
     angular: 1
-  repeating: 0
-  animCharge: 0
-  fakeSnowballSize: 0
-  groundPickupAngle: 90
-  groundPickupAngleSpread: 30
-  thrown: 0
   maxTime: 5
   curveThrowTime: 3.6
   curve:
@@ -163,8 +159,8 @@ MonoBehaviour:
   spawnHolster: {fileID: 3643799789739792537}
   particles: {fileID: 6059710334257849518, guid: 707ea22e782edfb44a979424256e1b2f,
     type: 3}
-  startingSpeed: 10
-  offsetDistance: 0.2
+  startingSpeed: 15
+  offsetDistance: 0.28
   collider: {fileID: 0}
 --- !u!1 &2340083352991997612
 GameObject:
@@ -191,7 +187,7 @@ Transform:
   m_GameObject: {fileID: 2340083352991997612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0.692, z: 0.077}
+  m_LocalPosition: {x: 0.25, y: 0.692, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

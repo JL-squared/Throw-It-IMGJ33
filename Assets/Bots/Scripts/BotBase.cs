@@ -7,7 +7,10 @@ using UnityEngine.Rendering.LookDev;
 using static UnityEngine.GraphicsBuffer;
 
 public class BotBase : MonoBehaviour {
+    [Header("Main")]
     public BotData data;
+
+    [Header("Procedural Holsters")]
     public GameObject backHolster;
     public GameObject leftHolster;
     public GameObject rightHolster;
@@ -16,14 +19,16 @@ public class BotBase : MonoBehaviour {
     public GameObject hatHolster;
     public GameObject neckHolster;
     public GameObject noseHolster;
-    
+
+    [Header("Head Entity")]
     public GameObject headMeshHolster;
     public GameObject healthHeadEntity;
 
+    [Header("Faces")]
     public GameObject angryFace;
     public GameObject happyFace;
 
-
+    [Header("Attributes")]
     public float movementSpeed = 0;
     public float attackSpeed = 0;
     public float bodyHealth = 0;
@@ -38,6 +43,10 @@ public class BotBase : MonoBehaviour {
 
     private List<BotWorldPart> worldParts;
     private Vector3 target;
+
+    private void OnValidate() {
+        ApplyAttributes();
+    }
 
     private void ApplyModifiers(List<BotAttributeModifier> modifiers) {
         foreach (var modifier in modifiers) {
@@ -96,6 +105,9 @@ public class BotBase : MonoBehaviour {
     }
 
     private void ApplyAttributes() {
+        if (entityMovement == null)
+            return;
+
         entityMovement.speed = Mathf.Max(movementSpeed, 0);
         _bodyHealth.maxHealth = bodyHealth;
         _bodyHealth.health = bodyHealth;
@@ -141,12 +153,6 @@ public class BotBase : MonoBehaviour {
         // Cute Cosmetics :3
         PickPartForHolsterType(neckHolster, data.neck);
         PickPartForHolsterType(noseHolster, data.nose);
-
-        
-
-
-        leftHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
-        leftEyeHolster.transform.localScale = new Vector3(-1f, 1f, 1f);
     }
 
     private void ApplyAngry() {

@@ -308,8 +308,8 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for jumping
     /// </summary>
     public void Jump(InputAction.CallbackContext context) {
-        if (context.performed && movement.cc.isGrounded && !inventoryOpen && !paused && !isDead) {
-            movement.isJumping = true;
+        if (context.performed && !inventoryOpen && !paused && !isDead) {
+            movement.Jump();
         }
     }
 
