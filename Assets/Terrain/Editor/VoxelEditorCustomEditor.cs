@@ -43,6 +43,10 @@ public class VoxelEditorCustomEditor : Editor {
             case VoxelEditor.BrushType.SetHeight:
                 editor.targetHeight = EditorGUILayout.FloatField("Target Height", editor.targetHeight);
                 break;
+            case VoxelEditor.BrushType.Crater:
+                editor.craterJParam = EditorGUILayout.FloatField("Crater J Param", editor.craterJParam);
+                editor.craterHParam = EditorGUILayout.FloatField("Crater H Scale", editor.craterHParam);
+                break;
         }
     }
 

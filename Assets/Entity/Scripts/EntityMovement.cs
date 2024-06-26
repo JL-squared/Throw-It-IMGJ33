@@ -37,6 +37,7 @@ public class EntityMovement : MonoBehaviour {
     private int jumpCounter = 0;
     [HideInInspector]
     public GameObject groundObject;
+    private bool groundJustExploded;
 
     // Start is called before the first frame update
     void Start() {
@@ -60,13 +61,16 @@ public class EntityMovement : MonoBehaviour {
         
         movement.y += gravity * Time.deltaTime;
         
-        if (cc.isGrounded) {
+        if (cc.isGrounded && !groundJustExploded) {
             movement.y = groundedOffsetVelocity;
             lastGroundedTime = Time.time;
             jumpCounter = 0;
         } else {
             groundObject = null;
         }
+
+        if (groundJustExploded)
+            groundJustExploded = false;
 
         // could change the restriction on jumpCounter to enable double jumping
         if (isJumping && jumpCounter == 0) {
@@ -96,6 +100,12 @@ public class EntityMovement : MonoBehaviour {
         // 1 => closest to explosion
         // 0 => furthest from explosion
         float factor = 1 - Mathf.Clamp01(math.unlerp(0, radius, f.magnitude));
+        factor = Mathf.Sqrt(1f - Mathf.Pow(factor - 1, 2f));
+
+        if (f.normalized.y > 0.9) {
+            groundJustExploded = true;
+        }
+
         movement += f.normalized * factor * force;
     }
 

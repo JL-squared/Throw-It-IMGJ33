@@ -24,7 +24,9 @@ public class VoxelEditor : MonoBehaviour {
     public float targetHeight;
     public byte material;
     public bool paintOnly;
-    
+    public float craterJParam = 5f;
+    public float craterHParam = 0.15f;
+
 
     [HideInInspector] public bool allowedToEdit = false;
     [HideInInspector] public bool dirtyEdits = false;
@@ -37,6 +39,7 @@ public class VoxelEditor : MonoBehaviour {
         Noise,
         SetDensity,
         SetHeight,
+        Crater,
     }
 
 
@@ -146,6 +149,15 @@ public class VoxelEditor : MonoBehaviour {
                     targetHeight = targetHeight,
                 };
                 break;
+            case BrushType.Crater:
+                edit = new ExplosionVoxelEdit {
+                    center = point,
+                    radius = brushRadius,
+                    strength = brushStrength,
+                    hParam = craterHParam,
+                    jParam = craterJParam,
+                };
+                break;
             default:
                 break;
         }
@@ -165,13 +177,7 @@ public class VoxelEditor : MonoBehaviour {
 
 
         switch (currentBrush) {
-            case BrushType.AddRemove:
-                Gizmos.DrawWireSphere(point, brushRadius);
-                break;
-            case BrushType.RaiseLower:
-                Gizmos.DrawWireSphere(point, brushRadius);
-                break;
-            case BrushType.Sphere:
+            case BrushType.AddRemove or BrushType.Crater or BrushType.RaiseLower or BrushType.Sphere or BrushType.Noise or BrushType.SetDensity:
                 Gizmos.DrawWireSphere(point, brushRadius);
                 break;
             case BrushType.Cube:
@@ -183,12 +189,6 @@ public class VoxelEditor : MonoBehaviour {
                 Gizmos.DrawWireSphere(Vector3.zero, brushRadius * 0.9f);
                 Gizmos.matrix = oldMatrix;
 
-                Gizmos.DrawWireSphere(point, brushRadius);
-                break;
-            case BrushType.Noise:
-                Gizmos.DrawWireSphere(point, brushRadius);
-                break;
-            case BrushType.SetDensity:
                 Gizmos.DrawWireSphere(point, brushRadius);
                 break;
             case BrushType.SetHeight:

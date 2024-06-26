@@ -466,17 +466,17 @@ PrefabInstance:
     - target: {fileID: 8742717674536080720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8742717674536080720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.91
+      value: 5.28
       objectReference: {fileID: 0}
     - target: {fileID: 8742717674536080720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.9
+      value: 4.86
       objectReference: {fileID: 0}
     - target: {fileID: 8742717674536080720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
@@ -3579,6 +3579,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: sled
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7afb4de0c453d0948853bdd5ddb1e5bf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5310,7 +5315,7 @@ PrefabInstance:
     - target: {fileID: 8267247879346996897, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: airControl
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

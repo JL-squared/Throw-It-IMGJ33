@@ -112,7 +112,7 @@ MonoBehaviour:
     delta: 2
   - attribute: 1
     delta: 2
-  baseMovementSpeed: 3
+  baseMovementSpeed: -10
   baseAttackSpeed: 1
   baseBodyHealth: 50
   baseHeadHealth: 20

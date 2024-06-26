@@ -24,12 +24,13 @@ public class BombHead : BotBehaviour {
 
         if (timer <= 0) {
             Destroy(botBase.gameObject);
-            IVoxelEdit edit = new SphereVoxelEdit {
+            IVoxelEdit edit = new ExplosionVoxelEdit {
                 center = transform.position,
-                strength = -editStrength,
+                strength = editStrength,
                 material = 0,
                 radius = radius,
-                writeMaterial = false,
+                jParam = 4f,
+                hParam = 0.2f,
             };
 
             if (VoxelTerrain.Instance != null) {
@@ -60,6 +61,8 @@ public class BombHead : BotBehaviour {
                     movement.ExplosionAt(explosionCenter, force, radius);
                 }
             }
+
+            DebugUtils.DrawSphere(explosionCenter, radius, Color.red, 1000);
         }
 
         if (timer < boutToBlowTimer && !boutaBlow) {

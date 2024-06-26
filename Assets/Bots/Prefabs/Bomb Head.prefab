@@ -52,12 +52,12 @@ MonoBehaviour:
   bodyHealth: {fileID: 0}
   headHealth: {fileID: 0}
   botTts: {fileID: 0}
-  timer: 2
+  timer: 3
   boutToBlowTimer: 4
-  editStrength: 25
-  force: 300
+  editStrength: 70
+  force: 40
   damage: 50
-  radius: 12
+  radius: 10
 --- !u!1 &5964723677888720244
 GameObject:
   m_ObjectHideFlags: 0
