@@ -362,15 +362,18 @@ MonoBehaviour:
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
-  airControl: 15
-  groundControl: 25
+  airControl: 2
+  groundControl: 20
+  maxAcceleration: 8
   jump: 5
+  coyoteTime: 0
   gravity: -9.81
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
   maxPushForce: 20
   cc: {fileID: 0}
+  groundObject: {fileID: 0}
 --- !u!114 &3846231973158564597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +393,7 @@ MonoBehaviour:
     m_Bits: 255
   target: {x: 0, y: 0, z: 0}
   agentType: Bot
+  pathfind: 1
 --- !u!114 &4958769060511696096
 MonoBehaviour:
   m_ObjectHideFlags: 0

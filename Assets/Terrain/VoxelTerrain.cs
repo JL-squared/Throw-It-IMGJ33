@@ -8,6 +8,10 @@ using UnityEngine;
 using System.IO.Compression;
 using Task = System.Threading.Tasks.Task;
 using FileMode = System.IO.FileMode;
+using Unity.Mathematics;
+using UnityEngine.UIElements;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,6 +37,7 @@ public class VoxelTerrain : MonoBehaviour {
 
     private bool alrDisposed = false;
     private int pendingChunks;
+    private int editsInFlight;
     private bool firstGen = true;
 
     public delegate void InitGen();
@@ -250,8 +255,11 @@ public class VoxelTerrain : MonoBehaviour {
                 var voxelMesh = handler.Complete(voxelChunk.sharedMesh);
 
                 // Update counters yea!!!!
-                if (voxelChunk.voxelCountersHandle != null)
+                if (voxelChunk.voxelCountersHandle != null) {
+                    voxelChunk.dependency.Complete();
+                    editsInFlight--;
                     UpdateCounters(handler, voxelChunk);
+                }
 
                 // Begin a new collision baking jobs
                 if (voxelMesh.VertexCount > 0 && voxelMesh.TriangleCount > 0 && voxelMesh.ComputeCollisions) {
@@ -389,11 +397,39 @@ public class VoxelTerrain : MonoBehaviour {
                 voxelChunk.dependency = dep;
                 voxelChunk.voxelCountersHandle = countersHandle;
                 countersHandle.pending++;
+                editsInFlight++;
                 voxelChunk.Remesh(immediate ? 0 : 5);
             }
         }
     }
 
+    // Get the value of a singular voxel at a world point
+    public Voxel TryGetVoxel(Vector3 position) {
+        //Debug.Log(editsInFlight);
+        //Debug.Log(handlers.All(x => x.Free));
+        if (!handlers.All(x => x.Free) || editsInFlight != 0)
+            return Voxel.Empty;
+
+        float3 voxelChunk = position / ((float)VoxelUtils.Size * VoxelUtils.VoxelSizeFactor);
+        int3 voxelChunkInt = new int3(math.floor(voxelChunk)) + new int3(mapChunkSize.x, mapChunkSize.y, mapChunkSize.z);
+        int voxelChunkIndex = voxelChunkInt.z + voxelChunkInt.y * (mapChunkSize.z * 2) + voxelChunkInt.x * ((2 * mapChunkSize.z) * (2 * mapChunkSize.y));
+
+        if (voxelChunkIndex < 0 || voxelChunkIndex >= totalChunks.Count)
+            return Voxel.Empty;
+        
+        VoxelChunk chunk = totalChunks[voxelChunkIndex].GetComponent<VoxelChunk>();
+        float3 p = position;
+        p -= new float3(chunk.transform.position);
+        p /= VoxelUtils.VertexScaling;
+        p += 1.5f * VoxelUtils.VoxelSizeFactor;
+        p /= VoxelUtils.VoxelSizeFactor;
+
+        if (math.any(p < 0.0f) | math.any(p >= (float)VoxelUtils.Size))
+            return Voxel.Empty;
+
+        int index = VoxelUtils.PosToIndex(new uint3(math.floor(p)));
+        return chunk.voxels[index];
+    }
 
     // Update the modified voxel counters of a chunk after finishing meshing
     internal void UpdateCounters(MeshJobHandler handler, VoxelChunk voxelChunk) {

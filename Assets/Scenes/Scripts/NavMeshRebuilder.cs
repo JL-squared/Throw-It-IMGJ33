@@ -17,6 +17,8 @@ public class NavMeshRebuilder : MonoBehaviour {
         testSurface.navMeshData = new NavMeshData();
     }
 
+    // https://forum.unity.com/threads/navmesh-mesh-collection-using-submesh-indexing.1607172/
+
     void UpdateNavMesh() {
         NavMeshSurface surface = null;
 

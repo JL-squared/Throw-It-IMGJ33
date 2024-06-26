@@ -335,8 +335,9 @@ MonoBehaviour:
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
-  airControl: 15
-  groundControl: 25
+  airControl: 2
+  groundControl: 20
+  maxAcceleration: 8
   jump: 5
   coyoteTime: 0
   gravity: -9.81
@@ -345,6 +346,7 @@ MonoBehaviour:
   pushForce: 8
   maxPushForce: 20
   cc: {fileID: 0}
+  groundObject: {fileID: 0}
 --- !u!114 &8137659110540596859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,13 +438,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e4a61359fb41544a25e7e22e83d344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botBase: {fileID: 0}
+  cc: {fileID: 0}
+  movement: {fileID: 0}
+  bodyHealth: {fileID: 0}
+  headHealth: {fileID: 0}
+  botTts: {fileID: 0}
   ball: {fileID: 8446970527936267560}
   increaseFactor: 0.1
   maxRadius: 5
   startingRadius: 0.5
-  voxelEditStrength: 7
-  voxelEditOffsetRadius: 0
+  voxelEditStrength: 250
+  voxelEditOffsetRadius: 0.2
   renderRadiusOffset: 0.2
+  movementSpeedReduction: 2.5
 --- !u!143 &7893371349031768923
 CharacterController:
   m_ObjectHideFlags: 0

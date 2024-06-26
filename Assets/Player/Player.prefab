@@ -388,7 +388,8 @@ MonoBehaviour:
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
   airControl: 4
-  groundControl: 25
+  groundControl: 20
+  maxAcceleration: 8
   jump: 5
   coyoteTime: 0.1
   gravity: -20
@@ -397,6 +398,7 @@ MonoBehaviour:
   pushForce: 8
   maxPushForce: 20
   cc: {fileID: 0}
+  groundObject: {fileID: 0}
 --- !u!114 &6734361764533788892
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -27,6 +27,11 @@ public class VoxelChunk : MonoBehaviour {
         };
     }
 
+    // Call to debug this chunk using debug utils
+    public void Debug() {
+        DebugUtils.DrawBox(sharedMesh.bounds.center + transform.position, sharedMesh.bounds.size, Color.white);
+    }
+
     // Remesh the chunk given the parent terrain
     public void Remesh(int maxFrames = 5) {
         if (!voxels.IsCreated) {

@@ -10,6 +10,7 @@ public class Snowball : MonoBehaviour {
     public GameObject particles;
     Vector3 snowballThrowerPos;
     Collider snowballThrowerCollider;
+    Vector3 lastVel;
     new Collider collider;
 
     public void ApplySpawn(Vector3 pos, Vector3 velocity, SnowballThrower snowballThrower) {
@@ -28,8 +29,15 @@ public class Snowball : MonoBehaviour {
         }
     }
 
+    public void FixedUpdate() {
+        // fix for inconsistent rb.velocity during OnCollisionEnter, probably
+        // because unity handles collision response before actually calling OnCollisionEnter, so the velocity
+        // gets set to a lower number before OnCollisionEnter. Fix works really well
+        lastVel = rb.velocity;
+    }
+
     private float CalculateDamage() {
-        return 3.0f * rb.velocity.magnitude;
+        return 1.5f * lastVel.magnitude;
     }
 
     public void OnCollisionEnter(Collision collision) {
@@ -47,7 +55,7 @@ public class Snowball : MonoBehaviour {
 
             var system = prts.GetComponent<ParticleSystem>();
             var velOverLifetime = system.velocityOverLifetime;
-            Vector3 vel = rb.velocity * 0.4f;
+            Vector3 vel = lastVel * 0.4f;
             velOverLifetime.x = new ParticleSystem.MinMaxCurve(vel.x);
             velOverLifetime.y = new ParticleSystem.MinMaxCurve(vel.y);
             velOverLifetime.z = new ParticleSystem.MinMaxCurve(vel.z);

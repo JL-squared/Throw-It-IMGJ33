@@ -96,6 +96,6 @@ public static class VoxelSerialization {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
         Task.WhenAll(actFinal).Wait();
-        Debug.Log(sw.ElapsedMilliseconds);
+        //Debug.Log(sw.ElapsedMilliseconds);
     }
 }

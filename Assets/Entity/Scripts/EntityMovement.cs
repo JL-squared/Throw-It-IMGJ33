@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 // Rigidbody based character controller
@@ -13,11 +14,12 @@ public class EntityMovement : MonoBehaviour {
     [HideInInspector]
     public Quaternion localWishRotation;
 
-    [Header("Gravity")]
+    [Header("Control")]
     [Min(0.01f)]
     public float airControl = 15;
     [Min(0.01f)]
     public float groundControl = 25;
+    public float maxAcceleration = 5;
     public float jump = 5.0F;
     public float coyoteTime = 0.0f;
     public float gravity = -9.81f;
@@ -33,6 +35,8 @@ public class EntityMovement : MonoBehaviour {
     private Vector3 explosion;
     private float lastGroundedTime = 0;
     private int jumpCounter = 0;
+    [HideInInspector]
+    public GameObject groundObject;
 
     // Start is called before the first frame update
     void Start() {
@@ -51,13 +55,17 @@ public class EntityMovement : MonoBehaviour {
         // bypass y value as that must remain unchanged
         wishMovement.y = movement.y;
 
-        movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
+        //movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
+        movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
+        
         movement.y += gravity * Time.deltaTime;
         
         if (cc.isGrounded) {
             movement.y = groundedOffsetVelocity;
             lastGroundedTime = Time.time;
             jumpCounter = 0;
+        } else {
+            groundObject = null;
         }
 
         // could change the restriction on jumpCounter to enable double jumping
@@ -67,6 +75,7 @@ public class EntityMovement : MonoBehaviour {
             jumpCounter++;
         }
 
+        
         CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
 
         if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
@@ -81,9 +90,13 @@ public class EntityMovement : MonoBehaviour {
         explosion = Vector3.Lerp(explosion, Vector3.zero, Time.deltaTime * 10);
     }
 
-    public void ExplosionAt(Vector3 position, float force) {
-        Vector3 f = transform.position;
-        explosion = f * force;
+    public void ExplosionAt(Vector3 position, float force, float radius) {
+        Vector3 f = transform.position - position;
+
+        // 1 => closest to explosion
+        // 0 => furthest from explosion
+        float factor = 1 - Mathf.Clamp01(math.unlerp(0, radius, f.magnitude));
+        movement += f.normalized * factor * force;
     }
 
     public void Jump() {
@@ -93,6 +106,10 @@ public class EntityMovement : MonoBehaviour {
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
+        if (hit.normal.y > 0.9f) {
+            groundObject = hit.gameObject;
+        }
+
         if (hit.rigidbody != null) {
             Vector3 scaled = hit.moveDirection * hit.rigidbody.mass;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);

@@ -41,7 +41,8 @@ public class BotBase : MonoBehaviour {
     private BotPathfinder pathfinder;
     private BotTextToSpeech tts;
 
-    private List<BotWorldPart> worldParts;
+    // Both bot parts and components
+    private List<BotBehaviour> botBehaviours;
     private Vector3 target;
 
     private void OnValidate() {
@@ -75,10 +76,9 @@ public class BotBase : MonoBehaviour {
         GameObject spawned = Instantiate(part.prefab, holster.transform);
         ApplyModifiers(part.modifiers);
 
-        BotWorldPart worldPart = spawned.GetComponent<BotWorldPart>();
+        BotBehaviour worldPart = spawned.GetComponent<BotBehaviour>();
         if (worldPart != null) {
-            worldPart.botBase = this;
-            worldParts.Add(worldPart);
+            botBehaviours.Add(worldPart);
         }
     }
 
@@ -95,13 +95,16 @@ public class BotBase : MonoBehaviour {
 
     private void OnDamage(ref float damage) {
         damage *= (1 - damageResistence);
-
-        // , srcVolume: Mathf.Clamp01(damage / 10.0f)
-        tts.SayString("ouch");
     }
 
-    private void OnHeadDamage(ref float damage) {
-        tts.SayString("bruh");
+    private void OnBodyHealthUpdated(float percent) {
+        if (percent > 0)
+            tts.SayString("ouch");
+    }
+
+    private void OnHeadHealthUpdated(float percent) {
+        if (percent > 0)
+            tts.SayString("bruh");
     }
 
     private void ApplyAttributes() {
@@ -114,7 +117,7 @@ public class BotBase : MonoBehaviour {
         _headHealth.maxHealth = headHealth;
         _headHealth.health = headHealth;
 
-        foreach (var part in worldParts) {
+        foreach (var part in botBehaviours) {
             part.AttributesUpdated();
         }
     }
@@ -170,7 +173,7 @@ public class BotBase : MonoBehaviour {
     }
 
     public void Start() {
-        worldParts = new List<BotWorldPart>();
+        botBehaviours = GetComponents<BotBehaviour>().ToList();
         pathfinder = GetComponent<BotPathfinder>();
         entityMovement = GetComponent<EntityMovement>();
         _bodyHealth = GetComponent<EntityHealth>();
@@ -181,12 +184,23 @@ public class BotBase : MonoBehaviour {
         Destroy(headMeshHolster.GetComponent<MeshFilter>());
         Destroy(headMeshHolster.GetComponent<MeshRenderer>());
 
-        _bodyHealth.OnDamaged += OnDamage;
-        _headHealth.OnDamaged += OnHeadDamage;
+        _bodyHealth.OnPreDamageModifier += OnDamage;
+        _bodyHealth.OnHealthUpdated += OnBodyHealthUpdated;
+        _headHealth.OnHealthUpdated += OnHeadHealthUpdated;
         _bodyHealth.OnKilled += () => { OnKilled(false); };
         _headHealth.OnKilled += () => { OnKilled(true); };
 
         SpawnParts();
+
+        foreach (var item in botBehaviours) {
+            item.botBase = this;
+            item.cc = entityMovement.cc;
+            item.movement = entityMovement;
+            item.bodyHealth = _bodyHealth;
+            item.headHealth = _headHealth;
+            item.botTts = tts;
+        }
+
         ApplyAngry();
         ApplyAttributes();
     }
@@ -197,7 +211,7 @@ public class BotBase : MonoBehaviour {
         target = player.transform.position;
         pathfinder.target = target;
 
-        foreach (var part in worldParts) {
+        foreach (var part in botBehaviours) {
             part.TargetChanged(target, velocity);
         }
     }

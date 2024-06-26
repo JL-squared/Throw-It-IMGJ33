@@ -5,11 +5,12 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Scooper : BotWorldPart {
+public class Scooper : BotBehaviour {
 
     [Header("Main Params")]
     public Transform origin;
     public Transform spawnHolster;
+    public Transform snowPickupPos;
     public float secondsBetweenThrows;
     public bool repeating;
     
@@ -27,7 +28,7 @@ public class Scooper : BotWorldPart {
     private Quaternion startingRot;
     private SnowballThrower thrower;
     private float time;
-    private bool thrown;
+    private bool armed;
     private float fakeSnowballSize;
     private float angle;
 
@@ -57,15 +58,33 @@ public class Scooper : BotWorldPart {
     // zero degrees is when the scoop is horizontal, facing down (in front of snowman, ready to pickup snow)
     // 90 degrees would be straight into the ground
     public void Update() {
+        bool passthrough = VoxelTerrain.Instance == null;
+        bool enabled = false;
+
+        if (armed || passthrough) {
+            enabled = true;
+        } else if (VoxelTerrain.Instance != null && VoxelTerrain.Instance.TryGetVoxel(snowPickupPos.position).IsSolidOfType(0)) {
+            enabled = true;
+        }
+
+
         // Handle angle stuff
         if (repeating) {
-            angle += Time.deltaTime * 360f / secondsBetweenThrows;
+            if (enabled) {
+                angle += Time.deltaTime * 360f / secondsBetweenThrows;
+            }
         } else {
-            time += Time.deltaTime * maxTime / secondsBetweenThrows;
-            // scoop up snow, overshoot a bit
-            // ratchet back 2-3 times
-            float localized = (time % maxTime);
-            tweener.targetValue = curve.Evaluate(localized);
+            if (enabled) {
+                time += Time.deltaTime * maxTime / secondsBetweenThrows;
+
+                // scoop up snow, overshoot a bit
+                // ratchet back 2-3 times
+                float localized = (time % maxTime);
+                tweener.targetValue = curve.Evaluate(localized);
+            } else {
+                tweener.targetValue = 90;
+            }
+            
             tweener.Update(Time.deltaTime, ref angle);
         }
 
@@ -73,35 +92,35 @@ public class Scooper : BotWorldPart {
 
         // Handle throwing only
         if (repeating) {
-            if (normalized > 270f && !thrown) {
+            if (normalized > 270f && armed) {
                 thrower.Throw();
-                thrown = true;
+                armed = false;
             }
         } else {
             // badoing... throw that shit
-            if ((time % maxTime) > curveThrowTime && !thrown) {
+            if ((time % maxTime) > curveThrowTime && armed) {
                 thrower.Throw();
-                thrown = true;
+                armed = false;
             }
         }
 
         // Sizing the fake snowball size based on current angle
         float startPickupAngle = groundPickupAngle - groundPickupAngleSpread;
         float endPickupAngle = groundPickupAngle + groundPickupAngleSpread;
-        if (normalized > startPickupAngle && normalized < endPickupAngle) {
+        if (normalized > startPickupAngle && normalized < endPickupAngle && enabled) {
             float state = math.unlerp(startPickupAngle, endPickupAngle, normalized);
             fakeSnowballSize = state;
-            thrown = false;
+            armed = true;
         } else {
             fakeSnowballSize = 1.0f;
         }
 
         origin.localRotation = Quaternion.AngleAxis(angle, Vector3.right) * startingRot;
 
-        if (thrown) {
-            fakeSnowball.localScale = Vector3.zero;
-        } else {
+        if (armed) {
             fakeSnowball.localScale = Vector3.one * fakeSnowballSize * 0.5f;
+        } else {
+            fakeSnowball.localScale = Vector3.zero;
         }
     }
 }

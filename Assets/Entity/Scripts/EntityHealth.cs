@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 using UnityEngine.Rendering;
 
 public class EntityHealth : MonoBehaviour {
@@ -12,8 +13,8 @@ public class EntityHealth : MonoBehaviour {
     public delegate void HealthUpdated(float percentage);
     public event HealthUpdated OnHealthUpdated;
 
-    public delegate void DamageModif(ref float damage);
-    public event DamageModif OnDamaged;
+    public delegate void PreDamageModifier(ref float damage);
+    public event PreDamageModifier OnPreDamageModifier;
 
     private bool alrKilled;
 
@@ -24,7 +25,7 @@ public class EntityHealth : MonoBehaviour {
     }
 
     public void Damage(float damage) {
-        OnDamaged?.Invoke(ref damage);
+        OnPreDamageModifier?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
 
         OnHealthUpdated?.Invoke(health / maxHealth);

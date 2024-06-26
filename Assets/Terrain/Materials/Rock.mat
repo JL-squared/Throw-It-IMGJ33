@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e30bbadc6af77fd4ab3d9c739ab9d306, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
@@ -33,7 +33,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Smoothness_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 36871339ea63e714a87cc28b00f5a3d9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -52,14 +52,17 @@ Material:
     m_Floats:
     - _Ao_Offset: 0.6
     - _Ao_Power: 20
-    - _Blend: 1
+    - _Blend: 4
+    - _Max_Ao: 1
     - _Metallic: 0
+    - _Min_Ao: 0
     - _Mul: 0
+    - _Normal_Strength: 0.2
     - _Offset: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0
-    - _Tile: 0.5
+    - _Tile: 0.2
     m_Colors:
     - _Color: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
     - _Tint: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0}

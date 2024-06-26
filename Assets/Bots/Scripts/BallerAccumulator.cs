@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
-public class BallerAccumulator : MonoBehaviour {
+public class BallerAccumulator : BotBehaviour {
     public Transform ball;
     public float increaseFactor;
     public float maxRadius;
@@ -10,68 +11,93 @@ public class BallerAccumulator : MonoBehaviour {
     public float voxelEditStrength;
     public float voxelEditOffsetRadius;
     public float renderRadiusOffset;
+    public float movementSpeedReduction;
     private float volume;
     private float radius;
-    private CharacterController cc;
-    private EntityMovement movement;
+    private float startingMovementSpeed;
     private Quaternion rotation = Quaternion.identity;
     private Quaternion angularVelocity = Quaternion.identity;
+    private Quaternion currentAngularVelocity = Quaternion.identity;
 
     public void Start() {
         volume = (4f / 3f) * Mathf.PI * Mathf.Pow(startingRadius, 3);
-        cc = GetComponent<CharacterController>();
-        movement = GetComponent<EntityMovement>();
-        UpdateBallParams();
+        UpdateBallParams(0.0f);
     }
 
-    void UpdateBallParams() {
-        cc.Move(Vector3.up * radius * Time.deltaTime);
+    public override void AttributesUpdated() {
+        base.AttributesUpdated();
+        startingMovementSpeed = botBase.movementSpeed;
+    }
+
+    // factor at 0 => at starting radius
+    // factor at 1 => at end radius
+    void UpdateBallParams(float factor) {
+        // derived from dv/dt. I love calc :3
         radius = Mathf.Sqrt(volume / 4 * Mathf.PI);
+        
+        // Character controller settings
+        cc.Move(Vector3.up * radius * Time.deltaTime);
         cc.center = Vector3.up * (-radius);
         cc.height = 1f + 2 * radius;
         cc.radius = radius;
+        
+        // Update ball visuals and world settings
         ball.localScale = Vector3.one * (radius + renderRadiusOffset) * 2f;
         ball.localPosition = -Vector3.up * (radius + 0.5f);
 
-        Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
-        float lateralSpeed = mov2d.magnitude;
-        float rotationSpeed = Mathf.Rad2Deg * lateralSpeed / radius;
-        Vector3 dir = transform.TransformDirection(Vector3.right);
-        angularVelocity = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, dir);
+        // Entity movement progressively gets slower (since surface area gets bigger)
+        botBase.movementSpeed = startingMovementSpeed - (movementSpeedReduction * factor);
+    }
+
+    void ApplyVoxelEdit() {
+        if (increaseFactor > 0.1) {
+            IVoxelEdit edit = new AddVoxelEdit {
+                center = ball.transform.position,
+                material = 0,
+                radius = radius * 0.9f + voxelEditOffsetRadius,
+                strength = voxelEditStrength * increaseFactor * Time.deltaTime,
+                writeMaterial = false,
+                maskMaterial = true,
+                falloffOffset = 0.5f,
+            };
+
+            VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+        }
     }
 
     public void Update() {
-        if (cc.isGrounded) {
-            Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
-            float factor = (maxRadius - radius) / maxRadius;
-            volume += factor * increaseFactor * Time.deltaTime * mov2d.magnitude;            
-            if (mov2d.magnitude > 0.01f) {
-                UpdateBallParams();
-
-                if (VoxelTerrain.Instance != null && increaseFactor > 0.1) {
-                    IVoxelEdit edit = new AddVoxelEdit {
-                        center = ball.transform.position,
-                        material = 0,
-                        radius = radius * 0.9f + voxelEditOffsetRadius,
-                        strength = voxelEditStrength * increaseFactor,
-                        writeMaterial = false,
-                        maskMaterial = true,
-                        falloffOffset = 0.5f,
-                    };
-
-                    VoxelTerrain.Instance.ApplyVoxelEdit(edit);
-                }
-
-
-            } else {
-                angularVelocity = Quaternion.identity;
-            }
-        } else {
-            angularVelocity = Quaternion.identity;
+        if (VoxelTerrain.Instance == null) {
+            Debug.LogWarning("Can't accumulate snow if terrain is disabled");
         }
 
-        rotation = angularVelocity.normalized * rotation;
-        
+        angularVelocity = Quaternion.identity;
+        if (cc.isGrounded) {
+            // Calculate the ball's angular velocity to apply at the end of the frame
+            Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
+            float lateralSpeed = mov2d.magnitude;
+            float rotationSpeed = Mathf.Rad2Deg * lateralSpeed / radius;
+            Vector3 dir = transform.TransformDirection(Vector3.right);
+
+            // Value that we will integrate
+            angularVelocity = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, dir);
+
+            // Check if we are on voxel terrain and if we are on the snow material
+            if (movement.groundObject != null && movement.groundObject.GetComponent<VoxelChunk>() != null && VoxelTerrain.Instance.TryGetVoxel(ball.transform.position - Vector3.up * (radius + 2.5f)).material == 0) {
+                // Increase radius, apply edit, and update params
+                // factor at 0 => at starting radius
+                // factor at 1 => at end radius
+                float factor = math.unlerp(startingRadius, maxRadius, radius);
+                volume += (1-factor) * increaseFactor * Time.deltaTime * mov2d.magnitude;
+                if (mov2d.magnitude > 0.01f) {
+                    UpdateBallParams(factor);
+                    ApplyVoxelEdit();
+                }
+            }
+        }
+
+        currentAngularVelocity = Quaternion.Slerp(currentAngularVelocity, angularVelocity, Time.deltaTime * 10);
+        rotation = currentAngularVelocity.normalized * rotation;
+
         // I tried setting global rotation to default but that didn't work idk why
         ball.localRotation = Quaternion.Inverse(transform.rotation);
         ball.rotation = rotation;

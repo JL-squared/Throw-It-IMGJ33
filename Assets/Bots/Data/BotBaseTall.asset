@@ -79,7 +79,7 @@ MonoBehaviour:
       delta: -19.99
   - prefab: {fileID: 4849415490621601290, guid: af6a9dbd8c1f78d45b7f6a21b8c25878,
       type: 3}
-    spawnChance: 0.25
+    spawnChance: 0.05
     tags: []
     modifiers: []
   - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
@@ -91,7 +91,7 @@ MonoBehaviour:
   spawnAtLeastOneDefaultEye: 1
   defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
     type: 3}
-  angryChance: 0.1
+  angryChance: 0.8
   angryModifiers:
   - attribute: 0
     delta: 2
