@@ -55,6 +55,7 @@ Material:
     - _Blend: 20
     - _Metallic: 0
     - _Mul: 20
+    - _Normal_Strength: 0.2
     - _Offset: -9.25
     - _QueueControl: 0
     - _QueueOffset: 0

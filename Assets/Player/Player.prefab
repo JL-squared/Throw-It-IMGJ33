@@ -390,6 +390,7 @@ MonoBehaviour:
   airControl: 4
   groundControl: 25
   jump: 5
+  coyoteTime: 0.1
   gravity: -20
   groundedOffsetVelocity: -2.5
   isJumping: 0
