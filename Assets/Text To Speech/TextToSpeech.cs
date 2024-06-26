@@ -30,6 +30,9 @@ public class TextToSpeech: MonoBehaviour {
     private float clipLoudness;
     private float[] clipSampleData;
 
+    public delegate void SpeechCutoff(string input, out string output);
+    public event SpeechCutoff onSpeechCutoff;
+
     public void Start() {
         source = GetComponent<AudioSource>();
         clipSampleData = new float[sampleDataLength];
@@ -62,10 +65,16 @@ public class TextToSpeech: MonoBehaviour {
         }
     }
 
+    public bool IsPlaying() {
+        return source.isPlaying;
+    }
+
     public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
         if (source.isPlaying && overwritePlaying) {
             source.Stop();
             source.timeSamples = 0;
+            string a = s;
+            onSpeechCutoff?.Invoke(a, out s);
         } else if (source.isPlaying) {
             return;
         }

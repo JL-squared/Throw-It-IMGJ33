@@ -35,6 +35,7 @@ public class BotTextToSpeech : MonoBehaviour {
     }
 
     public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
+        //Debug.Log("say: " + s);
         tts.SayString(s, deltas, srcVolume, srcPitch, overwritePlaying);
     }
 

@@ -18,6 +18,11 @@ public static class VoxelUtils {
     // Voxel scaling size
     public const int VoxelSizeReduction = 1;
 
+    public const int EditsScheduleCount = 128;
+    public const int VertexScheduleCount = 128;
+    public const int QuadScheduleCount = 128;
+    public const int CornersScheduleCount = 128;
+
     // Scaling factor when using voxel size reduction
     // Doesn't actually represent the actual size of the voxel (since we do some scaling anyways)
     public static readonly float VoxelSizeFactor = 1F / Mathf.Pow(2F, VoxelSizeReduction);

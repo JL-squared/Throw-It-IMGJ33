@@ -10,7 +10,9 @@ public class BotPathfinder : MonoBehaviour {
     private NavMeshPath path;
     public LayerMask mask;
     public Vector3 target;
+    private Vector3[] corners = new Vector3[0]; 
     public string agentType = "Bot";
+    public bool pathfind = true;
 
     public void Start() {
         em = GetComponent<EntityMovement>();
@@ -45,27 +47,44 @@ public class BotPathfinder : MonoBehaviour {
     }
 
     public void Update() {
-        NavMeshQueryFilter filter = new NavMeshQueryFilter();
-        filter.agentTypeID = GetNavMeshAgentID(agentType);
-        filter.SetAreaCost(0, 1f);
-        filter.areaMask = NavMesh.AllAreas;
+        if (pathfind) {
+            NavMeshQueryFilter filter = new NavMeshQueryFilter();
+            filter.agentTypeID = GetNavMeshAgentID(agentType);
+            filter.SetAreaCost(0, 1f);
+            filter.areaMask = NavMesh.AllAreas;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, 10000f, mask)) {
-            if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, filter, path)) {
-                Vector3 direction = GetAppropriateDir(path.corners);
-                direction.y = 0;
-                Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, 10000f, mask)) {
+                if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, filter, path)) {
+                    Vector3 direction = GetAppropriateDir(path.corners);
+                    corners = path.corners;
+                    direction.y = 0;
+                    Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
 
-                if (direction.magnitude > 0.01) {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
-                    float speedMult = Mathf.Clamp(direction.magnitude / speedDistFalloff, 0.5f, 1.0f);
-                    em.localWishMovement = Vector2.up * speedMult;
+                    if (direction.magnitude > 0.01) {
+                        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
+                        float speedMult = Mathf.Clamp(direction.magnitude / speedDistFalloff, 0.5f, 1.0f);
+                        em.localWishMovement = Vector2.up * speedMult;
+                    } else {
+                        em.localWishMovement = Vector2.zero;
+                    }
                 } else {
                     em.localWishMovement = Vector2.zero;
                 }
-            } else {
-                em.localWishMovement = Vector2.zero;
             }
+        } else {
+            Vector3 direction = -(transform.position - target);
+            direction.y = 0;
+            Vector2 local = new Vector2(direction.x, direction.z);
+            em.localWishMovement = Vector2.up;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
+        }
+        
+    }
+
+    public void OnDrawGizmos() {
+        for (int i = 0; i < corners.Length-1; i++) {
+            Gizmos.DrawSphere(corners[i], 1f);
+            Gizmos.DrawLine(corners[i], corners[i + 1]);
         }
     }
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   botBase: {fileID: 0}
   origin: {fileID: 1447788538758693849}
   spawnHolster: {fileID: 3643799789739792537}
-  secondsBetweenThrows: 5
+  secondsBetweenThrows: 2
   repeating: 0
   fakeSnowball: {fileID: 2815670362024921434}
   groundPickupAngle: 90

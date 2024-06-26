@@ -128,18 +128,18 @@ internal class MeshJobHandler {
         };
 
         // Start the corner job
-        JobHandle cornerJobHandle = cornerJob.Schedule(VoxelUtils.Volume, 2048 * 16, dependency);
+        JobHandle cornerJobHandle = cornerJob.Schedule(VoxelUtils.Volume, 2048 * VoxelUtils.CornersScheduleCount, dependency);
 
         // Start the material job
-        JobHandle materialJobHandle = materialJob.Schedule(VoxelUtils.Volume, 2048 * 16, dependency);
+        JobHandle materialJobHandle = materialJob.Schedule(VoxelUtils.Volume, 2048 * VoxelUtils.VertexScheduleCount, dependency);
 
         // Start the vertex job
         JobHandle vertexDep = JobHandle.CombineDependencies(cornerJobHandle, dependency);
-        JobHandle vertexJobHandle = vertexJob.Schedule(VoxelUtils.Volume, 2048 * 16, vertexDep);
+        JobHandle vertexJobHandle = vertexJob.Schedule(VoxelUtils.Volume, 2048 * VoxelUtils.VertexScheduleCount, vertexDep);
 
         // Start the quad job
         JobHandle merged = JobHandle.CombineDependencies(materialJobHandle, vertexJobHandle, cornerJobHandle);
-        JobHandle quadJobHandle = quadJob.Schedule(VoxelUtils.Volume, 2048 * 16, merged);
+        JobHandle quadJobHandle = quadJob.Schedule(VoxelUtils.Volume, 2048 * VoxelUtils.QuadScheduleCount, merged);
 
         // Start the sum job 
         JobHandle sumJobHandle = sumJob.Schedule(VoxelUtils.MaxMaterialCount, 32, quadJobHandle);

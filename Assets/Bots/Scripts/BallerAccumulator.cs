@@ -5,7 +5,11 @@ using UnityEngine;
 public class BallerAccumulator : MonoBehaviour {
     public Transform ball;
     public float increaseFactor;
+    public float maxRadius;
     public float startingRadius;
+    public float voxelEditStrength;
+    public float voxelEditOffsetRadius;
+    public float renderRadiusOffset;
     private float volume;
     private float radius;
     private CharacterController cc;
@@ -26,7 +30,7 @@ public class BallerAccumulator : MonoBehaviour {
         cc.center = Vector3.up * (-radius);
         cc.height = 1f + 2 * radius;
         cc.radius = radius;
-        ball.localScale = Vector3.one * radius * 2f;
+        ball.localScale = Vector3.one * (radius + renderRadiusOffset) * 2f;
         ball.localPosition = -Vector3.up * (radius + 0.5f);
 
         Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
@@ -39,10 +43,26 @@ public class BallerAccumulator : MonoBehaviour {
     public void Update() {
         if (cc.isGrounded) {
             Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
-            volume += increaseFactor * Time.deltaTime * mov2d.magnitude;
-            
+            float factor = (maxRadius - radius) / maxRadius;
+            volume += factor * increaseFactor * Time.deltaTime * mov2d.magnitude;            
             if (mov2d.magnitude > 0.01f) {
                 UpdateBallParams();
+
+                if (VoxelTerrain.Instance != null && increaseFactor > 0.1) {
+                    IVoxelEdit edit = new AddVoxelEdit {
+                        center = ball.transform.position,
+                        material = 0,
+                        radius = radius * 0.9f + voxelEditOffsetRadius,
+                        strength = voxelEditStrength * increaseFactor,
+                        writeMaterial = false,
+                        maskMaterial = true,
+                        falloffOffset = 0.5f,
+                    };
+
+                    VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+                }
+
+
             } else {
                 angularVelocity = Quaternion.identity;
             }

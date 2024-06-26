@@ -49,8 +49,8 @@ MonoBehaviour:
   botBase: {fileID: 0}
   timer: 10
   boutToBlowTimer: 7
-  editStrength: 100
-  force: 7
+  editStrength: 25
+  force: 70
   damage: 50
   radius: 7
 --- !u!1 &5964723677888720244

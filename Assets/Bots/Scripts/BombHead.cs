@@ -14,6 +14,9 @@ public class BombHead : BotWorldPart {
     
     public void Start() {
         tts = botBase.GetComponent<BotTextToSpeech>();
+        tts.tts.onSpeechCutoff += (string a, out string b) => {
+            b = "Nevermind lol";
+        };
     }
 
     public void Update() {

@@ -25,6 +25,6 @@ public interface IVoxelEdit {
             voxels = voxels,
             counters = counters
         };
-        return job.Schedule(VoxelUtils.Volume, 2048 * 16);
+        return job.Schedule(VoxelUtils.Volume, 2048 * VoxelUtils.EditsScheduleCount);
     }
 }

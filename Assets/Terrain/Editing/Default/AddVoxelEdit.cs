@@ -12,6 +12,8 @@ public struct AddVoxelEdit : IVoxelEdit {
     [ReadOnly] public float radius;
     [ReadOnly] public byte material;
     [ReadOnly] public bool writeMaterial;
+    [ReadOnly] public bool maskMaterial;
+    [ReadOnly] public float falloffOffset;
 
     public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
         return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
@@ -26,9 +28,9 @@ public struct AddVoxelEdit : IVoxelEdit {
 
     public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
-        voxel.material = (density < 1.0F && writeMaterial && strength < 0) ? material : voxel.material;
+        float falloff = (maskMaterial && voxel.material != material) ? 0f : math.saturate(-(density / radius) + falloffOffset);
 
-        float falloff = math.saturate(-(density / radius));
+        voxel.material = (density < 1.0F && writeMaterial && !maskMaterial && strength < 0) ? material : voxel.material;
         voxel.density += (half)(strength * falloff);
         return voxel;
     }
