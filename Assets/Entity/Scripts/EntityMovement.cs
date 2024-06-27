@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour {
@@ -22,6 +23,7 @@ public class EntityMovement : MonoBehaviour {
     public float maxAcceleration = 5;
     public float jump = 5.0F;
     public float coyoteTime = 0.0f;
+    public float jumpBufferTime = 0.0f;
     public float gravity = -9.81f;
     public float groundedOffsetVelocity = -2.5f;
     [HideInInspector]
@@ -34,7 +36,9 @@ public class EntityMovement : MonoBehaviour {
     public CharacterController cc;
     private Vector3 explosion;
     private float lastGroundedTime = 0;
+    private float nextJumpTime = 0;
     private int jumpCounter = 0;
+    private bool buffered;
     [HideInInspector]
     public GameObject groundObject;
     private bool groundJustExploded;
@@ -60,7 +64,13 @@ public class EntityMovement : MonoBehaviour {
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
         
         movement.y += gravity * Time.deltaTime;
-        
+
+        if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
+            nextJumpTime = 0;
+            isJumping = true;
+            buffered = false;
+        }
+
         if (cc.isGrounded && !groundJustExploded) {
             movement.y = groundedOffsetVelocity;
             lastGroundedTime = Time.time;
@@ -110,8 +120,12 @@ public class EntityMovement : MonoBehaviour {
     }
 
     public void Jump() {
-        if ((Time.time - lastGroundedTime) <= coyoteTime) {
+        if ((Time.time - lastGroundedTime) <= coyoteTime && jumpCounter == 0) {
             isJumping = true;
+        } else if (jumpCounter == 1) {
+            nextJumpTime = Time.time + jumpBufferTime;
+            buffered = true;
+            Debug.Log("aaa");
         }
     }
 
