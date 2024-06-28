@@ -125,7 +125,6 @@ public class EntityMovement : MonoBehaviour {
         } else if (jumpCounter == 1) {
             nextJumpTime = Time.time + jumpBufferTime;
             buffered = true;
-            Debug.Log("aaa");
         }
     }
 

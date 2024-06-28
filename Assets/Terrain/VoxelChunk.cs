@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -8,9 +9,8 @@ public class VoxelChunk : MonoBehaviour {
     public bool hasCollisions = false;
     public NativeMultiCounter lastCounters;
 
-    // Custom pending job that must be completed before we can mesh the chunk
-    // Either voxel edit job, base terrain job, or decompression job
-    public JobHandle dependency = default;
+    // Current voxel edits that we must execute
+    public IVoxelEdit pendingVoxelEdit = default;
 
     // Callback that we must invoke when we finish meshing this voxel chunk
     public VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;
@@ -39,5 +39,20 @@ public class VoxelChunk : MonoBehaviour {
         }
 
         VoxelTerrain.Instance.GenerateMesh(this, hasCollisions, maxFrames);
+    }
+
+    public JobHandle HookHandler(MeshJobHandler handler) {
+        handler.voxels.CopyFrom(voxels);
+
+        JobHandle dep = default;
+        if (pendingVoxelEdit != default)
+            dep = pendingVoxelEdit.Apply(transform.position, handler.voxels, lastCounters);
+        return handler.BeginJob(dep);
+    }
+
+    public VoxelMesh UnhookHandler(MeshJobHandler handler, Mesh mesh) {
+        VoxelMesh voxelMesh = handler.Complete(mesh);
+        voxels.CopyFrom(handler.voxels);
+        return voxelMesh;
     }
 }

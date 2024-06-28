@@ -43,7 +43,8 @@ public class VoxelTerrainCustomEditor : Editor {
         voxelChunk.hasCollisions = true;
         voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
         FlatMapJob job = new FlatMapJob { voxels = voxelChunk.voxels, offset = voxelChunk.transform.position };
-        voxelChunk.dependency = job.Schedule(VoxelUtils.Volume, 2048 * 16);
+        //voxelChunk.dependency = job.Schedule(VoxelUtils.Volume, 2048 * 16);
+        Debug.LogError("jed inted. forgot to fix");
         voxelChunk.Remesh();
     }
 

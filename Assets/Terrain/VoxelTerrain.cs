@@ -37,7 +37,6 @@ public class VoxelTerrain : MonoBehaviour {
 
     private bool alrDisposed = false;
     private int pendingChunks;
-    private int editsInFlight;
     private bool firstGen = true;
 
     public delegate void InitGen();
@@ -252,12 +251,10 @@ public class VoxelTerrain : MonoBehaviour {
                 if (voxelChunk == null)
                     return;
 
-                var voxelMesh = handler.Complete(voxelChunk.sharedMesh);
+                var voxelMesh = voxelChunk.UnhookHandler(handler, voxelChunk.sharedMesh);
 
                 // Update counters yea!!!!
                 if (voxelChunk.voxelCountersHandle != null) {
-                    voxelChunk.dependency.Complete();
-                    editsInFlight--;
                     UpdateCounters(handler, voxelChunk);
                 }
 
@@ -272,7 +269,7 @@ public class VoxelTerrain : MonoBehaviour {
                 }
 
                 // Set chunk renderer settings
-                voxelChunk.dependency = default;
+                voxelChunk.pendingVoxelEdit = default;
                 var renderer = voxelChunk.GetComponent<MeshRenderer>();
                 voxelChunk.GetComponent<MeshFilter>().sharedMesh = voxelChunk.sharedMesh;
                 voxelChunk.voxelMaterialsLookup = voxelMesh.VoxelMaterialsLookup;
@@ -291,7 +288,7 @@ public class VoxelTerrain : MonoBehaviour {
         if (pendingMeshJobs.Count < meshJobsPerFrame) {
             IVoxelEdit edit;
             if (tempVoxelEdits.TryDequeue(out edit)) {
-                ApplyVoxelEdit(edit, true);
+                ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
             }
         }
 
@@ -312,7 +309,7 @@ public class VoxelTerrain : MonoBehaviour {
 
                 // Pass through the edit system for any chunks that should be modified
                 handler.voxelCounters.Reset();
-                handler.BeginJob(request.chunk.dependency, request.chunk.voxels);
+                request.chunk.HookHandler(handler);
             }
         }
     }
@@ -367,8 +364,8 @@ public class VoxelTerrain : MonoBehaviour {
 
     // Apply a voxel edit to the terrain world
     // Could either be used in game (for destructible terrain) or in editor for creating the terrain map
-    public void ApplyVoxelEdit(IVoxelEdit edit, bool neverForget = false, bool immediate = false, VoxelEditCounterCallback callback = null) {
-        if (!handlers.All(x => x.Free)) {
+    public void ApplyVoxelEdit(IVoxelEdit edit, bool neverForget = false, bool symmetric = false, bool immediate = false, VoxelEditCounterCallback callback = null) {
+        if ((!handlers.All(x => x.Free) || pendingMeshJobs.Count > 0) && !symmetric) {
             if (neverForget)
                 tempVoxelEdits.Enqueue(edit);
             return;
@@ -383,33 +380,35 @@ public class VoxelTerrain : MonoBehaviour {
             callback = callback,
         };
 
+        bool shouldRetryNextFrame = false;
+
         foreach (var chunk in totalChunks) {
             var voxelChunk = chunk.GetComponent<VoxelChunk>();
 
             if (voxelChunk.GetBounds().Intersects(editBounds)) {
-                voxelChunk.dependency.Complete();
-                
+                if (voxelChunk.pendingVoxelEdit != default && symmetric) {
+                    shouldRetryNextFrame = true;
+                    continue;
+                }
+
                 if (!voxelChunk.lastCounters.IsCreated) {
                     voxelChunk.lastCounters = new NativeMultiCounter(voxelMaterials.Length, Allocator.Persistent);
                 }
-                
-                JobHandle dep = edit.Apply(chunk.transform.position, voxelChunk.voxels, voxelChunk.lastCounters);
-                voxelChunk.dependency = dep;
+
+                voxelChunk.pendingVoxelEdit = edit;
                 voxelChunk.voxelCountersHandle = countersHandle;
                 countersHandle.pending++;
-                editsInFlight++;
                 voxelChunk.Remesh(immediate ? 0 : 5);
             }
+        }
+
+        if (shouldRetryNextFrame && neverForget && symmetric) {
+            tempVoxelEdits.Enqueue(edit);
         }
     }
 
     // Get the value of a singular voxel at a world point
     public Voxel TryGetVoxel(Vector3 position) {
-        //Debug.Log(editsInFlight);
-        //Debug.Log(handlers.All(x => x.Free));
-        if (!handlers.All(x => x.Free) || editsInFlight != 0)
-            return Voxel.Empty;
-
         float3 voxelChunk = position / ((float)VoxelUtils.Size * VoxelUtils.VoxelSizeFactor);
         int3 voxelChunkInt = new int3(math.floor(voxelChunk)) + new int3(mapChunkSize.x, mapChunkSize.y, mapChunkSize.z);
         int voxelChunkIndex = voxelChunkInt.z + voxelChunkInt.y * (mapChunkSize.z * 2) + voxelChunkInt.x * ((2 * mapChunkSize.z) * (2 * mapChunkSize.y));

@@ -9,6 +9,7 @@ public struct SetHeightVoxelEdit : IVoxelEdit {
     [ReadOnly] public float3 center;
     [ReadOnly] public float targetHeight;
     [ReadOnly] public float radius;
+    [ReadOnly] public float strength;
 
     public JobHandle Apply(float3 offset, NativeArray<Voxel> voxels, NativeMultiCounter counters) {
         return IVoxelEdit.ApplyGeneric(this, offset, voxels, counters);
@@ -23,7 +24,7 @@ public struct SetHeightVoxelEdit : IVoxelEdit {
 
     public Voxel Modify(float3 position, Voxel voxel) {
         float density = math.length(position - center) - radius;
-        float falloff = math.saturate(-(density / radius));
+        float falloff = math.saturate(-(density / radius) * strength);
         voxel.density = (half)(math.lerp(voxel.density, position.y - targetHeight, falloff));
         return voxel;
     }

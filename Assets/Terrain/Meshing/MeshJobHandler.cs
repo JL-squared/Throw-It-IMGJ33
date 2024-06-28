@@ -7,7 +7,10 @@ using UnityEngine.Rendering;
 
 // Contains the allocation data for a single job
 // There are multiple instances of this class stored inside the voxel mesher to saturate the other threads
-internal class MeshJobHandler {
+public class MeshJobHandler {
+    // Temp copy for the voxel data
+    public NativeArray<Voxel> voxels;
+
     // Native buffers for mesh data
     public NativeArray<float3> vertices;
     public NativeArray<float2> uvs;
@@ -31,9 +34,9 @@ internal class MeshJobHandler {
     public bool colissions = false;
     public int startingFrame = 0;
     public int maxFrames = 0;
-    internal VertexAttributeDescriptor[] vertexAttributeDescriptors;
+    public VertexAttributeDescriptor[] vertexAttributeDescriptors;
 
-    internal MeshJobHandler() {
+    public MeshJobHandler() {
         // Native buffers for mesh data
         int materialCount = VoxelUtils.MaxMaterialCount;
         vertices = new NativeArray<float3>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
@@ -41,6 +44,7 @@ internal class MeshJobHandler {
         tempTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         permTriangles = new NativeArray<int>(VoxelUtils.Volume * 6, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
         voxelCounters = new NativeMultiCounter(materialCount, Allocator.Persistent);
+        voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory); 
 
         // Native buffer for mesh generation data
         indices = new NativeArray<int>(VoxelUtils.Volume, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
@@ -65,8 +69,9 @@ internal class MeshJobHandler {
     }
     public bool Free { get; private set; } = true;
 
-    // Begin the vertex + quad job that will generate the mesh
-    internal JobHandle BeginJob(JobHandle dependency, NativeArray<Voxel> voxels) {
+    // Begin the vertex + quad job that will generate the mesh based on the current copied voxels
+    // Copying of the voxel data must be done outside of this function
+    internal JobHandle BeginJob(JobHandle dependency) {
         countersQuad.Reset();
         counter.Count = 0;
         materialCounter.Count = 0;
@@ -219,6 +224,7 @@ internal class MeshJobHandler {
 
     // Dispose of the underlying memory allocations
     internal void Dispose() {
+        voxels.Dispose();
         indices.Dispose();
         uvs.Dispose();
         vertices.Dispose();

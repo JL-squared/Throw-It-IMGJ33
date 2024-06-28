@@ -1,11 +1,10 @@
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-[assembly: RegisterGenericJobType(typeof(VoxelEditJob<ExplosionVoxelEdit>))]
-public struct ExplosionVoxelEdit : IVoxelEdit {
+[assembly: RegisterGenericJobType(typeof(VoxelEditJob<ParametricExplosionVoxelEdit>))]
+public struct ParametricExplosionVoxelEdit : IVoxelEdit {
     [ReadOnly] public float3 center;
     [ReadOnly] public float radius;
     [ReadOnly] public float strength;

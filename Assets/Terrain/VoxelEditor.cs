@@ -147,10 +147,11 @@ public class VoxelEditor : MonoBehaviour {
                     center = point,
                     radius = brushRadius,
                     targetHeight = targetHeight,
+                    strength = brushStrength,
                 };
                 break;
             case BrushType.Crater:
-                edit = new ExplosionVoxelEdit {
+                edit = new ParametricExplosionVoxelEdit {
                     center = point,
                     radius = brushRadius,
                     strength = brushStrength,

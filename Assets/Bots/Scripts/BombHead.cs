@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,12 +12,28 @@ public class BombHead : BotBehaviour {
     public float force;
     public float damage;
     public float radius;
+    public float minDamageRadius;
+    public float editRadiusOffset;
+    public AnimationCurve explosionProfile;
+    private NativeArray<float> arrayProfile;
 
     
     public void Start() {
         botTts.tts.onSpeechCutoff += (string a, out string b) => {
             b = "Nevermind lol";
         };
+
+
+        arrayProfile = new NativeArray<float>(256, Allocator.Persistent);
+
+        for (int i = 0; i < 256; i++) {
+            float x = (float)i / 256.0f;
+            arrayProfile[i] = explosionProfile.Evaluate(x);
+        }
+    }
+
+    public void Stop() {
+        arrayProfile.Dispose();
     }
 
     public void Update() {
@@ -24,7 +41,15 @@ public class BombHead : BotBehaviour {
 
         if (timer <= 0) {
             Destroy(botBase.gameObject);
-            IVoxelEdit edit = new ExplosionVoxelEdit {
+            IVoxelEdit edit = new ProfiledExplosionVoxelEdit {
+                center = transform.position,
+                strength = editStrength,
+                material = 0,
+                radius = radius + editRadiusOffset,
+                values = arrayProfile
+            };
+            /*
+            IVoxelEdit edit = new ParametricExplosionVoxelEdit {
                 center = transform.position,
                 strength = editStrength,
                 material = 0,
@@ -32,9 +57,18 @@ public class BombHead : BotBehaviour {
                 jParam = 4f,
                 hParam = 0.2f,
             };
+            */
+            /*
+            IVoxelEdit edit = new SphericalExplosionVoxelEdit {
+                center = transform.position,
+                strength = editStrength,
+                material = 0,
+                radius = radius,
+            };
+            */
 
             if (VoxelTerrain.Instance != null) {
-                VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+                VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
             }
 
             Vector3 explosionCenter = botBase.transform.position;
@@ -53,7 +87,7 @@ public class BombHead : BotBehaviour {
 
                     // 1 => closest to bomb
                     // 0 => furthest from bomb 
-                    float factor = 1 - Mathf.Clamp01(math.unlerp(0, radius, dist));
+                    float factor = 1 - Mathf.Clamp01(math.unlerp(minDamageRadius, radius, dist));
                     health.Damage(factor * damage);
                 }
 
