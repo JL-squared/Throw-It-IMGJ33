@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: wires
   stackSize: 10
-  itemIcon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 917380e4c33e90a4384ae80bf87b5e0c, type: 3}
   worldItem: {fileID: 0}
   title: Wires
   description: Threaded copper wires. Hope you brought scissors!

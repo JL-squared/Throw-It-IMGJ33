@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: scoop
   stackSize: 2
-  itemIcon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0f7ba1981baab934cb91dbbe629d6844, type: 3}
   worldItem: {fileID: 0}
   title: Giant Aluminum Spoon
   description: A comically large aluminum spoon, used by the local robots to terrorize

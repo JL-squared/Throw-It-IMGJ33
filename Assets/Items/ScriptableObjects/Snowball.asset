@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: snowball
   stackSize: 20
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 21300000, guid: add0a19a1ebc9f54fa7bf86d7fbef2a7, type: 3}
   worldItem: {fileID: 0}
   title: Snowball
   description: Run-of-the-mill, recess approved, perfectly round snowball. Good for
