@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour {
     public static PlayerScript singleton;
 
+    [Header("Death Stuff")]
     public AudioSource ambatakamChoir;
     public bool isDead;
 
@@ -88,10 +89,6 @@ public class PlayerScript : MonoBehaviour {
     public float maxThrowDelay;
     public float throwDelay;
 
-    [Header("UI")]
-    public bool inventoryOpen;
-    public bool paused;
-
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
 
@@ -133,6 +130,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void OnKilled() {
+        // Everything related to killing the actual player
         isDead = true;
         Debug.Log("Skill issue, you dead");
         ambatakamChoir.Play();
@@ -142,7 +140,8 @@ public class PlayerScript : MonoBehaviour {
         head.transform.parent = null;
         GetComponent<CharacterController>().height = 0;
         Destroy(GetComponentInChildren<MeshRenderer>());
-        GameManager.Instance.timeManager.PlayedDeadLol();
+
+        GameManager.Instance.PlayerDeadLol();
     }
 
     public void UpdateInventory(Item item) {
@@ -300,35 +299,22 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if (context.performed && !paused && !isDead) {
-            inventoryOpen = !inventoryOpen;
-            UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
-            UpdateUIStuff();
+        if (context.performed && !isDead) {
+            UIMaster.Instance.TabPressed();
         }
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
         if (context.performed) {
-            if (!inventoryOpen) {
-                paused = !paused;
-            } else {
-                inventoryOpen = false;
-            }
-            UpdateUIStuff();
+            UIMaster.Instance.EscPressed();
         }
-    }
-
-    public void UpdateUIStuff() {
-        UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
-        Cursor.lockState = paused || inventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
-        GameManager.Instance.timeManager.UpdatePaused(paused);
     }
 
     /// <summary>
     /// Input receiver for camera movement
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        if (Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused && !isDead) {
+        if (Cursor.lockState != CursorLockMode.None && Performed(context)) {
             targetMouseDelta = context.ReadValue<Vector2>();
             wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
@@ -339,11 +325,15 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
+    public bool Performed(InputAction.CallbackContext context) {
+        return context.performed && UIMaster.Instance.MovementPossible() && !isDead;
+    }
+
     /// <summary>
     /// Input receiver for jumping
     /// </summary>
     public void Jump(InputAction.CallbackContext context) {
-        if (context.performed && !inventoryOpen && !paused && !isDead) {
+        if (Performed(context)) {
             movement.Jump();
         }
     }
@@ -352,7 +342,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for hotbar 
     /// </summary>
     public void Scroll(InputAction.CallbackContext context) {
-        if (context.performed) {
+        if (Performed(context)) {
             float scroll = -context.ReadValue<float>();
             scroll /= 120;
 
@@ -369,7 +359,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void SelectSlot(InputAction.CallbackContext context) {
-        if (context.performed)
+        if (Performed(context))
             Selected = (int)context.ReadValue<float>();
         SelectionChanged();
     }
@@ -393,7 +383,7 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {
-        if (context.performed) {
+        if (Performed(context)) {
             isBuilding = !isBuilding;
             placementGhost.SetActive(false);
         }
@@ -519,10 +509,10 @@ public class PlayerScript : MonoBehaviour {
     public void PrimaryAction(InputAction.CallbackContext context) {
         if(!isDead)
         if (isBuilding) {
-            if (placementStatus && context.performed)
+            if (placementStatus && Performed(context))
                 BuildAction();
         } else {
-            if (context.performed) {
+            if (Performed(context)) {
                 if(throwDelay == 0.0f) isCharging = true;
             } else {
                 // need to have this check since it seems like unity
@@ -550,7 +540,7 @@ public class PlayerScript : MonoBehaviour {
     bool whichThing = true;
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if(context.performed && !isDead) {
+        if(Performed(context)) {
             if (isBuilding) {
                 BuildAction2();
             } else {

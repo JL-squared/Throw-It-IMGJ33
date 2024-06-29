@@ -477,7 +477,7 @@ RectTransform:
   m_Children:
   - {fileID: 2648413395201427189}
   - {fileID: 1261843854748921379}
-  m_Father: {fileID: 2205213635054889461}
+  m_Father: {fileID: 4771241558564208116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1424,9 +1424,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3487247963862327435}
-  - {fileID: 2754831509252665543}
   - {fileID: 4771241558564208116}
-  - {fileID: 1821876907309467519}
+  - {fileID: 2754831509252665543}
   - {fileID: 703348462058923965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1458,6 +1457,7 @@ MonoBehaviour:
   craftingMenuObject: {fileID: 9017951761252190518}
   rightClickHint: {fileID: 8911208246058070929}
   chargeMeter: {fileID: 1261843854748921379}
+  crosshairGroup: {fileID: 7101967397361964772}
 --- !u!1 &5489610092224306192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,6 +1935,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4120027086496178353}
+  - {fileID: 1821876907309467519}
   m_Father: {fileID: 2205213635054889461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
