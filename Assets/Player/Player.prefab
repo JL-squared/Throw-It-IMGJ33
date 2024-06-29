@@ -482,7 +482,7 @@ MonoBehaviour:
   viewModelHolster: {fileID: 9178346958499585258}
   viewModelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100
-  viewModelRotationStrength: -0.002
+  viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
   chargeSpeed: 1
   minCharge: 0.2

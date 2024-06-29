@@ -92,6 +92,9 @@ public class PlayerScript : MonoBehaviour {
     public bool inventoryOpen;
     public bool paused;
 
+    private Vector2 currentMouseDelta;
+    private Vector2 targetMouseDelta;
+
     private void Awake() {
         if (singleton != null && singleton != this) {
             Destroy(gameObject);
@@ -152,10 +155,14 @@ public class PlayerScript : MonoBehaviour {
         UpdateShivering();
         UpdateCharging();
 
+        viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
+        viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
+    
         if (instantiatedViewModel != null) {
-            viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
             instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset, Time.deltaTime * viewModelSmoothingSpeed);
         }
+
+        currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
     }
 
     private void LateUpdate() {
@@ -322,12 +329,13 @@ public class PlayerScript : MonoBehaviour {
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
         if (Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused && !isDead) {
-            Vector2 mouseDelta = context.ReadValue<Vector2>();
-            wishHeadDir += mouseDelta * mouseSensitivity * 0.02f;
+            targetMouseDelta = context.ReadValue<Vector2>();
+            wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
             head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
             movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
-            viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(mouseDelta.x, mouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
+            
+            //lastMouseDelta = Vector2.Lerp(lastMouseDelta, mouseDelta, Time.deltaTime * 20.0f);
         }
     }
 
@@ -367,12 +375,19 @@ public class PlayerScript : MonoBehaviour {
     }
 
     private void SelectionChanged() {
-        if (instantiatedViewModel != null)
+        Vector3 oldLocalPosition = default;
+        Quaternion oldLocalRotation = default;
+        if (instantiatedViewModel != null) {
+            oldLocalPosition = instantiatedViewModel.transform.localPosition;
+            oldLocalRotation = instantiatedViewModel.transform.localRotation;
             Destroy(instantiatedViewModel);
+        }
 
         Item selectedItem = items[selected];
         if (selectedItem != null && selectedItem.Data != null) {
             GameObject viewModel = Instantiate(selectedItem.Data.viewModel, viewModelHolster.transform);
+            viewModel.transform.localPosition = oldLocalPosition;
+            viewModel.transform.localRotation = oldLocalRotation;
             instantiatedViewModel = viewModel;
         }
     }
