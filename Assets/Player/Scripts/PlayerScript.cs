@@ -290,6 +290,7 @@ public class PlayerScript : MonoBehaviour {
     public void UpdateUIStuff() {
         UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
         Cursor.lockState = paused || inventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
+        UIMaster.Instance.UpdatePaused(paused);
     }
 
     /// <summary>

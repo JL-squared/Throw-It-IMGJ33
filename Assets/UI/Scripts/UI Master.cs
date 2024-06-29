@@ -5,6 +5,7 @@ public class UIMaster : MonoBehaviour {
     public GameObject menu;
     public HealthBar healthBar;
     public GameObject deathScreen;
+    public GameObject pauseMenu;
     bool dead;
     float timeSinceDeath;
 
@@ -28,5 +29,10 @@ public class UIMaster : MonoBehaviour {
 
             deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, timeSinceDeath);
         }
+    }
+
+    public void UpdatePaused(bool paused) {
+        pauseMenu.SetActive(paused);
+        Time.timeScale = paused ? 0.0f : 1.0f;
     }
 }
