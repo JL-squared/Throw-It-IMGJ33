@@ -48,5 +48,6 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = paused ? 0.0f : 1.0f;
         this.paused = paused;
         onPausedChanged?.Invoke(paused);
+        AudioListener.pause = paused;
     }
 }

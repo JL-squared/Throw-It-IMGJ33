@@ -71,6 +71,14 @@ public class PlayerScript : MonoBehaviour {
     public Camera gameCamera;
     public float mouseSensitivity = 1.0f;
 
+    [Header("Head Bobbing")]
+    private float stepValue = 0f;
+    private float bobbingStrengthCurrent = 0f;
+    public float baseCameraHeight = 0.8f;
+    public float bobbingStrength = 0.05f;
+    public float bobbingSpeed = 2.5f;
+    public float viewModelBobbingStrength = 3.0f;
+
     [Header("View Model")]
     public GameObject viewModelHolster;
     private GameObject instantiatedViewModel;
@@ -154,11 +162,26 @@ public class PlayerScript : MonoBehaviour {
         UpdateShivering();
         UpdateCharging();
 
+        Vector2 velocity2d = new Vector2(movement.cc.velocity.x, movement.cc.velocity.z);
+        float targetBobbingStrength = 0f;
+        if (velocity2d.magnitude > 0.01) {
+            stepValue += velocity2d.magnitude * Time.deltaTime;
+            targetBobbingStrength = velocity2d.magnitude / movement.speed;
+            targetBobbingStrength = Mathf.Clamp01(targetBobbingStrength);
+        } else {
+            targetBobbingStrength = 0f;
+        }
+        bobbingStrengthCurrent = Mathf.Lerp(bobbingStrengthCurrent, targetBobbingStrength, 25f * Time.deltaTime);
+
+        float bobbing = Mathf.Sin(stepValue * bobbingSpeed) * bobbingStrength * bobbingStrengthCurrent;
+        if (!isDead)
+            head.transform.localPosition = new Vector3(0, baseCameraHeight + bobbing, 0);
+
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
     
         if (instantiatedViewModel != null) {
-            instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset, Time.deltaTime * viewModelSmoothingSpeed);
+            instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset + Vector3.up * bobbing * viewModelBobbingStrength, Time.deltaTime * viewModelSmoothingSpeed);
         }
 
         currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
@@ -224,7 +247,6 @@ public class PlayerScript : MonoBehaviour {
         localCamPos *= shiveringShakeFactor;
         gameCamera.transform.localPosition = localCamPos;
         gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
-
     }
 
     private void OnGUI() {
@@ -314,7 +336,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for camera movement
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        if (Cursor.lockState != CursorLockMode.None && Performed(context)) {
+        if (Cursor.lockState != CursorLockMode.None && Performed()) {
             targetMouseDelta = context.ReadValue<Vector2>();
             wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
@@ -327,6 +349,10 @@ public class PlayerScript : MonoBehaviour {
 
     public bool Performed(InputAction.CallbackContext context) {
         return context.performed && UIMaster.Instance.MovementPossible() && !isDead;
+    }
+
+    public bool Performed() {
+        return UIMaster.Instance.MovementPossible() && !isDead;
     }
 
     /// <summary>

@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: ebd060475d811b3419835ba21486cce2, type: 2}
-  backHolster: {fileID: 7976112143067828452}
+  centerHolster: {fileID: 7976112143067828452}
   leftHolster: {fileID: 8245189526197812159}
   rightHolster: {fileID: 4018041634853001406}
   leftEyeHolster: {fileID: 5336900414667495552}
@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 4510671285300681617}
   - component: {fileID: 4792943010021025538}
   m_Layer: 0
-  m_Name: Back
+  m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -492,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 7976112143067828452}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

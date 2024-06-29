@@ -11,7 +11,7 @@ public class BotBase : MonoBehaviour {
     public BotData data;
 
     [Header("Procedural Holsters")]
-    public GameObject backHolster;
+    public GameObject centerHolster;
     public GameObject leftHolster;
     public GameObject rightHolster;
     public GameObject leftEyeHolster;
@@ -130,10 +130,12 @@ public class BotBase : MonoBehaviour {
         damageResistence = data.baseDamageResistence;
 
         // Base weapons / attribute modifiers
-        PickPartForHolsterType(backHolster, data.back);
-        PickPartForHolsterType(leftHolster, data.left);
-        PickPartForHolsterType(rightHolster, data.right);
-
+        BotPartData center = PickPartForHolsterType(centerHolster, data.center);
+        if (center == null || !center.tags.Contains("disable sides")) {
+            PickPartForHolsterType(leftHolster, data.left);
+            PickPartForHolsterType(rightHolster, data.right);
+        };
+        
         // Spawns at LEAST one default eye if needed
         if (data.spawnAtLeastOneDefaultEye) {
             if (Random.value > 0.5) {

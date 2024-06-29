@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "BotData", menuName = "ScriptableObjects/New Bot Type", order = 1)]
 public class BotData : ScriptableObject {
-    public List<BotPartData> back;
+    public List<BotPartData> center;
     public List<BotPartData> left;
     public List<BotPartData> right;
     public List<BotPartData> hat;
