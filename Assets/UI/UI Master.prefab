@@ -427,8 +427,10 @@ MonoBehaviour:
   inGameHUD: {fileID: 7832396002830471532}
   menu: {fileID: 3258935076480513664}
   healthBar: {fileID: 7665322645003267670}
+  healthBarGroup: {fileID: 8497298870798233335}
   deathScreen: {fileID: 8768174831763820647}
   pauseMenu: {fileID: 6715642724376304134}
+  state: 0
 --- !u!1 &6715642724376304134
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -571,7 +573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &323048321020501012
 RectTransform:
   m_ObjectHideFlags: 0
@@ -743,12 +745,12 @@ PrefabInstance:
     - target: {fileID: 2205213635054889461, guid: efb91e131be66fd4192caf215831b756,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2205213635054889461, guid: efb91e131be66fd4192caf215831b756,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 10.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2205213635054889461, guid: efb91e131be66fd4192caf215831b756,
         type: 3}
@@ -770,6 +772,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngameHUD
       objectReference: {fileID: 0}
+    - target: {fileID: 8852638380112181882, guid: efb91e131be66fd4192caf215831b756,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 7590385d8766f7042bc24a4c2b1c8e30, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -805,3 +812,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a434cc07ddef96469f7c1a9a228393c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8497298870798233335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3241201377599030661, guid: efb91e131be66fd4192caf215831b756,
+    type: 3}
+  m_PrefabInstance: {fileID: 6419730874581756786}
+  m_PrefabAsset: {fileID: 0}

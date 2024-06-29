@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a0a2a8ccd64768346a5ad2bb76163ca0
+  m_SerializeEntries:
+  - m_GUID: 20e62cf7196fb4349aba90eb0585d5ee
+    m_Address: Assets/AddressablesResources/Items/Battery.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7beac97d01c07fc40b62efee0dfe1711
+    m_Address: Assets/AddressablesResources/Items/Bolts.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c360cb36fa52be941a466a904e3ab086
+    m_Address: Assets/AddressablesResources/Items/Camera.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c4d8a17240e2654d8d720b8a4c1b05b
+    m_Address: Assets/AddressablesResources/Items/Scoop.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc8db24068623fe429ab25ec2781b017
+    m_Address: Assets/AddressablesResources/Items/Snowball.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4daeb82f467c7f54dad76e124a9a3def
+    m_Address: Assets/AddressablesResources/Items/Steel.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2a31b0cf954c2e4d93d1dbefb25739b
+    m_Address: Assets/AddressablesResources/Items/Wires.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 496d9fe636dadf345afd385b128d4b9e
+    m_Address: Assets/AddressablesResources/Items/Wood.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: da40d6b3b74a26d41a24aff6c41a6298, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8c1d6f08cf6372546ba7827c83f77e04, type: 2}
+    - {fileID: 11400000, guid: 091d411bafec9f945abd670ccb917215, type: 2}

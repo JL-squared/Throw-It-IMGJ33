@@ -13,9 +13,12 @@ public class HotbarUI : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        PlayerScript.singleton.selectedEvent?.AddListener(Select);
-        Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
-        PlayerScript.singleton.inventoryUpdateEvent?.AddListener(Refresh);
+        if (PlayerScript.singleton != null) {
+            PlayerScript.singleton.selectedEvent?.AddListener(Select);
+            Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
+            PlayerScript.singleton.inventoryUpdateEvent?.AddListener(Refresh);
+            //Refresh(PlayerScript.singleton.items);
+        }
     }
 
     // This code kinda sucks but it's okay

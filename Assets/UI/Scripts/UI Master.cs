@@ -1,43 +1,50 @@
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIMaster : MonoBehaviour {
     public IngameHUD inGameHUD;
     public GameObject menu;
     public HealthBar healthBar;
+    public GameObject healthBarGroup;
     public GameObject deathScreen;
     public GameObject pauseMenu;
 
     public static UIMaster Instance;
 
     public enum MenuState {
-        NONE,
-        CRAFTING,
-        PAUSED,
-        MENU
+        None,
+        Crafting,
+        Paused,
+        MainMenu
     }
 
-    public MenuState state = MenuState.NONE;
+    public MenuState state = MenuState.None;
 
     // Start is called before the first frame update
     void Start() {
         Instance = this;
         inGameHUD.craftingMenuObject.SetActive(false);
-        GameManager.Instance.onPausedChanged += (bool paused) => pauseMenu.SetActive(paused);
-        GameManager.Instance.onTimeSinceDeath += (float time) => {
-            deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, time);
-        };
-        GameManager.Instance.onDeath += () => deathScreen.SetActive(true);
+        if (GameManager.Instance != null) {
+            GameManager.Instance.onPausedChanged += (bool paused) => pauseMenu.SetActive(paused);
+            GameManager.Instance.onTimeSinceDeath += (float time) => {
+                deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, time);
+            };
+            GameManager.Instance.onDeath += () => deathScreen.SetActive(true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Main Menu") {
+            state = MenuState.MainMenu;
+            Evaluate();
+        }
     }
 
     public bool MovementPossible() {
         bool i = true;
         switch(state) {
-            case MenuState.NONE:
+            case MenuState.None:
             i = true; break;
-            case MenuState.CRAFTING:
-            i = false; break;
-            case MenuState.PAUSED:
+            case MenuState.Crafting or MenuState.Paused or MenuState.MainMenu:
             i = false; break;
         }
         return i;
@@ -46,18 +53,18 @@ public class UIMaster : MonoBehaviour {
     // Changes the state
     public void EscPressed() {
         switch(state) {
-            case MenuState.NONE:
-                state = MenuState.PAUSED; 
+            case MenuState.None:
+                state = MenuState.Paused; 
             break;
 
-            case MenuState.PAUSED:
-                state = MenuState.NONE;
+            case MenuState.Paused:
+                state = MenuState.None;
             break;
 
-            case MenuState.MENU: break;
+            case MenuState.MainMenu: break;
 
             default:
-                state = MenuState.NONE;
+                state = MenuState.None;
             break;
         }
 
@@ -66,12 +73,12 @@ public class UIMaster : MonoBehaviour {
 
     public void TabPressed() {
         switch(state) {
-            case MenuState.NONE:
-                state = MenuState.CRAFTING;
+            case MenuState.None:
+                state = MenuState.Crafting;
             break;
 
-            case MenuState.CRAFTING:
-                state = MenuState.NONE;
+            case MenuState.Crafting:
+                state = MenuState.None;
             break;
         }
 
@@ -81,22 +88,33 @@ public class UIMaster : MonoBehaviour {
     // THIS JUST EVALUATES THE STATE
     public void Evaluate() {
         switch(state) {
-            case MenuState.NONE:
+            case MenuState.None:
                 pauseMenu.SetActive(false);
+                healthBarGroup.SetActive(true);
                 inGameHUD.SetIngame();
             break;
 
-            case MenuState.PAUSED:
+            case MenuState.Paused:
                 pauseMenu.SetActive(true);
+                healthBarGroup.SetActive(true);
             break;
 
-            case MenuState.CRAFTING:
+            case MenuState.Crafting:
                 pauseMenu.SetActive(false);
+                healthBarGroup.SetActive(true);
                 inGameHUD.SetCraftingMenu();
+            break;
+            
+            case MenuState.MainMenu:
+                pauseMenu.SetActive(false);
+                inGameHUD.SetMenu();
+                healthBarGroup.SetActive(false);
             break;
         }
 
-        GameManager.Instance.UpdatePaused(state == MenuState.PAUSED);
+        if (GameManager.Instance != null) {
+            GameManager.Instance.UpdatePaused(state == MenuState.Paused);
+        }
         Cursor.lockState = MovementPossible() ? CursorLockMode.Locked : CursorLockMode.None;
     }
 }

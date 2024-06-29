@@ -45,7 +45,8 @@ public class PlayerScript : MonoBehaviour {
     private float placementRotation = 0f;
 
     [Header("Inventory")]
-    List<Item> items = new List<Item>();
+    [HideInInspector]
+    public List<Item> items = new List<Item>();
 
     [SerializeField]
     private int selected;
@@ -164,7 +165,7 @@ public class PlayerScript : MonoBehaviour {
 
         Vector2 velocity2d = new Vector2(movement.cc.velocity.x, movement.cc.velocity.z);
         float targetBobbingStrength = 0f;
-        if (velocity2d.magnitude > 0.01) {
+        if (velocity2d.magnitude > 0.01 && movement.cc.isGrounded) {
             stepValue += velocity2d.magnitude * Time.deltaTime;
             targetBobbingStrength = velocity2d.magnitude / movement.speed;
             targetBobbingStrength = Mathf.Clamp01(targetBobbingStrength);
