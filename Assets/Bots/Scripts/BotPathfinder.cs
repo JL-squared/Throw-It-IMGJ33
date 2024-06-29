@@ -38,7 +38,7 @@ public class BotPathfinder : MonoBehaviour {
             Vector3 direction = -(transform.position - first);
             Vector2 local = new Vector2(direction.x, direction.z);
 
-            if (local.magnitude > 0.05 && direction.magnitude > 1.0) {
+            if (local.magnitude > 0.05) {
                 return direction;
             }
         }
@@ -54,7 +54,12 @@ public class BotPathfinder : MonoBehaviour {
             filter.areaMask = NavMesh.AllAreas;
 
             if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit info, 10000f, mask)) {
-                if (NavMesh.CalculatePath(info.point + Vector3.up * 0.2f, target, filter, path)) {
+                Vector3 starting = info.point + Vector3.up * 0.2f;
+                bool sampled = NavMesh.SamplePosition(starting, out NavMeshHit navmeshHit, 2.0f, NavMesh.AllAreas);
+                Vector3 better = sampled ? navmeshHit.position : starting;
+                DebugUtils.DrawSphere(better, 0.2f, Color.green);
+
+                if (NavMesh.CalculatePath(better, target, filter, path) && sampled) {
                     Vector3 direction = GetAppropriateDir(path.corners);
                     corners = path.corners;
                     direction.y = 0;
@@ -83,7 +88,7 @@ public class BotPathfinder : MonoBehaviour {
 
     public void OnDrawGizmos() {
         for (int i = 0; i < corners.Length-1; i++) {
-            Gizmos.DrawSphere(corners[i], 1f);
+            Gizmos.DrawSphere(corners[i], 0.2f);
             Gizmos.DrawLine(corners[i], corners[i + 1]);
         }
     }

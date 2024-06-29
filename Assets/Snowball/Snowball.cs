@@ -36,14 +36,17 @@ public class Snowball : MonoBehaviour {
         lastVel = rb.velocity;
     }
 
-    private float CalculateDamage() {
-        return 1.5f * lastVel.magnitude;
-    }
-
     public void OnCollisionEnter(Collision collision) {
         EntityHealth health = collision.gameObject.GetComponent<EntityHealth>();
+
+        Vector3 entityVelocity = Vector3.zero;
+        EntityMovement movement = collision.gameObject.GetComponent<EntityMovement>();
+        if (movement != null) {
+            entityVelocity = movement.cc.velocity;
+        }
+
         if (health != null) {
-            health.Damage(CalculateDamage());
+            health.Damage(1.5f * (lastVel - entityVelocity).magnitude);
         }
 
         Destroy(gameObject);
@@ -63,7 +66,7 @@ public class Snowball : MonoBehaviour {
     }
 
     public void Update() {
-        if(snowballThrowerCollider != null && Vector3.Distance(transform.position, snowballThrowerPos) >= 2.0f) {
+        if (snowballThrowerCollider != null && Vector3.Distance(transform.position, snowballThrowerPos) >= 2.0f) {
             Physics.IgnoreCollision(collider, snowballThrowerCollider, false);
         }
     }

@@ -131,17 +131,25 @@ public class EntityMovement : MonoBehaviour {
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         if (hit.normal.y > 0.9f) {
             groundObject = hit.gameObject;
+            return;
         }
 
         if (hit.rigidbody != null) {
             Vector3 scaled = hit.moveDirection * hit.rigidbody.mass;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
-            hit.rigidbody.AddForce(scaled * pushForce);
+            hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.point);
 
             // Ok IDFK what im doing here ngl
             if(hit.rigidbody.isKinematic) {
                // cc.attachedRigidbody.AddForce(-scaled * pushForce, ForceMode.Impulse);
             }
+        }
+
+        EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();
+        if (em != null) {
+            Vector3 a = hit.moveDirection * hit.moveLength * 10;
+            a.y = 0f;
+            em.movement += a;
         }
     }
 }

@@ -53,6 +53,7 @@ public class Scooper : BotBehaviour {
     public void Start() {
         thrower = GetComponent<SnowballThrower>();
         startingRot = origin.rotation;
+        thrower.inheritVelocityMovement = movement;
     }
 
     // zero degrees is when the scoop is horizontal, facing down (in front of snowman, ready to pickup snow)

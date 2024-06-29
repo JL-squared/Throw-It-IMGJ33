@@ -52,12 +52,12 @@ MonoBehaviour:
   bodyHealth: {fileID: 0}
   headHealth: {fileID: 0}
   botTts: {fileID: 0}
-  timer: 4
-  boutToBlowTimer: 4
+  timer: 10
+  boutToBlowTimer: 5
   editStrength: 6
   force: 40
   damage: 50
-  radius: 7
+  radius: 20
   minDamageRadius: 2
   editRadiusOffset: 10
   explosionProfile:

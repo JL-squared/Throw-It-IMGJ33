@@ -29,7 +29,7 @@ public class NavMeshRebuilder : MonoBehaviour {
         }
 
         NavMeshBuildSettings settings = surface.GetBuildSettings();
-        settings.maxJobWorkers = 2;
+        settings.maxJobWorkers = 1;
         Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 2000);
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshBuilder.CollectSources(bounds, mask, NavMeshCollectGeometry.PhysicsColliders, 0, new List<NavMeshBuildMarkup>(), sources);
@@ -44,6 +44,7 @@ public class NavMeshRebuilder : MonoBehaviour {
             }
         }
 
+        Debug.Log(sources.Count);
         surface.AddData();
         op = NavMeshBuilder.UpdateNavMeshDataAsync(surface.navMeshData, settings, sources, bounds);
     }

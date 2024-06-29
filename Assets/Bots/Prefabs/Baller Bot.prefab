@@ -340,7 +340,8 @@ MonoBehaviour:
   maxAcceleration: 8
   jump: 5
   coyoteTime: 0
-  gravity: -9.81
+  jumpBufferTime: 0
+  gravity: -20
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8

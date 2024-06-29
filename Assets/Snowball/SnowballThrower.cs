@@ -10,9 +10,12 @@ public class SnowballThrower : MonoBehaviour {
     public float startingSpeed;
     public float offsetDistance = 2.0f;
     public new Collider collider;
+    [HideInInspector]
+    public EntityMovement inheritVelocityMovement;
     
     void Start() {
         collider = GetComponent<Collider>();
+        inheritVelocityMovement = GetComponent<EntityMovement>();
     }
 
     public void Throw(float forcePercentage = 1.0f) {
@@ -20,9 +23,8 @@ public class SnowballThrower : MonoBehaviour {
         Vector3 startingPos = spawnHolster.position + spawnHolster.forward * offsetDistance;
         GameObject spawned = Instantiate(snowball);
 
-        EntityMovement em = GetComponent<EntityMovement>();
-        if (em) {
-            startingVelocity += em.cc.velocity;
+        if (inheritVelocityMovement != null) {
+            startingVelocity += inheritVelocityMovement.cc.velocity;
         }
 
         Snowball snowballs = spawned.GetComponent<Snowball>();

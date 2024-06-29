@@ -15,25 +15,32 @@ public class BombHead : BotBehaviour {
     public float minDamageRadius;
     public float editRadiusOffset;
     public AnimationCurve explosionProfile;
-    private NativeArray<float> arrayProfile;
+
+    // one must assume that the array profile is something constant across all instances (please let it be so)
+    private static NativeArray<float> arrayProfile;
 
     
     public void Start() {
+        /*
         botTts.tts.onSpeechCutoff += (string a, out string b) => {
             b = "Nevermind lol";
         };
+        */
 
+        if (arrayProfile == null || !arrayProfile.IsCreated) {
+            arrayProfile = new NativeArray<float>(256, Allocator.Persistent);
 
-        arrayProfile = new NativeArray<float>(256, Allocator.Persistent);
-
-        for (int i = 0; i < 256; i++) {
-            float x = (float)i / 256.0f;
-            arrayProfile[i] = explosionProfile.Evaluate(x);
+            for (int i = 0; i < 256; i++) {
+                float x = (float)i / 256.0f;
+                arrayProfile[i] = explosionProfile.Evaluate(x);
+            }
         }
     }
 
     public void Stop() {
-        arrayProfile.Dispose();
+        if (arrayProfile != null && arrayProfile.IsCreated) {
+            arrayProfile.Dispose();
+        }
     }
 
     public void Update() {
