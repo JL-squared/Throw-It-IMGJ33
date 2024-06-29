@@ -44,7 +44,6 @@ public class NavMeshRebuilder : MonoBehaviour {
             }
         }
 
-        Debug.Log(sources.Count);
         surface.AddData();
         op = NavMeshBuilder.UpdateNavMeshDataAsync(surface.navMeshData, settings, sources, bounds);
     }

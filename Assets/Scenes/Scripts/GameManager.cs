@@ -6,16 +6,19 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     [HideInInspector]
     public WaveManager waveManager;
-    public static GameManager Singleton;
+    [HideInInspector]
+    public TimeManager timeManager;
+    public static GameManager Instance;
     [HideInInspector]
     public GameObject player;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
         waveManager = GetComponent<WaveManager>();
+        timeManager = GetComponent<TimeManager>();
 
-        if (Singleton == null) {
-            Singleton = this;
+        if (Instance == null) {
+            Instance = this;
         }
 
         player = GameObject.FindGameObjectWithTag("PlayerTag");

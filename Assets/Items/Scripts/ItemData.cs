@@ -10,6 +10,9 @@ public class ItemData : ScriptableObject {
     public Sprite icon;
     public GameObject worldItem;
 
+    [Header("View Model")]
+    public GameObject viewModel;
+
     public string title;
     [TextArea(15, 20)]
     public string description;

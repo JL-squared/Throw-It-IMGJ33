@@ -435,6 +435,7 @@ MonoBehaviour:
   startingSpeed: 20
   offsetDistance: 1.2
   collider: {fileID: 0}
+  inheritVelocityMovement: {fileID: 0}
 --- !u!114 &8669513143636214874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +479,11 @@ MonoBehaviour:
   head: {fileID: 921606742461663924}
   gameCamera: {fileID: 2262149761271955649}
   mouseSensitivity: 1
+  viewModelHolster: {fileID: 9178346958499585258}
+  viewModelSmoothingSpeed: 25
+  viewModelRotationClampMagnitude: 100
+  viewModelRotationStrength: -0.002
+  viewModelPositionStrength: 0.01
   chargeSpeed: 1
   minCharge: 0.2
   maxThrowDelay: 0
@@ -527,7 +533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8839413808973732309
 Transform:
   m_ObjectHideFlags: 0
@@ -624,6 +630,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8958385453144995485}
+  - {fileID: 2218872323040887123}
   m_Father: {fileID: 4392259301960969222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2071300713959991023
@@ -722,3 +729,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &9178346958499585258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2218872323040887123}
+  m_Layer: 8
+  m_Name: View Model Holster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2218872323040887123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178346958499585258}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.25, y: -0.15, z: 0.2}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 921606742461663924}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

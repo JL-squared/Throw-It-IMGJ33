@@ -36,11 +36,11 @@ public class Snowball : MonoBehaviour {
         lastVel = rb.velocity;
     }
 
-    public void OnCollisionEnter(Collision collision) {
-        EntityHealth health = collision.gameObject.GetComponent<EntityHealth>();
+    public void OnTriggerEnter(Collider other) {
+        EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
 
         Vector3 entityVelocity = Vector3.zero;
-        EntityMovement movement = collision.gameObject.GetComponent<EntityMovement>();
+        EntityMovement movement = other.gameObject.GetComponent<EntityMovement>();
         if (movement != null) {
             entityVelocity = movement.cc.velocity;
         }
@@ -53,8 +53,8 @@ public class Snowball : MonoBehaviour {
         GameObject prts = Instantiate(particles);
         prts.transform.position = transform.position;
 
-        if (collision.impulse.magnitude > 0.1) {
-            prts.transform.rotation = Quaternion.LookRotation(collision.impulse);
+        if (lastVel.magnitude > 0.1) {
+            //prts.transform.rotation = Quaternion.LookRotation(-lastVel);
 
             var system = prts.GetComponent<ParticleSystem>();
             var velOverLifetime = system.velocityOverLifetime;

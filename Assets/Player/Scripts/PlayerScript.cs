@@ -70,6 +70,16 @@ public class PlayerScript : MonoBehaviour {
     public Camera gameCamera;
     public float mouseSensitivity = 1.0f;
 
+    [Header("View Model")]
+    public GameObject viewModelHolster;
+    private GameObject instantiatedViewModel;
+    private Vector3 viewModelRotationLocalOffset;
+    private Vector3 viewModelPositionLocalOffset;
+    public float viewModelSmoothingSpeed = 25f;
+    public float viewModelRotationClampMagnitude = 0.2f;
+    public float viewModelRotationStrength = -0.001f;
+    public float viewModelPositionStrength = 0.2f;
+
     [Header("Throwing")]
     private float currentCharge;
     private bool isCharging;
@@ -107,24 +117,29 @@ public class PlayerScript : MonoBehaviour {
             UIMaster.Instance.healthBar.actualPosition = p;
         };
 
-        health.OnKilled += () => {
-            isDead = true;
-            Debug.Log("Skill issue, you dead");
-            ambatakamChoir.Play();
-            Rigidbody rb = head.AddComponent<Rigidbody>();
-            rb.AddForce(Random.insideUnitCircle, ForceMode.Impulse);
-            head.AddComponent<SphereCollider>();
-            head.transform.parent = null;
-            GetComponent<CharacterController>().height = 0;
-            Destroy(GetComponentInChildren<MeshRenderer>());
-            UIMaster.Instance.OnDeath();
-        };
+        health.OnKilled += OnKilled;
 
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             Item temp = new Item();
             items.Add(temp);
             temp.updateEvent?.AddListener(UpdateInventory);
         }
+
+        addItem(new Item(1, (ItemData)Resources.Load("Items/Snowball")));
+        addItem(new Item(1, (ItemData)Resources.Load("Items/Battery")));
+    }
+
+    private void OnKilled() {
+        isDead = true;
+        Debug.Log("Skill issue, you dead");
+        ambatakamChoir.Play();
+        Rigidbody rb = head.AddComponent<Rigidbody>();
+        rb.AddForce(Random.insideUnitCircle, ForceMode.Impulse);
+        head.AddComponent<SphereCollider>();
+        head.transform.parent = null;
+        GetComponent<CharacterController>().height = 0;
+        Destroy(GetComponentInChildren<MeshRenderer>());
+        GameManager.Instance.timeManager.PlayedDeadLol();
     }
 
     public void UpdateInventory(Item item) {
@@ -136,10 +151,15 @@ public class PlayerScript : MonoBehaviour {
         UpdateTemperature();
         UpdateShivering();
         UpdateCharging();
+
+        if (instantiatedViewModel != null) {
+            viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
+            instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset, Time.deltaTime * viewModelSmoothingSpeed);
+        }
     }
 
     private void LateUpdate() {
-        if(isBuilding) UpdatePlacementGhost();
+        if (isBuilding) UpdatePlacementGhost();
     }
 
     private void UpdateCharging() {
@@ -168,7 +188,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Get outside temp from weather system
-        outsideTemperature = GameManager.Singleton.weatherManager.GetOutsideTemperature();
+        outsideTemperature = GameManager.Instance.weatherManager.GetOutsideTemperature();
 
         // Actual value that we must try to reach
         float totalTemp = Mathf.Max(outsideTemperature, heatSourcesTemperature);
@@ -198,7 +218,7 @@ public class PlayerScript : MonoBehaviour {
         localCamPos *= shiveringShakeFactor;
         gameCamera.transform.localPosition = localCamPos;
         gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
-        
+
     }
 
     private void OnGUI() {
@@ -234,10 +254,14 @@ public class PlayerScript : MonoBehaviour {
             i++;
         }
         // by this point we should have exited if everything is handled, otherwise;
-        if(firstEmpty != -1) {
+        if (firstEmpty != -1) {
             Debug.Log("oh yeah, slot was empty. It's sex time...");
             items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
+        }
+
+        if (firstEmpty == selected) {
+            SelectionChanged();
         }
     }
 
@@ -265,11 +289,11 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for movement
     /// </summary>
     public void Movement(InputAction.CallbackContext context) {
-        if(!isDead) movement.localWishMovement = context.ReadValue<Vector2>();
+        if (!isDead) movement.localWishMovement = context.ReadValue<Vector2>();
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if(context.performed && !paused && !isDead) {
+        if (context.performed && !paused && !isDead) {
             inventoryOpen = !inventoryOpen;
             UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
             UpdateUIStuff();
@@ -277,8 +301,8 @@ public class PlayerScript : MonoBehaviour {
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
-        if(context.performed) {
-            if(!inventoryOpen) {
+        if (context.performed) {
+            if (!inventoryOpen) {
                 paused = !paused;
             } else {
                 inventoryOpen = false;
@@ -290,18 +314,20 @@ public class PlayerScript : MonoBehaviour {
     public void UpdateUIStuff() {
         UIMaster.Instance.inGameHUD.craftingMenuObject.SetActive(inventoryOpen);
         Cursor.lockState = paused || inventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
-        UIMaster.Instance.UpdatePaused(paused);
+        GameManager.Instance.timeManager.UpdatePaused(paused);
     }
 
     /// <summary>
     /// Input receiver for camera movement
     /// </summary>
     public void Look(InputAction.CallbackContext context) {
-        if(Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused && !isDead) {
-            wishHeadDir += context.ReadValue<Vector2>() * mouseSensitivity * 0.02f;
+        if (Cursor.lockState != CursorLockMode.None && !inventoryOpen && !paused && !isDead) {
+            Vector2 mouseDelta = context.ReadValue<Vector2>();
+            wishHeadDir += mouseDelta * mouseSensitivity * 0.02f;
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
             head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
             movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
+            viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(mouseDelta.x, mouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         }
     }
 
@@ -318,7 +344,7 @@ public class PlayerScript : MonoBehaviour {
     /// Input receiver for hotbar 
     /// </summary>
     public void Scroll(InputAction.CallbackContext context) {
-        if(context.performed) {
+        if (context.performed) {
             float scroll = -context.ReadValue<float>();
             scroll /= 120;
 
@@ -327,6 +353,7 @@ public class PlayerScript : MonoBehaviour {
             } else {
                 int newSelected = (Selected + scroll.ConvertTo<int>()) % 10;
                 Selected = (newSelected < 0) ? 9 : newSelected;
+                SelectionChanged();
             }
 
             //Debug.Log($"scroll action is being called?!?\nScroll: {scroll}");
@@ -335,7 +362,19 @@ public class PlayerScript : MonoBehaviour {
 
     public void SelectSlot(InputAction.CallbackContext context) {
         if (context.performed)
-        Selected = (int)context.ReadValue<float>();
+            Selected = (int)context.ReadValue<float>();
+        SelectionChanged();
+    }
+
+    private void SelectionChanged() {
+        if (instantiatedViewModel != null)
+            Destroy(instantiatedViewModel);
+
+        Item selectedItem = items[selected];
+        if (selectedItem != null && selectedItem.Data != null) {
+            GameObject viewModel = Instantiate(selectedItem.Data.viewModel, viewModelHolster.transform);
+            instantiatedViewModel = viewModel;
+        }
     }
 
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {

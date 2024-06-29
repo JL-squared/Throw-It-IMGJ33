@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class UIMaster : MonoBehaviour {
@@ -6,8 +7,7 @@ public class UIMaster : MonoBehaviour {
     public HealthBar healthBar;
     public GameObject deathScreen;
     public GameObject pauseMenu;
-    bool dead;
-    float timeSinceDeath;
+
 
     public static UIMaster Instance;
 
@@ -15,24 +15,10 @@ public class UIMaster : MonoBehaviour {
     void Start() {
         Instance = this;
         inGameHUD.craftingMenuObject.SetActive(false);
-    }
-
-    public void OnDeath() {
-        deathScreen.SetActive(true);
-        dead = true;
-    }
-
-    public void Update() {
-        if (dead) {
-            timeSinceDeath += Time.unscaledDeltaTime * .1f;
-            Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
-
-            deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, timeSinceDeath);
-        }
-    }
-
-    public void UpdatePaused(bool paused) {
-        pauseMenu.SetActive(paused);
-        Time.timeScale = paused ? 0.0f : 1.0f;
+        GameManager.Instance.timeManager.onPausedChanged += (bool paused) => pauseMenu.SetActive(paused);
+        GameManager.Instance.timeManager.onTimeSinceDeath += (float time) => {
+            deathScreen.GetComponent<CanvasGroup>().alpha = Mathf.SmoothStep(0.0f, 1.0f, time);
+        };
+        GameManager.Instance.timeManager.onDeath += () => deathScreen.SetActive(true);
     }
 }

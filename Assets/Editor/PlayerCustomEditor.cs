@@ -9,8 +9,8 @@ public class PlayerCustomEditor : Editor {
         base.OnInspectorGUI();
 
         PlayerScript player = (PlayerScript)target;
-        ItemData snowball = (ItemData)AssetDatabase.LoadAssetAtPath("Assets/Items/ScriptableObjects/Snowball.asset", typeof(ScriptableObject));
-
+        //ItemData snowball = (ItemData)AssetDatabase.LoadAssetAtPath("Assets/Items/ScriptableObjects/Snowball.asset", typeof(ScriptableObject));
+        ItemData snowball = (ItemData)Resources.Load("Items/Snowball");
         
         if (GUILayout.Button("Give Player snow")) {
             if (snowball == null) {
