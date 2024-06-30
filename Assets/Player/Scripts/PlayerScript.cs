@@ -100,6 +100,8 @@ public class PlayerScript : MonoBehaviour {
 
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
+    [HideInInspector]
+    public bool canPickupSnow;
 
     private void Awake() {
         if (singleton != null && singleton != this) {
@@ -136,9 +138,9 @@ public class PlayerScript : MonoBehaviour {
 
         //addItem(new Item(1, (ItemData)Resources.Load("Items/Snowball")));
         //addItem(new Item(1, (ItemData)Resources.Load("Items/Battery")));
-        addItem(new Item("snowball", 1));
-        addItem(new Item("battery", 1));
-        addItem(new Item("shovel", 1));
+        AddItem(new Item("snowball", 1));
+        AddItem(new Item("battery", 1));
+        AddItem(new Item("shovel", 1));
     }
 
     private void OnKilled() {
@@ -183,12 +185,21 @@ public class PlayerScript : MonoBehaviour {
 
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
-    
+
         if (instantiatedViewModel != null) {
             instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset + Vector3.up * bobbing * viewModelBobbingStrength, Time.deltaTime * viewModelSmoothingSpeed);
         }
 
         currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
+
+        canPickupSnow = false;
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
+            VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
+            if (chunk != null) {
+                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0;
+            }
+        }
+        UIMaster.Instance.inGameHUD.SetRightClickHint(canPickupSnow);
     }
 
     private void LateUpdate() {
@@ -267,7 +278,7 @@ public class PlayerScript : MonoBehaviour {
     /// THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
     /// </summary>
     /// <param name="itemIn"></param>
-    public void addItem(Item itemIn) {
+    public void AddItem(Item itemIn) {
         int firstEmpty = -1;
         int i = 0;
         foreach (Item item in items) {
@@ -296,6 +307,21 @@ public class PlayerScript : MonoBehaviour {
             SelectionChanged();
         }
     }
+
+    public void RemoveItem(int slot, int count) {
+        if (items[slot].Data != null && items[slot].Count > 0) {
+            int currentCount = items[slot].Count;
+            currentCount = Mathf.Max(currentCount - count, 0);
+            
+            if (currentCount == 0) {
+                items[slot].Data = null;
+            }
+
+            items[slot].Count = currentCount;
+            SelectionChanged();
+        }
+    }
+
 
 
     /// <summary>
@@ -346,7 +372,7 @@ public class PlayerScript : MonoBehaviour {
             wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
             head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
             movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
-            
+
             //lastMouseDelta = Vector2.Lerp(lastMouseDelta, mouseDelta, Time.deltaTime * 20.0f);
         }
     }
@@ -410,6 +436,9 @@ public class PlayerScript : MonoBehaviour {
             viewModel.transform.localRotation = oldLocalRotation;
             instantiatedViewModel = viewModel;
         }
+
+        currentCharge = 0;
+        isCharging = false;
     }
 
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {
@@ -526,7 +555,7 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
 
-            if(TestGhostClipping(placementGhost, 0.2f)) {
+            if (TestGhostClipping(placementGhost, 0.2f)) {
                 //Debug.Log("Fuck it's clipping");
                 placementStatus = false;
             }
@@ -536,26 +565,42 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
+
+    // ok IDFK know why unity decided to make it so that *clicking* the mouse button
+    // CALLS THIS FUCKING FUNCTION **TWICE** BUT WITH ONE CALL HAVING CONTEXT.PERFORMED = false AND THE OTHER IS TRUE
+    // I fucking hate this but wtv copium. Also default seems to be context.performed = false and the fluke is actually
+    // context.performed = true. I fucking hate unity sometimes
     public void PrimaryAction(InputAction.CallbackContext context) {
-        if(!isDead)
-        if (isBuilding) {
-            if (placementStatus && Performed(context))
-                BuildAction();
+        if (!Performed() || context.performed)
+            return;
+
+        // !context.canceled is equal to true when pressing and false when releasing
+        bool pressed = !context.canceled;
+
+        if (isBuilding && placementStatus && pressed) {
+            BuildAction();
         } else {
-            if (Performed(context)) {
-                if(throwDelay == 0.0f) isCharging = true;
-            } else {
-                // need to have this check since it seems like unity
-                // context.performed is FALSE when pressing down for the first time
-                // that's cause performed runs on release right??
-                // idk, weird
-                if (isCharging) {
-                    isCharging = false;
-                    GetComponent<SnowballThrower>().Throw(currentCharge);
-                    throwDelay = maxThrowDelay * currentCharge;
-                    currentCharge = minCharge;
-                }
-                // this should eventually just point to the primary action of the currently selected item
+            // check if we can charge snowball
+            ItemData data = items[selected].Data;
+            if (data is SnowballItemData && pressed) {
+                if (throwDelay == 0.0f) isCharging = true;
+                return;
+            }
+
+            // release charge, throw snowball
+            if (isCharging && data is SnowballItemData && !pressed) {
+                isCharging = false;
+                GetComponent<SnowballThrower>().Throw(currentCharge);
+                throwDelay = maxThrowDelay * currentCharge;
+                currentCharge = minCharge;
+                RemoveItem(selected, 1);
+                return;
+            }
+
+            // fallback primary action if we can
+            if (data != null && pressed) {
+                data.PrimaryAction(this);
+                return;
             }
         }
     }
@@ -570,11 +615,18 @@ public class PlayerScript : MonoBehaviour {
     bool whichThing = true;
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if(Performed(context)) {
+        if (isDead)
+            return;
+
+        if (Performed(context)) {
             if (isBuilding) {
                 BuildAction2();
             } else {
                 // secondary action that isn't build
+                ItemData data = items[selected].Data;
+                if (data != null) {
+                    data.SecondaryAction(this);
+                }
             }
         }
     }

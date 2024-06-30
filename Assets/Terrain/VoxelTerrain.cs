@@ -273,6 +273,7 @@ public class VoxelTerrain : MonoBehaviour {
                 var renderer = voxelChunk.GetComponent<MeshRenderer>();
                 voxelChunk.GetComponent<MeshFilter>().sharedMesh = voxelChunk.sharedMesh;
                 voxelChunk.voxelMaterialsLookup = voxelMesh.VoxelMaterialsLookup;
+                voxelChunk.triangleOffsetLocalMaterials = voxelMesh.TriangleOffsetLocalMaterials;
                 renderer.materials = voxelMesh.VoxelMaterialsLookup.Where(x => x < voxelMaterials.Length).Select(x => voxelMaterials[x]).ToArray();
 
                 // Set mesh and renderer bounds
@@ -392,12 +393,12 @@ public class VoxelTerrain : MonoBehaviour {
                 }
 
                 if (!voxelChunk.lastCounters.IsCreated) {
-                    voxelChunk.lastCounters = new NativeMultiCounter(voxelMaterials.Length, Allocator.Persistent);
+                    //voxelChunk.lastCounters = new NativeMultiCounter(voxelMaterials.Length, Allocator.Persistent);
                 }
 
                 voxelChunk.pendingVoxelEdit = edit;
-                voxelChunk.voxelCountersHandle = countersHandle;
-                countersHandle.pending++;
+                //voxelChunk.voxelCountersHandle = countersHandle;
+                //countersHandle.pending++;
                 voxelChunk.Remesh(immediate ? 0 : 5);
             }
         }
@@ -426,7 +427,7 @@ public class VoxelTerrain : MonoBehaviour {
         if (math.any(p < 0.0f) | math.any(p >= (float)VoxelUtils.Size))
             return Voxel.Empty;
 
-        int index = VoxelUtils.PosToIndex(new uint3(math.floor(p)));
+        int index = VoxelUtils.PosToIndex(new uint3(math.round(p)));
         return chunk.voxels[index];
     }
 

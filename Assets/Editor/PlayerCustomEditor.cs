@@ -16,7 +16,7 @@ public class PlayerCustomEditor : Editor {
             if (snowball == null) {
                 Debug.Log("Snowball wasn't loaded :(");
             } else {
-                player.addItem(new Item(1, snowball));
+                player.AddItem(new Item(1, snowball));
             }
         }
     }

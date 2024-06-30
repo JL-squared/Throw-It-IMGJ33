@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -199,10 +200,14 @@ public class MeshJobHandler {
             lookup[item.Value] = item.Key;
         }
 
+        // Keep this so we can do material mesh intersection lookups later
+        (byte, int)[] triangleOffsetLocalMaterials = new (byte, int)[maxMaterials];
+
         // Set mesh submeshes
         for (int i = 0; i < maxMaterials; i++) {
             int countIndices = countersQuad[i] * 6;
             int segmentOffset = materialSegmentOffsets[i];
+            triangleOffsetLocalMaterials[i] = ((byte)i, segmentOffset / 3);
 
             if (countIndices > 0) {
                 mesh.SetSubMesh(i, new SubMeshDescriptor {
@@ -213,12 +218,15 @@ public class MeshJobHandler {
             }
         }
 
+        triangleOffsetLocalMaterials = triangleOffsetLocalMaterials.OrderBy(x => x.Item2).ToArray();
+
         chunk = null;
         return new VoxelMesh {
             VoxelMaterialsLookup = lookup,
             ComputeCollisions = colissions,
             VertexCount = maxVertices,
             TriangleCount = maxIndices / 3,
+            TriangleOffsetLocalMaterials = triangleOffsetLocalMaterials,
         };
     }
 

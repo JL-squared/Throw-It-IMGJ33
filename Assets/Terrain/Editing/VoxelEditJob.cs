@@ -12,7 +12,7 @@ struct VoxelEditJob<T> : IJobParallelFor
     public T edit;
     public NativeArray<Voxel> voxels;
 
-    public NativeMultiCounter.Concurrent counters;
+    //public NativeMultiCounter.Concurrent counters;
 
     public void Execute(int index) {
         uint3 id = VoxelUtils.IndexToPos(index);
@@ -31,6 +31,7 @@ struct VoxelEditJob<T> : IJobParallelFor
         Voxel newVoxel = edit.Modify(position, oldVoxel);
         voxels[index] = newVoxel;
 
+        /*
         // Keep track the number of valid voxels of each materials
         half oldDensity = oldVoxel.density;
         half newDensity = newVoxel.density;
@@ -39,5 +40,6 @@ struct VoxelEditJob<T> : IJobParallelFor
         } else if (newDensity < 0.0f && oldDensity > 0.0f) {
             counters.Decrement(newVoxel.material);
         }
+        */
     }
 }

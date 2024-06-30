@@ -26,6 +26,6 @@ public struct Voxel {
 
     // Check if the voxel is a "solid" voxel with a specific material
     public bool IsSolidOfType(byte material) {
-        return this.material == material && density < -0.5;
+        return this.material == material && density < -0.25;
     }
 }

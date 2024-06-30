@@ -18,6 +18,7 @@ public class VoxelChunk : MonoBehaviour {
     // Shared generated mesh
     public Mesh sharedMesh;
     public int[] voxelMaterialsLookup;
+    public (byte, int)[] triangleOffsetLocalMaterials;
 
     // Get the AABB world bounds of this chunk
     public Bounds GetBounds() {
@@ -39,6 +40,22 @@ public class VoxelChunk : MonoBehaviour {
         }
 
         VoxelTerrain.Instance.GenerateMesh(this, hasCollisions, maxFrames);
+    }
+
+    // Check the global material type of a hit triangle index
+    public byte GetTriangleIndexMaterialType(int triangleIndex) {
+        if (triangleOffsetLocalMaterials == null) {
+            return byte.MaxValue;
+        }
+
+        for (int i = triangleOffsetLocalMaterials.Length-1; i >= 0; i--) {
+            (byte localMaterial, int offset) = triangleOffsetLocalMaterials[i];
+            if (triangleIndex > offset) {
+                return (byte)voxelMaterialsLookup[i];
+            }
+        }
+
+        return byte.MaxValue;
     }
 
     public JobHandle HookHandler(MeshJobHandler handler) {
