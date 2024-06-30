@@ -37,6 +37,9 @@ public class Snowball : MonoBehaviour {
     }
 
     public void OnTriggerEnter(Collider other) {
+        if (other.isTrigger)
+            return;
+
         EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
 
         Vector3 entityVelocity = Vector3.zero;

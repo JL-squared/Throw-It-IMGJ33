@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -59,6 +60,7 @@ public class PlayerScript : MonoBehaviour {
             selectedEvent?.Invoke(selected);
         }
     }
+    public Item SelectedItem { get { return items[selected]; } }
 
     public UnityEvent<int> selectedEvent;
     public UnityEvent<List<Item>> inventoryUpdateEvent;
@@ -89,20 +91,14 @@ public class PlayerScript : MonoBehaviour {
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-
-    [Header("Throwing")]
-    private float currentCharge;
-    private bool isCharging;
-    public float chargeSpeed;
-    public float minCharge;
-    public float maxThrowDelay;
-    public float throwDelay;
+    private EquippedItemLogic instantiatedEquippedItemLogic;
 
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     [HideInInspector]
     public bool canPickupSnow;
-
+    private Item lastSelectedViewModelItem;
+    
     private void Awake() {
         if (singleton != null && singleton != this) {
             Destroy(gameObject);
@@ -118,7 +114,6 @@ public class PlayerScript : MonoBehaviour {
         bodyTemperature = TargetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
-        currentCharge = minCharge;
 
         SetupPlacementGhost(selectedBuildPrefab);
         placementGhost.SetActive(false);
@@ -166,7 +161,6 @@ public class PlayerScript : MonoBehaviour {
     private void Update() {
         UpdateTemperature();
         UpdateShivering();
-        UpdateCharging();
 
         Vector2 velocity2d = new Vector2(movement.cc.velocity.x, movement.cc.velocity.z);
         float targetBobbingStrength = 0f;
@@ -204,19 +198,6 @@ public class PlayerScript : MonoBehaviour {
 
     private void LateUpdate() {
         if (isBuilding) UpdatePlacementGhost();
-    }
-
-    private void UpdateCharging() {
-        if (isCharging) {
-            currentCharge += Time.deltaTime * chargeSpeed;
-            currentCharge = Mathf.Clamp01(currentCharge);
-        } else if (throwDelay > 0.0f) {
-            throwDelay -= Time.deltaTime * 1.0f;
-        }
-
-        throwDelay = Mathf.Clamp(throwDelay, 0.0f, maxThrowDelay);
-
-        UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? Mathf.InverseLerp(.2f, 1.0f, currentCharge) : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
     }
 
     private void UpdateTemperature() {
@@ -269,7 +250,6 @@ public class PlayerScript : MonoBehaviour {
         GUI.Label(new Rect(0, 20, 1000, 20), "Scene Temperature: " + outsideTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 40, 1000, 20), "Sources Temperature: " + heatSourcesTemperature.ToString("F3"));
         GUI.Label(new Rect(0, 60, 1000, 20), "Selected Piece: " + placementGhost.name);
-        GUI.Label(new Rect(0, 80, 1000, 20), "Current Snowball Charge: " + currentCharge);
     }
 
     /// <summary>
@@ -304,7 +284,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
         if (firstEmpty == selected) {
-            SelectionChanged();
+            SelectionChanged(force: true);
         }
     }
 
@@ -315,10 +295,10 @@ public class PlayerScript : MonoBehaviour {
             
             if (currentCount == 0) {
                 items[slot].Data = null;
+                SelectionChanged(force: true);
             }
 
             items[slot].Count = currentCount;
-            SelectionChanged();
         }
     }
 
@@ -420,7 +400,18 @@ public class PlayerScript : MonoBehaviour {
         SelectionChanged();
     }
 
-    private void SelectionChanged() {
+    // Only called when the following happens:
+    // - User changes selected slot to new slot
+    // - Item count gets changed from zero to positive value and vice versa
+    private void SelectionChanged(bool force = false) {
+        if (Object.ReferenceEquals(lastSelectedViewModelItem, SelectedItem) && !force) {
+            return;
+        }
+
+        if (lastSelectedViewModelItem != null) {
+            instantiatedEquippedItemLogic.Unequipped(this);
+        }
+
         Vector3 oldLocalPosition = default;
         Quaternion oldLocalRotation = default;
         if (instantiatedViewModel != null) {
@@ -429,16 +420,30 @@ public class PlayerScript : MonoBehaviour {
             Destroy(instantiatedViewModel);
         }
 
-        Item selectedItem = items[selected];
-        if (selectedItem != null && selectedItem.Data != null) {
-            GameObject viewModel = Instantiate(selectedItem.Data.viewModel, viewModelHolster.transform);
-            viewModel.transform.localPosition = oldLocalPosition;
-            viewModel.transform.localRotation = oldLocalRotation;
-            instantiatedViewModel = viewModel;
+        if (instantiatedEquippedItemLogic != null) {
+            Destroy(instantiatedEquippedItemLogic.gameObject);
         }
 
-        currentCharge = 0;
-        isCharging = false;
+        instantiatedViewModel = null;
+        lastSelectedViewModelItem = null;
+
+        Item item = SelectedItem;
+        if (item != null && item.Data != null && item.Count > 0) {
+            if (item.Data.viewModel != null) {
+                GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
+                viewModel.transform.localPosition = oldLocalPosition;
+                viewModel.transform.localRotation = oldLocalRotation;
+                instantiatedViewModel = viewModel;
+                lastSelectedViewModelItem = item;
+            }
+
+            if (item.Data.equippedLogic != null) {
+                GameObject equippedLogicGameObject = Instantiate(item.Data.equippedLogic, transform);
+                instantiatedEquippedItemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
+                instantiatedEquippedItemLogic.equippedItem = item;
+                instantiatedEquippedItemLogic.Equipped(this);
+            }
+        }
     }
 
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {
@@ -580,26 +585,10 @@ public class PlayerScript : MonoBehaviour {
         if (isBuilding && placementStatus && pressed) {
             BuildAction();
         } else {
-            // check if we can charge snowball
-            ItemData data = items[selected].Data;
-            if (data is SnowballItemData && pressed) {
-                if (throwDelay == 0.0f) isCharging = true;
-                return;
-            }
-
-            // release charge, throw snowball
-            if (isCharging && data is SnowballItemData && !pressed) {
-                isCharging = false;
-                GetComponent<SnowballThrower>().Throw(currentCharge);
-                throwDelay = maxThrowDelay * currentCharge;
-                currentCharge = minCharge;
-                RemoveItem(selected, 1);
-                return;
-            }
-
             // fallback primary action if we can
-            if (data != null && pressed) {
-                data.PrimaryAction(this);
+            ItemData data = SelectedItem.Data;
+            if (data != null && instantiatedEquippedItemLogic != null) {
+                instantiatedEquippedItemLogic.PrimaryAction(this, pressed);
                 return;
             }
         }
@@ -615,18 +604,18 @@ public class PlayerScript : MonoBehaviour {
     bool whichThing = true;
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if (isDead)
+        if (!Performed() || context.performed)
             return;
 
-        if (Performed(context)) {
-            if (isBuilding) {
-                BuildAction2();
-            } else {
-                // secondary action that isn't build
-                ItemData data = items[selected].Data;
-                if (data != null) {
-                    data.SecondaryAction(this);
-                }
+        bool pressed = !context.canceled;
+        if (isBuilding && pressed) {
+            BuildAction2();
+        } else {
+            // fallback secondary action if we can
+            ItemData data = SelectedItem.Data;
+            if (data != null && instantiatedEquippedItemLogic != null) {
+                instantiatedEquippedItemLogic.SecondaryAction(this, pressed);
+                return;
             }
         }
     }

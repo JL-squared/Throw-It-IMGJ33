@@ -17,6 +17,8 @@ MonoBehaviour:
   worldItem: {fileID: 0}
   viewModel: {fileID: 2361069447993902772, guid: d17db8377076edd43bcaf8ecc948976f,
     type: 3}
+  equippedLogic: {fileID: 173478723713073389, guid: 0d6a97ad9abbd6d41b7cad81965a2842,
+    type: 3}
   title: Shovel
   description: Trusty and handy shovel. A must need tool in anyone's shed
   digRadius: 0

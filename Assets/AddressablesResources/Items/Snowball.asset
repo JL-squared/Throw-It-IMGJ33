@@ -17,6 +17,8 @@ MonoBehaviour:
   worldItem: {fileID: 0}
   viewModel: {fileID: 6738572504615155268, guid: 008e54ae40d73154faeefd882df5d35a,
     type: 3}
+  equippedLogic: {fileID: 173478723713073389, guid: 6994fc3f14ae53346a404fe482e2716b,
+    type: 3}
   title: Snowball
   description: Run-of-the-mill, recess approved, perfectly round snowball. Good for
     use in projectile warfare.

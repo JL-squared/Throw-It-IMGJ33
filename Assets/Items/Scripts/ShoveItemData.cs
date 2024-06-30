@@ -4,11 +4,4 @@ using UnityEngine;
 public class ShovelItemData : ItemData {
     public float digRadius;
     public float digStrength;
-
-    public override void PrimaryAction(PlayerScript player) {
-        base.PrimaryAction(player);
-
-        if (player.canPickupSnow)
-            player.AddItem(new Item("snowball", 1));
-    }
 }

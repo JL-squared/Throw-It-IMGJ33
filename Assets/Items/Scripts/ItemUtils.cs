@@ -34,6 +34,9 @@ public static class ItemUtils {
 
     // Fetch an item type using its specific name
     public static ItemData GetItemType(string name) {
+        if (itemDatas == null)
+            return null;
+
         if (itemDatas.TryGetValue(name, out var data)) {
             return data;
         } else {
@@ -44,6 +47,9 @@ public static class ItemUtils {
 
     // Fetch a crafting recipe using its specific name
     public static CraftingRecipe GetCraftingRecipe(string name) {
+        if (itemDatas == null)
+            return null;
+
         if (craftingRecipes.TryGetValue(name, out var data)) {
             return data;
         } else {
