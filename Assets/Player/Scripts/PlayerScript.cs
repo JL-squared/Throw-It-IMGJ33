@@ -134,8 +134,11 @@ public class PlayerScript : MonoBehaviour {
             temp.updateEvent?.AddListener(UpdateInventory);
         }
 
-        addItem(new Item(1, (ItemData)Resources.Load("Items/Snowball")));
-        addItem(new Item(1, (ItemData)Resources.Load("Items/Battery")));
+        //addItem(new Item(1, (ItemData)Resources.Load("Items/Snowball")));
+        //addItem(new Item(1, (ItemData)Resources.Load("Items/Battery")));
+        addItem(new Item("snowball", 1));
+        addItem(new Item("battery", 1));
+        addItem(new Item("shovel", 1));
     }
 
     private void OnKilled() {
@@ -305,7 +308,7 @@ public class PlayerScript : MonoBehaviour {
         int i = 0;
 
         foreach (Item item in items) {
-            if (item.Count >= count && item.Data.id == id) {
+            if (item.Count >= count && item.Data.name == name) {
                 return i;
             }
             i++;

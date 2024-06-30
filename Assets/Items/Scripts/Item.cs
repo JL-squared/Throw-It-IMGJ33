@@ -31,9 +31,14 @@ public class Item {
     public ItemData Data { get {return data; } set { data = value; updateEvent.Invoke(this); } }
 
 
-    public Item (int count = 0, ItemData data = null) {
+    public Item(int count = 0, ItemData data = null) {
         this.count = count;
         this.Data = data;
+    }
+
+    public Item(string id, int count = 0) {
+        this.Data = ItemUtils.GetItemType(id);
+        this.count = count;
     }
 
     public void CopyItem(Item other) {
@@ -66,7 +71,7 @@ public class Item {
     }
 
     public override string ToString() {
-        string id = data == null ? "none" : data.id;
+        string id = data == null ? "none" : data.ToString();
         return $"ID: {id}\nCount: {count}";
     }
 

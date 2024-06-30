@@ -7,7 +7,7 @@ using UnityEngine;
 public class Snowball : MonoBehaviour {
     private Rigidbody rb;
     [HideInInspector]
-    public GameObject particles;
+    public SnowballItemData dataParent;
     Vector3 snowballThrowerPos;
     Collider snowballThrowerCollider;
     Vector3 lastVel;
@@ -21,7 +21,7 @@ public class Snowball : MonoBehaviour {
         transform.position = pos;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.rotation = UnityEngine.Random.rotation;
-        Destroy(gameObject, 15.0f);
+        Destroy(gameObject, dataParent.lifetime);
         if (snowballThrower.collider != null) {
             snowballThrowerPos = snowballThrower.transform.position;
             snowballThrowerCollider = snowballThrower.collider;
@@ -46,11 +46,11 @@ public class Snowball : MonoBehaviour {
         }
 
         if (health != null) {
-            health.Damage(1.5f * (lastVel - entityVelocity).magnitude);
+            health.Damage(1.5f * (lastVel - entityVelocity).magnitude * dataParent.damageFactor);
         }
 
         Destroy(gameObject);
-        GameObject prts = Instantiate(particles);
+        GameObject prts = Instantiate(dataParent.particles);
         prts.transform.position = transform.position;
 
         if (lastVel.magnitude > 0.1) {

@@ -3,10 +3,11 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using System;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
-// Global static util class used to fetch items, buildings, names
-public static class Util {
-    private static Dictionary<string, ItemType> itemTypes;
+public static class ItemUtils {
+    private static Dictionary<string, ItemData> itemDatas;
     private static Dictionary<string, CraftingRecipe> craftingRecipes;
     
 
@@ -14,12 +15,8 @@ public static class Util {
     static void Init() {
         // WARNING: This loads everything asset related during init. Makes it easy to code, but could bloat up the ram
         // for now this works but we're gonna need to find a way to dynamically unload unused assets later on (very easy to do with the adressables system)
-        GetAllTypes(ref itemTypes, "Items");
-        GetAllTypes(ref craftingRecipes, "Item Recipes");
-
-        // Register all types of custom item serializers (so we know how to serialize their item datas)
-        ItemSerializerRegistry.Init();
-        ItemSerializerRegistry.Register<SimpleItem>();
+        GetAllTypes(ref itemDatas, "Items");
+        //GetAllTypes(ref craftingRecipes, "Item Recipes");
     }
 
     // Load all the types of an Adressable using its label into memory
@@ -30,23 +27,29 @@ public static class Util {
         AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(label, (x) => {
             temp.TryAdd(x.name, x);
         });
+
+        handle.WaitForCompletion();
     }
 
-    // I love unity and interface!!
-    public static bool IsNullOrDestroyed(this object value) {
-        return ReferenceEquals(value, null) || value.Equals(null);
-    }
 
-    /*
     // Fetch an item type using its specific name
-    public static ItemType GetItemType(string name) {
-        return itemTypes.GetValueOrDefault(name, null);
+    public static ItemData GetItemType(string name) {
+        if (itemDatas.TryGetValue(name, out var data)) {
+            return data;
+        } else {
+            Debug.LogError($"Could not find item type '{name}'");
+            return null;
+        }
     }
-    */
 
     // Fetch a crafting recipe using its specific name
     public static CraftingRecipe GetCraftingRecipe(string name) {
-        return craftingRecipes.GetValueOrDefault(name, null);
+        if (craftingRecipes.TryGetValue(name, out var data)) {
+            return data;
+        } else {
+            Debug.LogError($"Could not find item recipe '{name}'");
+            return null;
+        }
     }
 
     // Fetch all crafting recipes
@@ -66,8 +69,8 @@ public static class Util {
     }
 
     // Fetch the crafting recipe for a specific item type
-    public static CraftingRecipe GetCraftingRecipeFromType(ItemType itemType) {
-        return craftingRecipes.GetValueOrDefault(itemType.name, null);
+    public static CraftingRecipe GetCraftingRecipeFromType(ItemData itemData) {
+        return craftingRecipes.GetValueOrDefault(itemData.name, null);
     }
 
     // Jarvis, scan this guys balls

@@ -1,10 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/New Item Type", order = 1)]
-public class ItemData : ScriptableObject {
-    [Tooltip("Item ID; use minecraft's snake_case")]
-    public string id;
-
+public abstract class ItemData : ScriptableObject {
     public int stackSize;
 
     public Sprite icon;
@@ -16,4 +12,14 @@ public class ItemData : ScriptableObject {
     public string title;
     [TextArea(15, 20)]
     public string description;
+
+    public override string ToString() {
+        return name;
+    }
+
+    public static implicit operator string(ItemData i) => i.ToString();
+
+    public virtual bool Interactable() { return false;  }
+    public virtual void PrimaryAction(PlayerScript player) { }
+    public virtual void SecondaryAction(PlayerScript player) { }
 }

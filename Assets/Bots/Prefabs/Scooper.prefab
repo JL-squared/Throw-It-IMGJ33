@@ -161,14 +161,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6737a3495bf3e147b88363ecc3cceb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snowball: {fileID: 5488373698599033194, guid: b9e102afdbf683a4092ac606c7b350be,
-    type: 3}
+  itemData: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
   spawnHolster: {fileID: 3643799789739792537}
-  particles: {fileID: 6059710334257849518, guid: 707ea22e782edfb44a979424256e1b2f,
-    type: 3}
   startingSpeed: 15
   offsetDistance: 0.28
   collider: {fileID: 0}
+  inheritVelocityMovement: {fileID: 0}
 --- !u!1 &2340083352991997612
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,49 +21,60 @@ MonoBehaviour:
     m_Address: Assets/AddressablesResources/Items/Battery.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7beac97d01c07fc40b62efee0dfe1711
     m_Address: Assets/AddressablesResources/Items/Bolts.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c360cb36fa52be941a466a904e3ab086
     m_Address: Assets/AddressablesResources/Items/Camera.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c4d8a17240e2654d8d720b8a4c1b05b
     m_Address: Assets/AddressablesResources/Items/Scoop.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dc8db24068623fe429ab25ec2781b017
-    m_Address: Assets/AddressablesResources/Items/Snowball.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4daeb82f467c7f54dad76e124a9a3def
     m_Address: Assets/AddressablesResources/Items/Steel.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f2a31b0cf954c2e4d93d1dbefb25739b
     m_Address: Assets/AddressablesResources/Items/Wires.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 496d9fe636dadf345afd385b128d4b9e
     m_Address: Assets/AddressablesResources/Items/Wood.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Item
+    - Items
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ed82c4d284114843bc6616647afe30a
+    m_Address: Assets/AddressablesResources/Items/Shovel.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Items
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d89b807ff17f144ca577e205874d3f2
+    m_Address: Assets/AddressablesResources/Items/snowball.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Items
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5cdcc0bf71a7db4eb22861ef8c76a07
+    m_Address: Assets/AddressablesResources/Items
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da40d6b3b74a26d41a24aff6c41a6298, type: 2}
