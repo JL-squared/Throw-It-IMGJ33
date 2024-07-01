@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002361292429baf46ac7df998f933c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeSpeed: 1
-  minCharge: 0.2
+  swayOffset: {x: 0, y: 0, z: 0}
+  timeForMaxCharge: 1
+  minFactor: 0.2
   maxThrowDelay: 0
   throwDelay: 0

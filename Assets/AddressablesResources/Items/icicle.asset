@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f25b66ecc3a9a4490d9bcc8b1f6ed6, type: 3}
+  m_Name: icicle
+  m_EditorClassIdentifier: 
+  stackSize: 0
+  icon: {fileID: 0}
+  worldItem: {fileID: 0}
+  viewModel: {fileID: 0}
+  equippedLogic: {fileID: 0}
+  title: 
+  description: 
+  projectile: {fileID: 9196792428175076912, guid: 00b4fcf673bff424494ea04e07b04194,
+    type: 3}
+  lifetime: 3

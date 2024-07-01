@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6098970905361740867}
   - component: {fileID: 1250579911481710440}
-  - component: {fileID: 3035267206977144409}
+  - component: {fileID: 2913550287921865011}
   m_Layer: 0
   m_Name: Scooper
   m_TagString: Untagged
@@ -149,7 +149,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3035267206977144409
+--- !u!114 &2913550287921865011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,13 +158,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1659643390288692191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6737a3495bf3e147b88363ecc3cceb4, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f190ffded3149843b76275ffce76572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
+  data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
   spawnHolster: {fileID: 3643799789739792537}
-  startingSpeed: 15
-  offsetDistance: 0.28
+  startingSpeed: 20
+  offsetDistance: 0.2
   collider: {fileID: 0}
   inheritVelocityMovement: {fileID: 0}
 --- !u!1 &2340083352991997612

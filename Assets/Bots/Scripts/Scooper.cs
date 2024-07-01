@@ -26,7 +26,7 @@ public class Scooper : BotBehaviour {
     public AnimationCurve curve;
 
     private Quaternion startingRot;
-    private SnowballThrower thrower;
+    private ProjectileShooter thrower;
     private float time;
     private bool armed;
     private float fakeSnowballSize;
@@ -51,7 +51,7 @@ public class Scooper : BotBehaviour {
     }
 
     public void Start() {
-        thrower = GetComponent<SnowballThrower>();
+        thrower = GetComponent<ProjectileShooter>();
         startingRot = origin.rotation;
         thrower.inheritVelocityMovement = movement;
     }
@@ -94,13 +94,13 @@ public class Scooper : BotBehaviour {
         // Handle throwing only
         if (repeating) {
             if (normalized > 270f && armed) {
-                thrower.Throw();
+                thrower.Shoot();
                 armed = false;
             }
         } else {
             // badoing... throw that shit
             if ((time % maxTime) > curveThrowTime && armed) {
-                thrower.Throw();
+                thrower.Shoot();
                 armed = false;
             }
         }

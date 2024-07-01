@@ -191,7 +191,16 @@ public class Player : MonoBehaviour {
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
         if (instantiatedViewModel != null) {
-            instantiatedViewModel.transform.localPosition = Vector3.Lerp(instantiatedViewModel.transform.localPosition, viewModelRotationLocalOffset + viewModelPositionLocalOffset + Vector3.up * bobbing * viewModelBobbingStrength, Time.deltaTime * viewModelSmoothingSpeed);
+            Vector3 current = instantiatedViewModel.transform.localPosition;
+            Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
+            target += Vector3.up * bobbing * viewModelBobbingStrength;
+
+            if (instantiatedEquippedItemLogic != null) {
+                target += instantiatedEquippedItemLogic.swayOffset;
+            }
+
+            Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
+            instantiatedViewModel.transform.localPosition = localPosition;
         }
         currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
     }
