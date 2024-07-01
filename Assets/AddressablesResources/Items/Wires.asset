@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3d0b7017212cd44ab7a901f5754c6f, type: 3}
   m_Name: wires
   m_EditorClassIdentifier: 
-  id: wires
   stackSize: 10
   icon: {fileID: 21300000, guid: 917380e4c33e90a4384ae80bf87b5e0c, type: 3}
   worldItem: {fileID: 0}
+  viewModel: {fileID: 6433809777169325839, guid: cd68c8b1be977da47b1ef08fd53b3c98,
+    type: 3}
+  equippedLogic: {fileID: 0}
   title: Wires
   description: Threaded copper wires. Hope you brought scissors!

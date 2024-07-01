@@ -4,15 +4,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     [HideInInspector]
     public WeatherManager weatherManager;
-    [HideInInspector]
-    public WaveManager waveManager;
     public static GameManager Instance;
     [HideInInspector]
     public GameObject player;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
-        waveManager = GetComponent<WaveManager>();
 
         if (Instance == null) {
             Instance = this;
@@ -39,7 +36,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void PlayerDeadLol() {
+    public void PlayerKilled() {
         dead = true;
         onDeath?.Invoke();
     }

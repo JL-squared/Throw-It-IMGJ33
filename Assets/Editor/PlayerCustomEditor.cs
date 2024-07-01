@@ -3,13 +3,13 @@ using UnityEditor;
 using UnityEditor.Experimental.Rendering;
 using UnityEngine;
 
-[CustomEditor(typeof(PlayerScript))]
+[CustomEditor(typeof(Player))]
 public class PlayerCustomEditor : Editor {
     string text = "snowball";
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
 
-        PlayerScript player = (PlayerScript)target;
+        Player player = (Player)target;
 
         /*
         ItemData snowball = ItemUtils.GetItemType("snowball");
