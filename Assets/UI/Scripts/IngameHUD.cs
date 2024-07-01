@@ -11,7 +11,7 @@ public class IngameHUD : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        
+        SetRightClickHint(false);
     }
 
     // Update is called once per frame

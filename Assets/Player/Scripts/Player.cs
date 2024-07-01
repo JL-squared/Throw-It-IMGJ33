@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -96,21 +95,21 @@ public class Player : MonoBehaviour {
     #region View Model & View Model Sway
     [Header("View Model")]
     public GameObject viewModelHolster;
-    private GameObject instantiatedViewModel;
+    private GameObject viewModel;
     private Vector3 viewModelRotationLocalOffset;
     private Vector3 viewModelPositionLocalOffset;
     public float viewModelSmoothingSpeed = 25f;
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-    private EquippedItemLogic instantiatedEquippedItemLogic;
+    private EquippedItemLogic itemLogic;
     private Item lastSelectedViewModelItem;
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     #endregion
 
     [HideInInspector]
-    public bool canPickupSnow;
+    public RaycastHit? lookingAt;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -179,7 +178,11 @@ public class Player : MonoBehaviour {
         float bobbing = CalculateBobbing();
         ApplyHandSway(bobbing);
 
-        CheckSnowballPickupHint();
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 10f, ~LayerMask.GetMask("Player"))) {
+            lookingAt = info;
+        } else {
+            lookingAt = null;
+        }
     }
 
     private void LateUpdate() {
@@ -190,17 +193,17 @@ public class Player : MonoBehaviour {
     private void ApplyHandSway(float bobbing) {
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
-        if (instantiatedViewModel != null) {
-            Vector3 current = instantiatedViewModel.transform.localPosition;
+        if (viewModel != null) {
+            Vector3 current = viewModel.transform.localPosition;
             Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
             target += Vector3.up * bobbing * viewModelBobbingStrength;
 
-            if (instantiatedEquippedItemLogic != null) {
-                target += instantiatedEquippedItemLogic.swayOffset;
+            if (itemLogic != null) {
+                target += itemLogic.swayOffset;
             }
 
             Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
-            instantiatedViewModel.transform.localPosition = localPosition;
+            viewModel.transform.localPosition = localPosition;
         }
         currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
     }
@@ -348,22 +351,22 @@ public class Player : MonoBehaviour {
         }
 
         if (lastSelectedViewModelItem != null) {
-            instantiatedEquippedItemLogic.Unequipped(this);
+            itemLogic.Unequipped();
         }
 
         Vector3 oldLocalPosition = default;
         Quaternion oldLocalRotation = default;
-        if (instantiatedViewModel != null) {
-            oldLocalPosition = instantiatedViewModel.transform.localPosition;
-            oldLocalRotation = instantiatedViewModel.transform.localRotation;
-            Destroy(instantiatedViewModel);
+        if (viewModel != null) {
+            oldLocalPosition = viewModel.transform.localPosition;
+            oldLocalRotation = viewModel.transform.localRotation;
+            Destroy(viewModel);
         }
 
-        if (instantiatedEquippedItemLogic != null) {
-            Destroy(instantiatedEquippedItemLogic.gameObject);
+        if (itemLogic != null) {
+            Destroy(itemLogic.gameObject);
         }
 
-        instantiatedViewModel = null;
+        viewModel = null;
         lastSelectedViewModelItem = null;
 
         Item item = SelectedItem;
@@ -372,15 +375,16 @@ public class Player : MonoBehaviour {
                 GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
                 viewModel.transform.localPosition = oldLocalPosition;
                 viewModel.transform.localRotation = oldLocalRotation;
-                instantiatedViewModel = viewModel;
+                this.viewModel = viewModel;
                 lastSelectedViewModelItem = item;
             }
 
             if (item.Data.equippedLogic != null) {
                 GameObject equippedLogicGameObject = Instantiate(item.Data.equippedLogic, transform);
-                instantiatedEquippedItemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
-                instantiatedEquippedItemLogic.equippedItem = item;
-                instantiatedEquippedItemLogic.Equipped(this);
+                itemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
+                itemLogic.equippedItem = item;
+                itemLogic.player = this;
+                itemLogic.Equipped();
             }
         }
     }
@@ -454,8 +458,8 @@ public class Player : MonoBehaviour {
         } else {
             // fallback primary action if we can
             ItemData data = SelectedItem.Data;
-            if (data != null && instantiatedEquippedItemLogic != null) {
-                instantiatedEquippedItemLogic.PrimaryAction(this, pressed);
+            if (data != null && itemLogic != null) {
+                itemLogic.PrimaryAction(pressed);
                 return;
             }
         }
@@ -471,8 +475,8 @@ public class Player : MonoBehaviour {
         } else {
             // fallback secondary action if we can
             ItemData data = SelectedItem.Data;
-            if (data != null && instantiatedEquippedItemLogic != null) {
-                instantiatedEquippedItemLogic.SecondaryAction(this, pressed);
+            if (data != null && itemLogic != null) {
+                itemLogic.SecondaryAction(pressed);
                 return;
             }
         }
@@ -687,24 +691,12 @@ public class Player : MonoBehaviour {
     #region Util
     // Checks if the given input can be executed (using context.performed)
     private bool Performed(InputAction.CallbackContext context) {
-        return context.performed && UIMaster.Instance.MovementPossible() && !isDead;
+        return context.performed && UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
     }
 
     // Checks if we can do *any* movement
     private bool Performed() {
-        return UIMaster.Instance.MovementPossible() && !isDead;
+        return UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
     }
-
-    private void CheckSnowballPickupHint() {
-        canPickupSnow = false;
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
-            VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
-            if (chunk != null) {
-                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0;
-            }
-        }
-        UIMaster.Instance.inGameHUD.SetRightClickHint(canPickupSnow);
-    }
-
     #endregion
 }

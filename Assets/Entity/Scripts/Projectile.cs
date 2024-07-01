@@ -54,7 +54,6 @@ public class Projectile : MonoBehaviour {
         entityVelocity = otherRb != null ? otherRb.velocity : Vector3.zero;
 
         OnHit(other, velocity - entityVelocity);
-        Destroy(gameObject);
     }
 
     public void Update() {

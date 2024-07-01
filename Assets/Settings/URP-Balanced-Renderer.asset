@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42b236c2f6002b4ea4a45ed62b25ca2, type: 3}
   m_Name: VolumetricFogFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   raymarchSteps: 16
   maxDistance: 250
   lowestMipDistance: 100

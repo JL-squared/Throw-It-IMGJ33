@@ -418,12 +418,17 @@ public class VoxelTerrain : MonoBehaviour {
             return Voxel.Empty;
         
         VoxelChunk chunk = totalChunks[voxelChunkIndex].GetComponent<VoxelChunk>();
+
+        if (!chunk.voxels.IsCreated)
+            return Voxel.Empty;
+
         float3 p = position;
         p -= new float3(chunk.transform.position);
         p /= VoxelUtils.VertexScaling;
         p += 1.5f * VoxelUtils.VoxelSizeFactor;
         p /= VoxelUtils.VoxelSizeFactor;
 
+        
         if (math.any(p < 0.0f) | math.any(p >= (float)VoxelUtils.Size))
             return Voxel.Empty;
 

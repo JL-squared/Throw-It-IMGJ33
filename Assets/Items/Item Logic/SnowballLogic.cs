@@ -12,8 +12,8 @@ public class SnowballLogic : EquippedItemLogic {
     private bool isCharging;
     private float throwDelay;
 
-    public override void PrimaryAction(Player player, bool pressed) {
-        base.PrimaryAction(player, pressed);
+    public override void PrimaryAction(bool pressed) {
+        base.PrimaryAction(pressed);
 
         // check if we can charge snowball
         ItemData data = equippedItem.Data;
@@ -60,15 +60,10 @@ public class SnowballLogic : EquippedItemLogic {
         UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
     }
 
-    public override void Unequipped(Player player) {
-        base.Unequipped(player);
+    public override void Unequipped() {
+        base.Unequipped();
         isCharging = false;
         time = 0f;
         UIMaster.Instance.inGameHUD.UpdateChargeMeter(0f);
-    }
-
-    public override void Equipped(Player player) {
-        base.Equipped(player);
-        time = 0f;
     }
 }

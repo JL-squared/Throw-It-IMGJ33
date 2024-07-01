@@ -21,6 +21,7 @@ public class Snowball : Projectile {
             health.Damage(1.5f * relativeVelocity.magnitude * dataParent.damageFactor);
         }
 
+        Destroy(gameObject);
         GameObject prts = Instantiate(dataParent.particles);
         prts.transform.position = transform.position;
 

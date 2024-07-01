@@ -5461,7 +5461,6 @@ GameObject:
   - component: {fileID: 6216006554208934372}
   - component: {fileID: 3711022125120825706}
   - component: {fileID: 8780433711588789733}
-  - component: {fileID: 4127310177993036285}
   - component: {fileID: 6575133725039191861}
   m_Layer: 0
   m_Name: Game Manager
@@ -5501,8 +5500,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weatherManager: {fileID: 0}
-  waveManager: {fileID: 0}
   player: {fileID: 0}
+  initialized: 0
 --- !u!114 &8780433711588789733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5629,21 +5628,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4127310177993036285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7738069126821496426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7c3f2fb99ddf98478ce08071866d0e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    botData: []
-  currentWave: 0
 --- !u!114 &6575133725039191861
 MonoBehaviour:
   m_ObjectHideFlags: 0

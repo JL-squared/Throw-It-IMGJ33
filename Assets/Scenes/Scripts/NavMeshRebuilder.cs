@@ -10,7 +10,7 @@ public class NavMeshRebuilder : MonoBehaviour {
     public NavMeshSurface terrainSurface;
     public LayerMask mask;
     private AsyncOperation op;
-    private bool hooked = false;
+
 
     private void Start() {
         terrainSurface.navMeshData = new NavMeshData();
@@ -18,8 +18,7 @@ public class NavMeshRebuilder : MonoBehaviour {
     }
 
     // https://forum.unity.com/threads/navmesh-mesh-collection-using-submesh-indexing.1607172/
-
-    void UpdateNavMesh() {
+    public void UpdateNavMesh() {
         NavMeshSurface surface = null;
 
         if (terrainSurface.gameObject.activeSelf) {
@@ -30,6 +29,8 @@ public class NavMeshRebuilder : MonoBehaviour {
 
         NavMeshBuildSettings settings = surface.GetBuildSettings();
         settings.maxJobWorkers = 1;
+        settings.ledgeDropHeight = 10;
+        settings.maxJumpAcrossDistance = 10;
         Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 2000);
         List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
         NavMeshBuilder.CollectSources(bounds, mask, NavMeshCollectGeometry.PhysicsColliders, 0, new List<NavMeshBuildMarkup>(), sources);
@@ -49,12 +50,7 @@ public class NavMeshRebuilder : MonoBehaviour {
     }
 
     void Update() {
-        if (!hooked && VoxelTerrain.Instance != null) {
-            hooked = true;
-            VoxelTerrain.Instance.Finished += UpdateNavMesh;
-        }
-
-        if (hooked && op != null && op.isDone) {
+        if (op != null && op.isDone) {
             UpdateNavMesh();
         }
     }

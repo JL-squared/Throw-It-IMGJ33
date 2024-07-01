@@ -146,8 +146,10 @@ public static class VoxelUtils {
                     // 2 => 0.5
                     // 1 = 1.5
                     float density = SampleGridInterpolated(position + new float3(x, y, z) * spread + new float3(globalOffset), ref voxels);
-                    density = math.min(density, 0);
+                    //density = math.min(density, 0);
+                    density = density < 0f ? -10f : 0f;
                     ao += density;
+                    //ao += density < 0f ? -10f : 0f;
                     minimum = math.min(minimum, density);
                 }
             }

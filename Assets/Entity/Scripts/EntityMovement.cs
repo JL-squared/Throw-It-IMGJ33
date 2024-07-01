@@ -50,6 +50,9 @@ public class EntityMovement : MonoBehaviour {
 
     // FixedUpdate is called each physics timestep
     void Update() {
+        if (!GameManager.Instance.initialized)
+            return;
+
         float control = cc.isGrounded ? groundControl : airControl;
 
         Vector2 normalized = localWishMovement.normalized;
@@ -88,8 +91,7 @@ public class EntityMovement : MonoBehaviour {
             isJumping = false;
             jumpCounter++;
         }
-
-        
+    
         CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
 
         if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
@@ -134,15 +136,11 @@ public class EntityMovement : MonoBehaviour {
             return;
         }
 
+        // TODO: Rewrite the entity movement using a kinematic rigidbody instead so we can handle proper rigidbody interactions and entity to entity interactions
         if (hit.rigidbody != null) {
             Vector3 scaled = hit.moveDirection * hit.rigidbody.mass;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
             hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.point);
-
-            // Ok IDFK what im doing here ngl
-            if(hit.rigidbody.isKinematic) {
-               // cc.attachedRigidbody.AddForce(-scaled * pushForce, ForceMode.Impulse);
-            }
         }
 
         EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();

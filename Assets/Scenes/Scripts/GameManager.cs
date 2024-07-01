@@ -6,16 +6,31 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     public static GameManager Instance;
     [HideInInspector]
-    public GameObject player;
+    public NavMeshRebuilder rebuilder;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
+        rebuilder = GetComponent<NavMeshRebuilder>();
 
         if (Instance == null) {
             Instance = this;
         }
 
-        player = GameObject.FindGameObjectWithTag("PlayerTag");
+        if (VoxelTerrain.Instance != null) {
+            initialized = false;
+            Time.timeScale = 0.0f;
+            Physics.simulationMode = SimulationMode.Script;
+
+            VoxelTerrain.Instance.Finished += () => {
+                initialized = true;
+                rebuilder.UpdateNavMesh();
+                Physics.simulationMode = SimulationMode.FixedUpdate;
+                Time.timeScale = 1.0f;
+            };
+        } else {
+            initialized = true;
+            rebuilder.UpdateNavMesh();
+        }
     }
 
     bool dead;
@@ -27,6 +42,7 @@ public class GameManager : MonoBehaviour {
     public delegate void OnPauseChanged(bool paused);
     public event OnPauseChanged onPausedChanged;
     bool paused;
+    public bool initialized;
 
     private void Update() {
         if (dead) {
@@ -42,6 +58,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void UpdatePaused(bool paused) {
+        if (!initialized)
+            return;
+
         Time.timeScale = paused ? 0.0f : 1.0f;
         this.paused = paused;
         onPausedChanged?.Invoke(paused);

@@ -91,8 +91,9 @@ public class WeatherManager : MonoBehaviour {
         windParticleField.directionZ = windEffect.y * windyParticlesNoiseFactor * windy;
 
         // Keep the snow particles around the player at all times
-        windParticleField.transform.position = GameManager.Instance.player.transform.position;
-        snowParticleSystem.transform.position = GameManager.Instance.player.transform.position;
+        Vector3 pos = Player.Instance.transform.position;
+        windParticleField.transform.position = pos;
+        snowParticleSystem.transform.position = pos;
 
         // Change quantity of particles based on snow amount
         float snowEmissionRate = Mathf.Lerp(minSnowEmissionRate, maxSnowEmissionRate, snowy);
