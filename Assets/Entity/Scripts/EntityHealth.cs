@@ -10,8 +10,11 @@ public class EntityHealth : MonoBehaviour {
     public delegate void Killed();
     public event Killed OnKilled;
 
-    public delegate void HealthUpdated(float percentage);
-    public event HealthUpdated OnHealthUpdated;
+    public delegate void HealthChanged(float percentage);
+    public event HealthChanged OnHealthChanged;
+
+    public delegate void HealthDamaged(float percentage);
+    public event HealthDamaged OnDamaged;
 
     public delegate void PreDamageModifier(ref float damage);
     public event PreDamageModifier OnPreDamageModifier;
@@ -28,7 +31,8 @@ public class EntityHealth : MonoBehaviour {
         OnPreDamageModifier?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
 
-        OnHealthUpdated?.Invoke(health / maxHealth);
+        OnDamaged?.Invoke(damage);
+        OnHealthChanged?.Invoke(health / maxHealth);
         if (health == 0 && !alrKilled) {
             alrKilled = true;
             OnKilled?.Invoke();

@@ -97,14 +97,12 @@ public class BotBase : MonoBehaviour {
         damage *= (1 - damageResistence);
     }
 
-    private void OnBodyHealthUpdated(float percent) {
-        if (percent > 0)
-            tts.SayString("ouch");
+    private void OnBodyDamaged(float damage) {
+        tts.SayString("ouch", overwritePlaying: false);
     }
 
-    private void OnHeadHealthUpdated(float percent) {
-        if (percent > 0)
-            tts.SayString("bruh");
+    private void OnHeadDamaged(float damage) {
+        tts.SayString("bruh", overwritePlaying: false);
     }
 
     private void ApplyAttributes() {
@@ -187,8 +185,8 @@ public class BotBase : MonoBehaviour {
         Destroy(headMeshHolster.GetComponent<MeshRenderer>());
 
         _bodyHealth.OnPreDamageModifier += OnDamage;
-        _bodyHealth.OnHealthUpdated += OnBodyHealthUpdated;
-        _headHealth.OnHealthUpdated += OnHeadHealthUpdated;
+        _bodyHealth.OnDamaged += OnBodyDamaged;
+        _headHealth.OnDamaged += OnHeadDamaged;
         _bodyHealth.OnKilled += () => { OnKilled(false); };
         _headHealth.OnKilled += () => { OnKilled(true); };
 

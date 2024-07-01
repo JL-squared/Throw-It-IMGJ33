@@ -133,7 +133,7 @@ public class Player : MonoBehaviour {
 
         // Hook onto health component
         EntityHealth health = GetComponent<EntityHealth>();
-        health.OnHealthUpdated += (float p) => {
+        health.OnHealthChanged += (float p) => {
             UIMaster.Instance.healthBar.actualPosition = p;
         };
         health.OnKilled += Killed;
