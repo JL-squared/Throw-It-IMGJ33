@@ -126,11 +126,11 @@ public struct VertexJob : IJobParallelFor {
         // Output vertex in object space
         float3 offset = (vertex / (float)count);
         float3 outputVertex = (offset - 1.0F) + position;
-        float ambientOcclusion = VoxelUtils.CalculateVertexAmbientOcclusion(outputVertex, ref voxels, aoSpread, aoGlobalOffset);
 
-        if (float.IsNaN(ambientOcclusion)) {
-            ambientOcclusion = 1;
-        }
+        // TODO: Pls find a better way to do this
+        // Shits itself at chunk edges since voxel data isn't shared over edges
+        // Maybe a full map GPU blur could help?
+        float ambientOcclusion = 0;
 
 
         vertices[vertexIndex] = outputVertex * VoxelUtils.VertexScaling * VoxelUtils.VoxelSizeFactor;

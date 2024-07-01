@@ -108,8 +108,8 @@ public static class VoxelUtils {
     public static half SampleGridInterpolated(float3 position, ref NativeArray<Voxel> voxels) {
         float3 frac = math.frac(position);
         uint3 voxPos = (uint3)math.floor(position);
-        voxPos = math.min(voxPos, math.uint3(Size - 2));
-        voxPos = math.max(voxPos, math.uint3(0));
+        //voxPos = math.min(voxPos, math.uint3(Size - 2));
+        //voxPos = math.max(voxPos, math.uint3(0));
 
         float d000 = voxels[PosToIndex(voxPos)].density;
         float d100 = voxels[PosToIndex(voxPos + math.uint3(1, 0, 0))].density;
@@ -140,22 +140,43 @@ public static class VoxelUtils {
         float ao = 0.0f;
         float minimum = 200000;
 
+        int count = 0;
+        float solid = 0;
+
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
-                    // 2 => 0.5
-                    // 1 = 1.5
-                    float density = SampleGridInterpolated(position + new float3(x, y, z) * spread + new float3(globalOffset), ref voxels);
-                    //density = math.min(density, 0);
-                    density = density < 0f ? -10f : 0f;
-                    ao += density;
-                    //ao += density < 0f ? -10f : 0f;
-                    minimum = math.min(minimum, density);
+                    /*
+                    float3 voxelPos = position + new float3(x, y, z) * spread + new float3(globalOffset);
+                    if (math.all(voxelPos >= 0f) && math.all(voxelPos < Size - 2)) {
+                        float density = SampleGridInterpolated(voxelPos, ref voxels);
+
+                        //density = math.min(density, 0);
+                        density = density < 0f ? -10f : 0f;
+                        ao += density;
+                        //ao += density < 0f ? -10f : 0f;
+                        //minimum = math.min(minimum, density);
+                        
+                        count++;
+                    }
+                    */
+
+                    float3 voxelPos = position + new float3(x, y, z) * spread + new float3(globalOffset);
+                    voxelPos = math.min(voxelPos, math.uint3(Size - 1));
+                    voxelPos = math.max(voxelPos, math.uint3(0));
+
+                    float density = voxels[PosToIndex(new uint3(math.round(voxelPos)))].density;
+                    //float density = SampleGridInterpolated(voxelPos, ref voxels);
+
+                    if (density < -0.25f) {
+                        solid += 1f;
+                    }
                 }
             }
         }
 
-        ao = ao / (3 * 3 * 3 * (minimum + 0.001f));
+        //ao = ao / (count);
+        ao = (float)solid * 0.25f;
         return ao;
     }
 }
