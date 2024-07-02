@@ -11,7 +11,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public static class VoxelSerialization {
-    public static void SerializeIntoRegions<T>(List<T> streamWriters, List<GameObject> totalChunks) where T: Stream {
+    public static void SerializeIntoRegions<T>(List<T> streamWriters, List<GameObject> totalChunks, Vector3Int mapSize) where T: Stream {
         byte[] materials = new byte[VoxelUtils.Volume];
         half[] densities = new half[VoxelUtils.Volume];
 
@@ -46,7 +46,7 @@ public static class VoxelSerialization {
         }
     }
 
-    public static void DeserializeFromRegions<T>(List<T> streamReaders, List<GameObject> totalChunks) where T : Stream {
+    public static void DeserializeFromRegions<T>(List<T> streamReaders, List<GameObject> totalChunks, Vector3Int mapSize) where T : Stream {
         List<VoxelChunk> chunks = totalChunks.Select((x) => x.GetComponent<VoxelChunk>()).ToList();
 
         List<Task> actFinal = new List<Task>();

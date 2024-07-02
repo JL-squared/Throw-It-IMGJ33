@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f3d0b7017212cd44ab7a901f5754c6f, type: 3}
   m_Name: battery
   m_EditorClassIdentifier: 
-  id: 
   stackSize: 5
   icon: {fileID: 21300000, guid: e4d77a5efb3dc254384e2e9d14f7c56b, type: 3}
-  worldItem: {fileID: 0}
+  worldItem: {fileID: 5997627359384768486, guid: 9cc8cf9260046584692d907b16294ae8,
+    type: 3}
   viewModel: {fileID: 5997627359384768486, guid: b526eb20884807647ab463cc1940c797,
     type: 3}
+  equippedLogic: {fileID: 0}
   title: Battery
   description: 'We''re not sure where these arctic robots are getting so many car
     batteries.

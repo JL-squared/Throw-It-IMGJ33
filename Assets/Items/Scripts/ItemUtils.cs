@@ -17,6 +17,9 @@ public static class ItemUtils {
         // for now this works but we're gonna need to find a way to dynamically unload unused assets later on (very easy to do with the adressables system)
         GetAllTypes(ref itemDatas, "Items");
         //GetAllTypes(ref craftingRecipes, "Item Recipes");
+
+        foreach (var itemData in itemDatas.Values) {
+        }
     }
 
     // Load all the types of an Adressable using its label into memory

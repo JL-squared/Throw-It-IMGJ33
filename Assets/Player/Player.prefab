@@ -431,6 +431,7 @@ MonoBehaviour:
   spawnHolster: {fileID: 921606742461663924}
   startingSpeed: 20
   offsetDistance: 1.2
+  maxRandomDirection: {x: 0, y: 0}
   collider: {fileID: 0}
   inheritVelocityMovement: {fileID: 0}
 --- !u!114 &8669513143636214874
@@ -486,7 +487,6 @@ MonoBehaviour:
   viewModelRotationClampMagnitude: 100
   viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
-  canPickupSnow: 0
 --- !u!143 &8428834152011970357
 CharacterController:
   m_ObjectHideFlags: 0

@@ -121,6 +121,14 @@ public class EntityMovement : MonoBehaviour {
         movement += f.normalized * factor * force;
     }
 
+    public void AddImpulse(Vector3 force) {
+        if (force.normalized.y > 0.9) {
+            groundJustExploded = true;
+        }
+
+        movement += force;
+    }
+
     public void Jump() {
         if ((Time.time - lastGroundedTime) <= coyoteTime && jumpCounter == 0) {
             isJumping = true;

@@ -35,7 +35,6 @@ public class Icicle : Projectile {
         }
 
         Quaternion rot = rb.rotation;
-        collider.isTrigger = false;
         rb.isKinematic = true;
         transform.rotation = rot;
         rb.freezeRotation = false;

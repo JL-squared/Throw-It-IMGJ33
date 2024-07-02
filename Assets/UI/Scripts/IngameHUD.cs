@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class IngameHUD : MonoBehaviour {
     public GameObject craftingMenuObject;
     public GameObject rightClickHint;
+    public GameObject interactHint;
     public RectTransform chargeMeter;
     public GameObject crosshairGroup;
 
     // Start is called before the first frame update
     void Start() {
         SetRightClickHint(false);
+        SetInteractHint(false);
     }
 
     // Update is called once per frame
@@ -21,6 +23,10 @@ public class IngameHUD : MonoBehaviour {
 
     public void SetRightClickHint(bool on) {
         rightClickHint.SetActive(on);
+    }
+
+    public void SetInteractHint(bool on) {
+        interactHint.SetActive(on);
     }
 
     public void UpdateChargeMeter(float charge) {

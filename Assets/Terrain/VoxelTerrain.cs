@@ -143,7 +143,7 @@ public class VoxelTerrain : MonoBehaviour {
             cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024));
         }
 
-        VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks);
+        VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks, savedMap.mapSize);
 
         for (int i = 0; i < savedMap.textAssets.Length; i++) {
             cachedStreams[i].Dispose();
@@ -180,7 +180,7 @@ public class VoxelTerrain : MonoBehaviour {
             streamWriters.Add(bufferedStream);
         }
 
-        VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks);
+        VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks, savedMap.mapSize);
 
         List<Task> tasks = new List<Task>();
         for (int i = 0; i < maxRegionFiles; i++) {

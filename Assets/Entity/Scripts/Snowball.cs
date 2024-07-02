@@ -25,12 +25,12 @@ public class Snowball : Projectile {
         GameObject prts = Instantiate(dataParent.particles);
         prts.transform.position = transform.position;
 
-        if (velocity.magnitude > 0.1) {
+        if (relativeVelocity.magnitude > 0.1) {
             //prts.transform.rotation = Quaternion.LookRotation(-lastVel);
 
             var system = prts.GetComponent<ParticleSystem>();
             var velOverLifetime = system.velocityOverLifetime;
-            Vector3 vel = velocity * 0.4f;
+            Vector3 vel = relativeVelocity * 0.4f;
             velOverLifetime.x = new ParticleSystem.MinMaxCurve(vel.x);
             velOverLifetime.y = new ParticleSystem.MinMaxCurve(vel.y);
             velOverLifetime.z = new ParticleSystem.MinMaxCurve(vel.z);

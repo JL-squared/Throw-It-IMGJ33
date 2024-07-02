@@ -5,7 +5,9 @@ using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -110,6 +112,7 @@ public class Player : MonoBehaviour {
 
     [HideInInspector]
     public RaycastHit? lookingAt;
+    private IInteraction interaction;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -178,11 +181,16 @@ public class Player : MonoBehaviour {
         float bobbing = CalculateBobbing();
         ApplyHandSway(bobbing);
 
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 10f, ~LayerMask.GetMask("Player"))) {
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
+            GameObject other = info.collider.gameObject;
+            interaction = other.GetComponent<IInteraction>();
             lookingAt = info;
         } else {
             lookingAt = null;
+            interaction = null;
         }
+
+        UIMaster.Instance.inGameHUD.SetInteractHint(interaction != null && interaction.Interactable);
     }
 
     private void LateUpdate() {
@@ -297,6 +305,7 @@ public class Player : MonoBehaviour {
             }
             i++;
         }
+
         // by this point we should have exited if everything is handled, otherwise;
         if (firstEmpty != -1) {
             Debug.Log("oh yeah, slot was empty. It's sex time...");
@@ -307,6 +316,22 @@ public class Player : MonoBehaviour {
         if (firstEmpty == selected) {
             SelectionChanged(force: true);
         }
+    }
+
+    // Checks if we can fit a specific item
+    // Count must be within stack count (valid item moment)
+    public bool CanFitItem(Item itemIn) {
+        int emptyCounts = 0;
+
+        foreach (Item item in items) {
+            if (item.IsEmpty()) {
+                return true;
+            } else if (itemIn.Data == item.Data && !item.IsFull() ) {
+                emptyCounts += itemIn.Data.stackSize - item.Count;
+            }
+        }
+
+        return emptyCounts >= itemIn.Count;
     }
 
     // Remove a specific count from a specific slot. Returns the number of items that are missing (if count > item.count)
@@ -425,6 +450,11 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void Crouch(InputAction.CallbackContext context) {
+        if (Performed(context)) {
+        }
+    }
+
     public void Scroll(InputAction.CallbackContext context) {
         if (Performed(context)) {
             float scroll = -context.ReadValue<float>();
@@ -462,6 +492,15 @@ public class Player : MonoBehaviour {
                 itemLogic.PrimaryAction(pressed);
                 return;
             }
+        }
+    }
+
+    public void InteractAction(InputAction.CallbackContext context) {
+        if (!Performed(context) || !lookingAt.HasValue)
+            return;
+
+        if (interaction != null && interaction.Interactable) {
+            interaction.Interact(this);
         }
     }
 

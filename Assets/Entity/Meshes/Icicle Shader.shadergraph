@@ -394,17 +394,17 @@
         "m_Position": {
             "serializedVersion": "2",
             "x": -2949.0,
-            "y": -37.99998474121094,
+            "y": -38.00000762939453,
             "width": 208.0,
-            "height": 315.0001220703125
+            "height": 315.0000305175781
         }
     },
     "m_Slots": [
         {
-            "m_Id": "0fe2632415fd4d588c4246c91b573f5f"
+            "m_Id": "b0a55f8b8b064c64bacbd63569d34547"
         },
         {
-            "m_Id": "b0a55f8b8b064c64bacbd63569d34547"
+            "m_Id": "c95c20f243bb49f381195f847d379cfe"
         }
     ],
     "synonyms": [
@@ -601,30 +601,6 @@
         "z": 0.0,
         "w": 0.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PositionMaterialSlot",
-    "m_ObjectId": "0fe2632415fd4d588c4246c91b573f5f",
-    "m_Id": 3,
-    "m_DisplayName": "World Space Position",
-    "m_SlotType": 0,
-    "m_Hidden": true,
-    "m_ShaderOutputName": "WorldSpacePosition",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": [],
-    "m_Space": 2
 }
 
 {
@@ -1942,6 +1918,30 @@
     },
     "m_Labels": [],
     "m_Space": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PositionMaterialSlot",
+    "m_ObjectId": "c95c20f243bb49f381195f847d379cfe",
+    "m_Id": 3,
+    "m_DisplayName": "World Space Position",
+    "m_SlotType": 0,
+    "m_Hidden": true,
+    "m_ShaderOutputName": "WorldSpacePosition",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": [],
+    "m_Space": 2
 }
 
 {

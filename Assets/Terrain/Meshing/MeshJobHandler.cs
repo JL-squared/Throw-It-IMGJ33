@@ -184,8 +184,9 @@ public class MeshJobHandler {
         mesh.Clear();
 
         mesh.SetVertexBufferParams(maxVertices, vertexAttributeDescriptors);
-        mesh.SetVertexBufferData(vertices.Reinterpret<Vector3>(), 0, 0, maxVertices, 0, MeshUpdateFlags.DontValidateIndices);
+        mesh.SetVertexBufferData(vertices.Reinterpret<Vector3>(), 0, 0, maxVertices, 0, MeshUpdateFlags.DontValidateIndices | MeshUpdateFlags.DontRecalculateBounds);
         mesh.SetVertexBufferData(uvs.Reinterpret<Vector2>(), 0, 0, maxVertices, 1, MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices);
+
 
         // Set mesh indices
         mesh.SetIndexBufferParams(maxIndices, IndexFormat.UInt32);
@@ -214,10 +215,11 @@ public class MeshJobHandler {
                     indexStart = segmentOffset,
                     indexCount = countIndices,
                     topology = MeshTopology.Triangles,
-                }, MeshUpdateFlags.DontValidateIndices);
+                }, MeshUpdateFlags.DontValidateIndices | MeshUpdateFlags.DontRecalculateBounds);
             }
         }
 
+        mesh.RecalculateBounds(MeshUpdateFlags.DontValidateIndices);
         triangleOffsetLocalMaterials = triangleOffsetLocalMaterials.OrderBy(x => x.Item2).ToArray();
 
         chunk = null;

@@ -5,20 +5,20 @@ using UnityEngine;
 
 // Script added to all game objects that represent a chunk
 public class VoxelChunk : MonoBehaviour {
-    public NativeArray<Voxel> voxels;
-    public bool hasCollisions = false;
-    public NativeMultiCounter lastCounters;
+    [HideInInspector] public NativeArray<Voxel> voxels;
+    [HideInInspector] public bool hasCollisions = false;
+    [HideInInspector] public NativeMultiCounter lastCounters;
 
     // Current voxel edits that we must execute
-    public IVoxelEdit pendingVoxelEdit = default;
+    [HideInInspector] public IVoxelEdit pendingVoxelEdit = default;
 
     // Callback that we must invoke when we finish meshing this voxel chunk
-    public VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;
+    [HideInInspector] public VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;
 
     // Shared generated mesh
-    public Mesh sharedMesh;
-    public int[] voxelMaterialsLookup;
-    public (byte, int)[] triangleOffsetLocalMaterials;
+    [HideInInspector] public Mesh sharedMesh;
+    [HideInInspector] public int[] voxelMaterialsLookup;
+    [HideInInspector] public (byte, int)[] triangleOffsetLocalMaterials;
 
     // Get the AABB world bounds of this chunk
     public Bounds GetBounds() {
