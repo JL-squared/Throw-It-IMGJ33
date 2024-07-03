@@ -25,8 +25,9 @@ MonoBehaviour:
   projectile: {fileID: 5488373698599033194, guid: b9e102afdbf683a4092ac606c7b350be,
     type: 3}
   lifetime: 15
-  destroyOnHit: 1
+  knockbackFactor: 3
+  rigidbodyForceFactor: 1.5
   particles: {fileID: 6059710334257849518, guid: 707ea22e782edfb44a979424256e1b2f,
     type: 3}
-  damageFactor: 1
-  speedFactor: 1
+  baseDamage: 2.5
+  speedFactor: 0.4

@@ -12,4 +12,17 @@ public class WorldItem : MonoBehaviour, IInteraction {
         Destroy(gameObject);
         player.AddItem(new Item(item, 1));
     }
+
+    public void StartHover(Player player) {
+        var children = GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (Transform child in children) {
+            child.gameObject.layer = LayerMask.NameToLayer("Highlight");
+        }
+    }
+    public void StopHover(Player player) {
+        var children = GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (Transform child in children) {
+            child.gameObject.layer = LayerMask.NameToLayer("Default");
+        }
+    }
 }

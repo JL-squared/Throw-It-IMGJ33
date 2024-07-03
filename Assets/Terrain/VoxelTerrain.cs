@@ -53,6 +53,7 @@ public class VoxelTerrain : MonoBehaviour {
         pendingMeshJobs = new Queue<PendingMeshJob>();
         pooledChunkGameObjects = new List<GameObject>();
         totalChunks = new List<GameObject>();
+        gameObject.hideFlags = HideFlags.None;
 
         for (int i = 0; i < meshJobsPerFrame; i++) {
             handlers.Add(new MeshJobHandler());
@@ -104,6 +105,7 @@ public class VoxelTerrain : MonoBehaviour {
                 for (int z = -mapChunkSize.z; z < mapChunkSize.z; z++) {
                     GameObject newChunk = FetchPooledChunk();
                     VoxelChunk voxelChunk = newChunk.GetComponent<VoxelChunk>();
+                    voxelChunk.hideFlags = HideFlags.DontSave;
                     newChunk.transform.position = new Vector3(x, y, z) * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor;
                     callback.Invoke(voxelChunk, index);
                     totalChunks.Add(newChunk);

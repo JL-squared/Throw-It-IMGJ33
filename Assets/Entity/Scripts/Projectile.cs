@@ -32,10 +32,10 @@ public class Projectile : MonoBehaviour {
     public void Start() {
         rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
-
+    protected virtual bool ShouldCollideWith(Collider other) { return !other.isTrigger; }
     protected virtual void OnHit(Collider other, Vector3 relativeVelocity) { }
     public void OnTriggerEnter(Collider other) {
-        if (other.isTrigger)
+        if (!ShouldCollideWith(other))
             return;
 
         EntityMovement movement = other.gameObject.GetComponent<EntityMovement>();
@@ -46,11 +46,11 @@ public class Projectile : MonoBehaviour {
         entityVelocity = otherRb != null ? otherRb.velocity : entityVelocity;
 
         if (otherRb != null) {
-            otherRb.AddForceAtPosition(rb.velocity * 0.2f, rb.position, ForceMode.Impulse);
+            otherRb.AddForceAtPosition(rb.velocity * rb.mass * data.rigidbodyForceFactor, rb.position, ForceMode.Impulse);
         }
 
         if (movement != null) {
-            movement.AddImpulse(rb.velocity * 0.5f);
+            movement.AddImpulse(rb.velocity * 0.5f * data.knockbackFactor);
         }
 
         OnHit(other, entityVelocity - rb.velocity);

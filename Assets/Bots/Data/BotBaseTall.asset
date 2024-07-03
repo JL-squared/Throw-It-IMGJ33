@@ -20,7 +20,7 @@ MonoBehaviour:
     - disable sides
     modifiers:
     - attribute: 0
-      delta: -1
+      delta: -2
   left: []
   right: []
   hat:
@@ -100,4 +100,5 @@ MonoBehaviour:
   baseAttackSpeed: 5
   baseBodyHealth: 500
   baseHeadHealth: 200
-  baseDamageResistence: 0
+  baseDamageResistance: 0
+  baseKnockbackResistance: 0.2

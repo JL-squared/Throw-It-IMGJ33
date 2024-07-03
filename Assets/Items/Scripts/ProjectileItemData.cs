@@ -4,4 +4,6 @@ using UnityEngine;
 public class ProjectileItemData : ItemData {
     public GameObject projectile;
     public float lifetime;
+    public float knockbackFactor;
+    public float rigidbodyForceFactor;
 }

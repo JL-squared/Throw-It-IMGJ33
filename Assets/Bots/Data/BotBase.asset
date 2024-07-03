@@ -24,7 +24,7 @@ MonoBehaviour:
       delta: 2
   - prefab: {fileID: 1934811558212736242, guid: 71d278c08e66aa74cb5844066a3a990c,
       type: 3}
-    spawnChance: 0.25
+    spawnChance: 1
     tags:
     - disable sides
     modifiers: []
@@ -122,4 +122,5 @@ MonoBehaviour:
   baseAttackSpeed: 1
   baseBodyHealth: 100
   baseHeadHealth: 25
-  baseDamageResistence: 0
+  baseDamageResistance: 0
+  baseKnockbackResistance: 0

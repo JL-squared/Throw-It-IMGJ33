@@ -22,3 +22,5 @@ MonoBehaviour:
   projectile: {fileID: 9196792428175076912, guid: 00b4fcf673bff424494ea04e07b04194,
     type: 3}
   lifetime: 3
+  knockbackFactor: 1.5
+  rigidbodyForceFactor: 1.5

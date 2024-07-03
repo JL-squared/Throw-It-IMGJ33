@@ -77,6 +77,10 @@ public static class ItemUtils {
         return result;
     }
 
+    public static bool IsNullOrDestroyed(this object value) {
+        return ReferenceEquals(value, null) || value.Equals(null);
+    }
+
     // Fetch the crafting recipe for a specific item type
     public static CraftingRecipe GetCraftingRecipeFromType(ItemData itemData) {
         return craftingRecipes.GetValueOrDefault(itemData.name, null);

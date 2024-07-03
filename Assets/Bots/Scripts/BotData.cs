@@ -24,5 +24,6 @@ public class BotData : ScriptableObject {
     public float baseAttackSpeed = 5;
     public float baseBodyHealth = 50;
     public float baseHeadHealth = 20;
-    public float baseDamageResistence = 0;
+    public float baseDamageResistance = 0;
+    public float baseKnockbackResistance = 0;
 }

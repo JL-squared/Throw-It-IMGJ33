@@ -36,6 +36,7 @@ public class VoxelTerrainCustomEditor : Editor {
 
             terrain.Dispose();
             editor.allowedToEdit = false;
+            terrain.KillChildren();
         }
     }
 

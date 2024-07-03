@@ -15,11 +15,18 @@ public class Icicle : Projectile {
     }
 
     private void FixedUpdate() {
-        rb.AddForce(Physics.gravity * 2.2f, ForceMode.Acceleration);
-
         if (!hit) {
+            rb.AddForce(Physics.gravity * 2.2f, ForceMode.Acceleration);
             rb.rotation = Quaternion.LookRotation(rb.velocity);
         }
+    }
+
+    protected override bool ShouldCollideWith(Collider other) {
+        if (other.gameObject.GetComponent<Icicle>() != null) {
+            return false;
+        }
+
+        return base.ShouldCollideWith(other);
     }
 
     protected override void OnHit(Collider other, Vector3 relativeVelocity) {
@@ -28,17 +35,18 @@ public class Icicle : Projectile {
 
         base.OnHit(other, relativeVelocity);
 
-        EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
-        if (health != null) {
-            health.Damage(2f);
-            Destroy(gameObject);
-        }
-
         Quaternion rot = rb.rotation;
         rb.isKinematic = true;
         transform.rotation = rot;
         rb.freezeRotation = false;
         rb.rotation = rot;
         hit = true;
+
+        EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
+        if (health != null) {
+            health.Damage(2f);
+            rb.interpolation = RigidbodyInterpolation.None;
+            transform.SetParent(health.transform, true);
+        }
     }
 }

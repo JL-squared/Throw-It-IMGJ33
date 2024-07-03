@@ -16,5 +16,6 @@ public enum BotAttribute {
     AttackSpeed,
     HeadHealth,
     BodyHealth,
-    DamageResistence
+    DamageResistance,
+    KnockbackResistance,
 }

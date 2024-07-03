@@ -2,6 +2,7 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static EntityMovement;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour {
@@ -25,6 +26,7 @@ public class EntityMovement : MonoBehaviour {
     public float coyoteTime = 0.0f;
     public float jumpBufferTime = 0.0f;
     public float gravity = -9.81f;
+    public float knockbackResistance = 0.0f;
     public float groundedOffsetVelocity = -2.5f;
     [HideInInspector]
     public bool isJumping;
@@ -118,7 +120,7 @@ public class EntityMovement : MonoBehaviour {
             groundJustExploded = true;
         }
 
-        movement += f.normalized * factor * force;
+        AddImpulse(f.normalized * factor * force);
     }
 
     public void AddImpulse(Vector3 force) {
@@ -126,6 +128,7 @@ public class EntityMovement : MonoBehaviour {
             groundJustExploded = true;
         }
 
+        force *= (1 - knockbackResistance);
         movement += force;
     }
 

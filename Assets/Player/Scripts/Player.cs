@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
+using static UnityEngine.Rendering.DebugUI;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -113,6 +114,7 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public RaycastHit? lookingAt;
     private IInteraction interaction;
+    private IInteraction lastInteraction;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -189,8 +191,19 @@ public class Player : MonoBehaviour {
             lookingAt = null;
             interaction = null;
         }
+        
+        if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
+            if (!interaction.IsNullOrDestroyed()) {
+                interaction.StartHover(this);
+            }
+            
+            if (!lastInteraction.IsNullOrDestroyed()) {
+                lastInteraction.StopHover(this);
+            }
+        }
 
         UIMaster.Instance.inGameHUD.SetInteractHint(interaction != null && interaction.Interactable);
+        lastInteraction = interaction;
     }
 
     private void LateUpdate() {

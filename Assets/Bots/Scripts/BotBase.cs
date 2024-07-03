@@ -33,7 +33,8 @@ public class BotBase : MonoBehaviour {
     public float attackSpeed = 0;
     public float bodyHealth = 0;
     public float headHealth = 0;
-    public float damageResistence = 0;
+    public float damageResistance = 0;
+    public float knockbackResistance = 0;
 
     private EntityMovement entityMovement;
     private EntityHealth _headHealth;
@@ -65,8 +66,11 @@ public class BotBase : MonoBehaviour {
                 case BotAttribute.BodyHealth:
                     bodyHealth += delta;
                     break;
-                case BotAttribute.DamageResistence:
-                    damageResistence += delta;
+                case BotAttribute.DamageResistance:
+                    damageResistance += delta;
+                    break;
+                case BotAttribute.KnockbackResistance:
+                    knockbackResistance += delta;
                     break;
             }
         }
@@ -94,7 +98,7 @@ public class BotBase : MonoBehaviour {
     }
 
     private void OnDamage(ref float damage) {
-        damage *= (1 - damageResistence);
+        damage *= (1 - damageResistance);
     }
 
     private void OnBodyDamaged(float damage) {
@@ -110,6 +114,7 @@ public class BotBase : MonoBehaviour {
             return;
 
         entityMovement.speed = Mathf.Max(movementSpeed, 0);
+        entityMovement.knockbackResistance = Mathf.Clamp01(knockbackResistance);
         _bodyHealth.maxHealth = bodyHealth;
         _bodyHealth.health = bodyHealth;
         _headHealth.maxHealth = headHealth;
@@ -125,7 +130,8 @@ public class BotBase : MonoBehaviour {
         attackSpeed = data.baseAttackSpeed;
         bodyHealth = data.baseBodyHealth;
         headHealth = data.baseHeadHealth;
-        damageResistence = data.baseDamageResistence;
+        damageResistance = data.baseDamageResistance;
+        knockbackResistance = data.baseKnockbackResistance;
 
         // Base weapons / attribute modifiers
         BotPartData center = PickPartForHolsterType(centerHolster, data.center);

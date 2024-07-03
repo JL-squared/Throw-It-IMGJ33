@@ -364,11 +364,12 @@ MonoBehaviour:
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
   airControl: 2
   groundControl: 20
-  maxAcceleration: 8
+  maxAcceleration: 5
   jump: 5
   coyoteTime: 0
   jumpBufferTime: 0
   gravity: -20
+  knockbackResistance: 0
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
@@ -423,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tts: {fileID: 8578670385677102070}
-  jitterFactor: 0.3
+  jitterFactor: 0.45
 --- !u!114 &4412334655295901745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,7 +454,8 @@ MonoBehaviour:
   attackSpeed: 5
   bodyHealth: 50
   headHealth: 20
-  damageResistence: 0
+  damageResistance: 0
+  knockbackResistance: 0
 --- !u!143 &7893371349031768923
 CharacterController:
   m_ObjectHideFlags: 0
