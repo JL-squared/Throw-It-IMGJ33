@@ -1,7 +1,5 @@
-using System;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
-using UnityEngine;
 
 // CPU representation of what a voxel is. The most important value here is the density value
 [StructLayout(LayoutKind.Sequential)]

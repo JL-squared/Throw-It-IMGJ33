@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HotbarUI : MonoBehaviour {
     public VisualSlot[] slots;

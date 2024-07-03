@@ -29,7 +29,7 @@ public class PlayerCustomEditor : Editor {
             if (item == null) {
                 Debug.LogWarning($"{text} wasn't loaded :(");
             } else {
-                player.AddItem(new Item(1, item));
+                player.AddItem(new Item(item, 1));
             }
         }
     }

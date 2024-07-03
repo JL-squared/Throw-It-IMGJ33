@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public static partial class UnitySAM
+﻿public static partial class UnitySAM
 {
 	static void printf(string s)
 	{

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShovelLogic : EquippedItemLogic {
@@ -37,7 +35,7 @@ public class ShovelLogic : EquippedItemLogic {
             RaycastHit info = player.lookingAt.Value;
             VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
             if (chunk != null) {
-                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0;
+                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new Item("snowball", 1));
             }
         }
 

@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CraftingRecipe", menuName = "ScriptableObjects/New Crafting Recipe", order = 2)]

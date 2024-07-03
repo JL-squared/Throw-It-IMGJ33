@@ -15,7 +15,7 @@ MonoBehaviour:
   center:
   - prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.1
     tags:
     - disable sides
     modifiers:

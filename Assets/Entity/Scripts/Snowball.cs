@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Snowball : Projectile {
+    [HideInInspector]
     public SnowballItemData dataParent;
 
     public override void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter) {

@@ -1,6 +1,4 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 // A custom voxel editor painter that allows us to create a pre-defined voxel map
 // Comes with some voxel edit tools like raise / lower, add, flatten

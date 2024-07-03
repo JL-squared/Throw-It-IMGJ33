@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
-using JetBrains.Annotations;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,7 +25,7 @@ public class Item {
     public ItemData Data { get {return data; } set { data = value; updateEvent.Invoke(this); } }
 
 
-    public Item(int count = 0, ItemData data = null) {
+    public Item(ItemData data = null, int count = 0) {
         this.count = count;
         this.Data = data;
     }
@@ -59,7 +53,7 @@ public class Item {
     }
 
     public Item Clone() {
-        return new Item(count, data);
+        return new Item(data, count);
     }
 
     public bool Equals(Item other) {

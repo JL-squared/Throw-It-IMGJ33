@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Thanks to kurtdekker for converting this to c# and making it work with Unity
 // Original repo: https://github.com/kurtdekker/UnitySAM

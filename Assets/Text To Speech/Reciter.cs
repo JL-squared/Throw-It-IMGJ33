@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public static partial class UnitySAM {
     static int A, X, Y;
 

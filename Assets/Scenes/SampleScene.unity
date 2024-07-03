@@ -535,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 6897721761823884219, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7956294032821860720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
@@ -624,6 +624,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913550287921865011, guid: 3485f4ebbab138d488721993d43782e8,
+        type: 3}
+      propertyPath: startingSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6098970905361740867, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
@@ -1552,7 +1557,7 @@ PrefabInstance:
     - target: {fileID: 6897721761823884219, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7956294032821860720, guid: 11f2607db5e93074fbb48e7775e770f3,
         type: 3}
@@ -2120,6 +2125,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913550287921865011, guid: 3485f4ebbab138d488721993d43782e8,
+        type: 3}
+      propertyPath: startingSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6098970905361740867, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
@@ -2877,7 +2887,7 @@ PrefabInstance:
     - target: {fileID: 6897721761823884219, guid: ece9e916e48145b44acabfe6d36d41e5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8742717674536080720, guid: ece9e916e48145b44acabfe6d36d41e5,
         type: 3}
@@ -5466,7 +5476,12 @@ PrefabInstance:
     - target: {fileID: 5419971085316244044, guid: fc0bafe595791e14a84258f43714eff3,
         type: 3}
       propertyPath: force
-      value: 400
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5419971085316244044, guid: fc0bafe595791e14a84258f43714eff3,
+        type: 3}
+      propertyPath: targetSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5696789253449794273, guid: fc0bafe595791e14a84258f43714eff3,
         type: 3}

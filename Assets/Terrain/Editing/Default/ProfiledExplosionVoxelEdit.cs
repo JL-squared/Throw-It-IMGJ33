@@ -1,10 +1,7 @@
-using JetBrains.Annotations;
-using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 [assembly: RegisterGenericJobType(typeof(VoxelEditJob<ProfiledExplosionVoxelEdit>))]
 public struct ProfiledExplosionVoxelEdit : IVoxelEdit {

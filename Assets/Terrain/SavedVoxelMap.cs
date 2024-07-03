@@ -1,5 +1,3 @@
-using Unity.Collections;
-using Unity.Jobs;
 using UnityEngine;
 
 // Scriptable object containing a reference to each of the map region raw byte files

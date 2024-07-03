@@ -1,14 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
-using static UnityEngine.Rendering.DebugUI;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {

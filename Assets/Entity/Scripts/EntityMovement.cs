@@ -1,8 +1,5 @@
-using System;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static EntityMovement;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour {

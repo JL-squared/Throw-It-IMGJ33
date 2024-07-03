@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem.Processors;
-using UnityEngine.Rendering;
 
 public class EntityHealth : MonoBehaviour {
     public float maxHealth;

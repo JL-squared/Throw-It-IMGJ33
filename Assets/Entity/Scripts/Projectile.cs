@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class Projectile : MonoBehaviour {
     protected ProjectileItemData data;
@@ -59,15 +54,16 @@ public class Projectile : MonoBehaviour {
         Rigidbody otherRb = other.gameObject.GetComponent<Rigidbody>();
         entityVelocity = otherRb != null ? otherRb.velocity : entityVelocity;
 
+        Vector3 relativeVelocity = entityVelocity - rb.velocity;
         if (otherRb != null) {
-            otherRb.AddForceAtPosition(rb.velocity * rb.mass * data.rigidbodyForceFactor, rb.position, ForceMode.Impulse);
+            otherRb.AddForceAtPosition(-relativeVelocity * rb.mass * data.rigidbodyForceFactor, rb.position, ForceMode.Impulse);
         }
 
         if (movement != null) {
-            movement.AddImpulse(rb.velocity * 0.5f * data.knockbackFactor);
+            movement.AddImpulse(-relativeVelocity * 0.5f * data.knockbackFactor);
         }
 
-        OnHit(other, entityVelocity - rb.velocity);
+        OnHit(other, relativeVelocity);
     }
 
     public void Update() {
