@@ -24,7 +24,7 @@ MonoBehaviour:
       delta: 2
   - prefab: {fileID: 1934811558212736242, guid: 71d278c08e66aa74cb5844066a3a990c,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.5
     tags:
     - disable sides
     modifiers: []
@@ -100,7 +100,7 @@ MonoBehaviour:
       delta: -19.99
   - prefab: {fileID: 4849415490621601290, guid: af6a9dbd8c1f78d45b7f6a21b8c25878,
       type: 3}
-    spawnChance: 0
+    spawnChance: 0.25
     tags: []
     modifiers: []
   - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,

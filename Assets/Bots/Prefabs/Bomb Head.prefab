@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  cc: {fileID: 0}
   movement: {fileID: 0}
   bodyHealth: {fileID: 0}
   headHealth: {fileID: 0}
@@ -60,6 +59,8 @@ MonoBehaviour:
   radius: 20
   minDamageRadius: 2
   editRadiusOffset: 10
+  particles: {fileID: 6242322385690944836, guid: f8965505c06808e448f24b742d53847a,
+    type: 3}
   explosionProfile:
     serializedVersion: 2
     m_Curve:

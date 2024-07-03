@@ -12,12 +12,12 @@ public class BombHead : BotBehaviour {
     public float radius;
     public float minDamageRadius;
     public float editRadiusOffset;
+    public GameObject particles;
     public AnimationCurve explosionProfile;
 
     // one must assume that the array profile is something constant across all instances (please let it be so)
     private static NativeArray<float> arrayProfile;
 
-    
     public void Start() {
         /*
         botTts.tts.onSpeechCutoff += (string a, out string b) => {
@@ -53,27 +53,9 @@ public class BombHead : BotBehaviour {
                 radius = radius + editRadiusOffset,
                 values = arrayProfile
             };
-            /*
-            IVoxelEdit edit = new ParametricExplosionVoxelEdit {
-                center = transform.position,
-                strength = editStrength,
-                material = 0,
-                radius = radius,
-                jParam = 4f,
-                hParam = 0.2f,
-            };
-            */
-            /*
-            IVoxelEdit edit = new SphericalExplosionVoxelEdit {
-                center = transform.position,
-                strength = editStrength,
-                material = 0,
-                radius = radius,
-            };
-            */
 
             if (VoxelTerrain.Instance != null) {
-                VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
+                VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false, immediate: true);
             }
 
             Vector3 explosionCenter = botBase.transform.position;
@@ -102,6 +84,8 @@ public class BombHead : BotBehaviour {
             }
 
             DebugUtils.DrawSphere(explosionCenter, radius, Color.red, 1000);
+
+            Instantiate(particles, transform.position, Quaternion.identity);
         }
 
         if (timer < boutToBlowTimer && !boutaBlow) {
