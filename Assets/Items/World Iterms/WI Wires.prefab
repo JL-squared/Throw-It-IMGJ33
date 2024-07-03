@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2017680521228942146}
   - component: {fileID: 5727990982534182080}
   - component: {fileID: 6832301067073961333}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WI Wires
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: f2a31b0cf954c2e4d93d1dbefb25739b, type: 2}
-  count: 5
 --- !u!54 &5727990982534182080
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,6 +156,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -7640558969779515294, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: -7640558969779515294, guid: 80570ceeecd4ea448bd3234422fd418c,
         type: 3}
       propertyPath: m_IsActive
@@ -164,8 +173,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7146521406498821007, guid: 80570ceeecd4ea448bd3234422fd418c,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -7146521406498821007, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5568371526223589888, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -4841695797154171690, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -4683669308469848369, guid: 80570ceeecd4ea448bd3234422fd418c,
         type: 3}
@@ -197,10 +221,35 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 734b98e87e0b0324eae4bf2fc1fdcf54, type: 2}
+    - target: {fileID: -516098083770646512, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 80570ceeecd4ea448bd3234422fd418c,
         type: 3}
       propertyPath: m_Name
       value: wires
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5999186763907468791, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715626668051313982, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: 80570ceeecd4ea448bd3234422fd418c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

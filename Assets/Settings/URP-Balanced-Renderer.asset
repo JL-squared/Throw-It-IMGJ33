@@ -41,48 +41,6 @@ MonoBehaviour:
     downsample: 1
     copyToFramebuffer: 0
     targetName: _blurTexture
---- !u!114 &-6672227873107274821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: RenderObjects
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    passTag: RenderObjects
-    Event: 300
-    filterSettings:
-      RenderQueueType: 0
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 1024
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: ebc182799f8de5b4493de2a1e4223a9a, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 1
-    depthCompareFunction: 8
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 0
-      stencilCompareFunction: 8
-      passOperation: 0
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 2.44, z: 0, w: 1}
-      cameraFieldOfView: 78.3
 --- !u!114 &-5978235500969302305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,8 +140,7 @@ MonoBehaviour:
   - {fileID: -5978235500969302305}
   - {fileID: -2352578931427388645}
   - {fileID: 7765192333281831144}
-  - {fileID: -6672227873107274821}
-  m_RendererFeatureMap: adc0de57c6d2eee5df6618657c0a09ad1bd33326edf559dfe8a8d90d4981c36bbb13fbb2197c67a3
+  m_RendererFeatureMap: adc0de57c6d2eee5df6618657c0a09ad1bd33326edf559dfe8a8d90d4981c36b
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

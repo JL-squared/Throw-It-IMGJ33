@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour {
     protected Vector3 shooterPosition;
     protected Collider shooterCollider;
     protected new Collider collider;
+    protected bool justSpawnedVehicle;
 
     public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter) {
         rb = GetComponent<Rigidbody>();
@@ -25,6 +26,7 @@ public class Projectile : MonoBehaviour {
         if (shooter.collider != null) {
             shooterPosition = shooter.transform.position;
             shooterCollider = shooter.collider;
+
             Physics.IgnoreCollision(collider, shooterCollider, true);
         }
     }
@@ -32,7 +34,19 @@ public class Projectile : MonoBehaviour {
     public void Start() {
         rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
-    protected virtual bool ShouldCollideWith(Collider other) { return !other.isTrigger; }
+    protected virtual bool ShouldCollideWith(Collider other) {
+        if (other.isTrigger)
+            return false;
+
+        if (shooterCollider != null) {
+            Player player = shooterCollider.GetComponent<Player>();
+            if (player != null && player.vehicle != null && player.vehicle.gameObject == other.gameObject) {
+                return false;
+            }
+        }
+
+        return true;
+    }
     protected virtual void OnHit(Collider other, Vector3 relativeVelocity) { }
     public void OnTriggerEnter(Collider other) {
         if (!ShouldCollideWith(other))
@@ -40,7 +54,7 @@ public class Projectile : MonoBehaviour {
 
         EntityMovement movement = other.gameObject.GetComponent<EntityMovement>();
 
-        Vector3 entityVelocity = movement != null ? movement.cc.velocity : Vector3.zero;
+        Vector3 entityVelocity = movement != null ? movement.Velocity : Vector3.zero;
 
         Rigidbody otherRb = other.gameObject.GetComponent<Rigidbody>();
         entityVelocity = otherRb != null ? otherRb.velocity : entityVelocity;
@@ -59,6 +73,7 @@ public class Projectile : MonoBehaviour {
     public void Update() {
         if (shooterCollider != null && Vector3.Distance(transform.position, shooterPosition) >= 2.0f) {
             Physics.IgnoreCollision(collider, shooterCollider, false);
+            collider.excludeLayers = 0;
         }
     }
 }

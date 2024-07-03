@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class BotBehaviour : MonoBehaviour {
     [HideInInspector] public BotBase botBase;
-    [HideInInspector] public CharacterController cc;
     [HideInInspector] public EntityMovement movement;
     [HideInInspector] public EntityHealth bodyHealth;
     [HideInInspector] public EntityHealth headHealth;

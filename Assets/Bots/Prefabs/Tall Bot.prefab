@@ -372,10 +372,9 @@ MonoBehaviour:
   knockbackResistance: 0
   groundedOffsetVelocity: -2.5
   isJumping: 0
-  pushForce: 8
-  maxPushForce: 20
-  cc: {fileID: 0}
-  groundObject: {fileID: 0}
+  pushForce: 4
+  maxPushForce: 10
+  entityMovementFlags: -1
 --- !u!114 &3846231973158564597
 MonoBehaviour:
   m_ObjectHideFlags: 0

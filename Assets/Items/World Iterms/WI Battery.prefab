@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1412176995359713889}
   - component: {fileID: 8990726004510472382}
   - component: {fileID: 1180854092190606685}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: WI Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 20e62cf7196fb4349aba90eb0585d5ee, type: 2}
-  count: 1
 --- !u!65 &8990726004510472382
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -170,10 +169,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
         type: 3}
       propertyPath: m_Name
       value: battery
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141101260113499581, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824746026288583490, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: 8ada6cc8fef71234fbefc0c0b6b42c43,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

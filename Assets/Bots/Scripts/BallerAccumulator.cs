@@ -34,8 +34,9 @@ public class BallerAccumulator : BotBehaviour {
     void UpdateBallParams(float factor) {
         // derived from dv/dt. I love calc :3
         radius = Mathf.Sqrt(volume / 4 * Mathf.PI);
-        
+
         // Character controller settings
+        CharacterController cc = GetComponent<CharacterController>();
         cc.Move(Vector3.up * radius * Time.deltaTime);
         cc.center = Vector3.up * (-radius);
         cc.height = 1f + 2 * radius;
@@ -71,7 +72,7 @@ public class BallerAccumulator : BotBehaviour {
         }
 
         angularVelocity = Quaternion.identity;
-        if (cc.isGrounded) {
+        if (movement.IsGrounded) {
             // Calculate the ball's angular velocity to apply at the end of the frame
             Vector2 mov2d = new Vector2(movement.wishMovement.x, movement.wishMovement.z);
             float lateralSpeed = mov2d.magnitude;
@@ -82,7 +83,7 @@ public class BallerAccumulator : BotBehaviour {
             angularVelocity = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, dir);
 
             // Check if we are on voxel terrain and if we are on the snow material
-            if (movement.groundObject != null && movement.groundObject.GetComponent<VoxelChunk>() != null && VoxelTerrain.Instance.TryGetVoxel(ball.transform.position - Vector3.up * (radius + 2.5f)).material == 0) {
+            if (movement.Ground != null && movement.Ground.GetComponent<VoxelChunk>() != null && VoxelTerrain.Instance.TryGetVoxel(ball.transform.position - Vector3.up * (radius + 2.5f)).material == 0) {
                 // Increase radius, apply edit, and update params
                 // factor at 0 => at starting radius
                 // factor at 1 => at end radius

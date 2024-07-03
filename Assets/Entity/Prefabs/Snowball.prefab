@@ -95,7 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfda7a1e9bd63b4aa73b363f1297885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 0
   dataParent: {fileID: 0}
 --- !u!1001 &2232885810548923308
 PrefabInstance:

@@ -34,16 +34,36 @@ public class EntityMovement : MonoBehaviour {
     public float pushForce = 8;
     public float maxPushForce = 20;
 
-    [HideInInspector]
-    public CharacterController cc;
+    private CharacterController cc;
     private Vector3 explosion;
     private float lastGroundedTime = 0;
     private float nextJumpTime = 0;
     private int jumpCounter = 0;
     private bool buffered;
-    [HideInInspector]
-    public GameObject groundObject;
     private bool groundJustExploded;
+    public EntityMovementFlags entityMovementFlags = EntityMovementFlags.Default;
+
+    public Vector3 Velocity {
+        get {
+            if (cc.enabled) {
+                return cc.velocity;
+            } else {
+                return Vector3.zero;
+            }
+        }
+    }
+
+    public bool IsGrounded {
+        get {
+            if (cc.enabled) {
+                return cc.isGrounded && !groundJustExploded;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public GameObject Ground { get; private set; }
 
     // Start is called before the first frame update
     void Start() {
@@ -67,7 +87,7 @@ public class EntityMovement : MonoBehaviour {
 
         //movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
-        
+
         movement.y += gravity * Time.deltaTime;
 
         if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
@@ -81,7 +101,7 @@ public class EntityMovement : MonoBehaviour {
             lastGroundedTime = Time.time;
             jumpCounter = 0;
         } else {
-            groundObject = null;
+            Ground = null;
         }
 
         if (groundJustExploded)
@@ -93,15 +113,18 @@ public class EntityMovement : MonoBehaviour {
             isJumping = false;
             jumpCounter++;
         }
-    
-        CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
 
-        if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
-            movement.y = 0;
+        if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
+            CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
+
+            if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
+                movement.y = 0;
+            }
         }
 
-        if (localWishRotation.normalized != Quaternion.identity) {
-            transform.rotation = localWishRotation.normalized;
+
+        if (localWishRotation.normalized != Quaternion.identity && entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
+            transform.localRotation = localWishRotation.normalized;
         }
 
         // TODO: Actually write acceleration and integrate it instead of doing this goofy stuff
@@ -143,7 +166,7 @@ public class EntityMovement : MonoBehaviour {
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         if (hit.normal.y > 0.9f) {
-            groundObject = hit.gameObject;
+            Ground = hit.gameObject;
             return;
         }
 

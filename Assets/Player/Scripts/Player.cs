@@ -79,10 +79,13 @@ public class Player : MonoBehaviour {
     [Header("Movement")]
     [SerializeField]
     EntityMovement movement;
-    Vector2 wishHeadDir;
+    [HideInInspector]
+    public Vector2 wishHeadDir;
     public Transform head;
     public Camera gameCamera;
     public float mouseSensitivity = 1.0f;
+    [HideInInspector]
+    public Vector2 localWishMovement;
     #endregion
 
     #region Head Bobbing
@@ -115,6 +118,8 @@ public class Player : MonoBehaviour {
     public RaycastHit? lookingAt;
     private IInteraction interaction;
     private IInteraction lastInteraction;
+    [HideInInspector]
+    public Vehicle vehicle;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -183,13 +188,15 @@ public class Player : MonoBehaviour {
         float bobbing = CalculateBobbing();
         ApplyHandSway(bobbing);
 
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
-            GameObject other = info.collider.gameObject;
-            interaction = other.GetComponent<IInteraction>();
-            lookingAt = info;
-        } else {
-            lookingAt = null;
-            interaction = null;
+        if (vehicle == null) {
+            if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
+                GameObject other = info.collider.gameObject;
+                interaction = other.GetComponent<IInteraction>();
+                lookingAt = info;
+            } else {
+                lookingAt = null;
+                interaction = null;
+            }
         }
         
         if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
@@ -204,6 +211,14 @@ public class Player : MonoBehaviour {
 
         UIMaster.Instance.inGameHUD.SetInteractHint(interaction != null && interaction.Interactable);
         lastInteraction = interaction;
+
+        if (vehicle != null) {
+            movement.entityMovementFlags.RemoveFlag(EntityMovementFlags.ApplyMovement);
+            GetComponent<CharacterController>().enabled = false;
+        } else {
+            movement.entityMovementFlags.AddFlag(EntityMovementFlags.ApplyMovement);
+            GetComponent<CharacterController>().enabled = true;
+        }
     }
 
     private void LateUpdate() {
@@ -213,7 +228,7 @@ public class Player : MonoBehaviour {
     #region Polish & Effects
     private void ApplyHandSway(float bobbing) {
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
-        viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.cc.velocity) * viewModelPositionStrength;
+        viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
         if (viewModel != null) {
             Vector3 current = viewModel.transform.localPosition;
             Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
@@ -230,9 +245,9 @@ public class Player : MonoBehaviour {
     }
 
     private float CalculateBobbing() {
-        Vector2 velocity2d = new Vector2(movement.cc.velocity.x, movement.cc.velocity.z);
+        Vector2 velocity2d = new Vector2(movement.Velocity.x, movement.Velocity.z);
         float targetBobbingStrength = 0f;
-        if (velocity2d.magnitude > 0.01 && movement.cc.isGrounded) {
+        if (velocity2d.magnitude > 0.01 && movement.IsGrounded) {
             stepValue += velocity2d.magnitude * Time.deltaTime;
             targetBobbingStrength = velocity2d.magnitude / movement.speed;
             targetBobbingStrength = Mathf.Clamp01(targetBobbingStrength);
@@ -291,8 +306,8 @@ public class Player : MonoBehaviour {
         Vector3 localCamPos = new Vector3(Mathf.PerlinNoise1D(Time.time * shiveringShakeScale + 32.123f) - 0.5f, Mathf.PerlinNoise1D(Time.time * shiveringShakeScale - 2.123f) - 0.5f, 0.0f);
         localCamPos *= shiverMeTimbers;
         localCamPos *= shiveringShakeFactor;
-        gameCamera.transform.localPosition = localCamPos;
-        gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
+        //gameCamera.transform.localPosition = localCamPos;
+        //gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
     }
     #endregion
 
@@ -430,7 +445,10 @@ public class Player : MonoBehaviour {
 
     #region Input System Callbacks
     public void Movement(InputAction.CallbackContext context) {
-        if (!isDead) movement.localWishMovement = context.ReadValue<Vector2>();
+        if (!isDead) {
+            localWishMovement = context.ReadValue<Vector2>();
+            movement.localWishMovement = localWishMovement;
+        }
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
@@ -447,14 +465,18 @@ public class Player : MonoBehaviour {
 
     public void Look(InputAction.CallbackContext context) {
         if (Cursor.lockState != CursorLockMode.None && Performed()) {
-            targetMouseDelta = context.ReadValue<Vector2>();
-            wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
-            wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
-            head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
-            movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
+            ApplyMouseDelta(context.ReadValue<Vector2>());
 
             //lastMouseDelta = Vector2.Lerp(lastMouseDelta, mouseDelta, Time.deltaTime * 20.0f);
         }
+    }
+
+    private void ApplyMouseDelta(Vector2 delta) {
+        targetMouseDelta = delta;
+        wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
+        wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
+        head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
+        movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
     }
 
     public void Jump(InputAction.CallbackContext context) {
@@ -512,8 +534,10 @@ public class Player : MonoBehaviour {
         if (!Performed(context) || !lookingAt.HasValue)
             return;
 
-        if (interaction != null && interaction.Interactable) {
+        if (interaction != null && interaction.Interactable && vehicle == null) {
             interaction.Interact(this);
+        } else if (vehicle != null) {
+            ExitVehicle();
         }
     }
 
@@ -749,6 +773,24 @@ public class Player : MonoBehaviour {
     // Checks if we can do *any* movement
     private bool Performed() {
         return UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
+    }
+
+    public void ResetMovement() {
+        wishHeadDir = Vector2.zero;
+        movement.localWishRotation = Quaternion.identity;
+        movement.localWishMovement = Vector2.zero;
+        transform.localRotation = Quaternion.identity;
+        targetMouseDelta = Vector2.zero;
+        currentMouseDelta = Vector2.zero;
+        ApplyMouseDelta(Vector2.zero);
+        //transform.localPosition = Vector3.zero;
+        stepValue = 0f;
+    }
+
+    public void ExitVehicle() {
+        vehicle = null;
+        transform.SetParent(null);
+        ResetMovement();
     }
     #endregion
 }

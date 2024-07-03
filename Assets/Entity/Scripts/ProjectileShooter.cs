@@ -32,7 +32,13 @@ public class ProjectileShooter : MonoBehaviour {
         spawned.SetActive(false);
 
         if (inheritVelocityMovement != null) {
-            startingVelocity += inheritVelocityMovement.cc.velocity;
+            startingVelocity += inheritVelocityMovement.Velocity;
+        }
+
+        if (Player.Instance.gameObject == gameObject) {
+            if (Player.Instance.vehicle != null && Player.Instance.vehicle.GetComponent<Rigidbody>() != null) {
+                startingVelocity += Player.Instance.vehicle.GetComponent<Rigidbody>().velocity;
+            }
         }
 
         Projectile spawnedProjectile = spawned.GetComponent<Projectile>();

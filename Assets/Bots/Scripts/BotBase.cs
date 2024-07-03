@@ -200,7 +200,6 @@ public class BotBase : MonoBehaviour {
 
         foreach (var item in botBehaviours) {
             item.botBase = this;
-            item.cc = entityMovement.cc;
             item.movement = entityMovement;
             item.bodyHealth = _bodyHealth;
             item.headHealth = _headHealth;
@@ -213,7 +212,7 @@ public class BotBase : MonoBehaviour {
 
     public void Update() {
         GameObject player = GameObject.FindGameObjectWithTag("PlayerTag");
-        Vector3 velocity = player.GetComponent<EntityMovement>().cc.velocity;
+        Vector3 velocity = player.GetComponent<EntityMovement>().Velocity;
         target = player.transform.position;
         pathfinder.target = target;
 
