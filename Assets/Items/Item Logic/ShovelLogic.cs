@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ShovelLogic : EquippedItemLogic {
@@ -16,6 +17,7 @@ public class ShovelLogic : EquippedItemLogic {
                     radius = data.digRadius,
                     strength = data.digStrength,
                     writeMaterial = false,
+                    scale = new float3(1f),
                 });
             }
 

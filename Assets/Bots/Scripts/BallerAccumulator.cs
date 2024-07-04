@@ -58,6 +58,7 @@ public class BallerAccumulator : BotBehaviour {
                 writeMaterial = false,
                 maskMaterial = true,
                 falloffOffset = 0.5f,
+                scale = new float3(1f),
             };
 
             VoxelTerrain.Instance.ApplyVoxelEdit(edit);

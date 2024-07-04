@@ -9,6 +9,7 @@ public class VoxelEditorCustomEditor : Editor {
         t.heldCtrl = false;
         t.heldShift = false;
         t.allowedToEdit = false;
+        t.modifScale = Vector3.one;
     }
 
     public override void OnInspectorGUI() {
@@ -21,6 +22,7 @@ public class VoxelEditorCustomEditor : Editor {
 
         switch (editor.currentBrush) {
             case VoxelEditor.BrushType.AddRemove:
+                editor.modifScale = EditorGUILayout.Vector3Field("Scale", editor.modifScale);
                 break;
             case VoxelEditor.BrushType.RaiseLower:
                 break;

@@ -215,7 +215,7 @@ public class BotBase : MonoBehaviour {
     }
 
     public void Update() {
-        GameObject player = GameObject.FindGameObjectWithTag("PlayerTag");
+        GameObject player = Player.Instance.gameObject;
         Vector3 velocity = player.GetComponent<EntityMovement>().Velocity;
         target = player.transform.position;
         pathfinder.target = target;

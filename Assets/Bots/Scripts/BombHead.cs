@@ -35,6 +35,12 @@ public class BombHead : BotBehaviour {
         }
     }
 
+    private void OnApplicationQuit() {
+        if (arrayProfile.IsCreated) {
+            arrayProfile.Dispose();
+        }
+    }
+
     public void Stop() {
         if (arrayProfile != null && arrayProfile.IsCreated) {
             arrayProfile.Dispose();

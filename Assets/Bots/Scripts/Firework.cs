@@ -103,12 +103,31 @@ public class Firework : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (launcher == null)
+        if (launcher == null || other.isTrigger || !launched)
             return;
 
-        if (other.isTrigger || !launched || Vector3.Distance(transform.position, launcher.transform.position) < 3 || other.GetComponent<Firework>() != null)
+        if (other.GetComponent<Firework>() != null)
             return;
 
+        if (Vector3.Distance(other.transform.position, launcher.fireworkTarget) > 1) {
+            return;
+        }
+
+        GoKaboom();
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        if (launcher == null || !launched)
+            return;
+
+        if (Vector3.Distance(transform.position, launcher.transform.position) < 10) {
+            return;
+        }
+
+        GoKaboom();
+    }
+
+    private void GoKaboom() {
         if (VoxelTerrain.Instance != null) {
             VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
                 center = transform.position,
@@ -117,10 +136,11 @@ public class Firework : MonoBehaviour {
                 radius = voxelEditRadius,
                 strength = voxelEditStrength,
                 writeMaterial = false,
-            });
+                scale = new float3(1f, 1f, 1f),
+            }, neverForget: true);
         }
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.NameToLayer("Firework"));
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, ~LayerMask.GetMask("Firework"));
         Utils.ApplyExplosionKnockback(transform.position, explosionRadius, colliders, explosionForce);
         Utils.ApplyExplosionDamage(transform.position, explosionRadius, colliders, minDamageRadius, damage);
         Instantiate(explosionParticles, transform.position, Quaternion.identity);

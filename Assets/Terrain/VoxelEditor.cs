@@ -24,6 +24,7 @@ public class VoxelEditor : MonoBehaviour {
     public bool paintOnly;
     public float craterJParam = 5f;
     public float craterHParam = 0.15f;
+    public Vector3 modifScale = Vector3.one;
 
 
     [HideInInspector] public bool allowedToEdit = false;
@@ -84,6 +85,7 @@ public class VoxelEditor : MonoBehaviour {
                     strength = brushStrength * direction,
                     writeMaterial = true,
                     material = material,
+                    scale = modifScale,
                 };
                 break;
             case BrushType.RaiseLower:

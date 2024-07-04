@@ -21,7 +21,7 @@ public class FireworkLauncher : BotBehaviour {
             if (loaded == 0) {
                 nextActionTime = Time.time + reloadTime;
                 Reload();
-            } else {
+            } else if (Vector3.Distance(fireworkTarget, transform.position) > 3f) {
                 nextActionTime = Time.time + 1f / fireworksPerSecond;
                 LaunchOne(math.tzcnt(loaded));
             }

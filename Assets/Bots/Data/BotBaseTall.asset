@@ -15,7 +15,7 @@ MonoBehaviour:
   center:
   - prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
       type: 3}
-    spawnChance: 0
+    spawnChance: 0.1
     tags:
     - disable sides
     modifiers:
@@ -23,12 +23,21 @@ MonoBehaviour:
       delta: -2
   - prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
       type: 3}
-    spawnChance: 1
+    spawnChance: 0.1
     tags:
     - disable sides
     modifiers:
     - attribute: 0
       delta: -2
+  - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
+      type: 3}
+    spawnChance: 0.1
+    tags: []
+    modifiers:
+    - attribute: 0
+      delta: 2
+    - attribute: 1
+      delta: 2
   left: []
   right: []
   hat:
@@ -107,7 +116,7 @@ MonoBehaviour:
   applyFace: 1
   baseMovementSpeed: 3
   baseAttackSpeed: 5
-  baseBodyHealth: 500
-  baseHeadHealth: 200
+  baseBodyHealth: 200
+  baseHeadHealth: 50
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2
