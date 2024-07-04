@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2424664346356568810}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.441}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,7 +74,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 2
+  m_Time: 0.25
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -106,7 +106,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 0, g: 0, b: 0, a: 0.41568628}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -130,7 +130,7 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -140,7 +140,7 @@ TrailRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 1
   m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: -3449356847033624429}
   - component: {fileID: -5252330210193789849}
   - component: {fileID: 1818387434729099134}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Firework
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,8 +214,8 @@ Rigidbody:
   m_GameObject: {fileID: 6167771753862937617}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.2
-  m_AngularDrag: 0.2
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -244,14 +244,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1d17745f907d846884d1c299c8dcc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launcher: {fileID: 0}
-  thrust: 60
-  launched: 0
-  rotationSpeed: 50
+  explosionParticles: {fileID: 6242322385690944836, guid: 6e26490abae80954b970693a1afc1641,
+    type: 3}
   lifetime: 5
-  avoidanceStrength: 0.2
-  dottedPow: 1
-  dottedStrength: 0.8
+  thrust: 80
+  rotationSpeed: 80
+  avoidanceStrength: 0.4
+  driftCorrectionPow: 1
+  driftCorrectionStrength: 0.75
+  detectionRadius: 1.5
+  voxelEditStrength: 100
+  voxelEditRadius: 3
+  minDamageRadius: 1
+  damage: 5
+  explosionRadius: 3
+  explosionForce: 40
+  noisy: 3
+  noisyScale: 10
+  stillTime: 0.2
 --- !u!135 &1818387434729099134
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -1,54 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Firework : MonoBehaviour {
-    [HideInInspector]
-    public FireworkLauncher launcher;
-    private Rigidbody rb;
-    public float thrust;
-    public bool launched;
-    public float rotationSpeed;
-    private float activeTime;
+    public GameObject explosionParticles;
     public float lifetime = 5f;
-    private Vector3 avoidanceOffset;
-    public float avoidanceStrength = 0.2f;
-    public float dottedPow = 1.5f;
-    public float dottedStrength = 0.4f;
 
+    public float thrust;
+    public float rotationSpeed;
+    public float avoidanceStrength = 0.2f;
+    public float driftCorrectionPow = 1.5f;
+    public float driftCorrectionStrength = 0.4f;
+    public float detectionRadius = 5f;
+
+    public float voxelEditStrength = 100f;
+    public float voxelEditRadius = 3f;
+
+    public float minDamageRadius = 10f;
+    public float damage = 10f;
+    public float explosionRadius = 5f;
+    public float explosionForce = 5f;
+
+    public float noisy = 0.2f;
+    public float noisyScale = 3.2f;
+    public float stillTime = 0.2f;
+
+    private Rigidbody rb;
+    private float activeTime;
+    private bool launched;
+    private float localRngOffset;
+    private Vector3 avoidanceOffset;
+    private FireworkLauncher launcher;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+        launched = false;
         rb.interpolation = RigidbodyInterpolation.None;
+        localRngOffset = UnityEngine.Random.value;
+        GetComponent<SphereCollider>().radius = detectionRadius;
     }
 
-    public void LaunchedBruh() {
+    public void Launch(float thrustPercentage, FireworkLauncher launcher) {
+        this.launcher = launcher;
+        launched = true;
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+        noisy = Mathf.Lerp(noisy, 0f, launcher.accuracy);
+        avoidanceStrength = Mathf.Lerp(avoidanceStrength, 0f, launcher.accuracy);
         Destroy(gameObject, lifetime);
     }
 
     private void FixedUpdate() {
         if (!launched)
             return;
-
-        float damn = launcher.rotationLockin.Evaluate(activeTime);
-        float trhs = launcher.thrust.Evaluate(activeTime);
         activeTime += Time.fixedDeltaTime;
-        Vector3 forwardDir = launcher.fwLookAtPls - rb.position;
 
-        Vector3 targetFwd = forwardDir.normalized + avoidanceOffset * avoidanceStrength;
+        float rotationSpeedFactor, thrustFactor;
+        Vector3 forwardDir;
 
-        float dotted = Mathf.Pow(1 - Mathf.Clamp01(Vector3.Dot(transform.forward, rb.velocity.normalized)), dottedPow);
-        targetFwd += dotted * -rb.velocity.normalized * dottedStrength;
-
-
-        Quaternion targetRotation = Quaternion.LookRotation(targetFwd.normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime * damn);
-        avoidanceOffset = Vector3.zero;
+        if (launcher != null) {
+            if (activeTime < stillTime) {
+                rotationSpeedFactor = 0f;
+                thrustFactor = 2f;
+            } else {
+                rotationSpeedFactor = 1f;
+                thrustFactor = 1f;
+            }
+            
+            forwardDir = launcher.fireworkTarget - rb.position;
+        } else {
+            thrustFactor = 1f;
+            rotationSpeedFactor = 1f;
+            forwardDir = Vector3.up;
+        }
         
-        rb.AddRelativeForce(new Vector3(0, 0, thrust * trhs));
+
+        // Avoidance and drift correction
+        Vector3 targetFwd = (forwardDir - rb.velocity.normalized * 0.4f).normalized;
+        targetFwd += avoidanceOffset * avoidanceStrength;
+        float dotted = Mathf.Pow(1 - Mathf.Clamp01(Vector3.Dot(transform.forward, rb.velocity.normalized)), driftCorrectionPow);
+        targetFwd += dotted * -rb.velocity.normalized * driftCorrectionStrength;
+
+        // Noisy offset
+        Vector3 localToWorldNoise = transform.TransformDirection(new Vector3(Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + localRngOffset * 25.0f) - 0.5f, Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + 2531.321f + localRngOffset * 25.0f) - 0.5f, 1f));
+        targetFwd += localToWorldNoise * noisy;
+
+        // Apply rotation and thrust force
+        Quaternion targetRotation = Quaternion.LookRotation(targetFwd.normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime * rotationSpeedFactor);
+        avoidanceOffset = Vector3.zero;
+        rb.AddRelativeForce(new Vector3(0, 0, thrust * thrustFactor));
     }
 
     private void OnTriggerStay(Collider other) {
@@ -59,23 +103,27 @@ public class Firework : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
+        if (launcher == null)
+            return;
+
         if (other.isTrigger || !launched || Vector3.Distance(transform.position, launcher.transform.position) < 3 || other.GetComponent<Firework>() != null)
             return;
 
         if (VoxelTerrain.Instance != null) {
             VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
                 center = transform.position,
-                maskMaterial = true,
+                maskMaterial = false,
                 material = 0,
-                radius = 3f,
-                strength = 100f,
+                radius = voxelEditRadius,
+                strength = voxelEditStrength,
                 writeMaterial = false,
             });
         }
 
-        if (other.GetComponent<EntityHealth>() != null) {
-            //other.GetComponent<EntityHealth>().Damage(5);
-        }
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.NameToLayer("Firework"));
+        Utils.ApplyExplosionKnockback(transform.position, explosionRadius, colliders, explosionForce);
+        Utils.ApplyExplosionDamage(transform.position, explosionRadius, colliders, minDamageRadius, damage);
+        Instantiate(explosionParticles, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }

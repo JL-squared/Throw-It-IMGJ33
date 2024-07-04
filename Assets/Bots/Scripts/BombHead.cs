@@ -58,32 +58,10 @@ public class BombHead : BotBehaviour {
                 VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false, immediate: true);
             }
 
-            Vector3 explosionCenter = botBase.transform.position;
-            Collider[] colliders = Physics.OverlapSphere(explosionCenter, radius);
-            foreach (Collider collider in colliders) {
-                var rb = collider.gameObject.GetComponent<Rigidbody>();
-                var health = collider.gameObject.GetComponent<EntityHealth>();
-                var movement = collider.gameObject.GetComponent<EntityMovement>();
-
-                if (rb != null) {
-                    rb.AddExplosionForce(force * 100f, explosionCenter, radius);
-                }
-
-                if (health != null) {
-                    float dist = Vector3.Distance(explosionCenter, collider.transform.position);
-
-                    // 1 => closest to bomb
-                    // 0 => furthest from bomb 
-                    float factor = 1 - Mathf.Clamp01(math.unlerp(minDamageRadius, radius, dist));
-                    health.Damage(factor * damage);
-                }
-
-                if (movement != null) {
-                    movement.ExplosionAt(explosionCenter, force, radius);
-                }
-            }
-
-            DebugUtils.DrawSphere(explosionCenter, radius, Color.red, 1000);
+            Vector3 center = botBase.transform.position;
+            Collider[] colliders = Physics.OverlapSphere(center, radius);
+            Utils.ApplyExplosionKnockback(center, radius, colliders, force);
+            Utils.ApplyExplosionDamage(center, radius, colliders, minDamageRadius, damage);
 
             Instantiate(particles, transform.position, Quaternion.identity);
         }
