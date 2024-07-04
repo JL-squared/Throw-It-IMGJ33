@@ -96,6 +96,7 @@ MonoBehaviour:
   angryModifiers:
   - attribute: 0
     delta: 2
+  applyFace: 1
   baseMovementSpeed: 3
   baseAttackSpeed: 5
   baseBodyHealth: 500

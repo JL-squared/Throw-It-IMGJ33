@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour {
@@ -31,7 +32,10 @@ public class HealthBar : MonoBehaviour {
 
         if (actualPosition != lastFrameActualPosition) {
             lastPosition = Mathf.SmoothStep(lastPosition, lastFrameActualPosition, tBar);
-            tBar = 0;
+            
+            if (Mathf.Abs(actualPosition - lastFrameActualPosition) < 0.05) {
+                tBar = 1f;
+            }
         }
 
         if(tBar >= 1.0f) {
@@ -48,9 +52,5 @@ public class HealthBar : MonoBehaviour {
         }
 
         lastFrameActualPosition = actualPosition;
-    }
-
-    public void ProcessHealthUpdate(float newHealth) {
-        actualPosition = newHealth;
     }
 }

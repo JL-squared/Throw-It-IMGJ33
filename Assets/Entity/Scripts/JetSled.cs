@@ -31,6 +31,9 @@ public class JetSled : Vehicle {
         rb.AddForceAtPosition(throttle * thrusterRight.forward * force, thrusterRight.position);
         rb.AddForceAtPosition(throttle * thrusterLeft.forward * force, thrusterLeft.position);
 
+        float aaa = Vector3.Dot(transform.right, rb.velocity.normalized);
+        rb.AddForce(-aaa * transform.right * 0.1f, ForceMode.VelocityChange);
+
         thrusterLeft.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;
         thrusterRight.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;
         tmp.text = $"{rb.velocity.magnitude:F1}m/s\n{throttle*100:F1}%";

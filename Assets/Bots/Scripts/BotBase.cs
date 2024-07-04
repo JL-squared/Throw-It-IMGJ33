@@ -135,35 +135,43 @@ public class BotBase : MonoBehaviour {
             PickPartForHolsterType(leftHolster, data.left);
             PickPartForHolsterType(rightHolster, data.right);
         };
-        
+
+        BotPartData head = PickPartForHolsterType(headMeshHolster, data.heads);
+
         // Spawns at LEAST one default eye if needed
-        if (data.spawnAtLeastOneDefaultEye) {
-            if (Random.value > 0.5) {
-                PickPartForHolsterType(leftEyeHolster, data.leftEye);
-                SpawnPart(rightEyeHolster, new BotPartData(data.defaultEye));
+        if (data.applyFace) {
+            if (data.spawnAtLeastOneDefaultEye) {
+                if (Random.value > 0.5) {
+                    PickPartForHolsterType(leftEyeHolster, data.leftEye);
+                    SpawnPart(rightEyeHolster, new BotPartData(data.defaultEye));
+                } else {
+                    SpawnPart(leftEyeHolster, new BotPartData(data.defaultEye));
+                    PickPartForHolsterType(rightEyeHolster, data.rightEye);
+                }
             } else {
-                SpawnPart(leftEyeHolster, new BotPartData(data.defaultEye));
+                PickPartForHolsterType(leftEyeHolster, data.leftEye);
                 PickPartForHolsterType(rightEyeHolster, data.rightEye);
             }
-        } else {
-            PickPartForHolsterType(leftEyeHolster, data.leftEye);
-            PickPartForHolsterType(rightEyeHolster, data.rightEye);
+
+            PickPartForHolsterType(noseHolster, data.nose);
         }
+        
 
         // Check if we have a head we can apply hats on
-        if (PickPartForHolsterType(headMeshHolster, data.heads).tags.Contains("hattable")) {
+        if (head.tags.Contains("hattable")) {
             PickPartForHolsterType(hatHolster, data.hat);
         }
 
-        // Cute Cosmetics :3
         PickPartForHolsterType(neckHolster, data.neck);
-        PickPartForHolsterType(noseHolster, data.nose);
     }
 
     private void ApplyAngry() {
         bool angy = Random.value < data.angryChance;
-        happyFace.SetActive(!angy);
-        angryFace.SetActive(angy);
+
+        if (data.applyFace) {
+            happyFace.SetActive(!angy);
+            angryFace.SetActive(angy);
+        }
 
         if (angy) {
             ApplyModifiers(data.angryModifiers);

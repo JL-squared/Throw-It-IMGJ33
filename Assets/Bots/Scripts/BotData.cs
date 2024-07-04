@@ -18,6 +18,7 @@ public class BotData : ScriptableObject {
 
     public float angryChance = 0.5f;
     public List<BotAttributeModifier> angryModifiers;
+    public bool applyFace;
 
     public float baseMovementSpeed = 7;
     public float baseAttackSpeed = 5;

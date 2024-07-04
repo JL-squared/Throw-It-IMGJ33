@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278e8b01da2784d4eb38c0962ccdff07, type: 3}
-  m_Name: BotBase
+  m_Name: BotCyclops
   m_EditorClassIdentifier: 
   center:
   - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
@@ -62,52 +62,14 @@ MonoBehaviour:
     spawnChance: 0.5
     tags: []
     modifiers: []
-  leftEye:
-  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
-      type: 3}
-    spawnChance: 0.2
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
-  rightEye:
-  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
-      type: 3}
-    spawnChance: 0.2
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
-  nose:
-  - prefab: {fileID: 3953031840982891585, guid: 7d724eb4a29256f49811b18df36f2840,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
+  leftEye: []
+  rightEye: []
+  nose: []
   heads:
-  - prefab: {fileID: 5837452873108282449, guid: f7c60b5bcc21c264990c5002c0c34ba0,
-      type: 3}
-    spawnChance: 0.25
-    tags: []
-    modifiers:
-    - attribute: 2
-      delta: -19.99
-  - prefab: {fileID: 4849415490621601290, guid: af6a9dbd8c1f78d45b7f6a21b8c25878,
-      type: 3}
-    spawnChance: 0.25
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
+  - prefab: {fileID: 2584427155249635226, guid: 5981332573ae1d9479365a60b19c2e3a,
       type: 3}
     spawnChance: 1
-    tags:
-    - hattable
+    tags: []
     modifiers: []
   spawnAtLeastOneDefaultEye: 1
   defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
@@ -118,8 +80,8 @@ MonoBehaviour:
     delta: 2
   - attribute: 1
     delta: 2
-  applyFace: 1
-  baseMovementSpeed: 3
+  applyFace: 0
+  baseMovementSpeed: -100
   baseAttackSpeed: 1
   baseBodyHealth: 100
   baseHeadHealth: 25

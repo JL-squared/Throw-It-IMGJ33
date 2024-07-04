@@ -56,6 +56,7 @@ Material:
     - _Float_2: 0.7
     - _Float_3: -0.5
     - _Float_4: -0.5
+    - _Grid: 0.005
     - _Offset: 0.57
     - _QueueControl: 0
     - _QueueOffset: 0

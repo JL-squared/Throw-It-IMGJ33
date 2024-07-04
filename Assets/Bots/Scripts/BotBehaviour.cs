@@ -7,5 +7,11 @@ public abstract class BotBehaviour : MonoBehaviour {
     [HideInInspector] public EntityHealth headHealth;
     [HideInInspector] public BotTextToSpeech botTts;
     public virtual void AttributesUpdated() { }
-    public virtual void TargetChanged(Vector3 target, Vector3 velocity) { }
+
+    protected Vector3 lastTargetPosition;
+    protected Vector3 lastTargetVelocity;
+    public virtual void TargetChanged(Vector3 target, Vector3 velocity) {
+        lastTargetPosition = target;
+        lastTargetVelocity = velocity;
+    }
 }

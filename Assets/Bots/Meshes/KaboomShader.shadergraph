@@ -29,6 +29,9 @@
         },
         {
             "m_Id": "617173ff7ca74dc786858d27dc5972ef"
+        },
+        {
+            "m_Id": "07145f3f13cd48b8b94d057db182c991"
         }
     ],
     "m_Keywords": [],
@@ -591,6 +594,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "07145f3f13cd48b8b94d057db182c991",
+    "m_Guid": {
+        "m_GuidSerialized": "37f276d6-21eb-402c-9633-65502ffbd343"
+    },
+    "m_Name": "Grid",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Grid",
+    "m_DefaultReferenceName": "_Grid",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "081dfcda4fa246928a46a1a974c8e305",
@@ -1067,6 +1098,9 @@
         },
         {
             "m_Id": "617173ff7ca74dc786858d27dc5972ef"
+        },
+        {
+            "m_Id": "07145f3f13cd48b8b94d057db182c991"
         }
     ]
 }
@@ -3412,10 +3446,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -3185.0,
-            "y": -713.0,
+            "x": -3215.0,
+            "y": -366.0,
             "width": 208.0,
-            "height": 313.00006103515627
+            "height": 313.0
         }
     },
     "m_Slots": [
