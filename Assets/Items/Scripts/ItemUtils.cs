@@ -6,8 +6,9 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class ItemUtils {
-    private static Dictionary<string, ItemData> itemDatas;
-    private static Dictionary<string, CraftingRecipe> craftingRecipes;
+    public static Dictionary<string, ItemData> itemDatas;
+    public static Dictionary<string, CraftingRecipe> craftingRecipes;
+    public static Dictionary<GameObject, string> worldItemsPrefabToId;
     
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -17,7 +18,11 @@ public static class ItemUtils {
         GetAllTypes(ref itemDatas, "Items");
         //GetAllTypes(ref craftingRecipes, "Item Recipes");
 
+        worldItemsPrefabToId = new Dictionary<GameObject, string>();
         foreach (var itemData in itemDatas.Values) {
+            if (itemData.worldItem != null) {
+                worldItemsPrefabToId.Add(itemData.worldItem, itemData.name);
+            }
         }
     }
 

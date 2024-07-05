@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Drop Item",
+                    "type": "Button",
+                    "id": "bb2b9c3f-86b1-4ccb-bebd-ef35010caaa1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -530,6 +539,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0509dcf1-d9ff-4e4a-9894-ce5a490c4f5d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "PressAndRepeat(holdTime=0.7,repeatTime=0.1,press=true),Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

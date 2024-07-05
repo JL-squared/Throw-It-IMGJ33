@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -164,9 +163,9 @@ public class Player : MonoBehaviour {
         ambatakamChoir.Play();
 
         // Make the camera a rigidbody
-        Rigidbody rb = head.AddComponent<Rigidbody>();
+        Rigidbody rb = head.gameObject.AddComponent<Rigidbody>();
         rb.AddForce(Random.insideUnitCircle, ForceMode.Impulse);
-        head.AddComponent<SphereCollider>();
+        head.gameObject.AddComponent<SphereCollider>();
         head.transform.parent = null;
         GetComponent<CharacterController>().height = 0;
         Destroy(GetComponentInChildren<MeshRenderer>());
@@ -492,7 +491,7 @@ public class Player : MonoBehaviour {
             if (isBuilding) {
                 placementRotation += scroll * 22.5f;
             } else {
-                int newSelected = (Selected + scroll.ConvertTo<int>()) % 10;
+                int newSelected = (Selected + (int)scroll) % 10;
                 Selected = (newSelected < 0) ? 9 : newSelected;
                 SelectionChanged();
             }
@@ -556,6 +555,21 @@ public class Player : MonoBehaviour {
         if (Performed(context)) {
             isBuilding = !isBuilding;
             placementGhost.SetActive(false);
+        }
+    }
+
+    public void DropItem(InputAction.CallbackContext context) {
+        if (Performed(context)) {
+            Item item = items[selected];
+            if (item.Count > 0) {
+                if (item.Data.worldItem == null) {
+                    Debug.LogWarning("World item is not set!");
+                    return;
+                }
+
+                WorldItem.Spawn(items[selected].Data, gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity);
+                RemoveItem(selected, 1);
+            }
         }
     }
     #endregion

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.Rendering;
 using UnityEngine;
@@ -10,18 +9,6 @@ public class PlayerCustomEditor : Editor {
         base.OnInspectorGUI();
 
         Player player = (Player)target;
-
-        /*
-        ItemData snowball = ItemUtils.GetItemType("snowball");
-
-        if (GUILayout.Button("Give Player snow")) {
-            if (snowball == null) {
-                Debug.LogWarning("Snowball wasn't loaded :(");
-            } else {
-                player.AddItem(new Item(1, snowball));
-            }
-        }
-        */
 
         text = EditorGUILayout.TextField("Item ID: ", text);
         if (GUILayout.Button($"Give Player Item: '{text}'")) {

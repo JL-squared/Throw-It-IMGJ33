@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stackSize: 1
   icon: {fileID: 21300000, guid: 882baa3b17829e0418283005c03031ed, type: 3}
-  worldItem: {fileID: 0}
+  worldItem: {fileID: 2361069447993902772, guid: 1aa041a09a1c0f948bf31481f4b54724,
+    type: 3}
   viewModel: {fileID: 2361069447993902772, guid: d17db8377076edd43bcaf8ecc948976f,
     type: 3}
   equippedLogic: {fileID: 173478723713073389, guid: 0d6a97ad9abbd6d41b7cad81965a2842,

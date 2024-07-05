@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class WorldItem : MonoBehaviour, IInteraction {
@@ -9,5 +11,9 @@ public class WorldItem : MonoBehaviour, IInteraction {
     public void Interact(Player player) {
         Destroy(gameObject);
         player.AddItem(new Item(item, 1));
+    }
+
+    public static void Spawn(ItemData item, Vector3 position, Quaternion rotation) {
+        GameObject spawned = Instantiate(item.worldItem, position, rotation);
     }
 }
