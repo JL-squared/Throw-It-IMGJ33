@@ -10,6 +10,7 @@ public class BotAttributeModifier {
 public enum BotAttribute {
     MovementSpeed,
     AttackSpeed,
+    Accuracy,
     HeadHealth,
     BodyHealth,
     DamageResistance,

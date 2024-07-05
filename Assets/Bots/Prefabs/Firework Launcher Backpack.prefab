@@ -237,7 +237,7 @@ MonoBehaviour:
   reloadTime: 2
   actionsPerSecond: 2
   distTargetThrustDivider: 25
-  accuracy: 1
+  accuracy: 0.3
   fireworkTarget: {x: 0, y: 0, z: 0}
 --- !u!1001 &552550242507035160
 PrefabInstance:

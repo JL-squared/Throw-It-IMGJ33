@@ -45,7 +45,7 @@ public class BotPathfinder : MonoBehaviour {
     }
 
     public void Update() {
-        if (pathfind) {
+        if (pathfind && GameManager.Instance.pathfindingRebuilder.useNavMesh) {
             NavMeshQueryFilter filter = new NavMeshQueryFilter();
             filter.agentTypeID = GetNavMeshAgentID(agentType);
             filter.SetAreaCost(0, 1f);

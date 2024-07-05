@@ -5,15 +5,18 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public class Firework : MonoBehaviour {
+    public Transform mesh;
     public GameObject explosionParticles;
     public float lifetime = 5f;
 
     public float thrust;
     public float rotationSpeed;
     public float avoidanceStrength = 0.2f;
+    public float avoidanceRadius = 3f;
     public float driftCorrectionPow = 1.5f;
     public float driftCorrectionStrength = 0.4f;
-    public float detectionRadius = 5f;
+    public float targetDetectionRadius = 2f;
+    public float maxRadiusNearLauncherDontBlow = 4f;
 
     public float voxelEditStrength = 100f;
     public float voxelEditRadius = 3f;
@@ -31,21 +34,26 @@ public class Firework : MonoBehaviour {
     private float activeTime;
     private bool launched;
     private float localRngOffset;
-    private Vector3 avoidanceOffset;
     private FireworkLauncher launcher;
+    private bool primed;
+
+    private float thrustFactor;
+    private float rotationSpeedFactor;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         launched = false;
+        primed = false;
         rb.interpolation = RigidbodyInterpolation.None;
         localRngOffset = UnityEngine.Random.value;
-        GetComponent<SphereCollider>().radius = detectionRadius;
+        GetComponent<SphereCollider>().enabled = false;
     }
 
     public void Launch(float thrustPercentage, FireworkLauncher launcher) {
         this.launcher = launcher;
         launched = true;
+        primed = false;
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         noisy = Mathf.Lerp(noisy, 0f, launcher.accuracy);
@@ -56,11 +64,9 @@ public class Firework : MonoBehaviour {
     private void FixedUpdate() {
         if (!launched)
             return;
+
         activeTime += Time.fixedDeltaTime;
-
-        float rotationSpeedFactor, thrustFactor;
         Vector3 forwardDir;
-
         if (launcher != null) {
             if (activeTime < stillTime) {
                 rotationSpeedFactor = 0f;
@@ -69,60 +75,65 @@ public class Firework : MonoBehaviour {
                 rotationSpeedFactor = 1f;
                 thrustFactor = 1f;
             }
-            
+
             forwardDir = launcher.fireworkTarget - rb.position;
         } else {
             thrustFactor = 1f;
             rotationSpeedFactor = 1f;
             forwardDir = Vector3.up;
         }
-        
+
+        // TODO: I know this is bad for perf but idrc rn...
+        Collider[] colliders = Physics.OverlapSphere(transform.position, avoidanceRadius);
+        Vector3 avoidanceOffset = Vector3.zero;
+        foreach (var item in colliders) {
+            if (item.GetComponent<Firework>() != null) {
+                Vector3 a = (transform.position - item.transform.position);
+                if (a.magnitude > 0.001) {
+                    avoidanceOffset += a.normalized / a.magnitude;
+                }
+            }
+        }
 
         // Avoidance and drift correction
-        Vector3 targetFwd = (forwardDir - rb.velocity.normalized * 0.4f).normalized;
+        Vector3 targetFwd = (forwardDir).normalized;
         targetFwd += avoidanceOffset * avoidanceStrength;
         float dotted = Mathf.Pow(1 - Mathf.Clamp01(Vector3.Dot(transform.forward, rb.velocity.normalized)), driftCorrectionPow);
         targetFwd += dotted * -rb.velocity.normalized * driftCorrectionStrength;
 
         // Noisy offset
-        Vector3 localToWorldNoise = transform.TransformDirection(new Vector3(Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + localRngOffset * 25.0f) - 0.5f, Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + 2531.321f + localRngOffset * 25.0f) - 0.5f, 1f));
+        Vector3 localToWorldNoise = transform.TransformDirection(new Vector3(Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + localRngOffset * 25.0f) - 0.5f, Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + 2531.321f + localRngOffset * 25.0f) - 0.5f, 0f));
         targetFwd += localToWorldNoise * noisy;
 
         // Apply rotation and thrust force
         Quaternion targetRotation = Quaternion.LookRotation(targetFwd.normalized);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime * rotationSpeedFactor);
-        avoidanceOffset = Vector3.zero;
         rb.AddRelativeForce(new Vector3(0, 0, thrust * thrustFactor));
     }
 
-    private void OnTriggerStay(Collider other) {
-        if (other.gameObject.GetComponent<Firework>() != null) {
-            Vector3 a = (transform.position - other.transform.position);
-            avoidanceOffset += a.normalized / a.magnitude;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (launcher == null || other.isTrigger || !launched)
+    private void Update() {
+        if (!launched)
             return;
 
-        if (other.GetComponent<Firework>() != null)
-            return;
-
-        if (Vector3.Distance(other.transform.position, launcher.fireworkTarget) > 1) {
-            return;
+        if (rb.velocity.magnitude > 0.01) {
+            mesh.rotation = Quaternion.LookRotation(rb.velocity.normalized) * Quaternion.Euler(90f, 0f, 0f);
         }
 
-        GoKaboom();
+        if (launcher != null) {
+            if (Vector3.Distance(transform.position, launcher.fireworkTarget) < targetDetectionRadius) {
+                GoKaboom();
+            }
+
+            if (Vector3.Distance(transform.position, launcher.transform.position) > maxRadiusNearLauncherDontBlow) {
+                primed = true;
+                GetComponent<SphereCollider>().enabled = true;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (launcher == null || !launched)
+        if (launcher == null || !launched || !primed)
             return;
-
-        if (Vector3.Distance(transform.position, launcher.transform.position) < 10) {
-            return;
-        }
 
         GoKaboom();
     }

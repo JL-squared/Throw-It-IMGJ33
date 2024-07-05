@@ -61,7 +61,7 @@ public class BombHead : BotBehaviour {
             };
 
             if (VoxelTerrain.Instance != null) {
-                VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false, immediate: true);
+                VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
             }
 
             Vector3 center = botBase.transform.position;

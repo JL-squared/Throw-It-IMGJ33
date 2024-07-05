@@ -16,6 +16,13 @@ public class FireworkLauncher : BotBehaviour {
     private uint loaded;
     public Vector3 fireworkTarget;
 
+    public override void AttributesUpdated() {
+        base.AttributesUpdated();
+        accuracy = Mathf.Clamp01(botBase.accuracy * accuracy);
+        fireworksPerSecond *= botBase.attackSpeed;
+        reloadTime /= botBase.attackSpeed;
+    }
+
     private void Update() {
        if (Time.time > nextActionTime) {
             if (loaded == 0) {

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EntityHealth : MonoBehaviour {
@@ -11,8 +12,11 @@ public class EntityHealth : MonoBehaviour {
     public delegate void HealthChanged(float percentage);
     public event HealthChanged OnHealthChanged;
 
-    public delegate void HealthDamaged(float percentage);
+    public delegate void HealthDamaged(float damage);
     public event HealthDamaged OnDamaged;
+
+    public delegate void HealthHealed(float healing);
+    public event HealthDamaged OnHealed;
 
     public delegate void PreDamageModifier(ref float damage);
     public event PreDamageModifier OnPreDamageModifier;
@@ -34,6 +38,18 @@ public class EntityHealth : MonoBehaviour {
         if (health == 0 && !alrKilled) {
             alrKilled = true;
             OnKilled?.Invoke();
+        }
+    }
+
+    public void Heal(float healing) {
+        float healthCpy = health;
+        health = Mathf.Clamp(health + healing, 0, maxHealth);
+
+        float effectiveHealing = health - healthCpy;
+
+        if (effectiveHealing > 0) {
+            OnHealed?.Invoke(effectiveHealing);
+            OnHealthChanged?.Invoke(health / maxHealth);
         }
     }
 }

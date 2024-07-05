@@ -3,15 +3,15 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "BotData", menuName = "ScriptableObjects/New Bot Type", order = 1)]
 public class BotData : ScriptableObject {
-    public List<BotPartData> center;
-    public List<BotPartData> left;
-    public List<BotPartData> right;
-    public List<BotPartData> hat;
-    public List<BotPartData> neck;
-    public List<BotPartData> leftEye;
-    public List<BotPartData> rightEye;
-    public List<BotPartData> nose;
-    public List<BotPartData> heads;
+    public RngList<BotPartData> center;
+    public RngList<BotPartData> left;
+    public RngList<BotPartData> right;
+    public RngList<BotPartData> hat;
+    public RngList<BotPartData> neck;
+    public RngList<BotPartData> leftEye;
+    public RngList<BotPartData> rightEye;
+    public RngList<BotPartData> nose;
+    public RngList<BotPartData> heads;
 
     public bool spawnAtLeastOneDefaultEye = true;
     public GameObject defaultEye;
@@ -24,6 +24,7 @@ public class BotData : ScriptableObject {
     public float baseAttackSpeed = 5;
     public float baseBodyHealth = 50;
     public float baseHeadHealth = 20;
+    public float baseAccuracy = 0f;
     public float baseDamageResistance = 0;
     public float baseKnockbackResistance = 0;
 }

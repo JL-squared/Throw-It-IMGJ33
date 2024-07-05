@@ -157,7 +157,6 @@ GameObject:
   - component: {fileID: -3449356847033624429}
   - component: {fileID: -5252330210193789849}
   - component: {fileID: 1818387434729099134}
-  - component: {fileID: 6783484460722999038}
   m_Layer: 12
   m_Name: Firework
   m_TagString: Untagged
@@ -221,22 +220,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1d17745f907d846884d1c299c8dcc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 8053482984713148636}
   explosionParticles: {fileID: 6242322385690944836, guid: 6e26490abae80954b970693a1afc1641,
     type: 3}
   lifetime: 5
-  thrust: 80
-  rotationSpeed: 80
-  avoidanceStrength: 0.4
+  thrust: 120
+  rotationSpeed: 120
+  avoidanceStrength: 1.2
+  avoidanceRadius: 1
   driftCorrectionPow: 1
-  driftCorrectionStrength: 0.75
-  detectionRadius: 1.5
+  driftCorrectionStrength: 0.7
+  targetDetectionRadius: 2
+  maxRadiusNearLauncherDontBlow: 2
   voxelEditStrength: 2
   voxelEditRadius: 3
   minDamageRadius: 1
   damage: 10
   explosionRadius: 5
   explosionForce: 20
-  noisy: 3
+  noisy: 10
   noisyScale: 10
   stillTime: 0.2
 --- !u!135 &1818387434729099134
@@ -254,34 +256,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &6783484460722999038
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6167771753862937617}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 1
-  m_Direction: 2
+  serializedVersion: 3
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7514538997331771191
 PrefabInstance:

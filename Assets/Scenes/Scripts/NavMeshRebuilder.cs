@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class NavMeshRebuilder : MonoBehaviour {
+    // TODO: Implement fully 3D asynchronous pathfinding using a custom A* or floodfill pathfinder
+    // The unity navmesh implementation doesn't allow us to generate off mesh links automatically and it kinda sucks anyways
+    public bool useNavMesh = false;
     public NavMeshSurface testSurface;
     public NavMeshSurface terrainSurface;
     public LayerMask mask;

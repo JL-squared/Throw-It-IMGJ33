@@ -13,99 +13,112 @@ MonoBehaviour:
   m_Name: BotBaseTall
   m_EditorClassIdentifier: 
   center:
-  - prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
-      type: 3}
-    spawnChance: 0.1
-    tags:
-    - disable sides
-    modifiers:
-    - attribute: 0
-      delta: -2
-  - prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
-      type: 3}
-    spawnChance: 0.1
-    tags:
-    - disable sides
-    modifiers:
-    - attribute: 0
-      delta: -2
-  - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
-      type: 3}
-    spawnChance: 0.1
-    tags: []
-    modifiers:
-    - attribute: 0
-      delta: 2
-    - attribute: 1
-      delta: 2
-  left: []
-  right: []
+    list:
+    - prefab: {fileID: 3352066729387539982, guid: 01c04b3ef1e7ea7448437008a0f75362,
+        type: 3}
+      spawnChance: 0.1
+      tags: []
+      modifiers:
+      - attribute: 0
+        delta: 2
+      - attribute: 1
+        delta: 2
+    - prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
+        type: 3}
+      spawnChance: 0.1
+      tags: []
+      modifiers:
+      - attribute: 0
+        delta: -2
+    - prefab: {fileID: 6817891542182959447, guid: 92f961df6d6e8b64bb8fc315254b1dcd,
+        type: 3}
+      spawnChance: 1
+      tags: []
+      modifiers:
+      - attribute: 0
+        delta: -2
+    - prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
+        type: 3}
+      spawnChance: 0.5
+      tags: []
+      modifiers:
+      - attribute: 0
+        delta: -2
+    useLastAsFallback: 0
+  left:
+    list: []
+    useLastAsFallback: 0
+  right:
+    list: []
+    useLastAsFallback: 0
   hat:
-  - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
-      type: 3}
-    spawnChance: 0.5
-    tags: []
-    modifiers:
-    - attribute: 2
-      delta: 10
-  - prefab: {fileID: 3511950328461444712, guid: 15c1d62ce4ad37c4da4844f8e8a8fba1,
-      type: 3}
-    spawnChance: 0.5
-    tags: []
-    modifiers: []
+    list:
+    - prefab: {fileID: 5718594545327321008, guid: 129dfbd447eeb394b93ec39efebf84de,
+        type: 3}
+      spawnChance: 0.25
+      tags: []
+      modifiers: []
+    - prefab: {fileID: 3511950328461444712, guid: 15c1d62ce4ad37c4da4844f8e8a8fba1,
+        type: 3}
+      spawnChance: 0.25
+      tags: []
+      modifiers: []
+    - prefab: {fileID: 5909362994707921618, guid: 607416fe4c5a5f5479810a1e14e5a25e,
+        type: 3}
+      spawnChance: 0.25
+      tags: []
+      modifiers: []
+    useLastAsFallback: 0
   neck:
-  - prefab: {fileID: 8665893292947025873, guid: 725e6bb2aee5a2a41b81e96b0bc352f7,
-      type: 3}
-    spawnChance: 0.5
-    tags: []
-    modifiers: []
+    list:
+    - prefab: {fileID: 8665893292947025873, guid: 725e6bb2aee5a2a41b81e96b0bc352f7,
+        type: 3}
+      spawnChance: 0
+      tags: []
+      modifiers: []
+    useLastAsFallback: 0
   leftEye:
-  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
-      type: 3}
-    spawnChance: 0.2
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
+    list:
+    - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+        type: 3}
+      spawnChance: 0.5
+      tags: []
+      modifiers: []
+    - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
+        type: 3}
+      spawnChance: 0
+      tags: []
+      modifiers: []
+    useLastAsFallback: 1
   rightEye:
-  - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
-      type: 3}
-    spawnChance: 0.2
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
+    list:
+    - prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
+        type: 3}
+      spawnChance: 0.5
+      tags: []
+      modifiers: []
+    - prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
+        type: 3}
+      spawnChance: 0
+      tags: []
+      modifiers: []
+    useLastAsFallback: 1
   nose:
-  - prefab: {fileID: 3953031840982891585, guid: 7d724eb4a29256f49811b18df36f2840,
-      type: 3}
-    spawnChance: 1
-    tags: []
-    modifiers: []
+    list:
+    - prefab: {fileID: 3953031840982891585, guid: 7d724eb4a29256f49811b18df36f2840,
+        type: 3}
+      spawnChance: 0.1
+      tags: []
+      modifiers: []
+    useLastAsFallback: 0
   heads:
-  - prefab: {fileID: 5837452873108282449, guid: f7c60b5bcc21c264990c5002c0c34ba0,
-      type: 3}
-    spawnChance: 0.25
-    tags: []
-    modifiers:
-    - attribute: 2
-      delta: -19.99
-  - prefab: {fileID: 4849415490621601290, guid: af6a9dbd8c1f78d45b7f6a21b8c25878,
-      type: 3}
-    spawnChance: 0
-    tags: []
-    modifiers: []
-  - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
-      type: 3}
-    spawnChance: 1
-    tags:
-    - hattable
-    modifiers: []
+    list:
+    - prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
+        type: 3}
+      spawnChance: 0
+      tags: []
+      modifiers: []
+    useLastAsFallback: 1
   spawnAtLeastOneDefaultEye: 1
   defaultEye: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
     type: 3}
@@ -113,10 +126,15 @@ MonoBehaviour:
   angryModifiers:
   - attribute: 0
     delta: 2
+  - attribute: 1
+    delta: 1
+  - attribute: 2
+    delta: 1
   applyFace: 1
   baseMovementSpeed: 3
-  baseAttackSpeed: 5
+  baseAttackSpeed: 1
   baseBodyHealth: 200
   baseHeadHealth: 50
+  baseAccuracy: 0.2
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

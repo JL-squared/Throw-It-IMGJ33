@@ -6,11 +6,11 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     public static GameManager Instance;
     [HideInInspector]
-    public NavMeshRebuilder rebuilder;
+    public NavMeshRebuilder pathfindingRebuilder;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
-        rebuilder = GetComponent<NavMeshRebuilder>();
+        pathfindingRebuilder = GetComponent<NavMeshRebuilder>();
 
         if (Instance == null) {
             Instance = this;
@@ -23,13 +23,13 @@ public class GameManager : MonoBehaviour {
 
             VoxelTerrain.Instance.Finished += () => {
                 initialized = true;
-                rebuilder.UpdateNavMesh();
+                pathfindingRebuilder.UpdateNavMesh();
                 Physics.simulationMode = SimulationMode.FixedUpdate;
                 Time.timeScale = 1.0f;
             };
         } else {
             initialized = true;
-            rebuilder.UpdateNavMesh();
+            pathfindingRebuilder.UpdateNavMesh();
         }
     }
 

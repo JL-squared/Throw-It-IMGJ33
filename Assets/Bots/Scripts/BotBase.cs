@@ -29,12 +29,15 @@ public class BotBase : MonoBehaviour {
     public float attackSpeed = 0;
     public float bodyHealth = 0;
     public float headHealth = 0;
+    public float accuracy = 0;
     public float damageResistance = 0;
     public float knockbackResistance = 0;
 
     private EntityMovement entityMovement;
-    private EntityHealth _headHealth;
-    private EntityHealth _bodyHealth;
+    [HideInInspector]
+    public EntityHealth _headHealth;
+    [HideInInspector]
+    public EntityHealth _bodyHealth;
     private BotPathfinder pathfinder;
     private BotTextToSpeech tts;
 
@@ -68,6 +71,9 @@ public class BotBase : MonoBehaviour {
                 case BotAttribute.KnockbackResistance:
                     knockbackResistance += delta;
                     break;
+                case BotAttribute.Accuracy:
+                    accuracy += delta;
+                    break;
             }
         }
     }
@@ -82,27 +88,34 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-    private BotPartData PickPartForHolsterType(GameObject holster, List<BotPartData> parts) {
-        foreach (var part in parts) {
-            if (Random.value < part.spawnChance) {
-                SpawnPart(holster, part);
-                return part;
-            }
+
+    private BotPartData PickPartForHolsterType(GameObject holster, RngList<BotPartData> parts) {
+        int index = parts.list.FindIndex(x => Random.value < x.spawnChance);
+
+        if (index == -1 && parts.useLastAsFallback) {
+            index = parts.list.Count - 1;
         }
 
-        return null;
+        BotPartData part = index >= 0 ? parts.list[index] : null;
+        if (part != null)
+            SpawnPart(holster, part);
+        return part;
     }
 
-    private void OnDamage(ref float damage) {
+    private void OnPreDamage(ref float damage, bool head) {
         damage *= (1 - damageResistance);
     }
 
-    private void OnBodyDamaged(float damage) {
-        tts.SayString("ouch", overwritePlaying: false);
+    private void OnDamaged(float damage, bool head) {
+        tts.SayString(head ? "bruh" : "ouch", overwritePlaying: false);
     }
 
-    private void OnHeadDamaged(float damage) {
-        tts.SayString("bruh", overwritePlaying: false);
+    private void OnHealed(float heal, bool head) {
+        tts.SayString("thank you for healing me");
+    }
+
+    private void OnKilled(bool headshot) {
+        Destroy(gameObject);
     }
 
     private void ApplyAttributes() {
@@ -128,6 +141,7 @@ public class BotBase : MonoBehaviour {
         headHealth = data.baseHeadHealth;
         damageResistance = data.baseDamageResistance;
         knockbackResistance = data.baseKnockbackResistance;
+        accuracy = data.baseAccuracy;
 
         // Base weapons / attribute modifiers
         BotPartData center = PickPartForHolsterType(centerHolster, data.center);
@@ -178,10 +192,6 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-    private void OnKilled(bool headshot) {
-        Destroy(gameObject);
-    }
-
     public void Start() {
         botBehaviours = GetComponents<BotBehaviour>().ToList();
         pathfinder = GetComponent<BotPathfinder>();
@@ -194,9 +204,13 @@ public class BotBase : MonoBehaviour {
         Destroy(headMeshHolster.GetComponent<MeshFilter>());
         Destroy(headMeshHolster.GetComponent<MeshRenderer>());
 
-        _bodyHealth.OnPreDamageModifier += OnDamage;
-        _bodyHealth.OnDamaged += OnBodyDamaged;
-        _headHealth.OnDamaged += OnHeadDamaged;
+        // I know this looks ugly but it works for now. Will need to refactor this whole class later anyways
+        _bodyHealth.OnPreDamageModifier += (ref float dmg) => OnPreDamage(ref dmg, false);
+        _headHealth.OnPreDamageModifier += (ref float dmg) => OnPreDamage(ref dmg, true);
+        _bodyHealth.OnDamaged += (float dmg) => OnDamaged(dmg, false);
+        _headHealth.OnDamaged += (float dmg) => OnDamaged(dmg, true);
+        _bodyHealth.OnHealed += (float heal) => OnHealed(heal, false);
+        _headHealth.OnHealed += (float heal) => OnHealed(heal, true);
         _bodyHealth.OnKilled += () => { OnKilled(false); };
         _headHealth.OnKilled += () => { OnKilled(true); };
 
