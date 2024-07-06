@@ -8,7 +8,6 @@ public class FireworkLauncher : BotBehaviour {
     public Transform[] slots;
     public float fireworksPerSecond;
     public float reloadTime;
-    public float actionsPerSecond;
     public float distTargetThrustDivider = 3f;
 
     public float accuracy;
