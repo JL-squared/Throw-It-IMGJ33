@@ -15,7 +15,7 @@ MonoBehaviour:
   center:
     list:
     - enabled: 1
-      weight: 1
+      weight: 2
       prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
         type: 3}
       tags: []
@@ -23,7 +23,7 @@ MonoBehaviour:
       - attribute: 0
         delta: -2
     - enabled: 1
-      weight: 1
+      weight: 0.1
       prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
         type: 3}
       tags: []
@@ -31,7 +31,7 @@ MonoBehaviour:
       - attribute: 0
         delta: -2
     - enabled: 1
-      weight: 1
+      weight: 2
       prefab: {fileID: 6817891542182959447, guid: 92f961df6d6e8b64bb8fc315254b1dcd,
         type: 3}
       tags: []
@@ -41,7 +41,7 @@ MonoBehaviour:
     useLastAsFallback: 0
     noneSubset:
       enabled: 1
-      weight: 5
+      weight: 3
   left:
     list: []
     useLastAsFallback: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
         type: 3}
       tags: []
       modifiers: []
-    useLastAsFallback: 0
+    useLastAsFallback: 1
     noneSubset:
       enabled: 0
       weight: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
         type: 3}
       tags: []
       modifiers: []
-    useLastAsFallback: 0
+    useLastAsFallback: 1
     noneSubset:
       enabled: 0
       weight: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
       weight: 1
   heads:
     list:
-    - enabled: 0
+    - enabled: 1
       weight: 0
       prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
         type: 3}

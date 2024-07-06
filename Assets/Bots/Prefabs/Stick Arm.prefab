@@ -58,12 +58,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: aa4502cb4672a8f4eb21bb89080da0d5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.25
+      value: 0.118
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aa4502cb4672a8f4eb21bb89080da0d5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15
+      value: 0.119
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aa4502cb4672a8f4eb21bb89080da0d5,
         type: 3}
@@ -105,10 +105,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: -7146521406498821007, guid: aa4502cb4672a8f4eb21bb89080da0d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: aa4502cb4672a8f4eb21bb89080da0d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aa4502cb4672a8f4eb21bb89080da0d5,
         type: 3}
       propertyPath: m_Name
       value: stick-arm
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: aa4502cb4672a8f4eb21bb89080da0d5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

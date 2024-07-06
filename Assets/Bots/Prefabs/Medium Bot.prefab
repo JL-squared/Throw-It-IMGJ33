@@ -319,8 +319,11 @@ MonoBehaviour:
   attackSpeed: 5
   bodyHealth: 50
   headHealth: 20
+  accuracy: 0
   damageResistance: 0
   knockbackResistance: 0
+  _headHealth: {fileID: 0}
+  _bodyHealth: {fileID: 0}
 --- !u!143 &7893371349031768923
 CharacterController:
   m_ObjectHideFlags: 0
@@ -340,8 +343,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.5
-  m_Radius: 0.5
+  m_Height: 0.4
+  m_Radius: 0.4
   m_SlopeLimit: 65
   m_StepOffset: 0.6
   m_SkinWidth: 0.08
