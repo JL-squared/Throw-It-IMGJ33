@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 using UnityEngine;
 
 public class BotBase : MonoBehaviour {
@@ -90,13 +91,7 @@ public class BotBase : MonoBehaviour {
 
 
     private BotPartData PickPartForHolsterType(GameObject holster, RngList<BotPartData> parts) {
-        int index = parts.list.FindIndex(x => Random.value < x.spawnChance);
-
-        if (index == -1 && parts.useLastAsFallback) {
-            index = parts.list.Count - 1;
-        }
-
-        BotPartData part = index >= 0 ? parts.list[index] : null;
+        BotPartData part = parts.PickRandom();
         if (part != null)
             SpawnPart(holster, part);
         return part;

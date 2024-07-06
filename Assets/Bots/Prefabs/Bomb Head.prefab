@@ -53,12 +53,12 @@ MonoBehaviour:
   botTts: {fileID: 0}
   timer: 10
   boutToBlowTimer: 5
-  editStrength: 6
+  editStrength: 4
   force: 40
-  damage: 50
-  radius: 20
+  damage: 25
+  radius: 5
   minDamageRadius: 2
-  editRadiusOffset: 10
+  editRadiusOffset: 5
   particles: {fileID: 6242322385690944836, guid: f8965505c06808e448f24b742d53847a,
     type: 3}
   explosionProfile:

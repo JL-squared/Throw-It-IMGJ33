@@ -233,7 +233,7 @@ MonoBehaviour:
   - {fileID: 3759628215791875225}
   - {fileID: 246652866979733183}
   - {fileID: 2627147343999503488}
-  fireworksPerSecond: 12
+  fireworksPerSecond: 4
   reloadTime: 2
   actionsPerSecond: 2
   distTargetThrustDivider: 25

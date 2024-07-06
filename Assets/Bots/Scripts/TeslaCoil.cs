@@ -15,6 +15,10 @@ public class TeslaCoil : BotBehaviour {
     private float nextHealingStep;
     private float nextDeactivateTime;
 
+    public override void AttributesUpdated() {
+        base.AttributesUpdated();
+    }
+
     private void Start() {
         vfx.enabled = false;
     }
