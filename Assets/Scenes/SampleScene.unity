@@ -6361,11 +6361,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5922633216641648315, guid: b967b72fcb9925c43aaf0b2964399cea,
         type: 3}
+      propertyPath: m_BoxSize.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922633216641648315, guid: b967b72fcb9925c43aaf0b2964399cea,
+        type: 3}
       propertyPath: m_IntensityMultiplier
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 662383126984358400, guid: b967b72fcb9925c43aaf0b2964399cea, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3649741444830390864, guid: b967b72fcb9925c43aaf0b2964399cea,

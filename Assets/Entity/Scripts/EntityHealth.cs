@@ -32,7 +32,7 @@ public class EntityHealth : MonoBehaviour {
     public void Damage(float damage) {
         OnPreDamageModifier?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
-
+         
         OnDamaged?.Invoke(damage);
         OnHealthChanged?.Invoke(health / maxHealth);
         if (health == 0 && !alrKilled) {

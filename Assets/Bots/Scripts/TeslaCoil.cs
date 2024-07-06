@@ -32,7 +32,7 @@ public class TeslaCoil : BotBehaviour {
             }
 
             if (bots.Count > 0) {
-                var (bot, health) = bots.Select(x => (x, x._headHealth.health + x._bodyHealth.health)).OrderByDescending(x => x.Item2).First();
+                var (bot, health) = bots.Select(x => (x, x._headHealth.health + x._bodyHealth.health)).OrderBy(x => x.Item2).First();
 
                 bool a = bot._bodyHealth.Heal(healingPerStep);
                 bool b = bot._headHealth.Heal(healingPerStep);
