@@ -41,7 +41,7 @@ public class EntityHealth : MonoBehaviour {
         }
     }
 
-    public void Heal(float healing) {
+    public bool Heal(float healing) {
         float healthCpy = health;
         health = Mathf.Clamp(health + healing, 0, maxHealth);
 
@@ -51,5 +51,7 @@ public class EntityHealth : MonoBehaviour {
             OnHealed?.Invoke(effectiveHealing);
             OnHealthChanged?.Invoke(health / maxHealth);
         }
+
+        return effectiveHealing > 0;
     }
 }

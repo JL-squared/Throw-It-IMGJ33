@@ -51,7 +51,7 @@ public class NavMeshRebuilder : MonoBehaviour {
     }
 
     void Update() {
-        if (op != null && op.isDone) {
+        if (op != null && op.isDone && useNavMesh) {
             UpdateNavMesh();
         }
     }

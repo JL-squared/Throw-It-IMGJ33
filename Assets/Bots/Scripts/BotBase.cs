@@ -111,7 +111,9 @@ public class BotBase : MonoBehaviour {
     }
 
     private void OnHealed(float heal, bool head) {
-        tts.SayString("thank you for healing me");
+        if (heal > 5f) {
+            tts.SayString("thank you");
+        }
     }
 
     private void OnKilled(bool headshot) {

@@ -25,14 +25,14 @@ MonoBehaviour:
         delta: 2
     - prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
         type: 3}
-      spawnChance: 0.1
+      spawnChance: 0.3
       tags: []
       modifiers:
       - attribute: 0
         delta: -2
     - prefab: {fileID: 6817891542182959447, guid: 92f961df6d6e8b64bb8fc315254b1dcd,
         type: 3}
-      spawnChance: 1
+      spawnChance: 0.1
       tags: []
       modifiers:
       - attribute: 0

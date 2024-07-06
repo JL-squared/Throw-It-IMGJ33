@@ -342,12 +342,12 @@ MonoBehaviour:
   coyoteTime: 0
   jumpBufferTime: 0
   gravity: -20
+  knockbackResistance: 0
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
   maxPushForce: 20
-  cc: {fileID: 0}
-  groundObject: {fileID: 0}
+  entityMovementFlags: -1
 --- !u!114 &8137659110540596859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,7 +426,11 @@ MonoBehaviour:
   attackSpeed: 5
   bodyHealth: 50
   headHealth: 20
-  damageResistence: 0
+  accuracy: 0
+  damageResistance: 0
+  knockbackResistance: 0
+  _headHealth: {fileID: 0}
+  _bodyHealth: {fileID: 0}
 --- !u!114 &9026617170216108170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +444,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  cc: {fileID: 0}
   movement: {fileID: 0}
   bodyHealth: {fileID: 0}
   headHealth: {fileID: 0}
