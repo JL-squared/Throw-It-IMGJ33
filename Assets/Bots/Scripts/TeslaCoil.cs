@@ -30,7 +30,7 @@ public class TeslaCoil : BotBehaviour {
             List<BotBase> bots = new List<BotBase>();
             foreach (var item in colliders) {
                 BotBase bot = item.GetComponent<BotBase>();
-                if (bot != null && bot != botBase) {
+                if (bot != null && bot.gameObject != botBase.gameObject) {
                     bots.Add(bot);
                 }
             }

@@ -238,7 +238,7 @@ MonoBehaviour:
   damage: 10
   explosionRadius: 5
   explosionForce: 20
-  noisy: 10
+  noisy: 25
   noisyScale: 10
   stillTime: 0.2
 --- !u!135 &1818387434729099134
