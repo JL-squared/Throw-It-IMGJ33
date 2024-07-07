@@ -39,13 +39,14 @@ public static class Utils {
     }
 
     static string PersistentDir = Application.persistentDataPath;
-    static JsonSerializerSettings settings;
+    static JsonSerializerSettings settings = InitSerializer();
 
-    public static void InitSerializer() {
-        settings = new JsonSerializerSettings();
-        //settings.DefaultValueHandling = DefaultValueHandling.Ignore;
-        settings.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
-        settings.Formatting = Formatting.Indented;
+    public static JsonSerializerSettings InitSerializer() {
+        JsonSerializerSettings serializer = new JsonSerializerSettings();
+        //serializer.DefaultValueHandling = DefaultValueHandling.Ignore;
+        serializer.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
+        serializer.Formatting = Formatting.Indented;
+        return serializer;
     }
 
     public static T Load<T>(string file, T defaultValue = null) where T : class {

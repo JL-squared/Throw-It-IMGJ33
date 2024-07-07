@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour {
             pathfindingRebuilder.UpdateNavMesh();
         }
 
-        Utils.InitSerializer();
         graphicsSettings = Utils.Load("graphics.json", new GraphicsQualitySettings());
         graphicsSettings.Apply(volume.profile);
     }

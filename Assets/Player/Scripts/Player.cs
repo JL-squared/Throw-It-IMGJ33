@@ -107,12 +107,16 @@ public class Player : MonoBehaviour {
     private Vector2 targetMouseDelta;
     #endregion
 
+    #region Interaction
     [HideInInspector]
     public RaycastHit? lookingAt;
     private IInteraction interaction;
     private IInteraction lastInteraction;
+    #endregion
+
     [HideInInspector]
     public Vehicle vehicle;
+    private PlayerControlsSettings settings;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -125,6 +129,8 @@ public class Player : MonoBehaviour {
     }
 
     void Start() {
+        settings = Utils.Load<PlayerControlsSettings>("player.json", new PlayerControlsSettings());
+        mouseSensitivity = settings.mouseSensivity;
         bodyTemperature = targetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
@@ -178,8 +184,13 @@ public class Player : MonoBehaviour {
         UpdateTemperature();
         UpdateShivering();
 
-        float bobbing = CalculateBobbing();
-        ApplyHandSway(bobbing);
+        float bobbing = settings.cameraBobbing ? CalculateBobbing() : 0f;
+
+        if (settings.viewModelSway) {
+            ApplyHandSway(bobbing);
+        } else {
+            viewModel.transform.localPosition = Vector3.zero;
+        }
 
         if (vehicle == null) {
             if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {

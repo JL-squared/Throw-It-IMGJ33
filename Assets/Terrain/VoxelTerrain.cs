@@ -21,7 +21,6 @@ public class VoxelTerrain : MonoBehaviour {
 
     public Vector3Int mapChunkSize;
     [Range(1, 8)]
-    public int meshJobsPerFrame = 1;
     public Material[] voxelMaterials;
     public bool debugGUI = false;
     public GameObject chunkPrefab;
@@ -40,21 +39,32 @@ public class VoxelTerrain : MonoBehaviour {
 
     public delegate void InitGen();
     public event InitGen Finished;
+    private VoxelTerrainSettings settings;
 
     // Initialize buffers and required memory
-    public void Init() {
+    public void Init(bool inEditor) {
         Dispose();
         alrDisposed = false;
         Instance = this;
         tempVoxelEdits = new Queue<IVoxelEdit>();
         ongoingBakeJobs = new List<(JobHandle, VoxelChunk, VoxelMesh)>();
-        handlers = new List<MeshJobHandler>(meshJobsPerFrame);
+        handlers = new List<MeshJobHandler>(VoxelUtils.JobsPerFrame);
         pendingMeshJobs = new Queue<PendingMeshJob>();
         pooledChunkGameObjects = new List<GameObject>();
         totalChunks = new List<GameObject>();
         gameObject.hideFlags = HideFlags.None;
 
-        for (int i = 0; i < meshJobsPerFrame; i++) {
+        if (inEditor) {
+            settings = new VoxelTerrainSettings();
+        } else {
+            settings = Utils.Load<VoxelTerrainSettings>("terrain.json", new VoxelTerrainSettings());
+        }
+
+        VoxelUtils.JobsPerFrame = Mathf.Max(settings.jobsPerFrame, 1);
+        VoxelUtils.SchedulingInnerloopBatchCount = Mathf.Max(settings.schedulingInnerloopBatchCount, 1);
+        settings.maxFramesForDeferredEdits = Mathf.Max(1, settings.maxFramesForDeferredEdits);
+
+        for (int i = 0; i < VoxelUtils.JobsPerFrame; i++) {
             handlers.Add(new MeshJobHandler());
         }
     }
@@ -92,7 +102,7 @@ public class VoxelTerrain : MonoBehaviour {
     // Initialize the required voxel behaviours and load the map
     void Start() {
         KillChildren();
-        Init();
+        Init(false);
         LoadMap();
     }
 
@@ -221,7 +231,7 @@ public class VoxelTerrain : MonoBehaviour {
 
     // Handle completing finished jobs and initiating new ones
     void Update() {
-        UpdateHook();
+        UpdateHook(false);
 
         if (pendingChunks == 0 && firstGen) {
             firstGen = false;
@@ -230,9 +240,9 @@ public class VoxelTerrain : MonoBehaviour {
     }
 
     // Separate function since it needs to get called inside the editor
-    public void UpdateHook() {
+    public void UpdateHook(bool inEditor) {
         if (ongoingBakeJobs == null) {
-            Init();
+            Init(inEditor);
         }
 
         // Complete the bake jobs that have completely finished
@@ -287,7 +297,7 @@ public class VoxelTerrain : MonoBehaviour {
         }
 
         // If we can handle it, start unqueueing old work to do editing
-        if (pendingMeshJobs.Count < meshJobsPerFrame) {
+        if (pendingMeshJobs.Count < VoxelUtils.JobsPerFrame) {
             IVoxelEdit edit;
             if (tempVoxelEdits.TryDequeue(out edit)) {
                 ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
@@ -295,7 +305,7 @@ public class VoxelTerrain : MonoBehaviour {
         }
 
         // Begin the jobs for the meshes
-        for (int i = 0; i < meshJobsPerFrame; i++) {
+        for (int i = 0; i < VoxelUtils.JobsPerFrame; i++) {
             PendingMeshJob request = PendingMeshJob.Empty;
             if (pendingMeshJobs.TryDequeue(out request)) {
                 if (!handlers[i].Free) {
@@ -373,6 +383,10 @@ public class VoxelTerrain : MonoBehaviour {
             return;
         }
 
+        if (settings.neverDeferEdits) {
+            immediate = true;
+        }
+
         Bounds editBounds = edit.GetBounds();
         editBounds.Expand(3.0f);
 
@@ -400,7 +414,7 @@ public class VoxelTerrain : MonoBehaviour {
                 voxelChunk.pendingVoxelEdit = edit;
                 //voxelChunk.voxelCountersHandle = countersHandle;
                 //countersHandle.pending++;
-                voxelChunk.Remesh(immediate ? 0 : 5);
+                voxelChunk.Remesh(immediate ? 0 : settings.maxFramesForDeferredEdits);
             }
         }
 

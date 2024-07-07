@@ -7530,6 +7530,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 524385166999783149, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 803927460194170717, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3711022125120825706, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: volume
@@ -7541,6 +7551,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a6560a915ef98420e9faacc1c7438823,
         type: 2}
+    - target: {fileID: 5681677147798329290, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6216006554208934372, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -18,10 +18,9 @@ public static class VoxelUtils {
     // Voxel scaling size
     public const int VoxelSizeReduction = 1;
 
-    public const int EditsScheduleCount = 256;
-    public const int VertexScheduleCount = 512;
-    public const int QuadScheduleCount = 256;
-    public const int CornersScheduleCount = 256;
+    // Settings that the user could change
+    public static int SchedulingInnerloopBatchCount = 512;
+    public static int JobsPerFrame = 7;
 
     // Scaling factor when using voxel size reduction
     // Doesn't actually represent the actual size of the voxel (since we do some scaling anyways)

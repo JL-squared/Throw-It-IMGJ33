@@ -57,7 +57,7 @@ public class VoxelTerrainCustomEditor : Editor {
         if (GUILayout.Button("Generate New Map")) {
             terrain.Dispose();
             terrain.KillChildren();
-            terrain.Init();
+            terrain.Init(true);
             terrain.GenerateWith(Callback);
             editor.allowedToEdit = true;
         }
@@ -68,14 +68,14 @@ public class VoxelTerrainCustomEditor : Editor {
         }
 
         if (GUILayout.Button("Update Terrain Settings")) {
-            terrain.Init();
+            terrain.Init(true);
         }
 
 
         if (GUILayout.Button("Deserialize (decompress)")) {
             terrain.Dispose();
             terrain.KillChildren();
-            terrain.Init();
+            terrain.Init(true);
             editor.allowedToEdit = terrain.LoadMap();
         }
 
@@ -99,7 +99,7 @@ public class VoxelTerrainCustomEditor : Editor {
 
     private void OnSceneGUI() {
         if (!Application.isPlaying) {
-            ((VoxelTerrain)target).UpdateHook();
+            ((VoxelTerrain)target).UpdateHook(true);
         }
     }
 }
