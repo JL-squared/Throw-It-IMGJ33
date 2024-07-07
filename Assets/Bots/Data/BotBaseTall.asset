@@ -22,8 +22,8 @@ MonoBehaviour:
       modifiers:
       - attribute: 0
         delta: -2
-    - enabled: 0
-      weight: 1
+    - enabled: 1
+      weight: 20
       prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
         type: 3}
       tags: []
@@ -162,10 +162,10 @@ MonoBehaviour:
   - attribute: 2
     delta: 1
   applyFace: 1
-  baseMovementSpeed: -10
+  baseMovementSpeed: 3
   baseAttackSpeed: 1
   baseBodyHealth: 200
   baseHeadHealth: 50
-  baseAccuracy: 0.2
+  baseAccuracy: 0.4
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

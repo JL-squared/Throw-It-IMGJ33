@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // Game manager that contains all other managers and handles
 public class GameManager : MonoBehaviour {
@@ -7,6 +8,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     [HideInInspector]
     public NavMeshRebuilder pathfindingRebuilder;
+    private GraphicsQualitySettings graphicsSettings;
+    public Volume volume;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
@@ -31,6 +34,10 @@ public class GameManager : MonoBehaviour {
             initialized = true;
             pathfindingRebuilder.UpdateNavMesh();
         }
+
+        Utils.InitSerializer();
+        graphicsSettings = Utils.Load("graphics.json", new GraphicsQualitySettings());
+        graphicsSettings.Apply(volume.profile);
     }
 
     bool dead;

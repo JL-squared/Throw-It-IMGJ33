@@ -1,5 +1,9 @@
+using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 public static class Utils {
     public static void ApplyExplosionKnockback(Vector3 center, float radius, Collider[] colliders, float force) {
@@ -19,10 +23,10 @@ public static class Utils {
         }
     }
 
-    public static void ApplyExplosionDamage(Vector3 center, float radius,Collider[] colliders, float minDamageRadius, float damage) {
+    public static void ApplyExplosionDamage(Vector3 center, float radius, Collider[] colliders, float minDamageRadius, float damage) {
         foreach (Collider collider in colliders) {
             var health = collider.gameObject.GetComponent<EntityHealth>();
-            
+
             if (health != null) {
                 float dist = Vector3.Distance(center, collider.transform.position);
 
@@ -32,5 +36,34 @@ public static class Utils {
                 health.Damage(factor * damage);
             }
         }
+    }
+
+    static string PersistentDir = Application.persistentDataPath;
+    static JsonSerializerSettings settings;
+
+    public static void InitSerializer() {
+        settings = new JsonSerializerSettings();
+        //settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+        settings.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
+        settings.Formatting = Formatting.Indented;
+    }
+
+    public static T Load<T>(string file, T defaultValue = null) where T : class {
+        if (!File.Exists(PersistentDir + "/" + file)) {
+            Debug.LogWarning("File : " + file + " does not exist !");
+            Save(file, defaultValue);
+            return defaultValue;
+        }
+
+        object obj = defaultValue;
+        string data = File.ReadAllText(PersistentDir + "/" + file);
+        obj = JsonConvert.DeserializeObject<T>(data, settings);
+        Save(file, obj);
+        return (T)obj;
+    }
+
+    public static void Save<T>(string file, T data) where T : class {
+        string stringData = JsonConvert.SerializeObject(data, settings);
+        File.WriteAllText(PersistentDir + "/" + file, stringData);
     }
 }
