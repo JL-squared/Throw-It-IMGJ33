@@ -61,11 +61,11 @@ MonoBehaviour:
   m_Color: {r: 0, g: 0, b: 0, a: 0.38431373}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -331,8 +331,8 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 2
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -1287,11 +1287,11 @@ MonoBehaviour:
   m_Color: {r: 0.4528302, g: 0.091847636, b: 0.11146631, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1431,7 +1431,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8, y: 10.5}
+  m_AnchoredPosition: {x: 91.5, y: 225.7}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2301887519497636078
@@ -1456,6 +1456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   craftingMenuObject: {fileID: 9017951761252190518}
   rightClickHint: {fileID: 8911208246058070929}
+  interactHint: {fileID: 0}
   chargeMeter: {fileID: 1261843854748921379}
   crosshairGroup: {fileID: 7101967397361964772}
 --- !u!1 &5489610092224306192
@@ -1756,11 +1757,11 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.2783019, b: 0.3193982, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2533,7 +2534,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (3)
+      value: Slot 5
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -2684,7 +2685,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot
+      value: Slot 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2825,7 +2826,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (2)
+      value: Slot 4
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -2981,7 +2982,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (4)
+      value: Slot 6
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -3273,7 +3274,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (7)
+      value: Slot 9
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -3424,7 +3425,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (8)
+      value: Slot 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3565,7 +3566,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (1)
+      value: Slot 3
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -3721,7 +3722,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (5)
+      value: Slot 7
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
@@ -3877,7 +3878,7 @@ PrefabInstance:
     - target: {fileID: 3505816665272987592, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
       propertyPath: m_Name
-      value: Item Slot (6)
+      value: Slot 8
       objectReference: {fileID: 0}
     - target: {fileID: 8095068897314200464, guid: 22691d68fd1d33833a68529082dddaad,
         type: 3}
