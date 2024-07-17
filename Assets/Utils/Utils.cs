@@ -43,7 +43,6 @@ public static class Utils {
 
     public static JsonSerializerSettings InitSerializer() {
         JsonSerializerSettings serializer = new JsonSerializerSettings();
-        //serializer.DefaultValueHandling = DefaultValueHandling.Ignore;
         serializer.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
         serializer.Formatting = Formatting.Indented;
         return serializer;

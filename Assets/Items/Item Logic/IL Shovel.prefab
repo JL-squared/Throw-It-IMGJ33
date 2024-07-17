@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2607402315916050597}
-  - component: {fileID: -5901042259810174877}
+  - component: {fileID: 2522719497845937892}
   m_Layer: 0
-  m_Name: Snowball Item Logic Type
+  m_Name: IL Shovel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5901042259810174877
+--- !u!114 &2522719497845937892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 173478723713073389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 002361292429baf46ac7df998f933c5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b8f3fe0955022f4587ab18abbecf8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swayOffset: {x: 0, y: 0, z: 0}
-  timeForMaxCharge: 1
-  minFactor: 0.2
-  maxThrowDelay: 0
-  throwDelay: 0

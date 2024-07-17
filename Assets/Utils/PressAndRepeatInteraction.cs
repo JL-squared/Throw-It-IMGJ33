@@ -21,8 +21,11 @@ public class PressAndRepeatInteraction : IInputInteraction {
     private float nextEventTime = 0f;       // Time of the next "performed" event
 
 
-    // Constructor
-    static PressAndRepeatInteraction() {
+#if UNITY_EDITOR
+    [UnityEditor.InitializeOnLoadMethod]
+#endif
+    [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+    private static void Register() {
         InputSystem.RegisterInteraction<PressAndRepeatInteraction>();
     }
 

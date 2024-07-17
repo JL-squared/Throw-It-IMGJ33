@@ -442,6 +442,7 @@ public class Player : MonoBehaviour {
                 itemLogic.equippedItem = item;
                 itemLogic.player = this;
                 itemLogic.Equipped();
+                itemLogic.viewModel = item.Data.viewModel;
             }
         }
     }

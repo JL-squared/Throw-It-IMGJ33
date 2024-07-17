@@ -4,6 +4,8 @@ public abstract class EquippedItemLogic : MonoBehaviour {
     [HideInInspector]
     public Item equippedItem;
     [HideInInspector]
+    public GameObject viewModel;
+    [HideInInspector]
     public Vector3 swayOffset;
     [HideInInspector]
     public Player player;
@@ -15,5 +17,6 @@ public abstract class EquippedItemLogic : MonoBehaviour {
     }
     public virtual void Unequipped() {
         swayOffset = Vector3.zero;
+        viewModel = null;
     }
 }
