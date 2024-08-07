@@ -457,7 +457,7 @@ public class Player : MonoBehaviour {
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if (Performed(context)) {
+        if (context.performed && !isDead) {
             UIMaster.Instance.TabPressed();
         }
     }

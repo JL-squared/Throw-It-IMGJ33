@@ -11,27 +11,32 @@ PrefabInstance:
     - target: {fileID: 1910789122626093447, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.215
+      value: 0.03500003
       objectReference: {fileID: 0}
     - target: {fileID: 2570737002553099411, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3
+      value: 0.1199999
       objectReference: {fileID: 0}
     - target: {fileID: 3517684976027471262, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3971438912111934569, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.247
+      objectReference: {fileID: 0}
     - target: {fileID: 4002758096420211559, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.15
+      value: -0.03000003
       objectReference: {fileID: 0}
     - target: {fileID: 4087162837004350109, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.215
+      value: 0.03500003
       objectReference: {fileID: 0}
     - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
@@ -39,6 +44,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: dc8c885041695744fa547a296ef44650,
         type: 2}
+    - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: headObject
+      value: 
+      objectReference: {fileID: 2731349654638013584}
+    - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: attackSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: movementSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: headMeshObject
+      value: 
+      objectReference: {fileID: 5319043540307307538}
     - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: headMeshHolster
@@ -57,12 +82,17 @@ PrefabInstance:
     - target: {fileID: 6320128589162938111, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6897721761823884219, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_Name
       value: Tall Bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6996284109163876808, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.931
       objectReference: {fileID: 0}
     - target: {fileID: 7607357065985962092, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
@@ -72,7 +102,12 @@ PrefabInstance:
     - target: {fileID: 7788883129742475336, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.038
+      value: -0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956294032821860720, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: speed
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8742717674536080720, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
@@ -139,6 +174,12 @@ PrefabInstance:
       addedObject: {fileID: 3620845880303222741}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a107ceec86a17d4b840945e478dd9be, type: 3}
+--- !u!1 &2731349654638013584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 643352404864791723, guid: 6a107ceec86a17d4b840945e478dd9be,
+    type: 3}
+  m_PrefabInstance: {fileID: 3245425794453755963}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6079383373335154027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8742717674536080720, guid: 6a107ceec86a17d4b840945e478dd9be,

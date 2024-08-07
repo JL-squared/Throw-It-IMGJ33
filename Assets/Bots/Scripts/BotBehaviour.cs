@@ -8,7 +8,7 @@ public abstract class BotBehaviour : MonoBehaviour {
     [HideInInspector] public BotTextToSpeech botTts;
     public virtual void AttributesUpdated() { }
 
-    protected Vector3 lastTargetPosition;
+    protected Vector3 lastTargetPosition; // what is this
     protected Vector3 lastTargetVelocity;
     public virtual void TargetChanged(Vector3 target, Vector3 velocity) {
         lastTargetPosition = target;

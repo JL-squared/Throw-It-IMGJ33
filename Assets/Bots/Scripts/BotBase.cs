@@ -46,6 +46,11 @@ public class BotBase : MonoBehaviour {
     private List<BotBehaviour> botBehaviours;
     private Vector3 target;
 
+    public GameObject neckObject;
+    public GameObject headObject;
+    public GameObject headMeshObject;
+    public Vector3 lookTarget;
+
     private void OnValidate() {
         ApplyAttributes();
     }
@@ -225,6 +230,8 @@ public class BotBase : MonoBehaviour {
         ApplyAttributes();
     }
 
+    float offset = 0.247f;
+
     public void Update() {
         GameObject player = Player.Instance.gameObject;
         Vector3 velocity = player.GetComponent<EntityMovement>().Velocity;
@@ -234,5 +241,18 @@ public class BotBase : MonoBehaviour {
         foreach (var part in botBehaviours) {
             part.TargetChanged(target, velocity);
         }
+
+        lookTarget = Player.Instance.head.position;
+        float distance = Vector3.Distance(neckObject.transform.position, lookTarget);
+        Vector3 thingyMaBob = lookTarget - headObject.transform.position;
+
+        Debug.Log("New angle should be: " + Mathf.Acos(offset / distance));
+
+        neckObject.transform.eulerAngles = new Vector3(Mathf.Rad2Deg * Mathf.Acos(offset / distance) - 90f, Mathf.Rad2Deg * Mathf.Atan2(thingyMaBob.x, thingyMaBob.z));
+        headMeshObject.transform.SetPositionAndRotation(headObject.transform.position, headObject.transform.rotation);
+
+        Debug.DrawLine(lookTarget, neckObject.transform.position);
+        Debug.DrawLine(neckObject.transform.position, headObject.transform.position);
+        Debug.DrawLine(lookTarget, headObject.transform.position);
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7607357065985962092}
   - component: {fileID: 2216159272092969487}
   m_Layer: 0
-  m_Name: Right
+  m_Name: Right Arm Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222d65eb5654da24a8deb7c3c5e6bac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &467627195408834720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6996284109163876808}
+  m_Layer: 0
+  m_Name: Neck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6996284109163876808
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467627195408834720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.433, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3971438912111934569}
+  m_Father: {fileID: 8742717674536080720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &643352404864791723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3971438912111934569}
+  m_Layer: 0
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3971438912111934569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643352404864791723}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.24700001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6320128589162938111}
+  - {fileID: 2570737002553099411}
+  - {fileID: 4002758096420211559}
+  - {fileID: 4087162837004350109}
+  - {fileID: 1910789122626093447}
+  - {fileID: 7788883129742475336}
+  m_Father: {fileID: 6996284109163876808}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &986971301723011619
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +124,7 @@ GameObject:
   - component: {fileID: 2570737002553099411}
   - component: {fileID: 2269152106932263584}
   m_Layer: 0
-  m_Name: Hat
+  m_Name: Hat Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,12 +138,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986971301723011619}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.22920047, y: 0, z: 0, w: 0.97337925}
-  m_LocalPosition: {x: 0, y: 0.79999995, z: -0.07}
+  m_LocalRotation: {x: -0.22920047, y: -0, z: -0, w: 0.97337925}
+  m_LocalPosition: {x: 0, y: 0.119999945, z: -0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: -26.5, y: 0, z: 0}
 --- !u!114 &2269152106932263584
 MonoBehaviour:
@@ -99,7 +168,7 @@ GameObject:
   - component: {fileID: 1910789122626093447}
   - component: {fileID: 1161993448991098325}
   m_Layer: 0
-  m_Name: Eye Right
+  m_Name: Right Eye Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,11 +183,11 @@ Transform:
   m_GameObject: {fileID: 2119079139128084970}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.14, y: 0.71500003, z: 0.25}
+  m_LocalPosition: {x: 0.14, y: 0.035000026, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1161993448991098325
 MonoBehaviour:
@@ -143,7 +212,7 @@ GameObject:
   - component: {fileID: 4087162837004350109}
   - component: {fileID: 5481311104773973039}
   m_Layer: 0
-  m_Name: Eye Left
+  m_Name: Left Eye Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,11 +227,11 @@ Transform:
   m_GameObject: {fileID: 2282099442852977681}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0.71500003, z: 0.25}
+  m_LocalPosition: {x: -0.14, y: 0.035000026, z: 0.25}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5481311104773973039
 MonoBehaviour:
@@ -187,7 +256,7 @@ GameObject:
   - component: {fileID: 4002758096420211559}
   - component: {fileID: 198363270666410188}
   m_Layer: 0
-  m_Name: Nose
+  m_Name: Nose Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,11 +271,11 @@ Transform:
   m_GameObject: {fileID: 2984254924271180433}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.65, z: 0.25}
+  m_LocalPosition: {x: 0, y: -0.030000031, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &198363270666410188
 MonoBehaviour:
@@ -245,12 +314,12 @@ Transform:
   m_GameObject: {fileID: 4150261059762255681}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.038, z: 0}
+  m_LocalPosition: {x: 0, y: -0.12, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8889646807191814622}
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4409276882689525740
 GameObject:
@@ -263,7 +332,7 @@ GameObject:
   - component: {fileID: 3517684976027471262}
   - component: {fileID: 1872867729028060658}
   m_Layer: 0
-  m_Name: Center
+  m_Name: Center Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,14 +404,9 @@ Transform:
   - {fileID: 7607357065985962092}
   - {fileID: 3517684976027471262}
   - {fileID: 9094063474700004797}
-  - {fileID: 1910789122626093447}
-  - {fileID: 4087162837004350109}
-  - {fileID: 4002758096420211559}
-  - {fileID: 2570737002553099411}
-  - {fileID: 7788883129742475336}
   - {fileID: 4621862612811491714}
   - {fileID: 3901910804211142723}
-  - {fileID: 6320128589162938111}
+  - {fileID: 6996284109163876808}
   - {fileID: 6418398353431502467}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -458,6 +522,10 @@ MonoBehaviour:
   knockbackResistance: 0
   _headHealth: {fileID: 0}
   _bodyHealth: {fileID: 0}
+  neckObject: {fileID: 467627195408834720}
+  headObject: {fileID: 643352404864791723}
+  headMeshObject: {fileID: 2521002609180806468}
+  lookTarget: {x: 0, y: 0, z: 0}
 --- !u!143 &7893371349031768923
 CharacterController:
   m_ObjectHideFlags: 0
@@ -495,7 +563,7 @@ GameObject:
   - component: {fileID: 4621862612811491714}
   - component: {fileID: 1078172841791359531}
   m_Layer: 0
-  m_Name: Neck
+  m_Name: Neck Wrap Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -540,7 +608,7 @@ GameObject:
   - component: {fileID: 6110838791765553852}
   - component: {fileID: 1680820906075196664}
   m_Layer: 8
-  m_Name: Head
+  m_Name: Hitbox (Head)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,11 +623,11 @@ Transform:
   m_GameObject: {fileID: 7388793179954581256}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.67999995, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8742717674536080720}
+  m_Father: {fileID: 3971438912111934569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6110838791765553852
 SphereCollider:
@@ -713,7 +781,7 @@ GameObject:
   - component: {fileID: 9094063474700004797}
   - component: {fileID: 7684090518343674291}
   m_Layer: 0
-  m_Name: Left
+  m_Name: Left Arm Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,6 +988,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87054df5ee89018459c91b8cdab6386b, type: 3}
+--- !u!1 &2521002609180806468 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -259972160606440404, guid: 87054df5ee89018459c91b8cdab6386b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6816200469753493864}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6418398353431502467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 87054df5ee89018459c91b8cdab6386b,
