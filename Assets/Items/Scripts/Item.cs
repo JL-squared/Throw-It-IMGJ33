@@ -25,12 +25,12 @@ public class Item {
     public ItemData Data { get {return data; } set { data = value; updateEvent.Invoke(this); } }
 
 
-    public Item(ItemData data = null, int count = 0) {
+    public Item(ItemData data, int count) {
         this.count = count;
         this.Data = data;
     }
 
-    public Item(string id, int count = 0) {
+    public Item(string id, int count) {
         this.Data = ItemUtils.GetItemType(id);
         this.count = count;
     }

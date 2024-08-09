@@ -158,7 +158,7 @@ public class Player : MonoBehaviour {
 
         // Creates inventory items and hooks onto their update event
         for (int i = 0; i < 10; i++) {
-            Item temp = new Item();
+            Item temp = new Item(null, 0);
             items.Add(temp);
             temp.updateEvent?.AddListener((Item item) => { inventoryUpdateEvent.Invoke(items); });
         }
@@ -256,6 +256,7 @@ public class Player : MonoBehaviour {
             onUpdate = (instance, value) => {
                 gameCamera.fieldOfView = value;
             },
+            easeType = EaseType.QuadOut,
         };
         gameObject.AddTween(tween);
     }
@@ -378,6 +379,8 @@ public class Player : MonoBehaviour {
         if (firstEmpty == selected) {
             SelectionChanged(force: true);
         }
+
+        inventoryUpdateEvent.Invoke(items);
     }
 
     // Checks if we can fit a specific item
@@ -502,7 +505,13 @@ public class Player : MonoBehaviour {
 
     public void ToggleInventory(InputAction.CallbackContext context) {
         if (context.performed && !isDead) {
-            UIMaster.Instance.TabPressed();
+            UIMaster.Instance.ToggleInventory();
+        }
+    }
+
+    public void ToggleMarket(InputAction.CallbackContext context) {
+        if (context.performed && !isDead) {
+            UIMaster.Instance.ToggleMarket();
         }
     }
 
@@ -834,15 +843,18 @@ public class Player : MonoBehaviour {
         return UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
     }
 
-    public void ResetMovement() {
-        wishHeadDir = Vector2.zero;
-        movement.localWishRotation = Quaternion.identity;
+    public void ResetMovement(bool resetRotation = false) {
         movement.localWishMovement = Vector2.zero;
-        transform.localRotation = Quaternion.identity;
         targetMouseDelta = Vector2.zero;
         currentMouseDelta = Vector2.zero;
         ApplyMouseDelta(Vector2.zero);
-        //transform.localPosition = Vector3.zero;
+
+        if (resetRotation) {
+            movement.localWishRotation = Quaternion.identity;
+            transform.rotation = Quaternion.identity;
+            wishHeadDir = Vector2.zero;
+        }
+
         stepValue = 0f;
     }
 

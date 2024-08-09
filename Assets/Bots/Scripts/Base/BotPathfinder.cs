@@ -64,7 +64,6 @@ public class BotPathfinder : MonoBehaviour {
                     Debug.DrawRay(transform.position, direction.normalized, Color.white, 1.0f);
 
                     if (direction.magnitude > 0.01) {
-                        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
                         float speedMult = Mathf.Clamp(direction.magnitude / speedDistFalloff, 0.5f, 1.0f);
                         em.localWishMovement = Vector2.up * speedMult;
                         em.localWishRotation = Quaternion.LookRotation(direction.normalized);
@@ -81,7 +80,6 @@ public class BotPathfinder : MonoBehaviour {
             Vector2 local = new Vector2(direction.x, direction.z);
             em.localWishMovement = Vector2.up;
             em.localWishRotation = Quaternion.LookRotation(direction.normalized);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction.normalized), rotationSmoothing * Time.deltaTime);
         }
         
     }

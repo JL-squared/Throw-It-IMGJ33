@@ -1,11 +1,15 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 public class IngameHUD : MonoBehaviour {
     public GameObject craftingMenuObject;
+    public GameObject marketMenuObject;
     public GameObject rightClickHint;
     public GameObject interactHint;
     public RectTransform chargeMeter;
     public GameObject crosshairGroup;
+    public TextMeshProUGUI marketCurrencyText;
 
     // Start is called before the first frame update
     void Start() {
@@ -37,8 +41,18 @@ public class IngameHUD : MonoBehaviour {
         craftingMenuObject.SetActive(true);
     }
 
+    internal void SetMarketMenu() {
+        SetMenu();
+        marketMenuObject.SetActive(true);
+    }
+
+    public void SetMarketCurrency(float currency) {
+        marketCurrencyText.text = currency.ToString();
+    }
+
     // Group of methods for when you're ingame
     public void SetIngame() {
+        marketMenuObject.SetActive(false);
         craftingMenuObject.SetActive(false);
         crosshairGroup.SetActive(true);
     }

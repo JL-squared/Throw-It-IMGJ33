@@ -114,6 +114,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Market Toggle",
+                    "type": "Button",
+                    "id": "ec51cb40-2d73-46d7-9cb6-00b1f7b194dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Drop Item",
                     "type": "Button",
                     "id": "bb2b9c3f-86b1-4ccb-bebd-ef35010caaa1",
@@ -581,6 +590,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23e67730-d46d-44f2-8822-9254601d7bc3",
+                    "path": "<Keyboard>/capsLock",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Market Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ce347c6-d43f-49d3-a07b-26335593eb9e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Market Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

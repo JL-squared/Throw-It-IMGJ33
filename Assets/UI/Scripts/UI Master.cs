@@ -14,6 +14,7 @@ public class UIMaster : MonoBehaviour {
     public enum MenuState {
         None,
         Crafting,
+        Market,
         Paused,
         MainMenu
     }
@@ -43,7 +44,7 @@ public class UIMaster : MonoBehaviour {
         switch(state) {
             case MenuState.None:
             i = true; break;
-            case MenuState.Crafting or MenuState.Paused or MenuState.MainMenu:
+            case MenuState.Crafting or MenuState.Market or MenuState.Paused or MenuState.MainMenu:
             i = false; break;
         }
         return i;
@@ -70,17 +71,21 @@ public class UIMaster : MonoBehaviour {
         Evaluate();
     }
 
-    public void TabPressed() {
-        switch(state) {
-            case MenuState.None:
-                state = MenuState.Crafting;
-            break;
-
-            case MenuState.Crafting:
-                state = MenuState.None;
-            break;
+    private void ToggleState(MenuState newState) {
+        if (state == MenuState.None) {
+            state = newState;
+        } else if (state == newState) {
+            state = MenuState.None;
         }
+    }
 
+    public void ToggleInventory() {
+        ToggleState(MenuState.Crafting);
+        Evaluate();
+    }
+
+    public void ToggleMarket() {
+        ToggleState(MenuState.Market);
         Evaluate();
     }
 
@@ -103,7 +108,13 @@ public class UIMaster : MonoBehaviour {
                 healthBarGroup.SetActive(true);
                 inGameHUD.SetCraftingMenu();
             break;
-            
+
+            case MenuState.Market:
+                pauseMenu.SetActive(false);
+                healthBarGroup.SetActive(true);
+                inGameHUD.SetMarketMenu();
+            break;
+
             case MenuState.MainMenu:
                 pauseMenu.SetActive(false);
                 inGameHUD.SetMenu();

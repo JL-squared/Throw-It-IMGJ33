@@ -25,3 +25,6 @@ MonoBehaviour:
 
     Thankfully for you, they make for a perfect power source for
     D.I.Y. war machines.'
+  marketLimit: 10
+  marketBuyCost: 5
+  marketSellCost: 3

@@ -16,6 +16,10 @@ public class ItemData : ScriptableObject {
     [TextArea(15, 20)]
     public string description;
 
+    public int marketLimit;
+    public int marketBuyCost;
+    public int marketSellCost;
+
     public override string ToString() {
         return name;
     }
