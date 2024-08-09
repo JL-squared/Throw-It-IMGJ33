@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour {
     [HideInInspector]
     public WeatherManager weatherManager;
+    [HideInInspector]
+    public MarketManager marketManager;
     public static GameManager Instance;
     [HideInInspector]
     public NavMeshRebuilder pathfindingRebuilder;
@@ -14,6 +16,7 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
         pathfindingRebuilder = GetComponent<NavMeshRebuilder>();
+        marketManager = GetComponent<MarketManager>();
 
         if (Instance == null) {
             Instance = this;

@@ -89,13 +89,4 @@ public static class ItemUtils {
     public static CraftingRecipe GetCraftingRecipeFromType(ItemData itemData) {
         return craftingRecipes.GetValueOrDefault(itemData.name, null);
     }
-
-    // Jarvis, scan this guys balls
-    public static void KillChildren(GameObject gameObject, Action<GameObject> method = null) {
-        for (var i = gameObject.transform.childCount - 1; i >= 0; i--) {
-            var obj = gameObject.transform.GetChild(i).gameObject;
-            method?.Invoke(obj);
-            UnityEngine.Object.Destroy(obj);
-        }
-    }
 }

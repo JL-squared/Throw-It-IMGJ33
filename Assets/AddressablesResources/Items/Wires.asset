@@ -21,3 +21,6 @@ MonoBehaviour:
   equippedLogic: {fileID: 0}
   title: Wires
   description: Threaded copper wires. Hope you brought scissors!
+  marketLimit: 10
+  marketBuyCost: 4
+  marketSellCost: 3

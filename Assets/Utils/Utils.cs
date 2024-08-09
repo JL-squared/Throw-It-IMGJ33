@@ -4,6 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
 
 public static class Utils {
     public static void ApplyExplosionKnockback(Vector3 center, float radius, Collider[] colliders, float force) {
@@ -65,5 +66,14 @@ public static class Utils {
     public static void Save<T>(string file, T data) where T : class {
         string stringData = JsonConvert.SerializeObject(data, settings);
         File.WriteAllText(PersistentDir + "/" + file, stringData);
+    }
+
+    // Jarvis, scan this guys balls
+    public static void KillChildren(Transform owner, Action<GameObject> method = null) {
+        for (var i = owner.childCount - 1; i >= 0; i--) {
+            var obj = owner.GetChild(i).gameObject;
+            method?.Invoke(obj);
+            UnityEngine.Object.Destroy(obj);
+        }
     }
 }

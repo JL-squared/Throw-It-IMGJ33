@@ -22,5 +22,8 @@ MonoBehaviour:
     type: 3}
   title: Shovel
   description: Trusty and handy shovel. A must need tool in anyone's shed
+  marketLimit: 2
+  marketBuyCost: 20
+  marketSellCost: 4
   digRadius: 0.5
   digStrength: 100

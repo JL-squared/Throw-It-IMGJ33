@@ -22,6 +22,7 @@ public class EntityMovement : MonoBehaviour {
     public float airControl = 15;
     [Min(0.01f)]
     public float groundControl = 25;
+    public float rotationSmoothing = 0;
     public float maxAcceleration = 5;
     public float jump = 5.0F;
     public float coyoteTime = 0.0f;
@@ -125,7 +126,11 @@ public class EntityMovement : MonoBehaviour {
 
 
         if (localWishRotation.normalized != Quaternion.identity && entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
-            transform.localRotation = localWishRotation.normalized;
+            if (rotationSmoothing == 0f) {
+                transform.rotation = localWishRotation;
+            } else {
+                transform.rotation = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
+            }
         }
 
         // TODO: Actually write acceleration and integrate it instead of doing this goofy stuff
