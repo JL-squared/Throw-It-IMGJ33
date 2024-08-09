@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Tweens.Core;
+using Tweens;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -79,16 +81,23 @@ public class Player : MonoBehaviour {
     public float mouseSensitivity = 1.0f;
     [HideInInspector]
     public Vector2 localWishMovement;
+
+    [Min(1.0f)]
+    public float sprintModifier;
+
+    public bool isSprinting;
+    public bool isCrouching;
     #endregion
 
-    #region Head Bobbing
-    [Header("Head Bobbing")]
+    #region Camera
+    [Header("Camera")]
     private float stepValue = 0f;
     private float bobbingStrengthCurrent = 0f;
     public float baseCameraHeight = 0.8f;
     public float bobbingStrength = 0.05f;
     public float bobbingSpeed = 2.5f;
     public float viewModelBobbingStrength = 3.0f;
+    public float defaultFOV = 90.0f;
     #endregion
 
     #region View Model & View Model Sway
@@ -183,6 +192,7 @@ public class Player : MonoBehaviour {
     private void Update() {
         UpdateTemperature();
         UpdateShivering();
+        UpdateMovement();
 
         float bobbing = settings.cameraBobbing ? CalculateBobbing() : 0f;
 
@@ -225,11 +235,31 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void UpdateMovement() {
+        if (isSprinting) {
+            movement.ModifySpeed(sprintModifier);
+        } else {
+            movement.ModifySpeed();
+        }
+    }
+
     private void LateUpdate() {
         if (isBuilding) UpdatePlacementGhost();
     }
 
     #region Polish & Effects
+    public void FOVTween() {
+        var tween = new FloatTween {
+            from = gameCamera.fieldOfView,
+            to = isSprinting && localWishMovement.magnitude > 0.0f ? defaultFOV + 10 : defaultFOV,
+            duration = 0.2f,
+            onUpdate = (instance, value) => {
+                gameCamera.fieldOfView = value;
+            },
+        };
+        gameObject.AddTween(tween);
+    }
+
     private void ApplyHandSway(float bobbing) {
         viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
@@ -453,6 +483,20 @@ public class Player : MonoBehaviour {
         if (!isDead) {
             localWishMovement = context.ReadValue<Vector2>();
             movement.localWishMovement = localWishMovement;
+            FOVTween();
+        }
+    }
+
+    public void Sprint(InputAction.CallbackContext context) {
+        if (!isCrouching && Performed()) {
+            isSprinting = context.ReadValue<float>() > 0.5f;
+            FOVTween();
+        }
+    }
+
+    public void Crouch(InputAction.CallbackContext context) {
+        if (!isSprinting && Performed()) {
+            isCrouching = context.ReadValue<float>() > 0.5f;
         }
     }
 
@@ -487,11 +531,6 @@ public class Player : MonoBehaviour {
     public void Jump(InputAction.CallbackContext context) {
         if (Performed(context)) {
             movement.Jump();
-        }
-    }
-
-    public void Crouch(InputAction.CallbackContext context) {
-        if (Performed(context)) {
         }
     }
 

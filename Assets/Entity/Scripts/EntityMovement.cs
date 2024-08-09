@@ -6,6 +6,9 @@ using UnityEngine;
 public class EntityMovement : MonoBehaviour {
     [Header("Speed")]
     public float speed = 7f;
+
+    [HideInInspector]
+    public float activeSpeed;
     [HideInInspector]
     public Vector2 localWishMovement;
     private Vector3 movement;
@@ -76,8 +79,8 @@ public class EntityMovement : MonoBehaviour {
         float control = cc.isGrounded ? groundControl : airControl;
 
         Vector2 normalized = localWishMovement.normalized;
-        wishMovement.x = speed * normalized.x;
-        wishMovement.z = speed * normalized.y;
+        wishMovement.x = activeSpeed * normalized.x;
+        wishMovement.z = activeSpeed * normalized.y;
         wishMovement = transform.TransformDirection(wishMovement);
 
         // bypass y value as that must remain unchanged
@@ -127,6 +130,10 @@ public class EntityMovement : MonoBehaviour {
 
         // TODO: Actually write acceleration and integrate it instead of doing this goofy stuff
         explosion = Vector3.Lerp(explosion, Vector3.zero, Time.deltaTime * 10);
+    }
+
+    public void ModifySpeed(float modifier = 1) {
+        activeSpeed = speed * modifier;
     }
 
     public void ExplosionAt(Vector3 position, float force, float radius) {

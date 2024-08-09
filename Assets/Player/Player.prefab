@@ -251,7 +251,19 @@ MonoBehaviour:
     m_ActionId: da3339bc-347e-4c7d-9939-12ef5c806e80
     m_ActionName: Player Map/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 8c007f53-4be4-438f-ab69-37995d7de8df
     m_ActionName: Player Map/Crouch[/Keyboard/ctrl]
   - m_PersistentCalls:
@@ -367,9 +379,53 @@ MonoBehaviour:
     m_ActionId: a4ef294a-99c6-40c0-a971-079ab75ae310
     m_ActionName: Player Map/Inventory Toggle[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: InteractAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 0d52b0b6-c2de-4883-8eb0-f891019cdde8
     m_ActionName: Player Map/Interact[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: DropItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bb2b9c3f-86b1-4ccb-bebd-ef35010caaa1
+    m_ActionName: Player Map/Drop Item[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Sprint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 094be338-b362-40a2-8b7b-28eb0fb920b0
+    m_ActionName: Player Map/Sprint[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -398,7 +454,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   jumpBufferTime: 0.1
   gravity: -20
-  knockbackResistance: 0
+  knockbackResistance: 0.3
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
@@ -484,10 +540,14 @@ MonoBehaviour:
   gameCamera: {fileID: 2262149761271955649}
   mouseSensitivity: 1
   localWishMovement: {x: 0, y: 0}
+  sprintModifier: 1.5
+  isSprinting: 0
+  isCrouching: 0
   baseCameraHeight: 0.8
   bobbingStrength: 0.05
   bobbingSpeed: 2
   viewModelBobbingStrength: -0.8
+  defaultFOV: 90
   viewModelHolster: {fileID: 9178346958499585258}
   viewModelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100

@@ -772,11 +772,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngameHUD
       objectReference: {fileID: 0}
-    - target: {fileID: 8852638380112181882, guid: efb91e131be66fd4192caf215831b756,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 7590385d8766f7042bc24a4c2b1c8e30, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
