@@ -21,22 +21,26 @@ public class EntityHealth : MonoBehaviour {
     public delegate void PreDamageModifier(ref float damage);
     public event PreDamageModifier OnPreDamageModifier;
 
-    private bool alrKilled;
+    [HideInInspector]
+    public bool AlreadyKilled { get; private set; }
 
     public void Start() {
-        alrKilled = false;
+        AlreadyKilled = false;
         health = maxHealth;
         if (DeleteOnKill) OnKilled += () => { Destroy(gameObject); };
     }
 
     public void Damage(float damage) {
+        if (AlreadyKilled)
+            return;
+
         OnPreDamageModifier?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
          
         OnDamaged?.Invoke(damage);
         OnHealthChanged?.Invoke(health / maxHealth);
-        if (health == 0 && !alrKilled) {
-            alrKilled = true;
+        if (health == 0) {
+            AlreadyKilled = true;
             OnKilled?.Invoke();
         }
     }

@@ -185,10 +185,16 @@ MonoBehaviour:
   - attribute: 1
     delta: 2
   applyFace: 1
+  loot:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
   baseMovementSpeed: 3
   baseAttackSpeed: 1
-  baseBodyHealth: 100
-  baseHeadHealth: 25
+  baseBodyHealth: 2
+  baseHeadHealth: 2
   baseAccuracy: 0.2
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

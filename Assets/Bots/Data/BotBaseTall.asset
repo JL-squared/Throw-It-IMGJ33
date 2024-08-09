@@ -162,10 +162,19 @@ MonoBehaviour:
   - attribute: 2
     delta: 1
   applyFace: 1
+  loot:
+    list:
+    - enabled: 1
+      weight: 2
+      item: {fileID: 11400000, guid: 20e62cf7196fb4349aba90eb0585d5ee, type: 2}
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
   baseMovementSpeed: -20
   baseAttackSpeed: 1
-  baseBodyHealth: 200
-  baseHeadHealth: 50
+  baseBodyHealth: 2
+  baseHeadHealth: 5
   baseAccuracy: 0.4
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

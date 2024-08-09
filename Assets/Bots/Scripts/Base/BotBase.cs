@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Schema;
+using UnityEditor.UI;
 using UnityEngine;
 
 public class BotBase : MonoBehaviour {
@@ -50,6 +51,7 @@ public class BotBase : MonoBehaviour {
     public GameObject headObject;
     public GameObject headMeshObject;
     public Vector3 lookTarget;
+    private float timeSinceDeath;
 
     private void OnValidate() {
         ApplyAttributes();
@@ -94,7 +96,6 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-
     private BotPartData PickPartForHolsterType(GameObject holster, RngList<BotPartData> parts) {
         BotPartData part = parts.PickRandom();
         if (part != null)
@@ -117,7 +118,13 @@ public class BotBase : MonoBehaviour {
     }
 
     private void OnKilled(bool headshot) {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+
+        /*
+        BotLootData loot = data.loot.PickRandom();
+        if (loot != null)
+            WorldItem.Spawn(loot.item, transform.position, Quaternion.identity);
+        */
     }
 
     private void ApplyAttributes() {
@@ -239,20 +246,31 @@ public class BotBase : MonoBehaviour {
         pathfinder.target = target;
 
         foreach (var part in botBehaviours) {
-            part.TargetChanged(target, velocity);
+            part.targetPosition = target;
+            part.targetVelocity = velocity;
         }
 
         lookTarget = Player.Instance.head.position;
         float distance = Vector3.Distance(neckObject.transform.position, lookTarget);
         Vector3 thingyMaBob = lookTarget - headObject.transform.position;
 
-        Debug.Log("New angle should be: " + Mathf.Acos(offset / distance));
+        //Debug.Log("New angle should be: " + Mathf.Acos(offset / distance));
 
-        neckObject.transform.eulerAngles = new Vector3(Mathf.Rad2Deg * Mathf.Acos(offset / distance) - 90f, Mathf.Rad2Deg * Mathf.Atan2(thingyMaBob.x, thingyMaBob.z));
-        headMeshObject.transform.SetPositionAndRotation(headObject.transform.position, headObject.transform.rotation);
+        //neckObject.transform.eulerAngles = new Vector3(Mathf.Rad2Deg * Mathf.Acos(offset / distance) - 90f, Mathf.Rad2Deg * Mathf.Atan2(thingyMaBob.x, thingyMaBob.z));
+        //headMeshObject.transform.SetPositionAndRotation(headObject.transform.position, headObject.transform.rotation);
 
         Debug.DrawLine(lookTarget, neckObject.transform.position);
         Debug.DrawLine(neckObject.transform.position, headObject.transform.position);
         Debug.DrawLine(lookTarget, headObject.transform.position);
+
+        if (_bodyHealth.AlreadyKilled || _headHealth.AlreadyKilled) {
+            timeSinceDeath += Time.deltaTime;
+
+            foreach (var part in botBehaviours) {
+                part.deathFactor = Mathf.Clamp01(timeSinceDeath);
+            }
+
+            entityMovement.speed = Mathf.Max(movementSpeed * (1 - Mathf.Clamp01(timeSinceDeath)), 0);
+        }
     }
 }

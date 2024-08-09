@@ -20,6 +20,8 @@ public class BotData : ScriptableObject {
     public List<BotAttributeModifier> angryModifiers;
     public bool applyFace;
 
+    public RngList<BotLootData> loot;
+
     public float baseMovementSpeed = 7;
     public float baseAttackSpeed = 5;
     public float baseBodyHealth = 50;

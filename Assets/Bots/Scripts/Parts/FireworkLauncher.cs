@@ -33,7 +33,7 @@ public class FireworkLauncher : BotBehaviour {
             }
        }
 
-        fireworkTarget = lastTargetPosition;
+        fireworkTarget = targetPosition;
     }
 
     private void Reload() {

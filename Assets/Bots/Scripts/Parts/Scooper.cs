@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Scooper : BotBehaviour {
 
@@ -33,19 +34,6 @@ public class Scooper : BotBehaviour {
         secondsBetweenThrows /= botBase.attackSpeed;
     }
 
-    public override void TargetChanged(Vector3 target, Vector3 velocity) {
-        base.TargetChanged(target, velocity);
-        // TODO: Actually predict time of flight using projectile motion?
-        float lookAhead = 0.2f;
-        
-        Vector3 newTarget = target + velocity * lookAhead;
-        spawnHolster.rotation = Quaternion.LookRotation((newTarget - spawnHolster.position).normalized);
-        
-        if (Quaternion.Angle(spawnHolster.localRotation, Quaternion.LookRotation(Vector3.forward)) > 20) {
-            spawnHolster.localRotation = Quaternion.identity;
-        }
-    }
-
     public void Start() {
         thrower = GetComponent<ProjectileShooter>();
         startingRot = origin.rotation;
@@ -64,6 +52,17 @@ public class Scooper : BotBehaviour {
             enabled = true;
         }
 
+        // TODO: Actually predict time of flight using projectile motion?
+        float lookAhead = 0.2f;
+
+        Vector3 newTarget = targetPosition + targetVelocity * lookAhead;
+        spawnHolster.rotation = Quaternion.LookRotation((newTarget - spawnHolster.position).normalized);
+
+        if (Quaternion.Angle(spawnHolster.localRotation, Quaternion.LookRotation(Vector3.forward)) > 20) {
+            spawnHolster.localRotation = Quaternion.identity;
+        }
+
+        tweener.factor = 1 - deathFactor;
 
         // Handle angle stuff
         if (repeating) {

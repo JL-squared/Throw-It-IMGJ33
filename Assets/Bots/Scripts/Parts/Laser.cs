@@ -12,7 +12,7 @@ public class Laser : BotBehaviour {
     public ParticleSystem particles;
 
     void Update() {
-        Vector3 diff = lastTargetPosition - transform.position;
+        Vector3 diff = targetPosition - transform.position;
         //diff.y *= 0.4f;
         //laser.rotation = currentGlobalRotation;
         currentGlobalRotation = Quaternion.Slerp(currentGlobalRotation, Quaternion.LookRotation(diff, Vector3.up), catchupSpeed * Time.deltaTime);

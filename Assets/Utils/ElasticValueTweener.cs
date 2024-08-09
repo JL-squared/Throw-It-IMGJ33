@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class ElasticValueTweener {
     public float targetValue;
+    public float factor = 1f;
     public float targetReachSpeed = 10f;
     public float velocityDampeningSpeed = 0.5f;
     public float maxAccel = 20.0f;
@@ -24,7 +25,7 @@ public class ElasticValueTweener {
         } else {
             rawVel = targetValue - value;
         }
-        velocity += Mathf.Clamp(rawVel, -maxAccel, maxAccel) * targetReachSpeed;
+        velocity += Mathf.Clamp(rawVel, -maxAccel, maxAccel) * targetReachSpeed * factor;
         velocity += -velocity * Mathf.Clamp01(velocityDampeningSpeed);
         value += dt * velocity;
     }

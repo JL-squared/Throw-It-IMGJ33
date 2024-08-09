@@ -509,7 +509,7 @@ MonoBehaviour:
   hatHolster: {fileID: 986971301723011619}
   neckHolster: {fileID: 7092741416679020478}
   noseHolster: {fileID: 2984254924271180433}
-  headMeshHolster: {fileID: 0}
+  headMeshHolster: {fileID: 2521002609180806468}
   healthHeadEntity: {fileID: 7388793179954581256}
   angryFace: {fileID: 5852821980638977676}
   happyFace: {fileID: 2404815702975916908}
