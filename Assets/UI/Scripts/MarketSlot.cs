@@ -27,7 +27,7 @@ public class MarketSlot : MonoBehaviour {
         itemSellCost.text = $"S: {stock.GetSellCost}";
         itemIcon.sprite = stock.item.icon;
         count.text = stock.count.ToString();
-        buyButton.interactable = remaining && canFitItem;
+        buyButton.interactable = remaining && canFitItem && GameManager.Instance.marketManager.Current > stock.GetBuyCost;
     }
 
     public void Buy() {

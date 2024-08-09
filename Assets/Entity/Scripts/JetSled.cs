@@ -1,4 +1,5 @@
 using TMPro;
+using Tweens;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -24,10 +25,22 @@ public class JetSled : Vehicle {
             return;
         Vector2 mv = player.localWishMovement.normalized;
 
-        float targetThrottle = mv.y;
         float dotted = 1f - (Mathf.Clamp01(Vector3.Dot(rb.velocity.normalized, transform.forward)) * Mathf.Clamp01(rb.velocity.magnitude / targetSpeed));
-        targetThrottle = targetThrottle * dotted + Mathf.Abs(mv.x) * 0.5f;
-        throttle = Mathf.Lerp(throttle, targetThrottle, Time.fixedDeltaTime * 1.0f);
+        targetThrottle = mv.y * dotted + Mathf.Abs(mv.x) * 0.5f;
+
+        var tween = new FloatTween {
+            from = this.throttle,
+            to = targetThrottle,
+            duration = 0.1f,
+            onUpdate = (instance, value) => {
+                throttle = value;
+            },
+            easeType = EaseType.SineIn,
+        };
+        gameObject.AddTween(tween);
+
+        //throttle = Mathf.Lerp(throttle, targetThrottle, Time.fixedDeltaTime * 1.0f);
+        //throttle = targetThrottle;
 
         float effective = Mathf.Clamp01(throttle);
         rb.AddForceAtPosition(effective * thrusterRight.forward * force, thrusterRight.position);
@@ -35,6 +48,7 @@ public class JetSled : Vehicle {
 
         float aaa = Vector3.Dot(transform.right, rb.velocity.normalized);
         rb.AddForce(-aaa * transform.right * 0.1f, ForceMode.VelocityChange);
+
 
         thrusterLeft.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;
         thrusterRight.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;

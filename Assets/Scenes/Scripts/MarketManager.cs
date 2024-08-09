@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
@@ -26,10 +27,11 @@ public class MarketManager : MonoBehaviour {
         get { return _current; }
     }
 
-    private int _current;
+    private int _current = 100;
     public List<ItemStock> stocks;
 
     public void Start() {
+        _current = 100;
         stocks = new List<ItemStock>();
         foreach (var item in ItemUtils.itemDatas) {
             if (item.Value.marketLimit == 0)
@@ -60,5 +62,9 @@ public class MarketManager : MonoBehaviour {
         foreach (var stock in stocks) {
             stock.count = stock.item.marketLimit;
         } 
+    }
+
+    internal void Sell(Item item) {
+        Current += item.Data.marketSellCost * item.Count;
     }
 }

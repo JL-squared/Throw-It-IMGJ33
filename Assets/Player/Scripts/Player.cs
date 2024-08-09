@@ -281,6 +281,8 @@ public class Player : MonoBehaviour {
 
     private float CalculateBobbing() {
         Vector2 velocity2d = new Vector2(movement.Velocity.x, movement.Velocity.z);
+
+        // Calculate bobbing strength based on player velocity relative to their max speed
         float targetBobbingStrength = 0f;
         if (velocity2d.magnitude > 0.01 && movement.IsGrounded) {
             stepValue += velocity2d.magnitude * Time.deltaTime;
@@ -289,13 +291,18 @@ public class Player : MonoBehaviour {
         } else {
             targetBobbingStrength = 0f;
         }
+
+        // Interpolated so it doesn't come to an abrupt stop
         bobbingStrengthCurrent = Mathf.Lerp(bobbingStrengthCurrent, targetBobbingStrength, 25f * Time.deltaTime);
-        float bobbing = Mathf.Sin(stepValue * bobbingSpeed) * bobbingStrength * bobbingStrengthCurrent;
+
+        // Vertical and horizontal bobbing values
+        float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
+        float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
 
         if (!isDead)
-            head.transform.localPosition = new Vector3(0, baseCameraHeight + bobbing, 0);
+            head.transform.localPosition = new Vector3(0, baseCameraHeight + verticalBobbing, 0);
 
-        return bobbing;
+        return verticalBobbing;
     }
     #endregion
 
@@ -399,20 +406,22 @@ public class Player : MonoBehaviour {
         return emptyCounts >= itemIn.Count;
     }
 
-    // Remove a specific count from a specific slot. Returns the number of items that are missing (if count > item.count)
+    // Remove a specific count from a specific slot. Returns the number of items that successfully got removed
     public int RemoveItem(int slot, int count) {
         if (items[slot].Data != null && items[slot].Count > 0) {
+            int ogCount = items[slot].Count;
             int currentCount = items[slot].Count;
             currentCount = Mathf.Max(currentCount - count, 0);
-            int missingCount = Mathf.Max(count - currentCount, 0);
-
+            //int missingCount = Mathf.Max(count - currentCount, 0);
+            
             if (currentCount == 0) {
                 items[slot].Data = null;
                 SelectionChanged(force: true);
             }
 
             items[slot].Count = currentCount;
-            return missingCount;
+
+            return ogCount - currentCount;
         }
 
         return -1;
@@ -421,9 +430,8 @@ public class Player : MonoBehaviour {
     // Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
-
         foreach (Item item in items) {
-            if (item.Count >= count && item.Data.name == name) {
+            if (item.Count >= count && item.Data == ItemUtils.itemDatas[id]) {
                 return i;
             }
             i++;

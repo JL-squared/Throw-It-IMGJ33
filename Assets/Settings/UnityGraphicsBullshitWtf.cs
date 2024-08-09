@@ -16,7 +16,7 @@ public static class UnityGraphicsBullshitWtf {
         var flags = BindingFlags.Instance | BindingFlags.NonPublic;
 
         foreach (var x in pipelineAssetType.GetFields(flags)) {
-            UnityEngine.Debug.Log(x.Name);
+            //UnityEngine.Debug.Log(x.Name);
         }
         MainLightCastShadows_FieldInfo = pipelineAssetType.GetField("m_MainLightShadowsSupported", flags);
         MainLightCastShadows_Distance = pipelineAssetType.GetField("m_ShadowDistance", flags);
