@@ -444,6 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  activeSpeed: 0
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -540,7 +541,7 @@ MonoBehaviour:
   gameCamera: {fileID: 2262149761271955649}
   mouseSensitivity: 1
   localWishMovement: {x: 0, y: 0}
-  sprintModifier: 1.5
+  sprintModifier: 1.3
   isSprinting: 0
   isCrouching: 0
   baseCameraHeight: 0.8
