@@ -2,15 +2,6 @@ using System;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour {
-    [Range(0f, 1f)]
-    public float lastPosition;
-    [Range(0f, 1f)]
-    public float actualPosition;
-
-    public float lastFrameActualPosition;
-
-    public float tBar;
-    public float tLinger;
     public RectTransform bar;
     public RectTransform lingerBar;
 
@@ -27,6 +18,7 @@ public class HealthBar : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        /*
         bar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tBar), 1f);
         lingerBar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tLinger), 1f);
 
@@ -52,5 +44,6 @@ public class HealthBar : MonoBehaviour {
         }
 
         lastFrameActualPosition = actualPosition;
+        */
     }
 }
