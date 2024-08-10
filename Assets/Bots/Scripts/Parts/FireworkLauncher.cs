@@ -23,7 +23,7 @@ public class FireworkLauncher : BotBehaviour {
     }
 
     private void Update() {
-       if (Time.time > nextActionTime) {
+       if (Time.time > nextActionTime && deathFactor == 0f) {
             if (loaded == 0) {
                 nextActionTime = Time.time + reloadTime;
                 Reload();

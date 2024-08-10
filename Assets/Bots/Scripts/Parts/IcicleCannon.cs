@@ -15,9 +15,9 @@ public class IcicleCannon : BotBehaviour {
     }
 
     void Update() {
-        if (nextTimeToShoot < Time.time) {
+        if (nextTimeToShoot < Time.time && deathFactor != 1) {
             shooter.Shoot();
-            nextTimeToShoot = Time.time + 1.0f / iciclesPerSecond;
+            nextTimeToShoot = Time.time + 1.0f / (iciclesPerSecond * (1 - deathFactor));
         }
     }
 }

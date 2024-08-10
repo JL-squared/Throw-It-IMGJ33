@@ -10,6 +10,7 @@ using System.Collections.Generic;
 [Serializable]
 public class GraphicsQualitySettings {
     public float renderScale = 1f;
+    public int fpsLimit = 144;
     public Quality msaa = Quality.Disabled;
     public Quality mainLightShadows = Quality.High;
     public int additionalLightPerObjectLimit = 5;
@@ -74,5 +75,13 @@ public class GraphicsQualitySettings {
             features.Add(data2.name, data2);
         }
         features["SSAO"].SetActive(ambientOcclusion);
+
+        if (fpsLimit <= 0) {
+            UnityEngine.QualitySettings.vSyncCount = 1;
+            UnityEngine.Application.targetFrameRate = 10000;
+        } else {
+            UnityEngine.QualitySettings.vSyncCount = 0;
+            UnityEngine.Application.targetFrameRate = fpsLimit;
+        }
     }
 }

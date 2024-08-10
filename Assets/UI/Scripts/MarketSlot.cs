@@ -1,3 +1,4 @@
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,17 +22,40 @@ public class MarketSlot : MonoBehaviour {
         });
     }
 
+    private string EncodeDiff(int last, int current, bool flip) {
+        if (last == current) {
+            return current.ToString();
+        }
+
+        string good = "<color=\"red\">";
+        string bad = "<color=\"green\">";
+        string white = "<color=\"white\">";
+
+        if (flip) {
+            string temp = good;
+            good = bad;
+            bad = temp;
+        }
+
+        if (last > current) {
+            return $"{white}<s>{good}{last}{white}</s>  {bad}{current}";
+        } else {
+            return $"{white}<s>{bad}{last}{white}</s>  {good}{current}";
+        }
+    }
+
     public void Refresh() {
+        remaining = stock.count > 0;
         itemName.text = stock.item.title;
-        itemBuyCost.text = $"B: {stock.GetBuyCost}";
-        itemSellCost.text = $"S: {stock.GetSellCost}";
+        itemBuyCost.text = "B: " + EncodeDiff(stock.Costs[0].y, stock.Costs[1].y, false);
+        itemSellCost.text = "S: " + EncodeDiff(stock.Costs[0].x, stock.Costs[1].x, true);
         itemIcon.sprite = stock.item.icon;
         count.text = stock.count.ToString();
-        buyButton.interactable = remaining && canFitItem && GameManager.Instance.marketManager.Current > stock.GetBuyCost;
+        buyButton.interactable = remaining && canFitItem && GameManager.Instance.marketManager.Current > stock.Costs[1].y;
     }
 
     public void Buy() {
-        remaining = GameManager.Instance.marketManager.Buy(stock);
+        GameManager.Instance.marketManager.Buy(stock);
         Refresh();
     }
 }

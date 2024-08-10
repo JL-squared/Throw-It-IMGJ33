@@ -88,13 +88,13 @@ public class Scooper : BotBehaviour {
 
         // Handle throwing only
         if (repeating) {
-            if (normalized > 270f && armed) {
+            if (normalized > 270f && armed && deathFactor == 0f) {
                 thrower.Shoot();
                 armed = false;
             }
         } else {
             // badoing... throw that shit
-            if ((time % maxTime) > curveThrowTime && armed) {
+            if ((time % maxTime) > curveThrowTime && armed && deathFactor == 0f) {
                 thrower.Shoot();
                 armed = false;
             }

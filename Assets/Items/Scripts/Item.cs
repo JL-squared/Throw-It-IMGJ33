@@ -40,10 +40,6 @@ public class Item {
         Count = other.Count;
     }
 
-    public static void SpawnInWorld(Vector3 p) {
-        // search up prefab
-    }
-
     public bool IsEmpty() {
         return Data == null || Count == 0;
     }

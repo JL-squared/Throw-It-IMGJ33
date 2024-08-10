@@ -21,6 +21,6 @@ MonoBehaviour:
   equippedLogic: {fileID: 0}
   title: Scrap
   description: Leftovers of something mechanical. It's too inconsistent to be usable.
-  marketLimit: 0
+  marketLimit: 9999
   marketBuyCost: 0
   marketSellCost: 10

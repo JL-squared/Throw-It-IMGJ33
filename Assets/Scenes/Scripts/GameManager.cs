@@ -52,13 +52,20 @@ public class GameManager : MonoBehaviour {
     public event OnPauseChanged onPausedChanged;
     bool paused;
     public bool initialized;
-
+    private bool toggle;
     private void Update() {
         if (dead) {
             timeSinceDeath += Time.unscaledDeltaTime * .1f;
             Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
             onTimeSinceDeath?.Invoke(timeSinceDeath);
         }
+
+        /*
+        if (Input.GetKeyDown(KeyCode.F)) {
+            toggle = !toggle;
+        }
+        Application.targetFrameRate = toggle ? 144 : 30;
+        */
     }
 
     public void PlayerKilled() {

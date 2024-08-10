@@ -45,8 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c910f81bf658440a76b848ee7946cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botBase: {fileID: 0}
+  movement: {fileID: 0}
+  bodyHealth: {fileID: 0}
+  headHealth: {fileID: 0}
+  botTts: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetVelocity: {x: 0, y: 0, z: 0}
+  deathFactor: 0
   rpm: 4
   rotatingPart: {fileID: 2611278010397442733}
+  hurtyPart: {fileID: 8502701418704366159}
 --- !u!1 &5436368193771934070
 GameObject:
   m_ObjectHideFlags: 0

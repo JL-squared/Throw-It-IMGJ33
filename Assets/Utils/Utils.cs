@@ -76,4 +76,14 @@ public static class Utils {
             UnityEngine.Object.Destroy(obj);
         }
     }
+
+    public static float SmoothAbsClamped01(float x, float h) {
+        float J(float x) {
+            return Mathf.Sqrt(x*x + h) - Mathf.Sqrt(h);
+        }
+
+        float b = 1f / J(1);
+        float a = J(x) * b;
+        return Mathf.Clamp01(a);
+    }
 }

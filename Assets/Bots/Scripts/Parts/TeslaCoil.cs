@@ -24,7 +24,7 @@ public class TeslaCoil : BotBehaviour {
     }
 
     private void Update() {
-        if (Time.time > nextHealingStep) {
+        if (Time.time > nextHealingStep && deathFactor == 0f) {
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             
             List<BotBase> bots = new List<BotBase>();

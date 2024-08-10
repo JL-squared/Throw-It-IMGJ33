@@ -262,7 +262,7 @@ public class Player : MonoBehaviour {
     }
 
     private void ApplyHandSway(float bobbing) {
-        viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
+        viewModelRotationLocalOffset = Vector3.ClampMagnitude((new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
         if (viewModel != null) {
             Vector3 current = viewModel.transform.localPosition;
@@ -297,7 +297,9 @@ public class Player : MonoBehaviour {
 
         // Vertical and horizontal bobbing values
         float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
-        float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
+        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 0.05f) * 2f - 1f) * effectiveBobbingStrength;
+
+        //float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
 
         if (!isDead)
             head.transform.localPosition = new Vector3(0, baseCameraHeight + verticalBobbing, 0);

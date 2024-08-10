@@ -49,11 +49,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botBase: {fileID: 0}
-  cc: {fileID: 0}
   movement: {fileID: 0}
   bodyHealth: {fileID: 0}
   headHealth: {fileID: 0}
   botTts: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetVelocity: {x: 0, y: 0, z: 0}
+  deathFactor: 0
   origin: {fileID: 1447788538758693849}
   spawnHolster: {fileID: 3643799789739792537}
   snowPickupPos: {fileID: 2435207536473914409}
@@ -64,6 +66,7 @@ MonoBehaviour:
   groundPickupAngleSpread: 30
   tweener:
     targetValue: 0
+    factor: 1
     targetReachSpeed: 20
     velocityDampeningSpeed: 0.2
     maxAccel: 30
@@ -165,6 +168,7 @@ MonoBehaviour:
   spawnHolster: {fileID: 3643799789739792537}
   startingSpeed: 20
   offsetDistance: 0.2
+  maxRandomDirection: {x: 0, y: 0}
   collider: {fileID: 0}
   inheritVelocityMovement: {fileID: 0}
 --- !u!1 &2340083352991997612
@@ -307,10 +311,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 785eaf7995215174f9998c58e9926caa, type: 2}
+    - target: {fileID: 32012714178540792, guid: 36da95b545ce032409c1860cdaa44d23,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36da95b545ce032409c1860cdaa44d23,
         type: 3}
       propertyPath: m_Name
       value: scooper
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36da95b545ce032409c1860cdaa44d23,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6162805940852258354, guid: 36da95b545ce032409c1860cdaa44d23,
         type: 3}
@@ -415,6 +429,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: snowball
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 918f323274fcc494d91d58a057538b1f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
