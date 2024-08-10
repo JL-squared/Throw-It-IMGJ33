@@ -722,7 +722,7 @@ public class Player : MonoBehaviour {
                 foreach (Collider collider in array) {
                     collider.enabled = true;
                     if (collider.isTrigger || !collider.enabled) {
-                        //Debug.Log("this is porn");
+
                         continue;
                     }
 
@@ -754,7 +754,7 @@ public class Player : MonoBehaviour {
                 }
             }
 
-            if (TestGhostClipping(placementGhost, 0.2f)) {
+            if (TestGhostClipping(placementGhost, 0.001f)) {
                 //Debug.Log("Fuck it's clipping");
                 placementStatus = false;
             }

@@ -53,12 +53,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Items
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 496d9fe636dadf345afd385b128d4b9e
-    m_Address: Assets/AddressablesResources/Items/Wood.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9ed82c4d284114843bc6616647afe30a
     m_Address: Assets/AddressablesResources/Items/Shovel.asset
     m_ReadOnly: 0

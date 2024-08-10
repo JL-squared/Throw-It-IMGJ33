@@ -414,7 +414,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: Sprint
+        m_MethodName: ToggleMarket
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -424,6 +424,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+    m_ActionId: ec51cb40-2d73-46d7-9cb6-00b1f7b194dc
+    m_ActionName: Player Map/Market Toggle[/Keyboard/capsLock]
+  - m_PersistentCalls:
+      m_Calls: []
     m_ActionId: 094be338-b362-40a2-8b7b-28eb0fb920b0
     m_ActionName: Player Map/Sprint[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
@@ -450,6 +454,7 @@ MonoBehaviour:
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
   airControl: 4
   groundControl: 20
+  rotationSmoothing: 0
   maxAcceleration: 8
   jump: 5
   coyoteTime: 0.1

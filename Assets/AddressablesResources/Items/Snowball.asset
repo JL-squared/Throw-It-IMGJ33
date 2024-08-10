@@ -21,8 +21,10 @@ MonoBehaviour:
   equippedLogic: {fileID: 173478723713073389, guid: 6994fc3f14ae53346a404fe482e2716b,
     type: 3}
   title: Snowball
-  description: Run-of-the-mill, recess approved, perfectly round snowball. Good for
-    use in projectile warfare.
+  description: A perfectly round snowball. Purpose-built for use in projectile warfare.
+  marketLimit: 0
+  marketBuyCost: 0
+  marketSellCost: 0
   projectile: {fileID: 5488373698599033194, guid: b9e102afdbf683a4092ac606c7b350be,
     type: 3}
   lifetime: 15

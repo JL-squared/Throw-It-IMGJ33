@@ -20,7 +20,7 @@ MonoBehaviour:
     type: 3}
   equippedLogic: {fileID: 0}
   title: Wires
-  description: Threaded copper wires. Hope you brought scissors!
+  description: For use in long range electrical conduction.
   marketLimit: 10
   marketBuyCost: 4
   marketSellCost: 3

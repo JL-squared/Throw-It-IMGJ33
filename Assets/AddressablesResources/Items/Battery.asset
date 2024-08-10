@@ -20,11 +20,7 @@ MonoBehaviour:
     type: 3}
   equippedLogic: {fileID: 0}
   title: Battery
-  description: 'We''re not sure where these arctic robots are getting so many car
-    batteries.
-
-    Thankfully for you, they make for a perfect power source for
-    D.I.Y. war machines.'
+  description: It's still got some kick in it.
   marketLimit: 10
   marketBuyCost: 5
   marketSellCost: 3

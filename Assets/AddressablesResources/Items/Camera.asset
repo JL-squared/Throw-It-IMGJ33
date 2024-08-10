@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f3d0b7017212cd44ab7a901f5754c6f, type: 3}
-  m_Name: camera
+  m_Name: Camera
   m_EditorClassIdentifier: 
-  id: camera
   stackSize: 4
-  itemIcon: {fileID: 0}
+  icon: {fileID: 0}
   worldItem: {fileID: 0}
-  title: Malicious Eye
-  description: The evil eye of a foul-intentioned arctic machine. Useful for emplacements
-    that need to spot enemies.
+  viewModel: {fileID: 0}
+  equippedLogic: {fileID: 0}
+  title: Robot Eye
+  description: The evil eye of a foul-intentioned arctic machine.
+  marketLimit: 0
+  marketBuyCost: 0
+  marketSellCost: 0
