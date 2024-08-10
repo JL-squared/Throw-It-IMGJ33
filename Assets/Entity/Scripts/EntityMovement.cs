@@ -21,7 +21,7 @@ public class EntityMovement : MonoBehaviour {
     [Min(0.01f)]
     public float airControl = 15;
     [Min(0.01f)]
-    public float groundControl = 25;
+    public float groundControl = 0;
     public float rotationSmoothing = 0;
     public float maxAcceleration = 5;
     public float jump = 5.0F;

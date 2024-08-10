@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c1d1f2f5dbf8d842a6a0983fe3c4ee3, type: 3}
-  m_Name: Shovel
+  m_Name: shovel
   m_EditorClassIdentifier: 
   stackSize: 1
   icon: {fileID: 21300000, guid: 882baa3b17829e0418283005c03031ed, type: 3}
