@@ -297,12 +297,15 @@ public class Player : MonoBehaviour {
 
         // Vertical and horizontal bobbing values
         float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
-        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 0.05f) * 2f - 1f) * effectiveBobbingStrength;
 
+        https://www.desmos.com/calculator/bvzhohw3cu
+        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 0.05f) * 2f - 1f) * effectiveBobbingStrength;
+        float suace = Mathf.Sin(0.5f * stepValue * bobbingSpeed);
+        float horizontalBobbing = Mathf.Pow(Mathf.Abs(suace), 1f / 1.5f) * Mathf.Sign(suace) * effectiveBobbingStrength;
         //float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
 
         if (!isDead)
-            head.transform.localPosition = new Vector3(0, baseCameraHeight + verticalBobbing, 0);
+            head.transform.localPosition = new Vector3(horizontalBobbing, baseCameraHeight + verticalBobbing, 0);
 
         return verticalBobbing;
     }
@@ -380,7 +383,7 @@ public class Player : MonoBehaviour {
 
         // by this point we should have exited if everything is handled, otherwise;
         if (firstEmpty != -1) {
-            Debug.Log("oh yeah, slot was empty. It's sex time...");
+            //Debug.Log("oh yeah, slot was empty. It's sex time...");
             items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
         }

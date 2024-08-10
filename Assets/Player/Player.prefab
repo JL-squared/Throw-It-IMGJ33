@@ -476,7 +476,7 @@ MonoBehaviour:
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
-  maxPushForce: 20
+  maxPushForce: 12
   entityMovementFlags: -1
 --- !u!114 &6734361764533788892
 MonoBehaviour:

@@ -214,7 +214,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5696789253449794273}
   serializedVersion: 4
-  m_Mass: 120
+  m_Mass: 70
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -271,8 +271,11 @@ MonoBehaviour:
   driven: 0
   throttle: 0
   targetThrottle: 0
-  targetSpeed: 40
-  force: 420
+  targetSpeed: 20
+  reachTargetSpeedTime: 0.1
+  reachTargetAngleTime: 0.05
+  perpendicularFactor: 0.2
+  force: 700
   angle: 45
   thrusterLeft: {fileID: 357795340708590646}
   thrusterRight: {fileID: 6640575532221723328}

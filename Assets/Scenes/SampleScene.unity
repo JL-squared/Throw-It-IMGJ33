@@ -5800,25 +5800,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5419971085316244044, guid: fc0bafe595791e14a84258f43714eff3,
-        type: 3}
-      propertyPath: force
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 5419971085316244044, guid: fc0bafe595791e14a84258f43714eff3,
-        type: 3}
-      propertyPath: targetSpeed
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 5696789253449794273, guid: fc0bafe595791e14a84258f43714eff3,
         type: 3}
       propertyPath: m_Name
       value: Sled
-      objectReference: {fileID: 0}
-    - target: {fileID: 6192284494042291772, guid: fc0bafe595791e14a84258f43714eff3,
-        type: 3}
-      propertyPath: m_Mass
-      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 8423000252065916995, guid: fc0bafe595791e14a84258f43714eff3,
         type: 3}
