@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using Unity.Mathematics;
 using UnityEngine;
@@ -37,7 +38,6 @@ public class EntityMovement : MonoBehaviour {
     public float maxPushForce = 20;
 
     private CharacterController cc;
-    private Vector3 explosion;
     private float lastGroundedTime = 0;
     private float nextJumpTime = 0;
     private int jumpCounter = 0;
@@ -72,32 +72,38 @@ public class EntityMovement : MonoBehaviour {
         cc = GetComponent<CharacterController>();
     }
 
-    // FixedUpdate is called each physics timestep
+    // TODO: Will eventually need to migrate all frame based systems to fixed step to keep logic consistent across FPSes (because even if we use deltaTime, it would always be better to use a fixed tick system instead)
+    // Will need to figure out how to handle character interpolation though....
     void Update() {
         if (!GameManager.Instance.initialized)
             return;
 
         float control = cc.isGrounded ? groundControl : airControl;
 
+        // Transform local wish movement to global world movement direction
         Vector2 normalized = localWishMovement.normalized;
         wishMovement.x = activeSpeed * normalized.x;
         wishMovement.z = activeSpeed * normalized.y;
-        wishMovement = transform.TransformDirection(wishMovement);
+        if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
+            wishMovement = transform.TransformDirection(wishMovement);
+        } else {
+            wishMovement = Vector3.zero;
+        }
 
-        // bypass y value as that must remain unchanged
+        // Bypass y value as that must remain unchanged through the acceleration diff
         wishMovement.y = movement.y;
-
-        //movement = Vector3.Lerp(movement, wishMovement, Time.deltaTime * control);
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
-
         movement.y += gravity * Time.deltaTime;
+    
 
+        // When we hit the ground and the input is buffered
         if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
             nextJumpTime = 0;
             isJumping = true;
             buffered = false;
         }
 
+        // Handles being grounded (resets jump buffer and coyote time thing)
         if (cc.isGrounded && !groundJustExploded) {
             movement.y = groundedOffsetVelocity;
             lastGroundedTime = Time.time;
@@ -106,24 +112,24 @@ public class EntityMovement : MonoBehaviour {
             Ground = null;
         }
 
+        // Sometimes coyte time shits itself with explosions
         if (groundJustExploded)
             groundJustExploded = false;
 
-        // could change the restriction on jumpCounter to enable double jumping
+        // Could change the restriction on jumpCounter to enable double jumping
         if (isJumping && jumpCounter == 0) {
             movement.y = jump;
             isJumping = false;
             jumpCounter++;
         }
 
-        if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
-            CollisionFlags flags = cc.Move((movement + explosion) * Time.deltaTime);
-
+        // Move the character and fix head bump problem
+        if (cc.enabled) {
+            CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
             if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
                 movement.y = 0;
             }
         }
-
 
         if (localWishRotation.normalized != Quaternion.identity && entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
             if (rotationSmoothing == 0f) {
@@ -132,15 +138,12 @@ public class EntityMovement : MonoBehaviour {
                 transform.rotation = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
             }
         }
-
-        // TODO: Actually write acceleration and integrate it instead of doing this goofy stuff
-        explosion = Vector3.Lerp(explosion, Vector3.zero, Time.deltaTime * 10);
     }
 
     public void ModifySpeed(float modifier = 1) {
         activeSpeed = speed * modifier;
     }
-
+    
     public void ExplosionAt(Vector3 position, float force, float radius) {
         Vector3 f = transform.position - position;
 
@@ -153,7 +156,7 @@ public class EntityMovement : MonoBehaviour {
             groundJustExploded = true;
         }
 
-        AddImpulse(f.normalized * factor * force);
+        AddImpulse(f.normalized * factor * force * 3);
     }
 
     public void AddImpulse(Vector3 force) {
@@ -180,16 +183,18 @@ public class EntityMovement : MonoBehaviour {
             return;
         }
 
+        // We have to multiply by delta time since OnControllerColliderHit is called every frame (since we call move on the cc every frame)
+
         // TODO: Rewrite the entity movement using a kinematic rigidbody instead so we can handle proper rigidbody interactions and entity to entity interactions
         if (hit.rigidbody != null) {
-            Vector3 scaled = hit.moveDirection * hit.rigidbody.mass;
+            Vector3 scaled = hit.moveDirection * hit.rigidbody.mass * Time.deltaTime * 160;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
             hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.point);
         }
 
         EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();
         if (em != null) {
-            Vector3 a = hit.moveDirection * hit.moveLength * 10;
+            Vector3 a = hit.moveDirection * hit.moveLength * 10 * Time.deltaTime * 100;
             a.y = 0f;
             em.movement += a;
         }
@@ -198,13 +203,14 @@ public class EntityMovement : MonoBehaviour {
 
 [Flags]
 public enum EntityMovementFlags {
-    /*
-    AllowedToMove,
-    ApplyGravity,
-    */
     None,
+
+    // if the entity can rotate using the localWishRotation
     AllowedToRotate,
+
+    // if the entity can move using the localWishDir (does not count impulse or knockback)
     ApplyMovement,
+
     Default = ApplyMovement | AllowedToRotate,
 }
 

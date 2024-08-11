@@ -96,6 +96,7 @@ public class Player : MonoBehaviour {
     public float baseCameraHeight = 0.8f;
     public float bobbingStrength = 0.05f;
     public float bobbingSpeed = 2.5f;
+    public float bobbingSteppiness = 20f;
     public float viewModelBobbingStrength = 3.0f;
     public float defaultFOV = 90.0f;
     #endregion
@@ -151,7 +152,7 @@ public class Player : MonoBehaviour {
         // Hook onto health component
         EntityHealth health = GetComponent<EntityHealth>();
         health.OnHealthChanged += (float p) => {
-            //UIMaster.Instance.healthBar.actualPosition = p;
+            UIMaster.Instance.healthBar.HealthChanged(p);
         };
         health.OnKilled += Killed;
 
@@ -215,6 +216,7 @@ public class Player : MonoBehaviour {
         
         if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
+                Debug.Log("test");
                 interaction.StartHover(this);
             }
             
@@ -262,7 +264,7 @@ public class Player : MonoBehaviour {
     }
 
     private void ApplyHandSway(float bobbing) {
-        viewModelRotationLocalOffset = Vector3.ClampMagnitude(new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0), viewModelRotationClampMagnitude) * viewModelRotationStrength;
+        viewModelRotationLocalOffset = Vector3.ClampMagnitude((new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
         viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
         if (viewModel != null) {
             Vector3 current = viewModel.transform.localPosition;
@@ -297,10 +299,15 @@ public class Player : MonoBehaviour {
 
         // Vertical and horizontal bobbing values
         float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
-        float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
+
+        https://www.desmos.com/calculator/bvzhohw3cu
+        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 1f / bobbingSteppiness) * 2f - 1f) * effectiveBobbingStrength;
+        float suace = Mathf.Sin(0.5f * stepValue * bobbingSpeed);
+        float horizontalBobbing = Mathf.Pow(Mathf.Abs(suace), 1f / 1.5f) * Mathf.Sign(suace) * effectiveBobbingStrength;
+        //float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
 
         if (!isDead)
-            head.transform.localPosition = new Vector3(0, baseCameraHeight + verticalBobbing, 0);
+            head.transform.localPosition = new Vector3(horizontalBobbing, baseCameraHeight + verticalBobbing, 0);
 
         return verticalBobbing;
     }
@@ -378,7 +385,7 @@ public class Player : MonoBehaviour {
 
         // by this point we should have exited if everything is handled, otherwise;
         if (firstEmpty != -1) {
-            Debug.Log("oh yeah, slot was empty. It's sex time...");
+            //Debug.Log("oh yeah, slot was empty. It's sex time...");
             items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
         }
@@ -867,7 +874,9 @@ public class Player : MonoBehaviour {
     }
 
     public void ExitVehicle() {
+        vehicle.Exit();
         vehicle = null;
+        lastInteraction = null;
         transform.SetParent(null);
         ResetMovement();
     }

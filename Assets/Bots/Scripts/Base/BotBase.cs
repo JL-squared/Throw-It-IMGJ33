@@ -261,14 +261,20 @@ public class BotBase : MonoBehaviour {
         Debug.DrawLine(neckObject.transform.position, headObject.transform.position);
         Debug.DrawLine(lookTarget, headObject.transform.position);
 
+        float interpolationDeathTime = 2;
         if (_bodyHealth.AlreadyKilled || _headHealth.AlreadyKilled) {
             timeSinceDeath += Time.deltaTime;
 
             foreach (var part in botBehaviours) {
-                part.deathFactor = Mathf.Clamp01(timeSinceDeath);
+                part.deathFactor = Mathf.Clamp01(timeSinceDeath / interpolationDeathTime);
             }
 
-            entityMovement.speed = Mathf.Max(movementSpeed * (1 - Mathf.Clamp01(timeSinceDeath)), 0);
+            entityMovement.speed = Mathf.Max(movementSpeed * (1 - Mathf.Clamp01(timeSinceDeath / interpolationDeathTime)), 0);
+            entityMovement.rotationSmoothing = (timeSinceDeath / interpolationDeathTime) * 8;
+
+            if (timeSinceDeath > 1) {
+                entityMovement.entityMovementFlags.RemoveFlag(EntityMovementFlags.AllowedToRotate | EntityMovementFlags.ApplyMovement);
+            }
         }
     }
 }

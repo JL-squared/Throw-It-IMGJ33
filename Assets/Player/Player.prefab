@@ -476,7 +476,7 @@ MonoBehaviour:
   groundedOffsetVelocity: -2.5
   isJumping: 0
   pushForce: 8
-  maxPushForce: 20
+  maxPushForce: 12
   entityMovementFlags: -1
 --- !u!114 &6734361764533788892
 MonoBehaviour:
@@ -564,6 +564,7 @@ MonoBehaviour:
   baseCameraHeight: 0.8
   bobbingStrength: 0.05
   bobbingSpeed: 2
+  bobbingSteppiness: 20
   viewModelBobbingStrength: -0.8
   defaultFOV: 90
   viewModelHolster: {fileID: 9178346958499585258}

@@ -62,4 +62,8 @@ public class IngameHUD : MonoBehaviour {
         crosshairGroup.SetActive(false);
         chargeMeter.gameObject.SetActive(false);
     }
+
+    internal void RefreshMarket() {
+        marketMenuObject.GetComponent<MarketMenu>().MarketUpdate();
+    }
 }

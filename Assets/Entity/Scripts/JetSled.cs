@@ -5,10 +5,11 @@ using UnityEngine.Assertions.Must;
 
 public class JetSled : Vehicle {
     public float throttle;
-    public float targetThrottle;
-    public float targetSpeed = 20f;
-    public float force = 400f;
-    public float angle = 60f;
+    public float reachTargetAngleTime = 0.2f;
+    public float perpendicularFactor = 0.25f;
+    public float force = 700f;
+    public float angle = 45f;
+    private float currentAngle;
     
     Rigidbody rb;
     public Transform thrusterLeft;
@@ -20,38 +21,36 @@ public class JetSled : Vehicle {
         rb = GetComponent<Rigidbody>();
     }
 
+    public override void WishMovementChanged(Vector2 newWishMovement) {
+        base.WishMovementChanged(newWishMovement);
+
+        var angleTween = new FloatTween {
+            from = currentAngle,
+            to = -newWishMovement.x * angle,
+            duration = reachTargetAngleTime,
+            onUpdate = (instance, value) => {
+                thrusterLeft.localEulerAngles = new Vector3(0f, value, 0f);
+                thrusterRight.localEulerAngles = new Vector3(0f, value, 0f);
+                currentAngle = value;
+            },
+            easeType = EaseType.Linear,
+        };
+        gameObject.AddTween(angleTween);
+    }
+
     public void FixedUpdate() {
         if (!driven)
             return;
         Vector2 mv = player.localWishMovement.normalized;
 
-        float dotted = 1f - (Mathf.Clamp01(Vector3.Dot(rb.velocity.normalized, transform.forward)) * Mathf.Clamp01(rb.velocity.magnitude / targetSpeed));
-        targetThrottle = mv.y * dotted + Mathf.Abs(mv.x) * 0.5f;
-
-        var tween = new FloatTween {
-            from = this.throttle,
-            to = targetThrottle,
-            duration = 0.1f,
-            onUpdate = (instance, value) => {
-                throttle = value;
-            },
-            easeType = EaseType.SineIn,
-        };
-        gameObject.AddTween(tween);
-
-        //throttle = Mathf.Lerp(throttle, targetThrottle, Time.fixedDeltaTime * 1.0f);
-        //throttle = targetThrottle;
-
+        throttle = mv.y + Mathf.Abs(mv.x) * 0.5f;
         float effective = Mathf.Clamp01(throttle);
         rb.AddForceAtPosition(effective * thrusterRight.forward * force, thrusterRight.position);
         rb.AddForceAtPosition(effective * thrusterLeft.forward * force, thrusterLeft.position);
 
         float aaa = Vector3.Dot(transform.right, rb.velocity.normalized);
-        rb.AddForce(-aaa * transform.right * 0.1f, ForceMode.VelocityChange);
+        rb.AddForce(-aaa * transform.right * perpendicularFactor, ForceMode.VelocityChange);
 
-
-        thrusterLeft.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;
-        thrusterRight.localEulerAngles = new Vector3(0f, -mv.x, 0f) * angle;
         tmp.text = $"{rb.velocity.magnitude:F1}m/s\n{effective * 100:F1}%";
     }
 }
