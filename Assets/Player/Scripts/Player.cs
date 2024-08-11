@@ -96,6 +96,7 @@ public class Player : MonoBehaviour {
     public float baseCameraHeight = 0.8f;
     public float bobbingStrength = 0.05f;
     public float bobbingSpeed = 2.5f;
+    public float bobbingSteppiness = 20f;
     public float viewModelBobbingStrength = 3.0f;
     public float defaultFOV = 90.0f;
     #endregion
@@ -151,7 +152,7 @@ public class Player : MonoBehaviour {
         // Hook onto health component
         EntityHealth health = GetComponent<EntityHealth>();
         health.OnHealthChanged += (float p) => {
-            //UIMaster.Instance.healthBar.actualPosition = p;
+            UIMaster.Instance.healthBar.HealthChanged(p);
         };
         health.OnKilled += Killed;
 
@@ -215,6 +216,7 @@ public class Player : MonoBehaviour {
         
         if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
+                Debug.Log("test");
                 interaction.StartHover(this);
             }
             
@@ -299,7 +301,7 @@ public class Player : MonoBehaviour {
         float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
 
         https://www.desmos.com/calculator/bvzhohw3cu
-        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 0.05f) * 2f - 1f) * effectiveBobbingStrength;
+        float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 1f / bobbingSteppiness) * 2f - 1f) * effectiveBobbingStrength;
         float suace = Mathf.Sin(0.5f * stepValue * bobbingSpeed);
         float horizontalBobbing = Mathf.Pow(Mathf.Abs(suace), 1f / 1.5f) * Mathf.Sign(suace) * effectiveBobbingStrength;
         //float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
@@ -872,7 +874,9 @@ public class Player : MonoBehaviour {
     }
 
     public void ExitVehicle() {
+        vehicle.Exit();
         vehicle = null;
+        lastInteraction = null;
         transform.SetParent(null);
         ResetMovement();
     }

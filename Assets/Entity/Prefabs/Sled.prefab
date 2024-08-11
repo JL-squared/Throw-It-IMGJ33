@@ -270,12 +270,9 @@ MonoBehaviour:
   playerSeat: {fileID: 3394618830946918618}
   driven: 0
   throttle: 0
-  targetThrottle: 0
-  targetSpeed: 20
-  reachTargetSpeedTime: 0.1
   reachTargetAngleTime: 0.05
   perpendicularFactor: 0.2
-  force: 700
+  force: 500
   angle: 45
   thrusterLeft: {fileID: 357795340708590646}
   thrusterRight: {fileID: 6640575532221723328}

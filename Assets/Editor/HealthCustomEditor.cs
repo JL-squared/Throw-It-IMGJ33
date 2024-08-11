@@ -12,6 +12,10 @@ public class HealthCustomEditor : Editor {
             health.Damage(10.0f);
         }
 
+        if (GUILayout.Button("Heal 10 points")) {
+            health.Heal(10.0f);
+        }
+
         if (GUILayout.Button("Kill")) {
             health.Damage(100000.0f);
         }
