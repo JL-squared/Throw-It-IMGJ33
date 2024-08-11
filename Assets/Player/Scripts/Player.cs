@@ -710,6 +710,7 @@ public class Player : MonoBehaviour {
         return false;
     }
 
+    // time to do a review of this
     private void UpdatePlacementGhost() {
         bool flag = false; // manual placement mode btw
 
@@ -763,7 +764,6 @@ public class Player : MonoBehaviour {
             }
 
             if (TestGhostClipping(placementGhost, 0.001f)) {
-                //Debug.Log("Fuck it's clipping");
                 placementStatus = false;
             }
 
