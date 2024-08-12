@@ -12,7 +12,7 @@ public class MarketMenu : MonoBehaviour {
     void Start() {
         var manager = GameManager.Instance.marketManager;
         var stocks = manager.stocks;
-        Utils.KillChildren(verticalGroup);
+        verticalGroup.KillChildren();
         slots = new List<MarketSlot>();
         foreach (var stock in stocks) {
             var obj = Instantiate(marketSlotPrefab, verticalGroup);

@@ -1,9 +1,14 @@
+using Newtonsoft.Json;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
+[Serializable]
 public class Item {
-    [SerializeField]
+    [JsonProperty]
     int count;
+
+    [JsonIgnore]
     public int Count { 
         get { 
             return count; 
@@ -18,10 +23,16 @@ public class Item {
         }
     }
 
+    [JsonIgnore]
     public UnityEvent emptyEvent = new UnityEvent();
+    [JsonIgnore]
     public UnityEvent<Item> updateEvent = new UnityEvent<Item>();
 
+    [JsonProperty]
+    [JsonConverter(typeof(ItemDataConverter))]
     private ItemData data;
+
+    [JsonIgnore]
     public ItemData Data { get {return data; } set { data = value; updateEvent.Invoke(this); } }
 
 

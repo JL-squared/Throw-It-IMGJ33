@@ -45,7 +45,9 @@ public static class Utils {
     public static JsonSerializerSettings InitSerializer() {
         JsonSerializerSettings serializer = new JsonSerializerSettings();
         serializer.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
+        serializer.Converters.Add(new ItemDataConverter());
         serializer.Formatting = Formatting.Indented;
+        serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         return serializer;
     }
 
@@ -69,7 +71,7 @@ public static class Utils {
     }
 
     // Jarvis, scan this guys balls
-    public static void KillChildren(Transform owner, Action<GameObject> method = null) {
+    public static void KillChildren(this Transform owner, Action<GameObject> method = null) {
         for (var i = owner.childCount - 1; i >= 0; i--) {
             var obj = owner.GetChild(i).gameObject;
             method?.Invoke(obj);

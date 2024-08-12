@@ -300,7 +300,7 @@ public class Player : MonoBehaviour {
         // Vertical and horizontal bobbing values
         float effectiveBobbingStrength = bobbingStrength * bobbingStrengthCurrent;
 
-        https://www.desmos.com/calculator/bvzhohw3cu
+        // https://www.desmos.com/calculator/bvzhohw3cu
         float verticalBobbing = (Utils.SmoothAbsClamped01(Mathf.Sin((0.5f * stepValue + Mathf.PI / 4f) * bobbingSpeed), 1f / bobbingSteppiness) * 2f - 1f) * effectiveBobbingStrength;
         float suace = Mathf.Sin(0.5f * stepValue * bobbingSpeed);
         float horizontalBobbing = Mathf.Pow(Mathf.Abs(suace), 1f / 1.5f) * Mathf.Sign(suace) * effectiveBobbingStrength;
@@ -455,7 +455,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-        if (lastSelectedViewModelItem != null) {
+        if (lastSelectedViewModelItem != null && itemLogic != null) {
             itemLogic.Unequipped();
         }
 
