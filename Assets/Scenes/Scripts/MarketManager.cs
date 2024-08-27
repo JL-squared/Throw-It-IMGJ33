@@ -52,7 +52,7 @@ public class MarketManager : MonoBehaviour {
             });
         }
 
-        stocks.Sort((a, b) => string.Compare(a.item.title, b.item.title));
+        stocks.Sort((a, b) => string.Compare(a.item.name, b.item.name));
     }
 
     public bool Buy(ItemStock stock) {
