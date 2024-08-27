@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Tweens.Core;
 using Tweens;
-using static UnityEditor.Progress;
+using System;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -183,7 +183,7 @@ public class Player : MonoBehaviour {
 
         // Make the camera a rigidbody
         Rigidbody rb = head.gameObject.AddComponent<Rigidbody>();
-        rb.AddForce(Random.insideUnitCircle, ForceMode.Impulse);
+        rb.AddForce(UnityEngine.Random.insideUnitCircle, ForceMode.Impulse);
         head.gameObject.AddComponent<SphereCollider>();
         head.transform.parent = null;
         GetComponent<CharacterController>().height = 0;
@@ -217,7 +217,7 @@ public class Player : MonoBehaviour {
             }
         }
         
-        if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
+        if (!UnityEngine.Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
                 interaction.StartHover(this);
             }
@@ -475,7 +475,7 @@ public class Player : MonoBehaviour {
     // - User changes selected slot to new slot
     // - Item count gets changed from zero to positive value and vice versa
     private void SelectionChanged(bool force = false) {
-        if (Object.ReferenceEquals(lastSelectedViewModelItem, SelectedItem) && !force) {
+        if (UnityEngine.Object.ReferenceEquals(lastSelectedViewModelItem, SelectedItem) && !force) {
             return;
         }
 
@@ -685,7 +685,9 @@ public class Player : MonoBehaviour {
         builtPiece.layer = LayerMask.NameToLayer("Piece");
     }
 
+    
     bool whichThing = true;
+    [Obsolete("DONT USE BuildActionSecondary THIS WE HAVE A BUILD MENU NOW")]
     private void BuildActionSecondary() {
         whichThing = !whichThing;
         SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);

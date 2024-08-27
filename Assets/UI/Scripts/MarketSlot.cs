@@ -46,7 +46,7 @@ public class MarketSlot : MonoBehaviour {
 
     public void Refresh() {
         remaining = stock.count > 0;
-        itemName.text = stock.item.title;
+        itemName.text = stock.item.name;
         itemBuyCost.text = "B: " + EncodeDiff(stock.Costs[0].y, stock.Costs[1].y, false);
         itemSellCost.text = "S: " + EncodeDiff(stock.Costs[0].x, stock.Costs[1].x, true);
         itemIcon.sprite = stock.item.icon;

@@ -15,7 +15,7 @@ public class ItemData : ScriptableObject {
     public GameObject viewModel;
     public GameObject equippedLogic;
 
-    public string title;
+    public string name;
     [TextArea(15, 20)]
     public string description;
 
@@ -24,7 +24,7 @@ public class ItemData : ScriptableObject {
     public int marketSellCost;
 
     public override string ToString() {
-        return name;
+        return base.name;
     }
 
     public static implicit operator string(ItemData i) => i.ToString();
