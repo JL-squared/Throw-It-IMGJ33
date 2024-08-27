@@ -48,6 +48,21 @@ public class DevConsole : MonoBehaviour {
                     Player.Instance.movement.maxAcceleration = float.Parse(args[0]);
                 },
             },
+            new ConsoleCommand {
+                main = "nearby_say",
+                desc = "Makes nearby bots say something using the TTS package",
+                moment = (args) => {
+                    Collider[] overlap = Physics.OverlapSphere(Player.Instance.transform.position, 5);
+
+                    foreach (Collider col in overlap) {
+                        var speech = col.GetComponent<BotTextToSpeech>();
+                        if (speech != null) {
+                            var txt = String.Join(' ', args);
+                            speech.SayString(txt);
+                        }
+                    }
+                },
+            },
         };
     }
 

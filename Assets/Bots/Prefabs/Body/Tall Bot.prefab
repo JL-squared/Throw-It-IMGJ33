@@ -104,6 +104,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.12
       objectReference: {fileID: 0}
+    - target: {fileID: 7893371349031768923, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893371349031768923, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893371349031768923, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7956294032821860720, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: speed

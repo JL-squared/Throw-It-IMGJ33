@@ -5638,6 +5638,7 @@ GameObject:
   - component: {fileID: 8780433711588789733}
   - component: {fileID: 6575133725039191861}
   - component: {fileID: 6832101547815883108}
+  - component: {fileID: 8941508539368422327}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -5679,6 +5680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weatherManager: {fileID: 0}
   marketManager: {fileID: 0}
+  devConsole: {fileID: 0}
   pathfindingRebuilder: {fileID: 0}
   volume: {fileID: 2559728800090142005}
   initialized: 0
@@ -5838,3 +5840,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1be7f9190abdc74fa995b3aa6064180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingCurrency: 100
+  chanceToFluctuate: 0.05
+  rngFluctuationsFactor: 0.2
+  marketResponseFactor: 0.4
+--- !u!114 &8941508539368422327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738069126821496426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0afa6f72f0f449a408e1e23b5addee4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consoleNation: 0

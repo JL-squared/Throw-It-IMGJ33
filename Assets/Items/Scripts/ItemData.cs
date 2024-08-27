@@ -36,7 +36,7 @@ public class ItemDataConverter : JsonConverter {
     }
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-        var t = ItemUtils.GetItemType(reader.ReadAsString());
+        var t = Registries.items[reader.ReadAsString()];
         return t;
     }
 

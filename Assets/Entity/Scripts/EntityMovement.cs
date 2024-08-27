@@ -9,7 +9,7 @@ public class EntityMovement : MonoBehaviour {
     public float speed = 7f;
 
     [HideInInspector]
-    public float activeSpeed;
+    public float speedModifier = 1f;
     [HideInInspector]
     public Vector2 localWishMovement;
     private Vector3 movement;
@@ -83,8 +83,8 @@ public class EntityMovement : MonoBehaviour {
 
         // Transform local wish movement to global world movement direction
         Vector2 normalized = localWishMovement.normalized;
-        wishMovement.x = activeSpeed * normalized.x;
-        wishMovement.z = activeSpeed * normalized.y;
+        wishMovement.x = speed * speedModifier * normalized.x;
+        wishMovement.z = speed * speedModifier * normalized.y;
         if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
             wishMovement = transform.TransformDirection(wishMovement);
         } else {
@@ -126,6 +126,7 @@ public class EntityMovement : MonoBehaviour {
 
         // Move the character and fix head bump problem
         if (cc.enabled) {
+            Debug.DrawRay(transform.position, movement);
             CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
             if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
                 movement.y = 0;
@@ -146,10 +147,6 @@ public class EntityMovement : MonoBehaviour {
                 transform.rotation = q;
             }
         }
-    }
-
-    public void ModifySpeed(float modifier = 1) {
-        activeSpeed = speed * modifier;
     }
     
     public void ExplosionAt(Vector3 position, float force, float radius) {

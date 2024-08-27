@@ -1,35 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BotPathfinder : MonoBehaviour {
-    private EntityMovement em;
-    public float rotationSmoothing;
+public class BotPathfinder : BotBehaviour {
+    /*
     public float speedDistFalloff;
     private NavMeshPath path;
     public LayerMask mask;
-    public Vector3 target;
     private Vector3[] corners = new Vector3[0]; 
     public string agentType = "Bot";
     public bool pathfind = true;
+    */
 
-    public void Start() {
-        em = GetComponent<EntityMovement>();
-        path = new NavMeshPath();
-    }
 
-    // https://forum.unity.com/threads/how-do-i-get-the-int-value-of-a-navigation-agent-type.472340/
-    private int GetNavMeshAgentID(string name) {
-        for (int i = 0; i < NavMesh.GetSettingsCount(); i++) {
-            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(index: i);
-            if (name == NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID)) {
-                return settings.agentTypeID;
-            }
-        }
-
-        Debug.LogError("Could not find navmesh agent id");
-        return 0;
-    }
-
+    /*
     private Vector3 GetAppropriateDir(Vector3[] corners) {
         for (int i = 0; i < Mathf.Min(3, corners.Length); i++) {
             Vector3 first = corners[i];
@@ -43,8 +26,16 @@ public class BotPathfinder : MonoBehaviour {
 
         return Vector3.zero;
     }
+    */
 
     public void Update() {
+        movement.localWishMovement = Vector2.up;
+
+        Vector3 direction = -(transform.position - targetPosition);
+        direction.y = 0;
+        Vector2 local = new Vector2(direction.x, direction.z);
+        movement.localWishRotation = Quaternion.LookRotation(direction.normalized);
+        /*
         if (pathfind && GameManager.Instance.pathfindingRebuilder.useNavMesh) {
             NavMeshQueryFilter filter = new NavMeshQueryFilter();
             filter.agentTypeID = GetNavMeshAgentID(agentType);
@@ -81,13 +72,15 @@ public class BotPathfinder : MonoBehaviour {
             em.localWishMovement = Vector2.up;
             em.localWishRotation = Quaternion.LookRotation(direction.normalized);
         }
-        
+        */
     }
 
+    /*
     public void OnDrawGizmos() {
         for (int i = 0; i < corners.Length-1; i++) {
             Gizmos.DrawSphere(corners[i], 0.2f);
             Gizmos.DrawLine(corners[i], corners[i + 1]);
         }
     }
+    */
 }

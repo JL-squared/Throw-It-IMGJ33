@@ -5,8 +5,17 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class Utils {
+    private static AddressableRegistry<ItemData> itemRegistry;
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void Initialize() {
+    }
+
     public static void ApplyExplosionKnockback(Vector3 center, float radius, Collider[] colliders, float force) {
         float rbExplosionFactor = 100f;
 
@@ -87,5 +96,22 @@ public static class Utils {
         float b = 1f / J(1);
         float a = J(x) * b;
         return Mathf.Clamp01(a);
+    }
+
+
+    // Load all the types of an Adressable using its label into memory
+    public static void GetAllTypes<T>(ref Dictionary<string, T> types, string label) where T : ScriptableObject {
+        var temp = new Dictionary<string, T>();
+        types = temp;
+
+        AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(label, (x) => {
+            temp.TryAdd(x.name, x);
+        });
+
+        handle.WaitForCompletion();
+    }
+
+    public static bool IsNullOrDestroyed(this object value) {
+        return ReferenceEquals(value, null) || value.Equals(null);
     }
 }

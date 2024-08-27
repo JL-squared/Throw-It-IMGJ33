@@ -21,7 +21,9 @@ public class BotData : ScriptableObject {
     public bool applyFace;
 
     public RngList<BotLootData> loot;
+    public GameObject botPrefab;
 
+    public EntityMovementFlags movementFlags = EntityMovementFlags.Default;
     public float baseMovementSpeed = 7;
     public float baseAttackSpeed = 5;
     public float baseBodyHealth = 50;

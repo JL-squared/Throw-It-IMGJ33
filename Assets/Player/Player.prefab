@@ -442,6 +442,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 094be338-b362-40a2-8b7b-28eb0fb920b0
     m_ActionName: Player Map/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: ToggleDevConsole
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5befd4ad-4843-46ce-b177-847e98bfcfea
+    m_ActionName: Player Map/Toggle Dev Console[/Keyboard/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -460,7 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  activeSpeed: 0
+  speedModifier: 1
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -473,7 +489,7 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   gravity: -9.81
   knockbackResistance: 0.3
-  groundedOffsetVelocity: -2.5
+  groundedOffsetVelocity: -6
   rotationIsLocal: 0
   isJumping: 0
   pushForce: 8
@@ -574,6 +590,7 @@ MonoBehaviour:
   viewModelRotationClampMagnitude: 100
   viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
+  health: {fileID: 0}
   vehicle: {fileID: 0}
 --- !u!143 &8428834152011970357
 CharacterController:

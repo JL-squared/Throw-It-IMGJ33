@@ -241,9 +241,9 @@ public class Player : MonoBehaviour {
 
     public void UpdateMovement() {
         if (isSprinting) {
-            movement.ModifySpeed(sprintModifier);
+            movement.speedModifier = sprintModifier;
         } else {
-            movement.ModifySpeed();
+            movement.speedModifier = 1f;
         }
     }
 
@@ -462,7 +462,7 @@ public class Player : MonoBehaviour {
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
         foreach (Item item in items) {
-            if (item.Count >= count && item.Data == ItemUtils.itemDatas[id]) {
+            if (item.Count >= count && item.Data == Registries.items.data[id]) {
                 return i;
             }
             i++;

@@ -33,12 +33,11 @@ public class BotBase : MonoBehaviour {
     public float damageResistance = 0;
     public float knockbackResistance = 0;
 
-    private EntityMovement entityMovement;
+    private EntityMovement em;
     [HideInInspector]
     public EntityHealth _headHealth;
     [HideInInspector]
     public EntityHealth _bodyHealth;
-    private BotPathfinder pathfinder;
     private BotTextToSpeech tts;
 
     // Both bot parts and components
@@ -126,11 +125,11 @@ public class BotBase : MonoBehaviour {
     }
 
     private void ApplyAttributes() {
-        if (entityMovement == null)
+        if (em == null)
             return;
 
-        entityMovement.speed = Mathf.Max(movementSpeed, 0);
-        entityMovement.knockbackResistance = Mathf.Clamp01(knockbackResistance);
+        em.speed = Mathf.Max(movementSpeed, 0);
+        em.knockbackResistance = Mathf.Clamp01(knockbackResistance);
         _bodyHealth.maxHealth = bodyHealth;
         _bodyHealth.health = bodyHealth;
         _headHealth.maxHealth = headHealth;
@@ -201,8 +200,7 @@ public class BotBase : MonoBehaviour {
 
     public void Start() {
         botBehaviours = GetComponents<BotBehaviour>().ToList();
-        pathfinder = GetComponent<BotPathfinder>();
-        entityMovement = GetComponent<EntityMovement>();
+        em = GetComponent<EntityMovement>();
         _bodyHealth = GetComponent<EntityHealth>();
         _headHealth = healthHeadEntity.GetComponent<EntityHealth>();
         tts = GetComponent<BotTextToSpeech>();
@@ -225,7 +223,7 @@ public class BotBase : MonoBehaviour {
 
         foreach (var item in botBehaviours) {
             item.botBase = this;
-            item.movement = entityMovement;
+            item.movement = em;
             item.bodyHealth = _bodyHealth;
             item.headHealth = _headHealth;
             item.botTts = tts;
@@ -233,6 +231,7 @@ public class BotBase : MonoBehaviour {
 
         ApplyAngry();
         ApplyAttributes();
+        em.entityMovementFlags = data.movementFlags;
     }
 
     float offset = 0.247f;
@@ -241,7 +240,6 @@ public class BotBase : MonoBehaviour {
         GameObject player = Player.Instance.gameObject;
         Vector3 velocity = player.GetComponent<EntityMovement>().Velocity;
         target = player.transform.position;
-        pathfinder.target = target;
 
         foreach (var part in botBehaviours) {
             part.targetPosition = target;
@@ -269,11 +267,11 @@ public class BotBase : MonoBehaviour {
                 part.deathFactor = Mathf.Clamp01(timeSinceDeath / interpolationDeathTime);
             }
 
-            entityMovement.speed = Mathf.Max(movementSpeed * (1 - Mathf.Clamp01(timeSinceDeath / interpolationDeathTime)), 0);
-            entityMovement.rotationSmoothing = (timeSinceDeath / interpolationDeathTime) * 8;
+            em.speed = Mathf.Max(movementSpeed * (1 - Mathf.Clamp01(timeSinceDeath / interpolationDeathTime)), 0);
+            em.rotationSmoothing = (timeSinceDeath / interpolationDeathTime) * 8;
 
             if (timeSinceDeath > 1) {
-                entityMovement.entityMovementFlags.RemoveFlag(EntityMovementFlags.AllowedToRotate | EntityMovementFlags.ApplyMovement);
+                em.entityMovementFlags.RemoveFlag(EntityMovementFlags.AllowedToRotate | EntityMovementFlags.ApplyMovement);
             }
         }
     }

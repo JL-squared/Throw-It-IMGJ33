@@ -95,7 +95,7 @@ public class BallerAccumulator : BotBehaviour {
             }
         }
 
-        currentAngularVelocity = Quaternion.Slerp(currentAngularVelocity, angularVelocity, Time.deltaTime * 10);
+        currentAngularVelocity = angularVelocity;
         rotation = currentAngularVelocity.normalized * rotation;
 
         // I tried setting global rotation to default but that didn't work idk why

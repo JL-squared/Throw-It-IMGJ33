@@ -10,46 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278e8b01da2784d4eb38c0962ccdff07, type: 3}
-  m_Name: BotBaseTall
+  m_Name: baller
   m_EditorClassIdentifier: 
   center:
-    list:
-    - enabled: 1
-      weight: 1
-      prefab: {fileID: 1110134755909169794, guid: 3c9d90cd7485f8742a1e7d2d1aaaa0ce,
-        type: 3}
-      tags: []
-      modifiers:
-      - attribute: 0
-        delta: -2
-    - enabled: 0
-      weight: 1
-      prefab: {fileID: 8267302789172344551, guid: 132160f1b640d2e4d94afb30d9794148,
-        type: 3}
-      tags: []
-      modifiers:
-      - attribute: 0
-        delta: -2
-    - enabled: 0
-      weight: 1
-      prefab: {fileID: 6817891542182959447, guid: 92f961df6d6e8b64bb8fc315254b1dcd,
-        type: 3}
-      tags: []
-      modifiers:
-      - attribute: 0
-        delta: -2
-    - enabled: 1
-      weight: 1
-      prefab: {fileID: 1934811558212736242, guid: 71d278c08e66aa74cb5844066a3a990c,
-        type: 3}
-      tags: []
-      modifiers:
-      - attribute: 0
-        delta: -2
+    list: []
     useLastAsFallback: 0
     noneSubset:
-      enabled: 1
-      weight: 5
+      enabled: 0
+      weight: 1
   left:
     list: []
     useLastAsFallback: 0
@@ -118,13 +86,13 @@ MonoBehaviour:
       weight: 1
   rightEye:
     list:
-    - enabled: 0
+    - enabled: 1
       weight: 1
       prefab: {fileID: 5082969058903117738, guid: d99750c6f8ae302408f152e1fbd8ba55,
         type: 3}
       tags: []
       modifiers: []
-    - enabled: 0
+    - enabled: 1
       weight: 1
       prefab: {fileID: 2678519501079101574, guid: 150cd8acae772414d91fbe84f51ef677,
         type: 3}
@@ -149,12 +117,12 @@ MonoBehaviour:
   heads:
     list:
     - enabled: 1
-      weight: 0
+      weight: 1
       prefab: {fileID: 4448601090675110906, guid: fe15b8d1a9dba55499bd0f31841dca27,
         type: 3}
       tags: []
       modifiers: []
-    useLastAsFallback: 1
+    useLastAsFallback: 0
     noneSubset:
       enabled: 0
       weight: 1
@@ -165,24 +133,20 @@ MonoBehaviour:
   angryModifiers:
   - attribute: 0
     delta: 2
-  - attribute: 1
-    delta: 1
-  - attribute: 2
-    delta: 1
   applyFace: 1
   loot:
-    list:
-    - enabled: 1
-      weight: 2
-      item: {fileID: 11400000, guid: 20e62cf7196fb4349aba90eb0585d5ee, type: 2}
+    list: []
     useLastAsFallback: 0
     noneSubset:
       enabled: 0
       weight: 1
-  baseMovementSpeed: -20
+  botPrefab: {fileID: 3794683471665240206, guid: acfdad607917b414480a0a476865bdfa,
+    type: 3}
+  movementFlags: 0
+  baseMovementSpeed: 3
   baseAttackSpeed: 1
-  baseBodyHealth: 2
-  baseHeadHealth: 5
-  baseAccuracy: 0.4
+  baseBodyHealth: 100
+  baseHeadHealth: 25
+  baseAccuracy: 0.2
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

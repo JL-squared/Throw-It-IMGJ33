@@ -42,7 +42,7 @@ public class Item {
     }
 
     public Item(string id, int count) {
-        this.Data = ItemUtils.GetItemType(id);
+        this.Data = Registries.items[id];
         this.count = count;
     }
 

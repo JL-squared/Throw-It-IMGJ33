@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  activeSpeed: 0
+  speedModifier: 1
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -436,7 +436,7 @@ MonoBehaviour:
   jumpBufferTime: 0
   gravity: -9.81
   knockbackResistance: 0
-  groundedOffsetVelocity: -2.5
+  groundedOffsetVelocity: -6
   rotationIsLocal: 0
   isJumping: 0
   pushForce: 4
@@ -454,14 +454,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a042ba931313ccc4f8c78feb372777e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSmoothing: 20
+  botBase: {fileID: 0}
+  movement: {fileID: 0}
+  bodyHealth: {fileID: 0}
+  headHealth: {fileID: 0}
+  botTts: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetVelocity: {x: 0, y: 0, z: 0}
+  deathFactor: 0
   speedDistFalloff: 10
   mask:
     serializedVersion: 2
     m_Bits: 255
-  target: {x: 0, y: 0, z: 0}
   agentType: Bot
-  pathfind: 1
+  pathfind: 0
 --- !u!114 &4958769060511696096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,8 +554,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.9
-  m_Radius: 0.7
+  m_Height: 0.5
+  m_Radius: 0.5
   m_SlopeLimit: 65
   m_StepOffset: 0.6
   m_SkinWidth: 0.08

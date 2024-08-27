@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278e8b01da2784d4eb38c0962ccdff07, type: 3}
-  m_Name: BotBase
+  m_Name: base
   m_EditorClassIdentifier: 
   center:
     list:
@@ -191,6 +191,9 @@ MonoBehaviour:
     noneSubset:
       enabled: 0
       weight: 1
+  botPrefab: {fileID: 8265144308201479040, guid: 1e6558cfda0e0b649bdddafef7e9aaaa,
+    type: 3}
+  movementFlags: -1
   baseMovementSpeed: 3
   baseAttackSpeed: 1
   baseBodyHealth: 2
