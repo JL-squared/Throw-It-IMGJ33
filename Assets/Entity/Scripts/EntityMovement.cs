@@ -31,6 +31,7 @@ public class EntityMovement : MonoBehaviour {
     public float gravity = -9.81f;
     public float knockbackResistance = 0.0f;
     public float groundedOffsetVelocity = -2.5f;
+    public bool rotationIsLocal = false;
     [HideInInspector]
     public bool isJumping;
     [Header("Rigidbody Interaction")]
@@ -93,7 +94,7 @@ public class EntityMovement : MonoBehaviour {
         // Bypass y value as that must remain unchanged through the acceleration diff
         wishMovement.y = movement.y;
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
-        movement.y += gravity * Time.deltaTime;
+        movement.y += 2 * gravity * Time.deltaTime;
     
 
         // When we hit the ground and the input is buffered
@@ -132,10 +133,17 @@ public class EntityMovement : MonoBehaviour {
         }
 
         if (localWishRotation.normalized != Quaternion.identity && entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
+            Quaternion q = Quaternion.identity;
             if (rotationSmoothing == 0f) {
-                transform.rotation = localWishRotation;
+                q = localWishRotation;
             } else {
-                transform.rotation = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
+                q = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
+            }
+
+            if (rotationIsLocal) {
+                transform.localRotation = q;
+            } else {
+                transform.rotation = q;
             }
         }
     }

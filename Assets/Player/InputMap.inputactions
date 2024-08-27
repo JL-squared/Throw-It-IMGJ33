@@ -139,6 +139,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Dev Console",
+                    "type": "Button",
+                    "id": "5befd4ad-4843-46ce-b177-847e98bfcfea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -612,6 +621,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Market Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37bddbe4-89a9-4c81-86bf-52e741acbbc9",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Dev Console",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

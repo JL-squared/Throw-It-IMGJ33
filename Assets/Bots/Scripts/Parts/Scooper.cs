@@ -88,13 +88,13 @@ public class Scooper : BotBehaviour {
 
         // Handle throwing only
         if (repeating) {
-            if (normalized > 270f && armed && deathFactor == 0f) {
+            if (normalized > 270f && armed) {
                 thrower.Shoot();
                 armed = false;
             }
         } else {
             // badoing... throw that shit
-            if ((time % maxTime) > curveThrowTime && armed && deathFactor == 0f) {
+            if ((time % maxTime) > curveThrowTime && armed) {
                 thrower.Shoot();
                 armed = false;
             }
@@ -106,7 +106,7 @@ public class Scooper : BotBehaviour {
         if (normalized > startPickupAngle && normalized < endPickupAngle && enabled) {
             float state = math.unlerp(startPickupAngle, endPickupAngle, normalized);
             fakeSnowballSize = state;
-            armed = true;
+            armed = deathFactor == 0f;
         } else {
             fakeSnowballSize = 1.0f;
         }

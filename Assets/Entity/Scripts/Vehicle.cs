@@ -3,6 +3,7 @@ using UnityEngine;
 public class Vehicle : MonoBehaviour, IInteraction {
     public bool Interactable => !driven;
     public bool Highlight => !driven;
+    public virtual bool RotationFollows => false;
     public GameObject GameObject => gameObject;
     public Transform playerSeat;
 
@@ -16,11 +17,12 @@ public class Vehicle : MonoBehaviour, IInteraction {
             player.ExitVehicle();
         }
 
+        player.GetComponent<EntityMovement>().rotationIsLocal = RotationFollows;
         player.vehicle = this;
         player.transform.SetParent(transform);
         player.transform.localPosition = playerSeat.localPosition;
         player.transform.localRotation = Quaternion.identity;
-        player.ResetMovement();
+        player.ResetMovement(true);
         ((IInteraction)this).SetHighlight(false);
         driven = true;
     }
@@ -30,6 +32,7 @@ public class Vehicle : MonoBehaviour, IInteraction {
 
     public virtual void Exit() {
         driven = false;
+        player.GetComponent<EntityMovement>().rotationIsLocal = false;
     }
 
     private void Update() {

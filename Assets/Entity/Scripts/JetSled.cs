@@ -10,7 +10,9 @@ public class JetSled : Vehicle {
     public float force = 700f;
     public float angle = 45f;
     private float currentAngle;
-    
+
+    public override bool RotationFollows => true;
+
     Rigidbody rb;
     public Transform thrusterLeft;
     public Transform thrusterRight;

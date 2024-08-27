@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  activeSpeed: 0
   localWishMovement: {x: 0, y: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -433,9 +434,10 @@ MonoBehaviour:
   jump: 5
   coyoteTime: 0
   jumpBufferTime: 0
-  gravity: -20
+  gravity: -9.81
   knockbackResistance: 0
   groundedOffsetVelocity: -2.5
+  rotationIsLocal: 0
   isJumping: 0
   pushForce: 4
   maxPushForce: 10

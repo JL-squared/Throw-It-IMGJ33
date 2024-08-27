@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     [HideInInspector]
     public MarketManager marketManager;
+    [HideInInspector]
+    public DevConsole devConsole;
     public static GameManager Instance;
     [HideInInspector]
     public NavMeshRebuilder pathfindingRebuilder;
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour {
         weatherManager = GetComponent<WeatherManager>();
         pathfindingRebuilder = GetComponent<NavMeshRebuilder>();
         marketManager = GetComponent<MarketManager>();
+        devConsole = GetComponent<DevConsole>();
 
         if (Instance == null) {
             Instance = this;
@@ -59,13 +62,6 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
             onTimeSinceDeath?.Invoke(timeSinceDeath);
         }
-
-        /*
-        if (Input.GetKeyDown(KeyCode.F)) {
-            toggle = !toggle;
-        }
-        Application.targetFrameRate = toggle ? 144 : 30;
-        */
     }
 
     public void PlayerKilled() {

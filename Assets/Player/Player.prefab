@@ -471,9 +471,10 @@ MonoBehaviour:
   jump: 5
   coyoteTime: 0.1
   jumpBufferTime: 0.1
-  gravity: -20
+  gravity: -9.81
   knockbackResistance: 0.3
   groundedOffsetVelocity: -2.5
+  rotationIsLocal: 0
   isJumping: 0
   pushForce: 8
   maxPushForce: 12
@@ -542,6 +543,7 @@ MonoBehaviour:
   selectedTemp2Prefab: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
     type: 3}
   placementGhost: {fileID: 0}
+  items: []
   selected: 0
   selectedEvent:
     m_PersistentCalls:

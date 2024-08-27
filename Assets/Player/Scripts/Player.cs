@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Tweens.Core;
 using Tweens;
+using static UnityEditor.Progress;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -72,8 +73,8 @@ public class Player : MonoBehaviour {
 
     #region Movement
     [Header("Movement")]
-    [SerializeField]
-    EntityMovement movement;
+    [HideInInspector]
+    public EntityMovement movement;
     [HideInInspector]
     public Vector2 wishHeadDir;
     public Transform head;
@@ -125,6 +126,8 @@ public class Player : MonoBehaviour {
     #endregion
 
     [HideInInspector]
+    public EntityHealth health;
+    [HideInInspector]
     public Vehicle vehicle;
     private PlayerControlsSettings settings;
 
@@ -150,7 +153,7 @@ public class Player : MonoBehaviour {
         placementGhost.SetActive(false);
 
         // Hook onto health component
-        EntityHealth health = GetComponent<EntityHealth>();
+        health = GetComponent<EntityHealth>();
         health.OnHealthChanged += (float p) => {
             UIMaster.Instance.healthBar.HealthChanged(p);
         };
@@ -176,7 +179,7 @@ public class Player : MonoBehaviour {
         isDead = true;
 
         // Literal hell
-        ambatakamChoir.Play();
+        //ambatakamChoir.Play();
 
         // Make the camera a rigidbody
         Rigidbody rb = head.gameObject.AddComponent<Rigidbody>();
@@ -216,7 +219,6 @@ public class Player : MonoBehaviour {
         
         if (!Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
-                Debug.Log("test");
                 interaction.StartHover(this);
             }
             
@@ -276,7 +278,7 @@ public class Player : MonoBehaviour {
             }
 
             Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
-            viewModel.transform.localPosition = localPosition;
+            viewModel.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
         }
         currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
     }
@@ -362,9 +364,26 @@ public class Player : MonoBehaviour {
 
     #region Inventory
     // Add item to inventory if possible,
-    // DO NOT INSERT INVALID STACK COUNT ITEM,
+    // Works with invalid stack sizes
+    // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
+    public void AddItemUnclamped(Item itemIn) {
+        int count = itemIn.Count;
+        while (count > 0) {
+            AddItem(new Item(itemIn.Data, itemIn.Data.stackSize));
+            count -= itemIn.Data.stackSize;
+        }
+    }
+
+
+    // Add item to inventory if possible,
+    // DO NOT INSERT INVALID STACK COUNT ITEM, (clamped anyways)
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
     public void AddItem(Item itemIn) {
+        if (itemIn.Count > itemIn.Data.stackSize) {
+            Debug.LogWarning("Given item count was greater than stack size. Clamping. Use AddItemUnclamped for unclamped stack sizes");
+            itemIn.Count = itemIn.Data.stackSize;
+        }
+
         int firstEmpty = -1;
         int i = 0;
         foreach (Item item in items) {
@@ -388,6 +407,11 @@ public class Player : MonoBehaviour {
             //Debug.Log("oh yeah, slot was empty. It's sex time...");
             items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
             itemIn.MakeEmpty();
+        } else {
+            Debug.LogWarning("Could not find spot to add item, spawning as World Item!");
+            for (int k = 0; k < itemIn.Count; k++) {
+                WorldItem.Spawn(itemIn.Data, transform.position, transform.rotation);
+            }
         }
 
         if (firstEmpty == selected) {
@@ -498,7 +522,7 @@ public class Player : MonoBehaviour {
 
     #region Input System Callbacks
     public void Movement(InputAction.CallbackContext context) {
-        if (!isDead) {
+        if (Performed()) {
             localWishMovement = context.ReadValue<Vector2>();
             movement.localWishMovement = localWishMovement;
             FOVTween();
@@ -539,8 +563,13 @@ public class Player : MonoBehaviour {
     public void Look(InputAction.CallbackContext context) {
         if (Cursor.lockState != CursorLockMode.None && Performed()) {
             ApplyMouseDelta(context.ReadValue<Vector2>());
+        }
+    }
 
-            //lastMouseDelta = Vector2.Lerp(lastMouseDelta, mouseDelta, Time.deltaTime * 20.0f);
+    public void ToggleDevConsole(InputAction.CallbackContext context) {
+        if (Performed(context) && !GameManager.Instance.devConsole.consoleNation) {
+            UIMaster.Instance.ToggleDevConsole();
+            GameManager.Instance.devConsole.consoleNation = UIMaster.Instance.state == UIMaster.MenuState.Console;
         }
     }
 
@@ -866,7 +895,8 @@ public class Player : MonoBehaviour {
 
         if (resetRotation) {
             movement.localWishRotation = Quaternion.identity;
-            transform.rotation = Quaternion.identity;
+            transform.localRotation = Quaternion.identity;
+            head.localRotation = Quaternion.identity;
             wishHeadDir = Vector2.zero;
         }
 

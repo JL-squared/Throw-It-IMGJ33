@@ -16,6 +16,7 @@ public class UIMaster : MonoBehaviour {
         Crafting,
         Market,
         Paused,
+        Console,
         MainMenu
     }
 
@@ -44,7 +45,7 @@ public class UIMaster : MonoBehaviour {
         switch(state) {
             case MenuState.None:
             i = true; break;
-            case MenuState.Crafting or MenuState.Market or MenuState.Paused or MenuState.MainMenu:
+            case MenuState.Crafting or MenuState.Market or MenuState.Paused or MenuState.MainMenu or MenuState.Console:
             i = false; break;
         }
         return i;
@@ -89,10 +90,15 @@ public class UIMaster : MonoBehaviour {
         Evaluate();
     }
 
+    public void ToggleDevConsole() {
+        ToggleState(MenuState.Console);
+        Evaluate();
+    }
+
     // THIS JUST EVALUATES THE STATE
     public void Evaluate() {
         switch(state) {
-            case MenuState.None:
+            case MenuState.None or MenuState.Console:
                 pauseMenu.SetActive(false);
                 healthBarGroup.SetActive(true);
                 inGameHUD.SetIngame();
@@ -125,6 +131,12 @@ public class UIMaster : MonoBehaviour {
         if (GameManager.Instance != null) {
             GameManager.Instance.UpdatePaused(state == MenuState.Paused);
         }
-        Cursor.lockState = MovementPossible() ? CursorLockMode.Locked : CursorLockMode.None;
+
+        if (MovementPossible()) {
+            Cursor.lockState = CursorLockMode.Locked;
+        } else {
+            Player.Instance.ResetMovement();
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 }

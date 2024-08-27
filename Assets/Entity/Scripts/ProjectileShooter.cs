@@ -25,9 +25,7 @@ public class ProjectileShooter : MonoBehaviour {
         //Vector3 startingVelocity = startingSpeed * forcePercentage * spawnHolster.forward;
         Vector3 startingPos = spawnHolster.position + fwd * offsetDistance;
 
-        GameObject spawned = Instantiate(data.projectile);
-        spawned.SetActive(false);
-
+        
         if (inheritVelocityMovement != null) {
             startingVelocity += inheritVelocityMovement.Velocity;
         }
@@ -38,9 +36,7 @@ public class ProjectileShooter : MonoBehaviour {
             }
         }
 
-        Projectile spawnedProjectile = spawned.GetComponent<Projectile>();
-        spawnedProjectile.Spawned(startingPos, startingVelocity, this);
-        spawned.SetActive(true);
+        Projectile.Spawn(data, startingPos, startingVelocity, this);
     }
 
     private void OnDrawGizmosSelected() {

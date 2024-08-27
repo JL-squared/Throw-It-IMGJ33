@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Projectile : MonoBehaviour {
     protected ProjectileItemData data;
@@ -8,27 +9,30 @@ public class Projectile : MonoBehaviour {
     protected new Collider collider;
     protected bool justSpawnedVehicle;
 
-    public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter) {
-        rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
-        rb.velocity = velocity;
-        transform.position = pos;
-
-        data = shooter.data;
-
-        Destroy(gameObject, data.lifetime);
-
-        if (shooter.collider != null) {
+    public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
+        if (shooter != null && shooter.collider != null) {
             shooterPosition = shooter.transform.position;
-            shooterCollider = shooter.collider;
-
+            shooterCollider = shooter.collider;            
             Physics.IgnoreCollision(collider, shooterCollider, true);
         }
+
+        gameObject.SetActive(true);
     }
 
-    public void Start() {
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
+    public static void Spawn(ProjectileItemData data, Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
+        GameObject spawned = Instantiate(data.projectile);
+        spawned.SetActive(false);
+        Projectile projectile = spawned.GetComponent<Projectile>();
+        projectile.rb = projectile.GetComponent<Rigidbody>();
+        projectile.rb.interpolation = RigidbodyInterpolation.Interpolate;
+        projectile.collider = projectile.GetComponent<Collider>();
+        projectile.rb.velocity = velocity;
+        projectile.transform.position = pos;
+        projectile.data = data;
+        Destroy(projectile.gameObject, data.lifetime);
+        projectile.Spawned(pos, velocity, shooter);
     }
+
     protected virtual bool ShouldCollideWith(Collider other) {
         if (other.isTrigger)
             return false;
