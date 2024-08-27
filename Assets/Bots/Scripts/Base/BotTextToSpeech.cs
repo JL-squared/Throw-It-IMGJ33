@@ -35,7 +35,7 @@ public class BotTextToSpeech : MonoBehaviour {
         //Debug.Log("say: " + s);
         deltas.pitch = Random.Range(-10, 10);
         deltas.speed = Random.Range(-10, 10);
-        tts.SayString(s, deltas, srcVolume, srcPitch, overwritePlaying);
+        tts.Say(s, deltas, srcVolume, srcPitch, overwritePlaying);
     }
 
     private void OnVolumeUpdate(float volume) {

@@ -16,6 +16,6 @@ public static class Registries {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Init() {
         items = new AddressableRegistry<ItemData>("Items");
-        //bots = new AddressableRegistry<BotData>("Bots");
+        bots = new AddressableRegistry<BotData>("Bots");
     }
 }

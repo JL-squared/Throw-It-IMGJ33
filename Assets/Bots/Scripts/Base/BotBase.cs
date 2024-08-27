@@ -50,6 +50,11 @@ public class BotBase : MonoBehaviour {
     public Vector3 lookTarget;
     private float timeSinceDeath;
 
+    public static void Summon(BotData data, Vector3 position, Quaternion rotation) {
+        GameObject bot = Instantiate(data.botPrefab, position, rotation);
+        bot.GetComponent<BotBase>().data = data;
+    }
+
     private void OnValidate() {
         ApplyAttributes();
     }

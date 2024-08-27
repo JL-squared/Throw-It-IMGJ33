@@ -58,7 +58,7 @@ public class UIMaster : MonoBehaviour {
                 state = MenuState.Paused; 
             break;
 
-            case MenuState.Paused:
+            case MenuState.Paused or MenuState.Console:
                 state = MenuState.None;
             break;
 
@@ -138,5 +138,7 @@ public class UIMaster : MonoBehaviour {
             Player.Instance.ResetMovement();
             Cursor.lockState = CursorLockMode.None;
         }
+
+        GameManager.Instance.devConsole.consoleNation = state == MenuState.Console;
     }
 }

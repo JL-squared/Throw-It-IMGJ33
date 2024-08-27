@@ -8,12 +8,30 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.InputSystem.Utilities;
 
 public static class Utils {
     private static AddressableRegistry<ItemData> itemRegistry;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Initialize() {
+    }
+
+    public static void BlowUp(Vector3 position, float damage=50, float force=65, float radius=2, float editStrength=30f, float editRadiusOffset=1f) {
+        IVoxelEdit edit = new SphericalExplosionVoxelEdit {
+            center = position,
+            strength = editStrength,
+            material = 0,
+            radius = radius + editRadiusOffset,
+        };
+
+        if (VoxelTerrain.Instance != null) {
+            VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
+        }
+
+        Collider[] colliders = Physics.OverlapSphere(position, radius);
+        Utils.ApplyExplosionKnockback(position, radius, colliders, force);
+        Utils.ApplyExplosionDamage(position, radius, colliders, 1, damage);
     }
 
     public static void ApplyExplosionKnockback(Vector3 center, float radius, Collider[] colliders, float force) {

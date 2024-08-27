@@ -65,20 +65,11 @@ public class TextToSpeech: MonoBehaviour {
         return source.isPlaying;
     }
 
-    public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
-        if (source.isPlaying && overwritePlaying) {
-            source.Stop();
-            source.timeSamples = 0;
-            string a = s;
-            onSpeechCutoff?.Invoke(a, out s);
-        } else if (source.isPlaying) {
-            return;
-        }
-
-        UnitySAM.SetSpeed(speed + deltas.speed);
-        UnitySAM.SetPitch(pitch + deltas.pitch);
-        UnitySAM.SetMouth(mouth + deltas.mouth);
-        UnitySAM.SetThroat(throat + deltas.throat);
+    public static AudioClip Vocalize(string s, DeltaAttribs deltas = new DeltaAttribs(), bool sing=false, float srcVolume = 1.0f, float srcPitch = 1.0f) {
+        UnitySAM.SetSpeed(72 + deltas.speed);
+        UnitySAM.SetPitch(64 + deltas.pitch);
+        UnitySAM.SetMouth(128 + deltas.mouth);
+        UnitySAM.SetThroat(128 + deltas.throat);
         UnitySAM.SetSingMode(sing);
 
         if (!s.EndsWith('.')) {
@@ -92,12 +83,25 @@ public class TextToSpeech: MonoBehaviour {
         var buf = UnitySAM.SAMMain();
         if (buf == null) {
             Debug.LogError("Buffer was null");
-            return;
+            return null;
         }
 
         AudioClip clip = AudioClip.Create("SamClip", buf.GetSize(), 1, 22050, false);
         clip.SetData(buf.GetFloats(), 0);
-        source.clip = clip;
+        return clip;
+    }
+
+    public void Say(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
+        if (source.isPlaying && overwritePlaying) {
+            source.Stop();
+            source.timeSamples = 0;
+            string a = s;
+            onSpeechCutoff?.Invoke(a, out s);
+        } else if (source.isPlaying) {
+            return;
+        }
+
+        source.clip = TextToSpeech.Vocalize(s, deltas, sing, srcVolume, srcPitch);
         source.volume = srcVolume;
         source.pitch = srcPitch;
         source.Play();

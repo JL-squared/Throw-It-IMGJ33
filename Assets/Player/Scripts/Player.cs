@@ -569,7 +569,6 @@ public class Player : MonoBehaviour {
     public void ToggleDevConsole(InputAction.CallbackContext context) {
         if (Performed(context) && !GameManager.Instance.devConsole.consoleNation) {
             UIMaster.Instance.ToggleDevConsole();
-            GameManager.Instance.devConsole.consoleNation = UIMaster.Instance.state == UIMaster.MenuState.Console;
         }
     }
 

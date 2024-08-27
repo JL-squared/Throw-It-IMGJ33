@@ -83,6 +83,36 @@ MonoBehaviour:
     m_SerializedLabels:
     - Items
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ec434253fbf1064aba059fdf1bc6efb
+    m_Address: Assets/AddressablesResources/Bots/baller.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Bots
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebd060475d811b3419835ba21486cce2
+    m_Address: Assets/AddressablesResources/Bots/base.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Bots
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1a886a866a16d441bb0a0b89b4bc484
+    m_Address: Assets/AddressablesResources/Bots/cyclops.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Bots
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
+    m_Address: Assets/AddressablesResources/Bots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Bots
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc8c885041695744fa547a296ef44650
+    m_Address: Assets/AddressablesResources/Bots/tall.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Bots
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da40d6b3b74a26d41a24aff6c41a6298, type: 2}
   m_SchemaSet:
