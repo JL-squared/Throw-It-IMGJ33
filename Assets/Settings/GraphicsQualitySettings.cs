@@ -42,8 +42,8 @@ public class GraphicsQualitySettings {
 
     public void Apply(VolumeProfile profile) {
         void SetVolumeOverride<T>(bool enabled) where T : VolumeComponent {
-            if (profile.TryGet<T>(out T bloom)) {
-                bloom.active = enabled;
+            if (profile.TryGet<T>(out T tahini)) {
+                tahini.active = enabled;
             }
         }
 

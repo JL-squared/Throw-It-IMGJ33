@@ -29,7 +29,7 @@ public class ItemDisplayCustomEditor : Editor {
         serializedObject.Update();
         string testItemID = EditorGUILayout.DelayedTextField("Test Item", "");
         if (testItemID != "") {
-            ItemData itemData = ItemUtils.GetItemType(testItemID);
+            ItemData itemData = Registries.items[testItemID];
             if (itemData != null) display.UpdateValues(itemData);
         }
         EditorGUILayout.PropertyField(nameDisplay);
