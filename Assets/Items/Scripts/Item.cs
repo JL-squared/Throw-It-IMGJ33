@@ -33,7 +33,7 @@ public class Item {
     private ItemData data;
 
     [JsonIgnore]
-    public ItemData Data { get {return data; } set { data = value; updateEvent.Invoke(this); } }
+    public ItemData Data { get { return data; } set { data = value; updateEvent.Invoke(this); } }
 
 
     public Item(ItemData data, int count) {

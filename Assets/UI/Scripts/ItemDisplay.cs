@@ -16,11 +16,11 @@ public class ItemDisplay : MonoBehaviour {
         }
     }
 
-    public TextMeshProUGUI nameDisplay;
-    public TextMeshProUGUI descriptionDisplay;
-    public Image icon;
-    public Image miniIcon;
-    public TextMeshProUGUI countDisplay;
+    public TextMeshProUGUI nameDisplay = null;
+    public TextMeshProUGUI descriptionDisplay = null;
+    public Image icon = null;
+    public Image miniIcon = null;
+    public TextMeshProUGUI countDisplay = null;
 
     public void UpdateValues(Item item_, bool modifyEnabled = true) {
         if (item_.IsEmpty() && modifyEnabled) {
@@ -40,8 +40,7 @@ public class ItemDisplay : MonoBehaviour {
         miniIcon = null;
     }
 
-    public void SetEnabled(bool enabled) {
-        Debug.Log("tf is this being run or not");
+    public void SetEnabled(bool enabled = true) {
         if (nameDisplay != null) nameDisplay.gameObject.SetActive(enabled);
         if (descriptionDisplay != null) descriptionDisplay.gameObject.SetActive(enabled);
         if (icon != null) icon.gameObject.SetActive(enabled);

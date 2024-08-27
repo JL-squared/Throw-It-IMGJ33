@@ -172,6 +172,8 @@ public class Player : MonoBehaviour {
         AddItem(new Item("battery", 1));
         AddItem(new Item("shovel", 1));
         AddItem(new Item("wires", 1));
+
+        gameCamera.fieldOfView = defaultFOV;
     }
 
     private void Killed() {
