@@ -73,12 +73,17 @@ public static class Utils {
         JsonSerializerSettings serializer = new JsonSerializerSettings();
         serializer.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
         serializer.Converters.Add(new ItemDataConverter());
+        serializer.Converters.Add(new EntityMovementConverter());
+        serializer.Converters.Add(new Vector2Converter());
+        serializer.Converters.Add(new Vector3Converter());
+        serializer.Converters.Add(new Vector4Converter());
+        serializer.Converters.Add(new QuaternionConverter());
         serializer.Formatting = Formatting.Indented;
         serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         return serializer;
     }
 
-    public static T Load<T>(string file, T defaultValue = null) where T : class {
+    public static T Load<T>(string file, T defaultValue) {
         if (!File.Exists(PersistentDir + "/" + file)) {
             Debug.LogWarning("File : " + file + " does not exist !");
             Save(file, defaultValue);
@@ -92,9 +97,10 @@ public static class Utils {
         return (T)obj;
     }
 
-    public static void Save<T>(string file, T data) where T : class {
+    public static string Save<T>(string file, T data) {
         string stringData = JsonConvert.SerializeObject(data, settings);
         File.WriteAllText(PersistentDir + "/" + file, stringData);
+        return stringData;
     }
 
     // Jarvis, scan this guys balls

@@ -121,10 +121,25 @@ public class DevConsole : MonoBehaviour {
                 },
             },
             new ConsoleCommand {
-                main = "expurosion",
+                main = "explode",
                 desc = "Blows up",
                 moment = (args, player) => {
                     Utils.BlowUp(player.transform.position);
+                },
+            },
+            new ConsoleCommand {
+                main = "save",
+                desc = "",
+                moment = (args, player) => {
+                    string bruh = Utils.Save("playerdata.json", player.GetComponent<EntityMovement>());
+                    Debug.Log(bruh);
+                },
+            },
+            new ConsoleCommand {
+                main = "load",
+                desc = "",
+                moment = (args, player) => {
+                    Utils.Load<EntityMovement>("playerdata.json", player.GetComponent<EntityMovement>());
                 },
             },
         };
@@ -189,6 +204,10 @@ public class DevConsole : MonoBehaviour {
             command = cmds[0].main;
             GUI.FocusControl("console");
             tabbed = true;
+        }
+
+        if (a.keyCode == KeyCode.UpArrow) {
+            command = lastCommand;
         }
     }
 

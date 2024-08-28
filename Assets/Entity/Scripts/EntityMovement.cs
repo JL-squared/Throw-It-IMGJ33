@@ -1,9 +1,14 @@
 using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 // Rigidbody based character controller
+[Serializable]
+[JsonConverter(typeof(EntityMovementConverter))]
 public class EntityMovement : MonoBehaviour {
     [Header("Speed")]
     public float speed = 7f;
@@ -12,7 +17,8 @@ public class EntityMovement : MonoBehaviour {
     public float speedModifier = 1f;
     [HideInInspector]
     public Vector2 localWishMovement;
-    private Vector3 movement;
+    [HideInInspector]
+    public Vector3 movement;
     [HideInInspector]
     public Vector3 wishMovement;
     [HideInInspector]
@@ -38,7 +44,8 @@ public class EntityMovement : MonoBehaviour {
     public float pushForce = 8;
     public float maxPushForce = 20;
 
-    private CharacterController cc;
+    [HideInInspector]
+    public CharacterController cc;
     private float lastGroundedTime = 0;
     private float nextJumpTime = 0;
     private int jumpCounter = 0;
@@ -226,5 +233,34 @@ public static class EntityMovementFlagsExt {
 
     public static void RemoveFlag(this ref EntityMovementFlags myFlags, EntityMovementFlags flag) {
         myFlags &= ~flag;
+    }
+}
+
+public class EntityMovementConverter : JsonConverter {
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+        EntityMovement movement = (EntityMovement)value;
+        Transform transform = movement.transform;
+        writer.WriteStartObject();
+        writer.WritePropertyName("position");
+        serializer.Serialize(writer, transform.position);
+        
+        writer.WritePropertyName("velocity");
+        serializer.Serialize(writer, movement.Velocity);
+        
+        writer.WritePropertyName("rotation");
+        serializer.Serialize(writer, transform.rotation);
+    }
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+        JObject jo = JObject.Load(reader);
+        EntityMovement movement = (EntityMovement)existingValue;
+        movement.transform.position = JsonConvert.DeserializeObject<Vector3>(jo["position"].ToString());
+        movement.transform.rotation = JsonConvert.DeserializeObject<Quaternion>(jo["rotation"].ToString());
+        movement.movement = JsonConvert.DeserializeObject<Vector3>(jo["velocity"].ToString());
+        return (EntityMovement)existingValue;
+    }
+
+    public override bool CanConvert(Type objectType) {
+        return objectType == typeof(Player);
     }
 }

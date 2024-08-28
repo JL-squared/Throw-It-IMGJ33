@@ -3,6 +3,8 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
+
+// https://www.desmos.com/calculator/ufsc6rllsk
 [assembly: RegisterGenericJobType(typeof(VoxelEditJob<ParametricExplosionVoxelEdit>))]
 public struct ParametricExplosionVoxelEdit : IVoxelEdit {
     [ReadOnly] public float3 center;

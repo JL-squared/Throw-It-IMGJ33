@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Tweens.Core;
 using Tweens;
 using System;
+using Newtonsoft.Json;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -144,6 +145,7 @@ public class Player : MonoBehaviour {
     void Start() {
         settings = Utils.Load<PlayerControlsSettings>("player.json", new PlayerControlsSettings());
         mouseSensitivity = settings.mouseSensivity;
+        defaultFOV = settings.fov;
         bodyTemperature = targetTemperature;
         Cursor.lockState = CursorLockMode.Locked;
         movement = GetComponent<EntityMovement>();
