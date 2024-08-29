@@ -39,10 +39,10 @@ public class WorldItem : MonoBehaviour, IInteraction {
     }
 
     public void Serialize(EntityData data) {
-        data.item = item;
+        data.itemStack = item;
     }
 
     public void Deserialize(EntityData data) {
-        item = data.item;
+        item = data.itemStack;
     }
 }

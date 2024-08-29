@@ -473,7 +473,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
         foreach (ItemStack item in items) {
-            if (item.Count >= count && item.Data == Registries.itemsData.data[id]) {
+            if (item.Count >= count && item.Data == Registries.items.data[id]) {
                 return i;
             }
             i++;
@@ -882,11 +882,11 @@ public class Player : MonoBehaviour, IEntitySerializer {
         items = data.inventory;
         wishHeadDir = data.wishHeadDir.Value;
         ApplyMouseDelta(Vector2.zero);
-        SelectionChanged(true);
+        SelectionChanged();
         inventoryUpdateEvent?.Invoke(items);
 
         foreach (var item in items) {
-            item.updateEvent?.AddListener((Item item) => { inventoryUpdateEvent.Invoke(items); });
+            item.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
     }
     #endregion

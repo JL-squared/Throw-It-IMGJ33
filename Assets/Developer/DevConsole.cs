@@ -112,8 +112,7 @@ public class DevConsole : MonoBehaviour {
                         BotData data = Registries.bots[name];
                         BotBase.Summon(data, player.transform.position, Quaternion.identity);
                     } else if (type == "items") {
-                        ItemData data = Registries.items[name];
-                        WorldItem.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
+                        WorldItem.Spawn(new ItemStack(name, 1), player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
                     } else if (type == "projectiles") {
                         ProjectileItemData data = (ProjectileItemData)Registries.items[name];
                         Projectile.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, player.gameCamera.transform.forward * float.Parse(args[2]));

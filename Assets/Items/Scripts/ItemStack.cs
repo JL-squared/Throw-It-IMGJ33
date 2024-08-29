@@ -28,7 +28,7 @@ public class ItemStack {
     [JsonIgnore]
     public UnityEvent<ItemStack> updateEvent = new UnityEvent<ItemStack>();
 
-    [JsonProperty]
+    [JsonProperty(PropertyName = "id")]
     [JsonConverter(typeof(ItemDataConverter))]
     private ItemData data;
 
@@ -41,10 +41,12 @@ public class ItemStack {
         } 
     }
 
-    public Item() {
+    public ItemStack() {
         this.count = 0;
         this.Data = null;
+        this.logic = null; 
     }
+
     // this would have to be assigned on data change?
     public Item logic;
 
@@ -54,7 +56,7 @@ public class ItemStack {
     }
 
     public ItemStack(string id, int count) {
-        this.Data = Registries.itemsData[id];
+        this.Data = Registries.items[id];
         this.count = count;
     }
 

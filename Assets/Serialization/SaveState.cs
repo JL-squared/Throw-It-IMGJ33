@@ -24,8 +24,8 @@ public class EntityData {
     public Quaternion? rotation;
     public float? health;
     public float? timeSinceDeath;
-    public List<Item> inventory;
-    public ItemData item;
+    public List<ItemStack> inventory;
+    public ItemStack itemStack;
     public Vector2? wishHeadDir;
     public SavedBotData bot;
     public bool icicleHit;
@@ -90,7 +90,6 @@ public class SaveState {
             Entity entity = go.GetComponent<Entity>();
 
             if (depth > 10) {
-                Debug.LogWarning(go.name);
                 return;
             }
 
@@ -112,9 +111,6 @@ public class SaveState {
                 int index = 0;
                 foreach (var item in children) {
                     if (item.gameObject != go) {
-                        Debug.Log(item.gameObject.name);
-                        Debug.Log(depth);
-                        Debug.Log(index);
                         Ohio(item.gameObject, childrenDatas[index], depth + 1);
                         index++;
                     }
@@ -163,7 +159,6 @@ public class SaveState {
 
             // if this is a parent node, then add its children as objects as well
             if (data.children != null && data.recurse) {
-                Debug.Log(go == null);
                 Dictionary<string, Entity> entities = go.GetComponentsInChildren<Transform>().AsEnumerable().Where(x => x.gameObject != go).Select(x => x.GetComponent<Entity>()).Where(x => x != null).ToDictionary(x => x.identifier);
                 foreach (var item in data.children) {
                     if (!item.spawn) {
@@ -192,9 +187,5 @@ public class SaveState {
                 }
             }
         }
-    }
-
-    public void AfterLoaded() {
-
     }
 }

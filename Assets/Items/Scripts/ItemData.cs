@@ -25,7 +25,7 @@ public class ItemData : ScriptableObject {
     public string description;
 
     public override string ToString() {
-        return base.title;
+        return base.name;
     }
 
     public static implicit operator string(ItemData i) => i.ToString();
@@ -38,7 +38,7 @@ public class ItemDataConverter : JsonConverter {
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
         ItemData item = (ItemData)value;
-        writer.WriteValue(item.title);
+        writer.WriteValue(item.name);
     }
 
     public override bool CanConvert(Type objectType) {

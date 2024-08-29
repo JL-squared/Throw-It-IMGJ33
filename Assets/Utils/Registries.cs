@@ -10,17 +10,17 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class Registries {
-    public static AddressableRegistry<ItemData> itemsData;
-    public static AddressableRegistry<BotData> botsData;
-    public static AddressableRegistry<GameObject> projectilesData;
+    public static AddressablesRegistry<ItemData> items;
+    public static AddressablesRegistry<BotData> bots;
+    public static AddressablesRegistry<GameObject> projectiles;
     public static AddressablesRegistry<GameObject> vehicles;
-    private static Dictionary<Type, Item> items = new Dictionary<Type, Item>();
+    private static Dictionary<Type, Item> itemsLogic = new Dictionary<Type, Item>();
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Init() {
-        itemsData = new AddressableRegistry<ItemData>("Items");
-        botsData = new AddressableRegistry<BotData>("Bots");
-        projectilesData = new AddressablesRegistry<GameObject>("Projectiles");
+        items = new AddressablesRegistry<ItemData>("Items");
+        bots = new AddressablesRegistry<BotData>("Bots");
+        projectiles = new AddressablesRegistry<GameObject>("Projectiles");
     }
 
     public static GameObject Summon(string id, EntityData data) {
@@ -56,16 +56,16 @@ public static class Registries {
 
     public static Item GetItem(ItemData dataType) {
         if (dataType == null) return null;
-        items.TryGetValue(dataType.GetType(), out var item);
+        itemsLogic.TryGetValue(dataType.GetType(), out var item);
         return (Item)item.Clone();
     }
 
     static void RegisterItem<T>(Item item) where T : ItemData {
-        items.Add(typeof(T), item);
+        itemsLogic.Add(typeof(T), item);
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void Reset() {
-        items = new Dictionary<Type, Item>();
+        itemsLogic = new Dictionary<Type, Item>();
     }
 }
