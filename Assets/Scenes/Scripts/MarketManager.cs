@@ -39,7 +39,7 @@ public class MarketManager : MonoBehaviour {
     public void Start() {
         Current = startingCurrency;
         stocks = new List<ItemStock>();
-        foreach (var item in Registries.items.data) {
+        foreach (var item in Registries.itemsData.data) {
             if (item.Value.marketLimit == 0)
                 continue;
 
@@ -60,7 +60,7 @@ public class MarketManager : MonoBehaviour {
         if (stock.count <= 0)
             return false;
         Current -= stock.Costs[1].y;
-        Player.Instance.AddItem(new Item(stock.item, 1));
+        Player.Instance.AddItem(new ItemStack(stock.item, 1));
         stock.recentInteractionCounts.y += 1;
         return true;
     }
@@ -88,7 +88,7 @@ public class MarketManager : MonoBehaviour {
         }
     }
 
-    internal void Sell(Item item) {
+    internal void Sell(ItemStack item) {
         ItemStock stock = stocks.Find((x) => x.item == item.Data);
         Current += stock.Costs[1].x * item.Count;
         stock.recentInteractionCounts.x += item.Count;

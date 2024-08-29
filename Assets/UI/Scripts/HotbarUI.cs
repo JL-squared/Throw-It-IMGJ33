@@ -21,7 +21,7 @@ public class HotbarUI : MonoBehaviour {
     }
 
     // This code kinda sucks but it's okay
-    void Refresh(List<Item> items) {
+    void Refresh(List<ItemStack> items) {
         int i = 0;
         foreach(VisualSlot slot in slots) {
             slot.Refresh(items[i]);

@@ -12,11 +12,11 @@ public class PlayerCustomEditor : Editor {
 
         text = EditorGUILayout.TextField("Item ID: ", text);
         if (GUILayout.Button($"Give Player Item: '{text}'")) {
-            ItemData item = Registries.items[text];
+            ItemData item = Registries.itemsData[text];
             if (item == null) {
                 Debug.LogWarning($"{text} wasn't loaded :(");
             } else {
-                player.AddItem(new Item(item, 1));
+                player.AddItem(new ItemStack(item, 1));
             }
         }
     }

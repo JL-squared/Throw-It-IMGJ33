@@ -13,14 +13,12 @@ MonoBehaviour:
   m_Name: battery
   m_EditorClassIdentifier: 
   stackSize: 5
-  icon: {fileID: 21300000, guid: e4d77a5efb3dc254384e2e9d14f7c56b, type: 3}
-  worldItem: {fileID: 5997627359384768486, guid: 9cc8cf9260046584692d907b16294ae8,
-    type: 3}
-  viewModel: {fileID: 5997627359384768486, guid: b526eb20884807647ab463cc1940c797,
-    type: 3}
-  equippedLogic: {fileID: 0}
-  title: Battery
-  description: It's still got some kick in it.
   marketLimit: 10
   marketBuyCost: 5
   marketSellCost: 3
+  icon: {fileID: 21300000, guid: e4d77a5efb3dc254384e2e9d14f7c56b, type: 3}
+  viewModelOffset: {fileID: 0}
+  worldModelOffset: {fileID: 0}
+  model: {fileID: 919132149155446097, guid: 8ada6cc8fef71234fbefc0c0b6b42c43, type: 3}
+  name: Battery
+  description: It's still got some kick in it.

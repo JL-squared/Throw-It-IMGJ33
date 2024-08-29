@@ -38,7 +38,7 @@ public class DevConsole : MonoBehaviour {
                 moment = (args, player) => {
                     string item = args[0];
                     int count = args.Length == 1 ? 1 : int.Parse(args[1]);
-                    player.AddItemUnclamped(new Item(item, count));
+                    player.AddItemUnclamped(new ItemStack(item, count));
                 },
             },
             new ConsoleCommand {
@@ -105,11 +105,8 @@ public class DevConsole : MonoBehaviour {
                 main = "summon",
                 desc = "Summons an entity. Ex: bot base | item snowball | projectile snowball 10 ",
                 moment = (args, player) => {
-                    string sauce = args[0];
-
                     string type = args[0];
                     string name = args[1];
-
 
                     if (type == "bots") {
                         BotData data = Registries.bots[name];

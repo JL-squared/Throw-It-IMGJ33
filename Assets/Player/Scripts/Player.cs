@@ -6,6 +6,7 @@ using Tweens.Core;
 using Tweens;
 using System;
 using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
@@ -52,23 +53,23 @@ public class Player : MonoBehaviour, IEntitySerializer {
     #region Inventory
     [Header("Inventory")]
     [HideInInspector]
-    public List<Item> items = new List<Item>();
+    public List<ItemStack> items = new List<ItemStack>();
 
     [SerializeField]
-    private int selected;
-    public int Selected {
+    private int equipped;
+    public int Equipped {
         get {
-            return selected;
+            return equipped;
         }
         set {
-            selected = value;
-            selectedEvent?.Invoke(selected);
+            equipped = value;
+            selectedEvent?.Invoke(equipped);
         }
     }
-    public Item SelectedItem { get { return items[selected]; } }
+    public ItemStack EquippedItem { get { return items[equipped]; } }
 
     public UnityEvent<int> selectedEvent;
-    public UnityEvent<List<Item>> inventoryUpdateEvent;
+    public UnityEvent<List<ItemStack>> inventoryUpdateEvent;
     public UnityEvent<int, bool> slotUpdateEvent;
     #endregion
 
@@ -113,8 +114,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-    private EquippedItemLogic itemLogic;
-    private Item lastSelectedViewModelItem;
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     #endregion
@@ -124,6 +123,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public RaycastHit? lookingAt;
     private IInteraction interaction;
     private IInteraction lastInteraction;
+    [HideInInspector]
+    public bool PrimaryHeld = false;
+    [HideInInspector]
+    public bool SecondaryHeld = false;
     #endregion
 
     [HideInInspector]
@@ -164,16 +167,16 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         // Creates inventory items and hooks onto their update event
         for (int i = 0; i < 10; i++) {
-            Item temp = new Item(null, 0);
+            ItemStack temp = new ItemStack(null, 0);
             items.Add(temp);
-            temp.updateEvent?.AddListener((Item item) => { inventoryUpdateEvent.Invoke(items); });
+            temp.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
 
         // Add temp items at start
-        AddItem(new Item("snowball", 1));
-        AddItem(new Item("battery", 1));
-        AddItem(new Item("shovel", 1));
-        AddItem(new Item("wires", 1));
+        AddItem(new ItemStack("snowball", 1));
+        AddItem(new ItemStack("battery", 1));
+        AddItem(new ItemStack("shovel", 1));
+        AddItem(new ItemStack("wires", 1));
 
         gameCamera.fieldOfView = defaultFOV;
     }
@@ -241,6 +244,11 @@ public class Player : MonoBehaviour, IEntitySerializer {
             movement.entityMovementFlags.AddFlag(EntityMovementFlags.ApplyMovement);
             GetComponent<CharacterController>().enabled = true;
         }
+
+        EquippedItem.logic.EquippedUpdate(this);
+        foreach (ItemStack item in items) {
+            item.logic.Update(this);
+        }
     }
 
     public void UpdateMovement() {
@@ -277,9 +285,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
             Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
             target += Vector3.up * bobbing * viewModelBobbingStrength;
 
-            if (itemLogic != null) {
-                target += itemLogic.swayOffset;
-            }
+            //if (itemLogic != null) {
+            //    target += itemLogic.swayOffset;
+            //}
 
             Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
             viewModel.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
@@ -370,10 +378,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
     // Add item to inventory if possible,
     // Works with invalid stack sizes
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
-    public void AddItemUnclamped(Item itemIn) {
+    public void AddItemUnclamped(ItemStack itemIn) {
         int count = itemIn.Count;
         while (count > 0) {
-            AddItem(new Item(itemIn.Data, itemIn.Data.stackSize));
+            AddItem(new ItemStack(itemIn.Data, itemIn.Data.stackSize));
             count -= itemIn.Data.stackSize;
         }
     }
@@ -382,7 +390,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     // Add item to inventory if possible,
     // DO NOT INSERT INVALID STACK COUNT ITEM, (clamped anyways)
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
-    public void AddItem(Item itemIn) {
+    public void AddItem(ItemStack itemIn) {
         if (itemIn.Count > itemIn.Data.stackSize) {
             Debug.LogWarning("Given item count was greater than stack size. Clamping. Use AddItemUnclamped for unclamped stack sizes");
             itemIn.Count = itemIn.Data.stackSize;
@@ -390,7 +398,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         int firstEmpty = -1;
         int i = 0;
-        foreach (Item item in items) {
+        foreach (ItemStack item in items) {
             if (item.IsEmpty() && firstEmpty == -1) {
                 firstEmpty = i;
             } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
@@ -414,12 +422,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
         } else {
             Debug.LogWarning("Could not find spot to add item, spawning as World Item!");
             for (int k = 0; k < itemIn.Count; k++) {
-                WorldItem.Spawn(itemIn.Data, transform.position, transform.rotation);
+                WorldItem.Spawn(itemIn, transform.position, transform.rotation);
             }
         }
 
-        if (firstEmpty == selected) {
-            SelectionChanged(force: true);
+        if (firstEmpty == equipped) {
+            SelectionChanged();
         }
 
         inventoryUpdateEvent.Invoke(items);
@@ -427,10 +435,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     // Checks if we can fit a specific item
     // Count must be within stack count (valid item moment)
-    public bool CanFitItem(Item itemIn) {
+    public bool CanFitItem(ItemStack itemIn) {
         int emptyCounts = 0;
 
-        foreach (Item item in items) {
+        foreach (ItemStack item in items) {
             if (item.IsEmpty()) {
                 return true;
             } else if (itemIn.Data == item.Data && !item.IsFull() ) {
@@ -450,8 +458,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             //int missingCount = Mathf.Max(count - currentCount, 0);
             
             if (currentCount == 0) {
-                items[slot].Data = null;
-                SelectionChanged(force: true);
+                SelectionChanged(() => { items[slot].Data = null; });
             }
 
             items[slot].Count = currentCount;
@@ -465,8 +472,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
     // Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
-        foreach (Item item in items) {
-            if (item.Count >= count && item.Data == Registries.items.data[id]) {
+        foreach (ItemStack item in items) {
+            if (item.Count >= count && item.Data == Registries.itemsData.data[id]) {
                 return i;
             }
             i++;
@@ -478,49 +485,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
     // Only called when the following happens:
     // - User changes selected slot to new slot
     // - Item count gets changed from zero to positive value and vice versa
-    private void SelectionChanged(bool force = false) {
-        if (UnityEngine.Object.ReferenceEquals(lastSelectedViewModelItem, SelectedItem) && !force) {
-            return;
-        }
-
-        if (lastSelectedViewModelItem != null && itemLogic != null) {
-            itemLogic.Unequipped();
-        }
-
-        Vector3 oldLocalPosition = default;
-        Quaternion oldLocalRotation = default;
-        if (viewModel != null) {
-            oldLocalPosition = viewModel.transform.localPosition;
-            oldLocalRotation = viewModel.transform.localRotation;
-            Destroy(viewModel);
-        }
-
-        if (itemLogic != null) {
-            Destroy(itemLogic.gameObject);
-        }
-
-        viewModel = null;
-        lastSelectedViewModelItem = null;
-
-        Item item = SelectedItem;
-        if (item != null && item.Data != null && item.Count > 0) {
-            if (item.Data.viewModel != null) {
-                GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
-                viewModel.transform.localPosition = oldLocalPosition;
-                viewModel.transform.localRotation = oldLocalRotation;
-                this.viewModel = viewModel;
-                lastSelectedViewModelItem = item;
-            }
-
-            if (item.Data.equippedLogic != null) {
-                GameObject equippedLogicGameObject = Instantiate(item.Data.equippedLogic, transform);
-                itemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
-                itemLogic.equippedItem = item;
-                itemLogic.player = this;
-                itemLogic.Equipped();
-                itemLogic.viewModel = item.Data.viewModel;
-            }
-        }
+    private void SelectionChanged(Action function = null) {
+        EquippedItem.logic.Unequipped(this);
+        function?.Invoke();
+        EquippedItem.logic.Equipped(this);
     }
     #endregion
 
@@ -598,35 +566,29 @@ public class Player : MonoBehaviour, IEntitySerializer {
             if (isBuilding) {
                 placementRotation += scroll * 22.5f;
             } else {
-                int newSelected = (Selected + (int)scroll) % 10;
-                Selected = (newSelected < 0) ? 9 : newSelected;
-                SelectionChanged();
+                SelectionChanged( () => {
+                    int newSelected = (Equipped + (int)scroll) % 10;
+                    Equipped = (newSelected < 0) ? 9 : newSelected;
+                });
             }
         }
     }
 
     public void SelectSlot(InputAction.CallbackContext context) {
         if (Performed(context))
-            Selected = (int)context.ReadValue<float>();
-        SelectionChanged();
+            SelectionChanged(() => { Equipped = (int)context.ReadValue<float>(); });
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
         if (!Performed() || context.performed)
             return;
 
-        // !context.canceled is equal to true when pressing and false when releasing
-        bool pressed = !context.canceled;
+        PrimaryHeld = !context.canceled;
 
-        if (isBuilding && placementStatus && pressed) {
+        if (isBuilding && placementStatus && !context.canceled) {
             BuildActionPrimary();
-        } else {
-            // fallback primary action if we can
-            ItemData data = SelectedItem.Data;
-            if (data != null && itemLogic != null) {
-                itemLogic.PrimaryAction(pressed);
-                return;
-            }
+        } else if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.PrimaryAction(context, this);
         }
     }
 
@@ -645,16 +607,13 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (!Performed() || context.performed)
             return;
 
+        SecondaryHeld = !context.canceled;
+
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
             BuildActionSecondary();
-        } else {
-            // fallback secondary action if we can
-            ItemData data = SelectedItem.Data;
-            if (data != null && itemLogic != null) {
-                itemLogic.SecondaryAction(pressed);
-                return;
-            }
+        } else if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.SecondaryAction(context, this);
         }
     }
 
@@ -667,15 +626,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void DropItem(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            Item item = items[selected];
+            ItemStack item = items[equipped];
             if (item.Count > 0) {
-                if (item.Data.worldItem == null) {
-                    Debug.LogWarning("World item is not set!");
-                    return;
-                }
-
-                WorldItem.Spawn(items[selected].Data, gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity);
-                RemoveItem(selected, 1);
+                if (WorldItem.Spawn(items[equipped].NewCount(1), gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity))
+                RemoveItem(equipped, 1);
             }
         }
     }

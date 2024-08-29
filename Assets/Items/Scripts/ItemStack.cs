@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
-public class Item {
+public class ItemStack {
     [JsonProperty]
     int count;
 
@@ -26,31 +26,39 @@ public class Item {
     [JsonIgnore]
     public UnityEvent emptyEvent = new UnityEvent();
     [JsonIgnore]
-    public UnityEvent<Item> updateEvent = new UnityEvent<Item>();
+    public UnityEvent<ItemStack> updateEvent = new UnityEvent<ItemStack>();
 
     [JsonProperty]
     [JsonConverter(typeof(ItemDataConverter))]
     private ItemData data;
 
     [JsonIgnore]
-    public ItemData Data { get { return data; } set { data = value; updateEvent.Invoke(this); } }
+    public ItemData Data { get { return data; } 
+        set { 
+            data = value;
+            logic = value != null ? Registries.GetItem(data) : new Item();
+            updateEvent.Invoke(this); 
+        } 
+    }
 
     public Item() {
         this.count = 0;
         this.Data = null;
     }
+    // this would have to be assigned on data change?
+    public Item logic;
 
-    public Item(ItemData data, int count) {
+    public ItemStack(ItemData data, int count = 1) {
         this.count = count;
         this.Data = data;
     }
 
-    public Item(string id, int count) {
-        this.Data = Registries.items[id];
+    public ItemStack(string id, int count) {
+        this.Data = Registries.itemsData[id];
         this.count = count;
     }
 
-    public void CopyItem(Item other) {
+    public void CopyItem(ItemStack other) {
         Data = other.Data;
         Count = other.Count;
     }
@@ -63,11 +71,11 @@ public class Item {
         return Data == null ? false : Count == Data.stackSize;
     }
 
-    public Item Clone() {
-        return new Item(data, count);
+    public ItemStack Clone() {
+        return new ItemStack(data, count);
     }
 
-    public bool Equals(Item other) {
+    public bool Equals(ItemStack other) {
         return other.Data == Data && other.count >= count;
     }
 
@@ -75,12 +83,18 @@ public class Item {
         Count = 0;
     }
 
+    public ItemStack NewCount(int i) {
+        ItemStack clone = Clone();
+        clone.count = i;
+        return clone;
+    }
+
     public override string ToString() {
         string id = data == null ? "none" : data.ToString();
         return $"ID: {id}\nCount: {count}";
     }
 
-    public static implicit operator string(Item item) {
+    public static implicit operator string(ItemStack item) {
         return item.ToString();
     }
 }
