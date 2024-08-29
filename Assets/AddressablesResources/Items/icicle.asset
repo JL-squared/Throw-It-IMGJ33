@@ -16,10 +16,9 @@ MonoBehaviour:
   icon: {fileID: 0}
   worldItem: {fileID: 0}
   viewModel: {fileID: 0}
-  equippedLogic: {fileID: 0}
-  title: Icicle
-  description: One wrong move and these treasured ice formations are quick to fracture.
-    Handle with care. Avoid working end.
+  name: 
+  description: One wrong move and these ice formations are quick to fracture. Handle
+    with care. Avoid working end.
   marketLimit: 0
   marketBuyCost: 0
   marketSellCost: 0

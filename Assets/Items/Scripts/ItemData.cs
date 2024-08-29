@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-// One major disatvantage of having stuff inherit from a scriptable object
+// One major disadvantage of having stuff inherit from a scriptable object
 // is that you can actually write mono-behavior type code (like update and start) 
 // since you can't store persistent values within SOs (otherwise it would modify them in the editor)
 [CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/New Item Data", order = 1)]
@@ -13,7 +13,7 @@ public class ItemData : ScriptableObject {
     public Sprite icon;
     public GameObject worldItem;
     public GameObject viewModel;
-    public GameObject equippedLogic;
+    public Type equippedLogic;
 
     public string name;
     [TextArea(15, 20)]

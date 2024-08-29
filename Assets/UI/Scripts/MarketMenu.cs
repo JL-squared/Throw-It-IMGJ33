@@ -31,7 +31,7 @@ public class MarketMenu : MonoBehaviour {
         }
 
         if (removed > 0) {
-            GameManager.Instance.marketManager.Sell(new Item("scrap", removed));
+            GameManager.Instance.marketManager.Sell(new ItemStack("scrap", removed));
         }
     }
 

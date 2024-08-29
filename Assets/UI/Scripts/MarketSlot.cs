@@ -17,7 +17,7 @@ public class MarketSlot : MonoBehaviour {
 
     public void Start() {
         Player.Instance.inventoryUpdateEvent.AddListener((data) => {
-            canFitItem = Player.Instance.CanFitItem(new Item(stock.item, 1));
+            canFitItem = Player.Instance.CanFitItem(new ItemStack(stock.item, 1));
             Refresh();
         });
     }

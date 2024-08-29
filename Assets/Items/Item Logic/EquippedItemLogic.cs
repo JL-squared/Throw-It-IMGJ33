@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class EquippedItemLogic : MonoBehaviour {
     [HideInInspector]
-    public Item equippedItem;
+    public ItemStack equippedItem;
     [HideInInspector]
     public GameObject viewModel;
     [HideInInspector]

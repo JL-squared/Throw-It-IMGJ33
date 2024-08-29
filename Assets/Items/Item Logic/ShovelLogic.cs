@@ -21,7 +21,7 @@ public class ShovelLogic : EquippedItemLogic {
                 });
             }
 
-            player.AddItem(new Item("snowball", 1));
+            player.AddItem(new ItemStack("snowball", 1));
         }
     }
 
@@ -37,7 +37,7 @@ public class ShovelLogic : EquippedItemLogic {
             RaycastHit info = player.lookingAt.Value;
             VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
             if (chunk != null) {
-                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new Item("snowball", 1));
+                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new ItemStack("snowball", 1));
             }
         }
 

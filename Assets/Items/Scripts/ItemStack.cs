@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
-public class Item {
+public class ItemStack {
     [JsonProperty]
     int count;
 
@@ -26,7 +26,7 @@ public class Item {
     [JsonIgnore]
     public UnityEvent emptyEvent = new UnityEvent();
     [JsonIgnore]
-    public UnityEvent<Item> updateEvent = new UnityEvent<Item>();
+    public UnityEvent<ItemStack> updateEvent = new UnityEvent<ItemStack>();
 
     [JsonProperty]
     [JsonConverter(typeof(ItemDataConverter))]
@@ -36,17 +36,17 @@ public class Item {
     public ItemData Data { get { return data; } set { data = value; updateEvent.Invoke(this); } }
 
 
-    public Item(ItemData data, int count) {
+    public ItemStack(ItemData data, int count) {
         this.count = count;
         this.Data = data;
     }
 
-    public Item(string id, int count) {
+    public ItemStack(string id, int count) {
         this.Data = Registries.items[id];
         this.count = count;
     }
 
-    public void CopyItem(Item other) {
+    public void CopyItem(ItemStack other) {
         Data = other.Data;
         Count = other.Count;
     }
@@ -59,11 +59,11 @@ public class Item {
         return Data == null ? false : Count == Data.stackSize;
     }
 
-    public Item Clone() {
-        return new Item(data, count);
+    public ItemStack Clone() {
+        return new ItemStack(data, count);
     }
 
-    public bool Equals(Item other) {
+    public bool Equals(ItemStack other) {
         return other.Data == Data && other.count >= count;
     }
 
@@ -76,7 +76,7 @@ public class Item {
         return $"ID: {id}\nCount: {count}";
     }
 
-    public static implicit operator string(Item item) {
+    public static implicit operator string(ItemStack item) {
         return item.ToString();
     }
 }

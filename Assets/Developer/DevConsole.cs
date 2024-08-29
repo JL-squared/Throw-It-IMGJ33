@@ -38,7 +38,7 @@ public class DevConsole : MonoBehaviour {
                 moment = (args, player) => {
                     string item = args[0];
                     int count = args.Length == 1 ? 1 : int.Parse(args[1]);
-                    player.AddItemUnclamped(new Item(item, count));
+                    player.AddItemUnclamped(new ItemStack(item, count));
                 },
             },
             new ConsoleCommand {

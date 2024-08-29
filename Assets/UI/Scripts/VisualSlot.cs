@@ -10,7 +10,7 @@ public class VisualSlot : MonoBehaviour {
         display = GetComponent<ItemDisplay>();
     }
 
-    public void Refresh(Item item) {
+    public void Refresh(ItemStack item) {
         display.UpdateValues(item);
     }
 }

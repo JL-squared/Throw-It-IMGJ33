@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
     #region Inventory
     [Header("Inventory")]
     [HideInInspector]
-    public List<Item> items = new List<Item>();
+    public List<ItemStack> items = new List<ItemStack>();
 
     [SerializeField]
     private int selected;
@@ -64,10 +64,10 @@ public class Player : MonoBehaviour {
             selectedEvent?.Invoke(selected);
         }
     }
-    public Item SelectedItem { get { return items[selected]; } }
+    public ItemStack SelectedItem { get { return items[selected]; } }
 
     public UnityEvent<int> selectedEvent;
-    public UnityEvent<List<Item>> inventoryUpdateEvent;
+    public UnityEvent<List<ItemStack>> inventoryUpdateEvent;
     public UnityEvent<int, bool> slotUpdateEvent;
     #endregion
 
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour {
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
     private EquippedItemLogic itemLogic;
-    private Item lastSelectedViewModelItem;
+    private ItemStack lastSelectedViewModelItem;
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     #endregion
@@ -162,16 +162,16 @@ public class Player : MonoBehaviour {
 
         // Creates inventory items and hooks onto their update event
         for (int i = 0; i < 10; i++) {
-            Item temp = new Item(null, 0);
+            ItemStack temp = new ItemStack(null, 0);
             items.Add(temp);
-            temp.updateEvent?.AddListener((Item item) => { inventoryUpdateEvent.Invoke(items); });
+            temp.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
 
         // Add temp items at start
-        AddItem(new Item("snowball", 1));
-        AddItem(new Item("battery", 1));
-        AddItem(new Item("shovel", 1));
-        AddItem(new Item("wires", 1));
+        AddItem(new ItemStack("snowball", 1));
+        AddItem(new ItemStack("battery", 1));
+        AddItem(new ItemStack("shovel", 1));
+        AddItem(new ItemStack("wires", 1));
 
         gameCamera.fieldOfView = defaultFOV;
     }
@@ -368,10 +368,10 @@ public class Player : MonoBehaviour {
     // Add item to inventory if possible,
     // Works with invalid stack sizes
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
-    public void AddItemUnclamped(Item itemIn) {
+    public void AddItemUnclamped(ItemStack itemIn) {
         int count = itemIn.Count;
         while (count > 0) {
-            AddItem(new Item(itemIn.Data, itemIn.Data.stackSize));
+            AddItem(new ItemStack(itemIn.Data, itemIn.Data.stackSize));
             count -= itemIn.Data.stackSize;
         }
     }
@@ -380,7 +380,7 @@ public class Player : MonoBehaviour {
     // Add item to inventory if possible,
     // DO NOT INSERT INVALID STACK COUNT ITEM, (clamped anyways)
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
-    public void AddItem(Item itemIn) {
+    public void AddItem(ItemStack itemIn) {
         if (itemIn.Count > itemIn.Data.stackSize) {
             Debug.LogWarning("Given item count was greater than stack size. Clamping. Use AddItemUnclamped for unclamped stack sizes");
             itemIn.Count = itemIn.Data.stackSize;
@@ -388,7 +388,7 @@ public class Player : MonoBehaviour {
 
         int firstEmpty = -1;
         int i = 0;
-        foreach (Item item in items) {
+        foreach (ItemStack item in items) {
             if (item.IsEmpty() && firstEmpty == -1) {
                 firstEmpty = i;
             } else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
@@ -425,10 +425,10 @@ public class Player : MonoBehaviour {
 
     // Checks if we can fit a specific item
     // Count must be within stack count (valid item moment)
-    public bool CanFitItem(Item itemIn) {
+    public bool CanFitItem(ItemStack itemIn) {
         int emptyCounts = 0;
 
-        foreach (Item item in items) {
+        foreach (ItemStack item in items) {
             if (item.IsEmpty()) {
                 return true;
             } else if (itemIn.Data == item.Data && !item.IsFull() ) {
@@ -463,7 +463,7 @@ public class Player : MonoBehaviour {
     // Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
-        foreach (Item item in items) {
+        foreach (ItemStack item in items) {
             if (item.Count >= count && item.Data == Registries.items.data[id]) {
                 return i;
             }
@@ -500,7 +500,7 @@ public class Player : MonoBehaviour {
         viewModel = null;
         lastSelectedViewModelItem = null;
 
-        Item item = SelectedItem;
+        ItemStack item = SelectedItem;
         if (item != null && item.Data != null && item.Count > 0) {
             if (item.Data.viewModel != null) {
                 GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
@@ -509,7 +509,7 @@ public class Player : MonoBehaviour {
                 this.viewModel = viewModel;
                 lastSelectedViewModelItem = item;
             }
-
+            /*
             if (item.Data.equippedLogic != null) {
                 GameObject equippedLogicGameObject = Instantiate(item.Data.equippedLogic, transform);
                 itemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
@@ -518,6 +518,7 @@ public class Player : MonoBehaviour {
                 itemLogic.Equipped();
                 itemLogic.viewModel = item.Data.viewModel;
             }
+            */
         }
     }
     #endregion
@@ -665,7 +666,7 @@ public class Player : MonoBehaviour {
 
     public void DropItem(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            Item item = items[selected];
+            ItemStack item = items[selected];
             if (item.Count > 0) {
                 if (item.Data.worldItem == null) {
                     Debug.LogWarning("World item is not set!");

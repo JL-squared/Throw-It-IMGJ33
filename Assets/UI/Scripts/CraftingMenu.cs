@@ -21,7 +21,7 @@ public class CraftingMenu : MonoBehaviour {
 
     }
 
-    void Refresh(List<Item> items) {
+    void Refresh(List<ItemStack> items) {
         foreach(CraftingListEntry entry in craftingListEntries) {
             entry.Refresh(entry.recipe.CheckForRequirements(items));
         }
