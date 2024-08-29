@@ -15,6 +15,7 @@ public class ItemData : ScriptableObject {
     public GameObject viewModel;
     public GameObject equippedLogic;
 
+    public string title;
     [TextArea(15, 20)]
     public string description;
 

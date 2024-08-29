@@ -90,6 +90,8 @@ MonoBehaviour:
     - Items
     - Item Recipes
     - Bots
+    - Vehicle
+    - Projectiles
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 56a410a2a27dfaf4cb7f8fcfc264e8c5, type: 2}

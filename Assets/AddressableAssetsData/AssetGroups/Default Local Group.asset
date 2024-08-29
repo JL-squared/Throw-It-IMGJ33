@@ -17,53 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a0a2a8ccd64768346a5ad2bb76163ca0
   m_SerializeEntries:
-  - m_GUID: 20e62cf7196fb4349aba90eb0585d5ee
-    m_Address: Assets/AddressablesResources/Items/battery.asset
+  - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
+    m_Address: Assets/AddressablesResources/Entity/Bots
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7beac97d01c07fc40b62efee0dfe1711
-    m_Address: Assets/AddressablesResources/Items/bolts.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c360cb36fa52be941a466a904e3ab086
-    m_Address: Assets/AddressablesResources/Items/camera.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3c4d8a17240e2654d8d720b8a4c1b05b
-    m_Address: Assets/AddressablesResources/Items/Scoop.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4daeb82f467c7f54dad76e124a9a3def
-    m_Address: Assets/AddressablesResources/Items/steel.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f2a31b0cf954c2e4d93d1dbefb25739b
-    m_Address: Assets/AddressablesResources/Items/wires.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9ed82c4d284114843bc6616647afe30a
-    m_Address: Assets/AddressablesResources/Items/shovel.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d89b807ff17f144ca577e205874d3f2
-    m_Address: Assets/AddressablesResources/Items/snowball.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
+    - Bots
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5cdcc0bf71a7db4eb22861ef8c76a07
     m_Address: Assets/AddressablesResources/Items
@@ -71,47 +29,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Items
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 43f84786336dc174a91174c786fd87ed
-    m_Address: Assets/AddressablesResources/Items/scrap.asset
+  - m_GUID: 2b048fe6ed69c334ab0bc2f27ca21e66
+    m_Address: Assets/AddressablesResources/Entity/Projectiles
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b272ea0fcbd1ecf4ea2a8218d1c137f2
-    m_Address: Assets/AddressablesResources/Items/icicle.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Items
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ec434253fbf1064aba059fdf1bc6efb
-    m_Address: Assets/AddressablesResources/Bots/baller.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Bots
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ebd060475d811b3419835ba21486cce2
-    m_Address: Assets/AddressablesResources/Bots/base.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Bots
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a1a886a866a16d441bb0a0b89b4bc484
-    m_Address: Assets/AddressablesResources/Bots/cyclops.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Bots
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
-    m_Address: Assets/AddressablesResources/Bots
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Bots
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dc8c885041695744fa547a296ef44650
-    m_Address: Assets/AddressablesResources/Bots/tall.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Bots
+    - Projectiles
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da40d6b3b74a26d41a24aff6c41a6298, type: 2}

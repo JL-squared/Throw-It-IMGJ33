@@ -313,8 +313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addressablesPrefabName: vehicle:sled
-  shouldSpawn: 1
-  shouldSerialize: 1
+  flags: -1
+  unityFlags: 1
 --- !u!1 &7447193881998031579
 GameObject:
   m_ObjectHideFlags: 0

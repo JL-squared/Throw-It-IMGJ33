@@ -7,7 +7,9 @@ public class Icicle : Projectile {
         base.Spawned(pos, velocity, shooter);
         rb.useGravity = false;
         hit = false;
-        transform.rotation = Quaternion.LookRotation(velocity);
+        if (velocity.magnitude > 0.01) {
+            transform.rotation = Quaternion.LookRotation(velocity);
+        }
     }
 
     private void FixedUpdate() {

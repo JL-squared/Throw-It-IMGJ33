@@ -2,9 +2,12 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using Unity.Burst.Intrinsics;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -37,6 +40,9 @@ interface IEntitySerializer {
 [Serializable]
 public class SaveState {
     public List<EntityData> entities;
+
+    [JsonIgnore]
+    public Dictionary<EntityData, GameObject> objects;
 
     public static SaveState Save() {
         SaveState state = new SaveState();
@@ -107,36 +113,41 @@ public class SaveState {
 
 
     public void Loaded() {
+        objects = new Dictionary<EntityData, GameObject>();
+        Entity[] alrEntities = UnityEngine.Object.FindObjectsOfType<Entity>();
+        foreach (var entity in alrEntities) {
+            if (entity.flags.HasFlag(EntityFlags.DestroyExistingOnDeserialize)) {
+                UnityEngine.Object.Destroy(entity.gameObject);
+            }
+        }
+
         foreach (var data in entities) {
             GameObject go = null;
             if (!data.spawn && data.name == "player") {
                 go = Player.Instance.gameObject;
+            } else {
+                go = Registries.Summon(data.name, data);
             }
 
-            // do summoning shit here idk vro
+            objects.Add(data, go);
+        }
 
-            if (go != null) {
-                foreach (var serializer in go.GetComponents<IEntitySerializer>()) {
-                    serializer.Deserialize(data);
+        GameManager.Instance.StartCoroutine(Start());
+    }
+
+    IEnumerator Start() {
+        yield return 0;
+
+        foreach (var item in objects) {
+            if (item.Value != null) {
+                foreach (var serializer in item.Value.GetComponents<IEntitySerializer>()) {
+                    serializer.Deserialize(item.Key);
                 }
             }
         }
-        
-        /*
-        List<GameObject> objects = new List<GameObject>();
-        foreach (var entity in entities) {
-            if (entity.flags.HasFlag(EntitySerializationFlags.Spawn)) {
-                // spawn stuff
-            }
-        }
+    }
 
-        foreach (var movement in movements) {
-            Debug.Log(entities[movement.entity].name);
-            if (entities[movement.entity].name == "player") {
-                Debug.Log("bruh");
-                
-            }
-        }
-        */
+    public void AfterLoaded() {
+
     }
 }

@@ -17,8 +17,11 @@ public class Entity : MonoBehaviour, IEntitySerializer {
         if (rb != null && unityFlags.HasFlag(EntityUnityFlags.Rigidbody)) {
             rb.position = data.position.Value;
             rb.rotation = data.rotation.Value;
-            rb.angularVelocity = data.angularVelocity.Value;
-            rb.velocity = data.velocity.Value;
+
+            if (!rb.isKinematic) {
+                rb.angularVelocity = data.angularVelocity.Value;
+                rb.velocity = data.velocity.Value;
+            }
         }
 
         if (unityFlags.HasFlag(EntityUnityFlags.Transform)) {
@@ -48,7 +51,8 @@ public enum EntityFlags {
     None,
     Serialize,
     Spawn,
-    Default = Spawn | Serialize,
+    DestroyExistingOnDeserialize,
+    Default = Spawn | Serialize | DestroyExistingOnDeserialize,
 }
 
 [Flags]

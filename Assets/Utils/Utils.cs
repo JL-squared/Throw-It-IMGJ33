@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.InputSystem.Utilities;
 
 public static class Utils {
-    private static AddressableRegistry<ItemData> itemRegistry;
+    private static AddressablesRegistry<ItemData> itemRegistry;
 
     public static void BlowUp(Vector3 position, float damage=50, float force=65, float radius=2, float editStrength=30f, float editRadiusOffset=1f) {
         IVoxelEdit edit = new SphericalExplosionVoxelEdit {

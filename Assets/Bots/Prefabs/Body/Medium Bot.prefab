@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
       propertyPath: addressablesPrefabName
-      value: bot:medium
+      value: bots:medium
       objectReference: {fileID: 0}
     - target: {fileID: 4412334655295901745, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}

@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    public static void Spawn(ProjectileItemData data, Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
+    public static GameObject Spawn(ProjectileItemData data, Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
         GameObject spawned = Instantiate(data.projectile);
         spawned.SetActive(false);
         Projectile projectile = spawned.GetComponent<Projectile>();
@@ -29,8 +29,9 @@ public class Projectile : MonoBehaviour {
         projectile.rb.velocity = velocity;
         projectile.transform.position = pos;
         projectile.data = data;
-        Destroy(projectile.gameObject, data.lifetime);
+        Destroy(spawned, data.lifetime);
         projectile.Spawned(pos, velocity, shooter);
+        return spawned;
     }
 
     protected virtual bool ShouldCollideWith(Collider other) {

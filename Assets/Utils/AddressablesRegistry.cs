@@ -5,7 +5,7 @@ using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class AddressableRegistry<T> where T : ScriptableObject {
+public class AddressablesRegistry<T> where T : UnityEngine.Object {
     public Dictionary<string, T> data;
     
     public T this[string name] {
@@ -22,7 +22,7 @@ public class AddressableRegistry<T> where T : ScriptableObject {
         }
     }
 
-    public AddressableRegistry(string label) {
+    public AddressablesRegistry(string label) {
         var temp = new Dictionary<string, T>();
         data = temp;
 

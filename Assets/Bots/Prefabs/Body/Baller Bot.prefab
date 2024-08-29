@@ -115,8 +115,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
+      propertyPath: flags
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
+      propertyPath: unityFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
       propertyPath: addressablesPrefabName
-      value: bot:baller
+      value: bots:baller
       objectReference: {fileID: 0}
     - target: {fileID: 3846231973158564597, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
