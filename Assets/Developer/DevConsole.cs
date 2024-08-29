@@ -109,13 +109,13 @@ public class DevConsole : MonoBehaviour {
                     string name = args[1];
 
                     if (type == "bot") {
-                        BotData data = Registries.bots[name];
+                        BotData data = Registries.botsData[name];
                         BotBase.Summon(data, player.transform.position, Quaternion.identity);
                     } else if (type == "item") {
-                        ItemData data = Registries.items[name];
-                        WorldItem.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
+                        ItemData data = Registries.itemsData[name];
+                        WorldItem.Spawn(new ItemStack(data), player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
                     } else if (type == "projectile") {
-                        ProjectileItemData data = (ProjectileItemData)Registries.items[name];
+                        ProjectileItemData data = (ProjectileItemData)Registries.itemsData[name];
                         Projectile.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, player.gameCamera.transform.forward * float.Parse(args[2]));
                     }
                 },

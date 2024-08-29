@@ -33,16 +33,24 @@ public class ItemStack {
     private ItemData data;
 
     [JsonIgnore]
-    public ItemData Data { get { return data; } set { data = value; updateEvent.Invoke(this); } }
+    public ItemData Data { get { return data; } 
+        set { 
+            data = value;
+            logic = value != null ? Registries.GetItem(data) : null;
+            updateEvent.Invoke(this); 
+        } 
+    }
 
+    // this would have to be assigned on data change?
+    public Item logic;
 
-    public ItemStack(ItemData data, int count) {
+    public ItemStack(ItemData data, int count = 1) {
         this.count = count;
         this.Data = data;
     }
 
     public ItemStack(string id, int count) {
-        this.Data = Registries.items[id];
+        this.Data = Registries.itemsData[id];
         this.count = count;
     }
 
@@ -69,6 +77,12 @@ public class ItemStack {
 
     public void MakeEmpty() {
         Count = 0;
+    }
+
+    public ItemStack NewCount(int i) {
+        ItemStack clone = Clone();
+        clone.count = i;
+        return clone;
     }
 
     public override string ToString() {

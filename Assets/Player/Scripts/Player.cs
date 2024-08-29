@@ -54,17 +54,17 @@ public class Player : MonoBehaviour {
     public List<ItemStack> items = new List<ItemStack>();
 
     [SerializeField]
-    private int selected;
-    public int Selected {
+    private int equipped;
+    public int Equipped {
         get {
-            return selected;
+            return equipped;
         }
         set {
-            selected = value;
-            selectedEvent?.Invoke(selected);
+            equipped = value;
+            selectedEvent?.Invoke(equipped);
         }
     }
-    public ItemStack SelectedItem { get { return items[selected]; } }
+    public ItemStack EquippedItem { get { return items[equipped]; } }
 
     public UnityEvent<int> selectedEvent;
     public UnityEvent<List<ItemStack>> inventoryUpdateEvent;
@@ -112,8 +112,6 @@ public class Player : MonoBehaviour {
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-    private EquippedItemLogic itemLogic;
-    private ItemStack lastSelectedViewModelItem;
     private Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     #endregion
@@ -239,6 +237,12 @@ public class Player : MonoBehaviour {
             movement.entityMovementFlags.AddFlag(EntityMovementFlags.ApplyMovement);
             GetComponent<CharacterController>().enabled = true;
         }
+
+        foreach (ItemStack item in items) {
+            if (!item.IsEmpty()) {
+                item.logic.Update(this);
+            }
+        }
     }
 
     public void UpdateMovement() {
@@ -275,9 +279,9 @@ public class Player : MonoBehaviour {
             Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
             target += Vector3.up * bobbing * viewModelBobbingStrength;
 
-            if (itemLogic != null) {
-                target += itemLogic.swayOffset;
-            }
+            //if (itemLogic != null) {
+            //    target += itemLogic.swayOffset;
+            //}
 
             Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
             viewModel.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
@@ -412,11 +416,11 @@ public class Player : MonoBehaviour {
         } else {
             Debug.LogWarning("Could not find spot to add item, spawning as World Item!");
             for (int k = 0; k < itemIn.Count; k++) {
-                WorldItem.Spawn(itemIn.Data, transform.position, transform.rotation);
+                WorldItem.Spawn(itemIn, transform.position, transform.rotation);
             }
         }
 
-        if (firstEmpty == selected) {
+        if (firstEmpty == equipped) {
             SelectionChanged(force: true);
         }
 
@@ -464,7 +468,7 @@ public class Player : MonoBehaviour {
     public int CheckForItem(string id, int count = 1) {
         int i = 0;
         foreach (ItemStack item in items) {
-            if (item.Count >= count && item.Data == Registries.items.data[id]) {
+            if (item.Count >= count && item.Data == Registries.itemsData.data[id]) {
                 return i;
             }
             i++;
@@ -477,7 +481,8 @@ public class Player : MonoBehaviour {
     // - User changes selected slot to new slot
     // - Item count gets changed from zero to positive value and vice versa
     private void SelectionChanged(bool force = false) {
-        if (UnityEngine.Object.ReferenceEquals(lastSelectedViewModelItem, SelectedItem) && !force) {
+        /*
+        if (UnityEngine.Object.ReferenceEquals(lastSelectedViewModelItem, EquippedItem) && !force) {
             return;
         }
 
@@ -500,7 +505,7 @@ public class Player : MonoBehaviour {
         viewModel = null;
         lastSelectedViewModelItem = null;
 
-        ItemStack item = SelectedItem;
+        ItemStack item = EquippedItem;
         if (item != null && item.Data != null && item.Count > 0) {
             if (item.Data.viewModel != null) {
                 GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
@@ -518,8 +523,9 @@ public class Player : MonoBehaviour {
                 itemLogic.Equipped();
                 itemLogic.viewModel = item.Data.viewModel;
             }
-            */
+            
         }
+    */
     }
     #endregion
 
@@ -597,8 +603,8 @@ public class Player : MonoBehaviour {
             if (isBuilding) {
                 placementRotation += scroll * 22.5f;
             } else {
-                int newSelected = (Selected + (int)scroll) % 10;
-                Selected = (newSelected < 0) ? 9 : newSelected;
+                int newSelected = (Equipped + (int)scroll) % 10;
+                Equipped = (newSelected < 0) ? 9 : newSelected;
                 SelectionChanged();
             }
         }
@@ -606,7 +612,7 @@ public class Player : MonoBehaviour {
 
     public void SelectSlot(InputAction.CallbackContext context) {
         if (Performed(context))
-            Selected = (int)context.ReadValue<float>();
+            Equipped = (int)context.ReadValue<float>();
         SelectionChanged();
     }
 
@@ -619,13 +625,8 @@ public class Player : MonoBehaviour {
 
         if (isBuilding && placementStatus && pressed) {
             BuildActionPrimary();
-        } else {
-            // fallback primary action if we can
-            ItemData data = SelectedItem.Data;
-            if (data != null && itemLogic != null) {
-                itemLogic.PrimaryAction(pressed);
-                return;
-            }
+        } else if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.PrimaryAction(context, this);
         }
     }
 
@@ -647,13 +648,8 @@ public class Player : MonoBehaviour {
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
             BuildActionSecondary();
-        } else {
-            // fallback secondary action if we can
-            ItemData data = SelectedItem.Data;
-            if (data != null && itemLogic != null) {
-                itemLogic.SecondaryAction(pressed);
-                return;
-            }
+        } else if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.SecondaryAction(context, this);
         }
     }
 
@@ -666,15 +662,10 @@ public class Player : MonoBehaviour {
 
     public void DropItem(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            ItemStack item = items[selected];
+            ItemStack item = items[equipped];
             if (item.Count > 0) {
-                if (item.Data.worldItem == null) {
-                    Debug.LogWarning("World item is not set!");
-                    return;
-                }
-
-                WorldItem.Spawn(items[selected].Data, gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity);
-                RemoveItem(selected, 1);
+                if (WorldItem.Spawn(items[equipped].NewCount(1), gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity))
+                RemoveItem(equipped, 1);
             }
         }
     }

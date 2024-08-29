@@ -16,7 +16,7 @@ public class SnowballItemToProjectile : MonoBehaviour {
     void Update() {
         if (rb.velocity.magnitude > maxSpeed) {
             Destroy(gameObject);
-            ProjectileItemData data = GetComponent<WorldItem>().item as ProjectileItemData;
+            ProjectileItemData data = GetComponent<WorldItem>().item.Data as ProjectileItemData;
             Projectile.Spawn(data, transform.position, rb.velocity);
         }
     }

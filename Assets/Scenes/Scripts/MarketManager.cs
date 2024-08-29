@@ -39,7 +39,7 @@ public class MarketManager : MonoBehaviour {
     public void Start() {
         Current = startingCurrency;
         stocks = new List<ItemStock>();
-        foreach (var item in Registries.items.data) {
+        foreach (var item in Registries.itemsData.data) {
             if (item.Value.marketLimit == 0)
                 continue;
 

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: steel
   m_EditorClassIdentifier: 
   stackSize: 10
-  icon: {fileID: 0}
-  worldItem: {fileID: 0}
-  viewModel: {fileID: 0}
-  equippedLogic: {fileID: 0}
-  title: Steel
-  description: An all-application iron alloy.
   marketLimit: 0
   marketBuyCost: 0
   marketSellCost: 0
+  icon: {fileID: 0}
+  viewModelOffset: {fileID: 0}
+  worldModelOffset: {fileID: 0}
+  model: {fileID: 0}
+  name: Steel
+  description: An all-application iron alloy.

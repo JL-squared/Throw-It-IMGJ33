@@ -1,14 +1,16 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class ShovelLogic : EquippedItemLogic {
+public class ShovelItem : ToolItem {
     bool canPickupSnow;
-    
-    public override void SecondaryAction(bool pressed) {
-        base.SecondaryAction(pressed);
+    float durability;
 
-        if (canPickupSnow && pressed) {
-            ShovelItemData data = (ShovelItemData)equippedItem.Data;
+    public override void SecondaryAction(InputAction.CallbackContext context, Player player) {
+        base.SecondaryAction(context, player);
+
+        if (canPickupSnow && !context.canceled) {
+            ShovelItemData data = (ShovelItemData)player.EquippedItem.Data;
             if (VoxelTerrain.Instance != null) {
                 VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
                     center = player.lookingAt.Value.point,
@@ -25,13 +27,13 @@ public class ShovelLogic : EquippedItemLogic {
         }
     }
 
-    public override void Unequipped() {
-        base.Unequipped();
+    public override void Unequipped(InputAction.CallbackContext context, Player player) {
+        base.Unequipped(context, player);
         canPickupSnow = false;
         UIMaster.Instance.inGameHUD.SetRightClickHint(false);
     }
 
-    private void Update() {
+    public override void Update(Player player) {
         canPickupSnow = false;
         if (player.lookingAt != null) {
             RaycastHit info = player.lookingAt.Value;

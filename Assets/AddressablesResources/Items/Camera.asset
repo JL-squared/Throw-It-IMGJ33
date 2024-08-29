@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: camera
   m_EditorClassIdentifier: 
   stackSize: 4
-  icon: {fileID: 0}
-  worldItem: {fileID: 0}
-  viewModel: {fileID: 0}
-  equippedLogic: {fileID: 0}
-  title: Robot Eye
-  description: The evil eye of a foul-intentioned arctic machine.
   marketLimit: 0
   marketBuyCost: 0
   marketSellCost: 0
+  icon: {fileID: 0}
+  viewModelOffset: {fileID: 0}
+  worldModelOffset: {fileID: 0}
+  model: {fileID: 0}
+  name: Camera
+  description: The evil eye of a foul-intentioned arctic machine.
