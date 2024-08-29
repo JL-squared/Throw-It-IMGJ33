@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 1020728517179050358}
   - component: {fileID: 5419971085316244044}
   - component: {fileID: 3997725256010945074}
+  - component: {fileID: -5453511713716336317}
   m_Layer: 11
   m_Name: Sled
   m_TagString: Untagged
@@ -299,6 +300,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.22, y: 1.66, z: 5.9}
   m_Center: {x: 0, y: 1.13, z: 0}
+--- !u!114 &-5453511713716336317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696789253449794273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: vehicle:sled
+  shouldSpawn: 1
+  shouldSerialize: 1
 --- !u!1 &7447193881998031579
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,10 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 public static class Utils {
     private static AddressableRegistry<ItemData> itemRegistry;
-    
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void Initialize() {
-    }
 
     public static void BlowUp(Vector3 position, float damage=50, float force=65, float radius=2, float editStrength=30f, float editRadiusOffset=1f) {
         IVoxelEdit edit = new SphericalExplosionVoxelEdit {
@@ -67,38 +63,47 @@ public static class Utils {
     }
 
     static string PersistentDir = Application.persistentDataPath;
-    static JsonSerializerSettings settings = InitSerializer();
+    static JsonSerializerSettings settings2 = InitSerializer();
 
     public static JsonSerializerSettings InitSerializer() {
-        JsonSerializerSettings serializer = new JsonSerializerSettings();
-        serializer.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
-        serializer.Converters.Add(new ItemDataConverter());
-        serializer.Converters.Add(new EntityMovementConverter());
-        serializer.Converters.Add(new Vector2Converter());
-        serializer.Converters.Add(new Vector3Converter());
-        serializer.Converters.Add(new Vector4Converter());
-        serializer.Converters.Add(new QuaternionConverter());
-        serializer.Formatting = Formatting.Indented;
-        serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        return serializer;
+        JsonSerializerSettings settings = new JsonSerializerSettings();
+        settings.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
+        settings.Converters.Add(new ItemDataConverter());
+        settings.Converters.Add(new Vector2Converter());
+        settings.Converters.Add(new Vector3Converter());
+        settings.Converters.Add(new Vector4Converter());
+        settings.Converters.Add(new QuaternionConverter());
+        settings.Formatting = Formatting.Indented;
+        settings.ObjectCreationHandling = ObjectCreationHandling.Reuse;
+        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+        settings.NullValueHandling = NullValueHandling.Ignore;
+        JsonConvert.DefaultSettings = () => settings;
+
+        return settings;
     }
 
-    public static T Load<T>(string file, T defaultValue) {
+    public static T Load<T>(string file, bool createIfMissing=true) where T: class, new() {
         if (!File.Exists(PersistentDir + "/" + file)) {
+            if (!createIfMissing) {
+                return null;
+            }
+
             Debug.LogWarning("File : " + file + " does not exist !");
-            Save(file, defaultValue);
-            return defaultValue;
+            T val = new T();
+            Save(file, val);
+            return val;
         }
 
-        object obj = defaultValue;
+
         string data = File.ReadAllText(PersistentDir + "/" + file);
-        obj = JsonConvert.DeserializeObject<T>(data, settings);
-        Save(file, obj);
-        return (T)obj;
+        T obj = JsonConvert.DeserializeObject<T>(data);
+        //Save(file, obj);
+        return obj;
     }
 
     public static string Save<T>(string file, T data) {
-        string stringData = JsonConvert.SerializeObject(data, settings);
+        string stringData = JsonConvert.SerializeObject(data);
         File.WriteAllText(PersistentDir + "/" + file, stringData);
         return stringData;
     }

@@ -8,7 +8,7 @@ using System;
 using Newtonsoft.Json;
 
 // Full Player script holding all necessary functions and variables
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IEntitySerializer {
     public static Player Instance;
 
     #region Death Stuff
@@ -143,7 +143,7 @@ public class Player : MonoBehaviour {
     }
 
     void Start() {
-        settings = Utils.Load<PlayerControlsSettings>("player.json", new PlayerControlsSettings());
+        settings = Utils.Load<PlayerControlsSettings>("player.json");
         mouseSensitivity = settings.mouseSensivity;
         defaultFOV = settings.fov;
         bodyTemperature = targetTemperature;
@@ -914,6 +914,20 @@ public class Player : MonoBehaviour {
         lastInteraction = null;
         transform.SetParent(null);
         ResetMovement();
+    }
+
+    public void Serialize(EntityData data) {
+        data.inventory = items;
+        data.wishHeadDir = wishHeadDir;
+    }
+
+    public void Deserialize(EntityData data) {
+        interaction = null;
+        lastInteraction = null;
+        stepValue = 0f;
+        items = data.inventory;
+        wishHeadDir = data.wishHeadDir.Value;
+        ApplyMouseDelta(Vector2.zero);
     }
     #endregion
 }

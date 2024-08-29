@@ -23,7 +23,7 @@ public class Vector2Converter : JsonConverter {
     }
 
     public override bool CanConvert(Type objectType) {
-        return objectType == typeof(Vector2);
+        return objectType == typeof(Vector2) || objectType == typeof(Vector2?);
     }
 }
 
@@ -50,7 +50,7 @@ public class Vector3Converter : JsonConverter {
     }
 
     public override bool CanConvert(Type objectType) {
-        return objectType == typeof(Vector3);
+        return objectType == typeof(Vector3) || objectType == typeof(Vector3?);
     }
 }
 
@@ -80,7 +80,7 @@ public class Vector4Converter : JsonConverter {
     }
 
     public override bool CanConvert(Type objectType) {
-        return objectType == typeof(Vector4);
+        return objectType == typeof(Vector4) || objectType == typeof(Vector4?);
     }
 }
 
@@ -110,6 +110,6 @@ public class QuaternionConverter : JsonConverter {
     }
 
     public override bool CanConvert(Type objectType) {
-        return objectType == typeof(Quaternion);
+        return objectType == typeof(Quaternion) || objectType == typeof(Quaternion?);
     }
 }

@@ -31,13 +31,13 @@ public class ItemData : ScriptableObject {
 }
 
 public class ItemDataConverter : JsonConverter {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-        writer.WriteValue(((ItemData)value).name);
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+        return Registries.items[reader.ReadAsString()];
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-        var t = Registries.items[reader.ReadAsString()];
-        return t;
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+        ItemData item = (ItemData)value;
+        writer.WriteValue(item.name);
     }
 
     public override bool CanConvert(Type objectType) {

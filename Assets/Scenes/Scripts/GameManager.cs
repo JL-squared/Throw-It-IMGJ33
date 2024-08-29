@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
             pathfindingRebuilder.UpdateNavMesh();
         }
 
-        graphicsSettings = Utils.Load("graphics.json", new GraphicsQualitySettings());
+        graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);
     }
 

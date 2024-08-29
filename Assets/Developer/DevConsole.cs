@@ -131,7 +131,8 @@ public class DevConsole : MonoBehaviour {
                 main = "save",
                 desc = "",
                 moment = (args, player) => {
-                    string bruh = Utils.Save("playerdata.json", player.GetComponent<EntityMovement>());
+                    SaveState state = SaveState.Save();
+                    string bruh = Utils.Save("save.json", state);
                     Debug.Log(bruh);
                 },
             },
@@ -139,7 +140,8 @@ public class DevConsole : MonoBehaviour {
                 main = "load",
                 desc = "",
                 moment = (args, player) => {
-                    Utils.Load<EntityMovement>("playerdata.json", player.GetComponent<EntityMovement>());
+                    SaveState state = Utils.Load<SaveState>("save.json");
+                    state.Loaded();
                 },
             },
         };

@@ -6,14 +6,15 @@ using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
+using Unity.Properties;
 
 [Serializable]
 public class GraphicsQualitySettings {
     public float renderScale = 1f;
     public int fpsLimit = 144;
+    public int additionalLightPerObjectLimit = 5;
     public Quality msaa = Quality.Disabled;
     public Quality mainLightShadows = Quality.High;
-    public int additionalLightPerObjectLimit = 5;
     public Quality additionalLightShadows = Quality.High;
 
     public bool tonemapping = true;
@@ -34,6 +35,7 @@ public class GraphicsQualitySettings {
         [EnumMember(Value = "high")]
         High,
     }
+
 
     public static T Select<T>(Quality quality, params T[] arr) {
         int i  = UnityEngine.Mathf.Clamp((int)quality, 0, arr.Length-1);

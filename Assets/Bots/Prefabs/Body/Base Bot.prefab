@@ -379,6 +379,7 @@ GameObject:
   - component: {fileID: 4958769060511696096}
   - component: {fileID: 1891283422339301396}
   - component: {fileID: 4412334655295901745}
+  - component: {fileID: -2230012475043275666}
   - component: {fileID: 7893371349031768923}
   m_Layer: 0
   m_Name: Base Bot
@@ -425,6 +426,7 @@ MonoBehaviour:
   speed: 7
   speedModifier: 1
   localWishMovement: {x: 0, y: 0}
+  movement: {x: 0, y: 0, z: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
   airControl: 2
@@ -441,6 +443,7 @@ MonoBehaviour:
   isJumping: 0
   pushForce: 4
   maxPushForce: 10
+  cc: {fileID: 0}
   entityMovementFlags: -1
 --- !u!114 &3846231973158564597
 MonoBehaviour:
@@ -462,12 +465,6 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   targetVelocity: {x: 0, y: 0, z: 0}
   deathFactor: 0
-  speedDistFalloff: 10
-  mask:
-    serializedVersion: 2
-    m_Bits: 255
-  agentType: Bot
-  pathfind: 0
 --- !u!114 &4958769060511696096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,6 +532,21 @@ MonoBehaviour:
   headObject: {fileID: 643352404864791723}
   headMeshObject: {fileID: 2521002609180806468}
   lookTarget: {x: 0, y: 0, z: 0}
+--- !u!114 &-2230012475043275666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6897721761823884219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: bot:base
+  shouldSpawn: 1
+  shouldSerialize: 1
 --- !u!143 &7893371349031768923
 CharacterController:
   m_ObjectHideFlags: 0

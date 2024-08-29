@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -8187175492950427478}
   - component: {fileID: 1046832710430174973}
   - component: {fileID: 3205764861587384331}
+  - component: {fileID: 6898139445240801941}
   m_Layer: 0
   m_Name: Icicle
   m_TagString: Untagged
@@ -97,6 +98,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e928f26c81f1e9049b4c6ed12adbfd68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6898139445240801941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196792428175076912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: projectile:icicle
+  shouldSpawn: 1
+  shouldSerialize: 1
 --- !u!1001 &21457544875113637
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -8984028548373348783}
   - component: {fileID: 8793629792860420648}
   - component: {fileID: 4478813235889702325}
+  - component: {fileID: 6409706943229287151}
   m_Layer: 8
   m_Name: Snowball
   m_TagString: Untagged
@@ -96,6 +97,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataParent: {fileID: 0}
+--- !u!114 &6409706943229287151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5488373698599033194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: projectile:snowball
+  shouldSpawn: 1
+  shouldSerialize: 1
 --- !u!1001 &2232885810548923308
 PrefabInstance:
   m_ObjectHideFlags: 0

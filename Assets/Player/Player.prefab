@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 6963001438359148228}
   - component: {fileID: 8669513143636214874}
   - component: {fileID: 8428834152011970357}
+  - component: {fileID: -2848151171195960463}
   m_Layer: 3
   m_Name: Player
   m_TagString: PlayerTag
@@ -478,6 +479,7 @@ MonoBehaviour:
   speed: 7
   speedModifier: 1
   localWishMovement: {x: 0, y: 0}
+  movement: {x: 0, y: 0, z: 0}
   wishMovement: {x: 0, y: 0, z: 0}
   localWishRotation: {x: 0, y: 0, z: 0, w: 0}
   airControl: 4
@@ -494,6 +496,7 @@ MonoBehaviour:
   isJumping: 0
   pushForce: 8
   maxPushForce: 12
+  cc: {fileID: 0}
   entityMovementFlags: -1
 --- !u!114 &6734361764533788892
 MonoBehaviour:
@@ -618,6 +621,21 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-2848151171195960463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: player
+  shouldSpawn: 0
+  shouldSerialize: 1
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0

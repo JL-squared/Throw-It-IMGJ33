@@ -57,7 +57,7 @@ public class VoxelTerrain : MonoBehaviour {
         if (inEditor) {
             settings = new VoxelTerrainSettings();
         } else {
-            settings = Utils.Load<VoxelTerrainSettings>("terrain.json", new VoxelTerrainSettings());
+            settings = Utils.Load<VoxelTerrainSettings>("terrain.json");
         }
 
         VoxelUtils.JobsPerFrame = Mathf.Max(settings.jobsPerFrame, 1);
