@@ -27,7 +27,7 @@ public class ItemDisplay : MonoBehaviour {
             SetEnabled(false);
         } else {
             if (modifyEnabled) SetEnabled(true);
-            if (countDisplay != null) countDisplay.text = item_.Count.ToString();
+            if (countDisplay != null) countDisplay.text = item_.Count > 1 ? item_.Count.ToString() : "";
             UpdateValues(item_.Data);
         }
     }
