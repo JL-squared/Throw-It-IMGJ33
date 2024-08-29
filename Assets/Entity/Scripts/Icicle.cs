@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Icicle : Projectile {
+public class Icicle : Projectile, IEntitySerializer {
     bool hit = false;
 
     public override void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter) {
@@ -46,5 +46,13 @@ public class Icicle : Projectile {
             rb.interpolation = RigidbodyInterpolation.None;
             transform.SetParent(health.transform, true);
         }
+    }
+
+    public void Serialize(EntityData data) {
+        data.icicleHit = hit;
+    }
+
+    public void Deserialize(EntityData data) {
+        hit = data.icicleHit;
     }
 }

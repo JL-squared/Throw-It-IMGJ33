@@ -21,15 +21,33 @@ public class EntityData {
     public Vector3? angularVelocity;
     public Quaternion? rotation;
     public float? health;
+    public float? timeSinceDeath;
     public List<Item> inventory;
-    public ItemData data;
+    public ItemData item;
     public Vector2? wishHeadDir;
+    public SavedBotData bot;
+    public bool icicleHit;
+    public Guid guid;
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
     public string name;
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
     public bool spawn;
+}
+
+[Serializable]
+public class SavedBotData {
+    public int center;
+    public int left;
+    public int right;
+    public int hat;
+    public int neck;
+    public int leftEye;
+    public int rightEye;
+    public int nose;
+    public int heads;
+    public bool angry;
 }
 
 interface IEntitySerializer {
@@ -121,12 +139,18 @@ public class SaveState {
             }
         }
 
+        Dictionary<Guid, Entity> lookup = new Dictionary<Guid, Entity>();
+
+        foreach (var entity in alrEntities) {
+            lookup.Add(entity.guid, entity);
+        }
+
         foreach (var data in entities) {
             GameObject go = null;
-            if (!data.spawn && data.name == "player") {
-                go = Player.Instance.gameObject;
-            } else {
+            if (data.spawn) {
                 go = Registries.Summon(data.name, data);
+            } else {
+                go = lookup[data.guid].gameObject;
             }
 
             objects.Add(data, go);

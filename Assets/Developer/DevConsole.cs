@@ -105,16 +105,19 @@ public class DevConsole : MonoBehaviour {
                 main = "summon",
                 desc = "Summons an entity. Ex: bot base | item snowball | projectile snowball 10 ",
                 moment = (args, player) => {
+                    string sauce = args[0];
+
                     string type = args[0];
                     string name = args[1];
 
-                    if (type == "bot") {
+
+                    if (type == "bots") {
                         BotData data = Registries.bots[name];
                         BotBase.Summon(data, player.transform.position, Quaternion.identity);
-                    } else if (type == "item") {
+                    } else if (type == "items") {
                         ItemData data = Registries.items[name];
                         WorldItem.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
-                    } else if (type == "projectile") {
+                    } else if (type == "projectiles") {
                         ProjectileItemData data = (ProjectileItemData)Registries.items[name];
                         Projectile.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, player.gameCamera.transform.forward * float.Parse(args[2]));
                     }

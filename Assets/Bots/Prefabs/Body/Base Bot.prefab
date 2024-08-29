@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 6320128589162938111}
   - component: {fileID: 6110838791765553852}
   - component: {fileID: 1680820906075196664}
+  - component: {fileID: 4476403294984198829}
   m_Layer: 8
   m_Name: Hitbox (Head)
   m_TagString: Untagged
@@ -686,6 +687,21 @@ MonoBehaviour:
   maxHealth: 0
   health: 0
   DeleteOnKill: 0
+--- !u!114 &4476403294984198829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388793179954581256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addressablesPrefabName: head
+  flags: 1
+  unityFlags: 0
 --- !u!1 &7716774097120439362
 GameObject:
   m_ObjectHideFlags: 0

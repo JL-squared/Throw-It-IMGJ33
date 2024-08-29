@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BotBase : MonoBehaviour {
+public class BotBase : MonoBehaviour, IEntitySerializer {
     [Header("Main")]
     public BotData data;
 
@@ -49,10 +49,21 @@ public class BotBase : MonoBehaviour {
     public GameObject headMeshObject;
     public Vector3 lookTarget;
     private float timeSinceDeath;
+    private bool deserialized = false;
+    private SavedBotData savedBotData;
 
     public static GameObject Summon(BotData data, Vector3 position, Quaternion rotation) {
         GameObject bot = Instantiate(data.botPrefab, position, rotation);
         bot.GetComponent<BotBase>().data = data;
+        bot.GetComponent<BotBase>().deserialized = false;
+        return bot;
+    }
+
+    public static GameObject Summon(SavedBotData saved, BotData data, Vector3 position, Quaternion rotation) {
+        GameObject bot = Instantiate(data.botPrefab, position, rotation);
+        bot.GetComponent<BotBase>().data = data;
+        bot.GetComponent<BotBase>().deserialized = true;
+        bot.GetComponent<BotBase>().savedBotData = saved;
         return bot;
     }
 
@@ -99,8 +110,16 @@ public class BotBase : MonoBehaviour {
         }
     }
 
-    private BotPartData PickPartForHolsterType(GameObject holster, RngList<BotPartData> parts) {
-        BotPartData part = parts.PickRandom();
+    private BotPartData PickPartForHolsterType(GameObject holster, RngList<BotPartData> parts, ref int savedIndex) {
+        int index = parts.PickRandom();
+
+        if (deserialized) {
+            index = savedIndex;
+        } else {
+            savedIndex = index;
+        }
+
+        BotPartData part = index >= 0 ? parts.list[index] : null;
         if (part != null)
             SpawnPart(holster, part);
         return part;
@@ -147,52 +166,48 @@ public class BotBase : MonoBehaviour {
     }
 
     private void SpawnParts() {
-        movementSpeed = data.baseMovementSpeed;
-        attackSpeed = data.baseAttackSpeed;
-        bodyHealth = data.baseBodyHealth;
-        headHealth = data.baseHeadHealth;
-        damageResistance = data.baseDamageResistance;
-        knockbackResistance = data.baseKnockbackResistance;
-        accuracy = data.baseAccuracy;
-
         // Base weapons / attribute modifiers
-        BotPartData center = PickPartForHolsterType(centerHolster, data.center);
+        BotPartData center = PickPartForHolsterType(centerHolster, data.center, ref savedBotData.center);
         if (center == null || !center.tags.Contains("disable sides")) {
-            PickPartForHolsterType(leftHolster, data.left);
-            PickPartForHolsterType(rightHolster, data.right);
+            PickPartForHolsterType(leftHolster, data.left, ref savedBotData.left);
+            PickPartForHolsterType(rightHolster, data.right, ref savedBotData.right);
         };
 
-        BotPartData head = PickPartForHolsterType(headMeshHolster, data.heads);
+        BotPartData head = PickPartForHolsterType(headMeshHolster, data.heads, ref savedBotData.heads);
 
         // Spawns at LEAST one default eye if needed
         if (data.applyFace) {
             if (data.spawnAtLeastOneDefaultEye) {
                 if (Random.value > 0.5) {
-                    PickPartForHolsterType(leftEyeHolster, data.leftEye);
+                    PickPartForHolsterType(leftEyeHolster, data.leftEye, ref savedBotData.leftEye);
                     SpawnPart(rightEyeHolster, new BotPartData(data.defaultEye));
                 } else {
                     SpawnPart(leftEyeHolster, new BotPartData(data.defaultEye));
-                    PickPartForHolsterType(rightEyeHolster, data.rightEye);
+                    PickPartForHolsterType(rightEyeHolster, data.rightEye, ref savedBotData.rightEye);
                 }
             } else {
-                PickPartForHolsterType(leftEyeHolster, data.leftEye);
-                PickPartForHolsterType(rightEyeHolster, data.rightEye);
+                PickPartForHolsterType(leftEyeHolster, data.leftEye, ref savedBotData.leftEye);
+                PickPartForHolsterType(rightEyeHolster, data.rightEye, ref savedBotData.rightEye);
             }
 
-            PickPartForHolsterType(noseHolster, data.nose);
+            PickPartForHolsterType(noseHolster, data.nose, ref savedBotData.nose);
         }
         
 
         // Check if we have a head we can apply hats on
         if (head.tags.Contains("hattable")) {
-            PickPartForHolsterType(hatHolster, data.hat);
+            PickPartForHolsterType(hatHolster, data.hat, ref savedBotData.hat);
         }
 
-        PickPartForHolsterType(neckHolster, data.neck);
+        PickPartForHolsterType(neckHolster, data.neck, ref savedBotData.neck);
     }
 
     private void ApplyAngry() {
         bool angy = Random.value < data.angryChance;
+
+        if (deserialized) {
+            angy = savedBotData.angry;
+        }
 
         if (data.applyFace) {
             happyFace.SetActive(!angy);
@@ -205,6 +220,10 @@ public class BotBase : MonoBehaviour {
     }
 
     public void Start() {
+        if (!deserialized) {
+            savedBotData = new SavedBotData();
+        }
+
         botBehaviours = GetComponents<BotBehaviour>().ToList();
         em = GetComponent<EntityMovement>();
         _bodyHealth = GetComponent<EntityHealth>();
@@ -224,6 +243,14 @@ public class BotBase : MonoBehaviour {
         _headHealth.OnHealed += (float heal) => OnHealed(heal, true);
         _bodyHealth.OnKilled += () => { OnKilled(false); };
         _headHealth.OnKilled += () => { OnKilled(true); };
+
+        movementSpeed = data.baseMovementSpeed;
+        attackSpeed = data.baseAttackSpeed;
+        bodyHealth = data.baseBodyHealth;
+        headHealth = data.baseHeadHealth;
+        damageResistance = data.baseDamageResistance;
+        knockbackResistance = data.baseKnockbackResistance;
+        accuracy = data.baseAccuracy;
 
         SpawnParts();
 
@@ -280,5 +307,15 @@ public class BotBase : MonoBehaviour {
                 em.entityMovementFlags.RemoveFlag(EntityMovementFlags.AllowedToRotate | EntityMovementFlags.ApplyMovement);
             }
         }
+    }
+
+    public void Serialize(EntityData data) {
+        data.bot = savedBotData;
+        data.timeSinceDeath = timeSinceDeath;
+    }
+
+    public void Deserialize(EntityData data) {
+        savedBotData = data.bot;
+        timeSinceDeath = data.timeSinceDeath.Value;
     }
 }

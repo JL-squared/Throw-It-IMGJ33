@@ -18,10 +18,10 @@ public class WorldItem : MonoBehaviour, IInteraction, IEntitySerializer {
     }
 
     public void Serialize(EntityData data) {
-        data.data = item;
+        data.item = item;
     }
 
     public void Deserialize(EntityData data) {
-        item = data.data;
+        item = data.item;
     }
 }

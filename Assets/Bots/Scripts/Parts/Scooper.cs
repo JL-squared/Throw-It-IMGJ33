@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.UI.Image;
 
 public class Scooper : BotBehaviour {
 
@@ -36,7 +37,8 @@ public class Scooper : BotBehaviour {
 
     public void Start() {
         thrower = GetComponent<ProjectileShooter>();
-        startingRot = origin.rotation;
+        startingRot = Quaternion.Euler(0, 180, 0);
+        origin.localRotation = startingRot;
         thrower.inheritVelocityMovement = movement;
     }
 

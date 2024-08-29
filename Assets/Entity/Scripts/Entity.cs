@@ -9,12 +9,20 @@ using UnityEngine;
 // Other data will simply refer to this "ID"
 public class Entity : MonoBehaviour, IEntitySerializer {
     public string addressablesPrefabName;
-    public EntityFlags flags = EntityFlags.Default;
+    public EntityFlags flags = EntityFlags.Serialize | EntityFlags.Spawn | EntityFlags.DestroyExistingOnDeserialize;
     public EntityUnityFlags unityFlags = EntityUnityFlags.Rigidbody;
+    [HideInInspector]
+    public Guid guid;
+
+    public void Start() {
+        guid = Guid.NewGuid();
+    }
 
     public void Deserialize(EntityData data) {
         var rb = GetComponent<Rigidbody>();
         if (rb != null && unityFlags.HasFlag(EntityUnityFlags.Rigidbody)) {
+            RigidbodyInterpolation interpolation = rb.interpolation;
+            rb.interpolation = RigidbodyInterpolation.None;
             rb.position = data.position.Value;
             rb.rotation = data.rotation.Value;
 
@@ -22,12 +30,16 @@ public class Entity : MonoBehaviour, IEntitySerializer {
                 rb.angularVelocity = data.angularVelocity.Value;
                 rb.velocity = data.velocity.Value;
             }
+
+            rb.interpolation = interpolation;
         }
 
         if (unityFlags.HasFlag(EntityUnityFlags.Transform)) {
             transform.position = data.position.Value;
             transform.rotation = data.rotation.Value;
         }
+
+        guid = data.guid;
     }
 
     public void Serialize(EntityData data) {
@@ -43,21 +55,22 @@ public class Entity : MonoBehaviour, IEntitySerializer {
             data.position = transform.position;
             data.rotation = transform.rotation;
         }
+
+        data.guid = guid;
     }
 }
 
 [Flags]
 public enum EntityFlags {
-    None,
-    Serialize,
-    Spawn,
-    DestroyExistingOnDeserialize,
-    Default = Spawn | Serialize | DestroyExistingOnDeserialize,
+    None = 0,
+    Serialize = 1,
+    Spawn = 2,
+    DestroyExistingOnDeserialize = 4,
 }
 
 [Flags]
 public enum EntityUnityFlags {
-    None,
-    Rigidbody,
-    Transform,
+    None = 0,
+    Rigidbody = 1,
+    Transform = 2,
 }

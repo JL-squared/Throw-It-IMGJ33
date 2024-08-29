@@ -30,7 +30,7 @@ public static class Registries {
         GameObject sauce = null;
         switch (basic) {
             case "bots":
-                sauce = BotBase.Summon(bots[name], data.position.Value, data.rotation.Value);
+                sauce = BotBase.Summon(data.bot, bots[name], data.position.Value, data.rotation.Value);
                 break;
             case "projectiles":
                 sauce = Projectile.Spawn((ProjectileItemData)items[name], data.position.Value, data.velocity.Value);

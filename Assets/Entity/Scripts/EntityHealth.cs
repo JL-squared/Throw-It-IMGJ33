@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EntityHealth : MonoBehaviour {
+public class EntityHealth : MonoBehaviour, IEntitySerializer {
     public float maxHealth;
     public float health;
 
@@ -57,5 +57,19 @@ public class EntityHealth : MonoBehaviour {
         }
 
         return effectiveHealing > 0;
+    }
+
+    public void Serialize(EntityData data) {
+        data.health = health;
+    }
+
+    public void Deserialize(EntityData data) {
+        health = data.health.Value;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        OnHealthChanged?.Invoke(health / maxHealth);
+        AlreadyKilled = health == 0f;
+
+        if (AlreadyKilled)
+            OnKilled?.Invoke();
     }
 }

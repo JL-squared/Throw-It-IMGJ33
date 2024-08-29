@@ -32,3 +32,4 @@ public class BotData : ScriptableObject {
     public float baseDamageResistance = 0;
     public float baseKnockbackResistance = 0;
 }
+

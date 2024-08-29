@@ -14,7 +14,7 @@ public class RngList<T> where T: RngItem {
     // If the none subset is enabled, the list technically becomes of size n+1 with the added none subset with the specific weight
     public RngItem noneSubset;
 
-    public T PickRandom() {
+    public int PickRandom() {
         // Convert to a list with indirection index to main list (since it is shuffled)
         List<(int, float)> indexed = list.Select((x, i) => (i, x)).Where(x => x.x.enabled).Select(x => (x.i, x.x.weight)).ToList();
         if (noneSubset.enabled) {
@@ -43,7 +43,7 @@ public class RngList<T> where T: RngItem {
             index = list.Count - 1;
         }
 
-        return index >= 0 ? list[index] : null;
+        return index;
     }
 }
 
