@@ -110,8 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addressablesPrefabName: projectiles:icicle
-  flags: -1
+  identifier: projectiles:icicle
+  flags: 7
   unityFlags: 1
 --- !u!1001 &21457544875113637
 PrefabInstance:

@@ -5768,6 +5768,11 @@ PrefabInstance:
       propertyPath: flags
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: -5453511713716336317, guid: fc0bafe595791e14a84258f43714eff3,
+        type: 3}
+      propertyPath: identifier
+      value: vehicles:sled
+      objectReference: {fileID: 0}
     - target: {fileID: 2026861986378578711, guid: fc0bafe595791e14a84258f43714eff3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -6025,6 +6030,11 @@ PrefabInstance:
         type: 3}
       propertyPath: flags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2848151171195960463, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: identifier
+      value: player
       objectReference: {fileID: 0}
     - target: {fileID: 2262149761271955649, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}

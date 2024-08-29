@@ -8,14 +8,11 @@ using UnityEngine;
 // Whenever we save the game, each gameobject with this tag will be converted to a simple unique ID
 // Other data will simply refer to this "ID"
 public class Entity : MonoBehaviour, IEntitySerializer {
-    public string addressablesPrefabName;
+    public string identifier;
     public EntityFlags flags = EntityFlags.Serialize | EntityFlags.Spawn | EntityFlags.DestroyExistingOnDeserialize;
     public EntityUnityFlags unityFlags = EntityUnityFlags.Rigidbody;
-    [HideInInspector]
-    public Guid guid;
 
     public void Start() {
-        guid = Guid.NewGuid();
     }
 
     public void Deserialize(EntityData data) {
@@ -38,8 +35,6 @@ public class Entity : MonoBehaviour, IEntitySerializer {
             transform.position = data.position.Value;
             transform.rotation = data.rotation.Value;
         }
-
-        guid = data.guid;
     }
 
     public void Serialize(EntityData data) {
@@ -56,7 +51,9 @@ public class Entity : MonoBehaviour, IEntitySerializer {
             data.rotation = transform.rotation;
         }
 
-        data.guid = guid;
+        data.name = identifier;
+        data.spawn = flags.HasFlag(EntityFlags.Spawn);
+        data.recurse = flags.HasFlag(EntityFlags.Recurse);
     }
 }
 
@@ -66,6 +63,7 @@ public enum EntityFlags {
     Serialize = 1,
     Spawn = 2,
     DestroyExistingOnDeserialize = 4,
+    Recurse = 8,
 }
 
 [Flags]

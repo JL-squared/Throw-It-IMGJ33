@@ -10,6 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
         type: 3}
+      propertyPath: identifier
+      value: bots:tall
+      objectReference: {fileID: 0}
+    - target: {fileID: -2230012475043275666, guid: 6a107ceec86a17d4b840945e478dd9be,
+        type: 3}
       propertyPath: addressablesPrefabName
       value: bots:tall
       objectReference: {fileID: 0}

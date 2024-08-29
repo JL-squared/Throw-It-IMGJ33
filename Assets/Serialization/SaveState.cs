@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Unity.Burst.Intrinsics;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,12 +30,16 @@ public class EntityData {
     public SavedBotData bot;
     public bool icicleHit;
     public Guid guid;
+    public List<EntityData> children;
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
     public string name;
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
     public bool spawn;
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+    public bool recurse;
 }
 
 [Serializable]
@@ -65,67 +71,74 @@ public class SaveState {
     public static SaveState Save() {
         SaveState state = new SaveState();
 
-        List<(GameObject, EntityData)> temp = UnityEngine.Object.FindObjectsOfType<Entity>().AsEnumerable()
-            .Where(x => x.flags.HasFlag(EntityFlags.Serialize))
-            .Select((x) => (x.gameObject, new EntityData()))
+        List<GameObject> temp = UnityEngine.Object.FindObjectsOfType<Entity>().AsEnumerable()
+            .Where(x => {
+                Transform obj = x.gameObject.transform;
+                while (obj != null) {
+                    obj = obj.transform.parent;
+                    if (obj != null && obj.GetComponent<Entity>() != null) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
+            .Select(x => x.gameObject)
             .ToList();
 
-        state.entities = new List<EntityData>();
-        foreach ((GameObject go, EntityData data) in temp) {
+        void Ohio(GameObject go, EntityData data, int depth) {
             Entity entity = go.GetComponent<Entity>();
 
-            if (!entity.flags.HasFlag(EntityFlags.Serialize)) {
-                continue;
+            if (depth > 10) {
+                Debug.LogWarning(go.name);
+                return;
             }
 
-            data.name = entity.addressablesPrefabName;
-            data.spawn = entity.flags.HasFlag(EntityFlags.Spawn);
+            if (entity.flags.HasFlag(EntityFlags.Serialize)) {
 
-            foreach (var serializer in go.GetComponents<IEntitySerializer>()) {
-                serializer.Serialize(data);
+                foreach (var serializer in go.GetComponents<IEntitySerializer>()) {
+                    serializer.Serialize(data);
+                }
             }
 
-            state.entities.Add(data);
+            if (entity.flags.HasFlag(EntityFlags.Recurse)) {
+                Entity[] children = entity.GetComponentsInChildren<Entity>();
+                EntityData[] childrenDatas = new EntityData[children.Length-1];
+
+                for (int i = 0; i < children.Length - 1; i++) {
+                    childrenDatas[i] = new EntityData();
+                }
+
+                int index = 0;
+                foreach (var item in children) {
+                    if (item.gameObject != go) {
+                        Debug.Log(item.gameObject.name);
+                        Debug.Log(depth);
+                        Debug.Log(index);
+                        Ohio(item.gameObject, childrenDatas[index], depth + 1);
+                        index++;
+                    }
+                }
+
+                data.children = childrenDatas.ToList();
+
+                if (data.children.Count == 0) {
+                    data.children = null;
+                }
+            } else {
+                data.children = null;
+            }
+
+            if (entity.flags.HasFlag(EntityFlags.Serialize)) {
+                state.entities.Add(data);
+            }
         }
 
-        /*
-        int counter = 0;
-        foreach (var entity in entities) {
-            Rigidbody rb = entity.GetComponent<Rigidbody>();
-            EntityMovement movement = entity.GetComponent<EntityMovement>();
-            Player player = entity.GetComponent<Player>();
-
-            if (movement != null) {
-                EntityMovementData data = new EntityMovementData {
-                    position = movement.transform.position,
-                    velocity = movement.movement,
-                    rotation = movement.transform.rotation,
-                    entity = counter,
-                };
-
-                state.movements.Add(data);
-            }
-
-            if (rb != null) {
-                RigidbodyData data = new RigidbodyData {
-                    position = rb.position,
-                    velocity = rb.velocity,
-                    angularVelocity = rb.angularVelocity,
-                    rotation = rb.rotation,
-                    entity = counter,
-                };
-
-                state.rigidbodies.Add(data);
-            }
-
-            if (player != null) {
-
-            }
-
-            counter++;
+        state.entities = new List<EntityData>();
+        foreach (GameObject go in temp) {
+            Ohio(go, new EntityData(), 0);
         }
 
-        */
         return state;
     }
 
@@ -139,21 +152,31 @@ public class SaveState {
             }
         }
 
-        Dictionary<Guid, Entity> lookup = new Dictionary<Guid, Entity>();
-
-        foreach (var entity in alrEntities) {
-            lookup.Add(entity.guid, entity);
-        }
-
-        foreach (var data in entities) {
-            GameObject go = null;
+        void Skibi(EntityData data, GameObject go=null) {
             if (data.spawn) {
                 go = Registries.Summon(data.name, data);
             } else {
-                go = lookup[data.guid].gameObject;
+                if (data.name == "player") {
+                    go = Player.Instance.gameObject;
+                }
+            }
+
+            // if this is a parent node, then add its children as objects as well
+            if (data.children != null && data.recurse) {
+                Debug.Log(go == null);
+                Dictionary<string, Entity> entities = go.GetComponentsInChildren<Transform>().AsEnumerable().Where(x => x.gameObject != go).Select(x => x.GetComponent<Entity>()).Where(x => x != null).ToDictionary(x => x.identifier);
+                foreach (var item in data.children) {
+                    if (!item.spawn) {
+                        Skibi(item, entities[item.name].gameObject);
+                    }
+                }
             }
 
             objects.Add(data, go);
+        }
+
+        foreach (var data in entities) {
+            Skibi(data);
         }
 
         GameManager.Instance.StartCoroutine(Start());

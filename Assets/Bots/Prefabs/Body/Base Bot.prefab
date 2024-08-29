@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addressablesPrefabName: bots:base
+  identifier: bots:base
   flags: -1
   unityFlags: 0
 --- !u!143 &7893371349031768923
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addressablesPrefabName: head
+  identifier: 
   flags: 1
   unityFlags: 0
 --- !u!1 &7716774097120439362
