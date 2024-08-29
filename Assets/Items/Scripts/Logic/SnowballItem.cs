@@ -2,23 +2,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SnowballItem : Item {
-    public float timeForMaxCharge;
-    public float minFactor;
-    public float maxThrowDelay;
+    public float timeForMaxCharge = 0.2f;
+    public float minFactor = 0.2f;
+    public float maxThrowDelay = 0.5f;
 
-    private float time;
+    private float time = 0.0f;
     private bool isCharging;
     private float throwDelay;
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
         base.PrimaryAction(context, player);
-
-        // check if we can charge snowball
-        /* ItemData data = player.Data; */ // idk what this does honestly lol
-        if (!context.canceled) {
-            if (throwDelay == 0.0f) isCharging = true;
-            return;
-        }
 
         // release charge, throw snowball
         if (isCharging && context.canceled) {
@@ -41,11 +34,9 @@ public class SnowballItem : Item {
         }
     }
 
-    public override void Update(Player player) {
+    public override void EquippedUpdate(Player player) {
         if (isCharging) {
             time += Time.deltaTime;
-        } else if (throwDelay > 0.0f) {
-            throwDelay -= Time.deltaTime * 1.0f;
         }
 
         throwDelay = Mathf.Clamp(throwDelay, 0.0f, maxThrowDelay);
@@ -56,10 +47,21 @@ public class SnowballItem : Item {
         //swayOffset += (-Vector3.forward + Vector3.right * 0.2f) * charge * 0.125f;
 
         UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
+
+        if (player.PrimaryHeld && !isCharging) {
+            if (throwDelay == 0.0f) isCharging = true;
+        }
     }
 
-    public override void Unequipped(InputAction.CallbackContext context, Player player) {
-        base.Unequipped(context, player);
+    public override void Update(Player player) {
+        base.Update(player);
+        if(!isCharging && throwDelay > 0.0f) {
+            throwDelay -= Time.deltaTime * 1.0f;
+        }
+    }
+
+    public override void Unequipped(Player player) {
+        base.Unequipped(player);
         isCharging = false;
         time = 0f;
         UIMaster.Instance.inGameHUD.UpdateChargeMeter(0f);

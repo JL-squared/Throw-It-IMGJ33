@@ -27,13 +27,13 @@ public class ShovelItem : ToolItem {
         }
     }
 
-    public override void Unequipped(InputAction.CallbackContext context, Player player) {
-        base.Unequipped(context, player);
+    public override void Unequipped(Player player) {
+        base.Unequipped(player);
         canPickupSnow = false;
         UIMaster.Instance.inGameHUD.SetRightClickHint(false);
     }
 
-    public override void Update(Player player) {
+    public override void EquippedUpdate(Player player) {
         canPickupSnow = false;
         if (player.lookingAt != null) {
             RaycastHit info = player.lookingAt.Value;

@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Tweens.Core;
 using Tweens;
 using System;
+using System.Linq.Expressions;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour {
@@ -121,6 +122,10 @@ public class Player : MonoBehaviour {
     public RaycastHit? lookingAt;
     private IInteraction interaction;
     private IInteraction lastInteraction;
+    [HideInInspector]
+    public bool PrimaryHeld = false;
+    [HideInInspector]
+    public bool SecondaryHeld = false;
     #endregion
 
     [HideInInspector]
@@ -238,10 +243,9 @@ public class Player : MonoBehaviour {
             GetComponent<CharacterController>().enabled = true;
         }
 
+        EquippedItem.logic.EquippedUpdate(this);
         foreach (ItemStack item in items) {
-            if (!item.IsEmpty()) {
-                item.logic.Update(this);
-            }
+            item.logic.Update(this);
         }
     }
 
@@ -421,7 +425,7 @@ public class Player : MonoBehaviour {
         }
 
         if (firstEmpty == equipped) {
-            SelectionChanged(force: true);
+            SelectionChanged();
         }
 
         inventoryUpdateEvent.Invoke(items);
@@ -452,8 +456,7 @@ public class Player : MonoBehaviour {
             //int missingCount = Mathf.Max(count - currentCount, 0);
             
             if (currentCount == 0) {
-                items[slot].Data = null;
-                SelectionChanged(force: true);
+                SelectionChanged(() => { items[slot].Data = null; });
             }
 
             items[slot].Count = currentCount;
@@ -480,52 +483,10 @@ public class Player : MonoBehaviour {
     // Only called when the following happens:
     // - User changes selected slot to new slot
     // - Item count gets changed from zero to positive value and vice versa
-    private void SelectionChanged(bool force = false) {
-        /*
-        if (UnityEngine.Object.ReferenceEquals(lastSelectedViewModelItem, EquippedItem) && !force) {
-            return;
-        }
-
-        if (lastSelectedViewModelItem != null && itemLogic != null) {
-            itemLogic.Unequipped();
-        }
-
-        Vector3 oldLocalPosition = default;
-        Quaternion oldLocalRotation = default;
-        if (viewModel != null) {
-            oldLocalPosition = viewModel.transform.localPosition;
-            oldLocalRotation = viewModel.transform.localRotation;
-            Destroy(viewModel);
-        }
-
-        if (itemLogic != null) {
-            Destroy(itemLogic.gameObject);
-        }
-
-        viewModel = null;
-        lastSelectedViewModelItem = null;
-
-        ItemStack item = EquippedItem;
-        if (item != null && item.Data != null && item.Count > 0) {
-            if (item.Data.viewModel != null) {
-                GameObject viewModel = Instantiate(item.Data.viewModel, viewModelHolster.transform);
-                viewModel.transform.localPosition = oldLocalPosition;
-                viewModel.transform.localRotation = oldLocalRotation;
-                this.viewModel = viewModel;
-                lastSelectedViewModelItem = item;
-            }
-            /*
-            if (item.Data.equippedLogic != null) {
-                GameObject equippedLogicGameObject = Instantiate(item.Data.equippedLogic, transform);
-                itemLogic = equippedLogicGameObject.GetComponent<EquippedItemLogic>();
-                itemLogic.equippedItem = item;
-                itemLogic.player = this;
-                itemLogic.Equipped();
-                itemLogic.viewModel = item.Data.viewModel;
-            }
-            
-        }
-    */
+    private void SelectionChanged(Action function = null) {
+        EquippedItem.logic.Unequipped(this);
+        function?.Invoke();
+        EquippedItem.logic.Equipped(this);
     }
     #endregion
 
@@ -603,27 +564,26 @@ public class Player : MonoBehaviour {
             if (isBuilding) {
                 placementRotation += scroll * 22.5f;
             } else {
-                int newSelected = (Equipped + (int)scroll) % 10;
-                Equipped = (newSelected < 0) ? 9 : newSelected;
-                SelectionChanged();
+                SelectionChanged( () => {
+                    int newSelected = (Equipped + (int)scroll) % 10;
+                    Equipped = (newSelected < 0) ? 9 : newSelected;
+                });
             }
         }
     }
 
     public void SelectSlot(InputAction.CallbackContext context) {
         if (Performed(context))
-            Equipped = (int)context.ReadValue<float>();
-        SelectionChanged();
+            SelectionChanged(() => { Equipped = (int)context.ReadValue<float>(); });
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
         if (!Performed() || context.performed)
             return;
 
-        // !context.canceled is equal to true when pressing and false when releasing
-        bool pressed = !context.canceled;
+        PrimaryHeld = !context.canceled;
 
-        if (isBuilding && placementStatus && pressed) {
+        if (isBuilding && placementStatus && !context.canceled) {
             BuildActionPrimary();
         } else if (!EquippedItem.IsEmpty()) {
             EquippedItem.logic.PrimaryAction(context, this);
@@ -644,6 +604,8 @@ public class Player : MonoBehaviour {
     public void SecondaryAction(InputAction.CallbackContext context) {
         if (!Performed() || context.performed)
             return;
+
+        SecondaryHeld = !context.canceled;
 
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {

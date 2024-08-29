@@ -36,7 +36,7 @@ public class ItemStack {
     public ItemData Data { get { return data; } 
         set { 
             data = value;
-            logic = value != null ? Registries.GetItem(data) : null;
+            logic = value != null ? Registries.GetItem(data) : new Item();
             updateEvent.Invoke(this); 
         } 
     }
