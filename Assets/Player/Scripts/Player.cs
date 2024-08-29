@@ -928,6 +928,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
         items = data.inventory;
         wishHeadDir = data.wishHeadDir.Value;
         ApplyMouseDelta(Vector2.zero);
+        SelectionChanged(true);
+        inventoryUpdateEvent?.Invoke(items);
+
+        foreach (var item in items) {
+            item.updateEvent?.AddListener((Item item) => { inventoryUpdateEvent.Invoke(items); });
+        }
     }
     #endregion
 }

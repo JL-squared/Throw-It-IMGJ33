@@ -10,7 +10,7 @@ public class AddressableRegistry<T> where T : ScriptableObject {
     
     public T this[string name] {
         get {
-            if (this.data == null)
+            if (this.data == null || name == null)
                 return null;
 
             if (this.data.TryGetValue(name, out var data)) {

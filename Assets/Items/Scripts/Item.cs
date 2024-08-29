@@ -35,6 +35,10 @@ public class Item {
     [JsonIgnore]
     public ItemData Data { get { return data; } set { data = value; updateEvent.Invoke(this); } }
 
+    public Item() {
+        this.count = 0;
+        this.Data = null;
+    }
 
     public Item(ItemData data, int count) {
         this.count = count;

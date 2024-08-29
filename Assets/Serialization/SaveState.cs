@@ -20,7 +20,7 @@ public class EntityData {
     public float? health;
     public List<Item> inventory;
     public ItemData data;
-    public Vector3? wishHeadDir;
+    public Vector2? wishHeadDir;
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
     public string name;

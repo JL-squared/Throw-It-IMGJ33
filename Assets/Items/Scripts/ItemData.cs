@@ -15,7 +15,6 @@ public class ItemData : ScriptableObject {
     public GameObject viewModel;
     public GameObject equippedLogic;
 
-    public string name;
     [TextArea(15, 20)]
     public string description;
 
@@ -32,7 +31,7 @@ public class ItemData : ScriptableObject {
 
 public class ItemDataConverter : JsonConverter {
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-        return Registries.items[reader.ReadAsString()];
+        return Registries.items[serializer.Deserialize<string>(reader)];
     }
 
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
