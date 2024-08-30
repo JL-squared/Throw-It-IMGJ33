@@ -78,6 +78,7 @@ public static class Utils {
         settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         settings.DefaultValueHandling = DefaultValueHandling.Ignore;
         settings.NullValueHandling = NullValueHandling.Ignore;
+        settings.TypeNameHandling = TypeNameHandling.Auto;
         JsonConvert.DefaultSettings = () => settings;
 
         return settings;
@@ -117,6 +118,14 @@ public static class Utils {
         }
     }
 
+    // Jarvis, give this man testicular torsion
+    public static void ExecuteChildrenRecursive(Transform root, Action<GameObject> method) {
+        var children = root.GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (var child in children) {
+            method?.Invoke(child.gameObject);
+        }
+    }
+
     public static float SmoothAbsClamped01(float x, float h) {
         float J(float x) {
             return Mathf.Sqrt(x*x + h) - Mathf.Sqrt(h);
@@ -142,5 +151,13 @@ public static class Utils {
 
     public static bool IsNullOrDestroyed(this object value) {
         return ReferenceEquals(value, null) || value.Equals(null);
+    }
+
+    public static Quaternion SafeLookRotation(this Vector3 lookAt, float epsilon = 0.01f) {
+        if (lookAt.magnitude < epsilon) {
+            return Quaternion.identity;
+        } else {
+            return Quaternion.LookRotation(lookAt);
+        }
     }
 }

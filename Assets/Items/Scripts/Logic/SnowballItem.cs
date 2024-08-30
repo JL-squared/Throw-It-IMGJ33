@@ -60,6 +60,10 @@ public class SnowballItem : Item {
         }
     }
 
+    public override void OnWorldItemSpawned(WorldItem wi) {
+        wi.gameObject.AddComponent<SnowballItemToProjectile>();
+    }
+
     public override void Unequipped(Player player) {
         base.Unequipped(player);
         isCharging = false;

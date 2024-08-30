@@ -20,5 +20,5 @@ MonoBehaviour:
   viewModelOffset: {fileID: 0}
   worldModelOffset: {fileID: 0}
   model: {fileID: 0}
-  name: Bolts
+  title: Nuts and bolts
   description: No part is worth its weight without its fasteners.

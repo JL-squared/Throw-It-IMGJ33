@@ -629,7 +629,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             ItemStack item = items[equipped];
             if (item.Count > 0) {
                 if (WorldItem.Spawn(items[equipped].NewCount(1), gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity))
-                RemoveItem(equipped, 1);
+                    RemoveItem(equipped, 1);
             }
         }
     }

@@ -106,7 +106,7 @@ public class Firework : MonoBehaviour {
         targetFwd += localToWorldNoise * noisy;
 
         // Apply rotation and thrust force
-        Quaternion targetRotation = Quaternion.LookRotation(targetFwd.normalized);
+        Quaternion targetRotation = targetFwd.normalized.SafeLookRotation();
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime * rotationSpeedFactor);
         rb.AddRelativeForce(new Vector3(0, 0, thrust * thrustFactor));
     }
@@ -116,7 +116,7 @@ public class Firework : MonoBehaviour {
             return;
 
         if (rb.velocity.magnitude > 0.01) {
-            mesh.rotation = Quaternion.LookRotation(rb.velocity.normalized) * Quaternion.Euler(90f, 0f, 0f);
+            mesh.rotation = rb.velocity.normalized.SafeLookRotation() * Quaternion.Euler(90f, 0f, 0f);
         }
 
         if (launcher != null) {

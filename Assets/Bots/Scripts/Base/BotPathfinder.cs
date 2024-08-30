@@ -34,7 +34,7 @@ public class BotPathfinder : BotBehaviour {
         Vector3 direction = -(transform.position - targetPosition);
         direction.y = 0;
         Vector2 local = new Vector2(direction.x, direction.z);
-        movement.localWishRotation = Quaternion.LookRotation(direction.normalized);
+        movement.localWishRotation = direction.normalized.SafeLookRotation();
         /*
         if (pathfind && GameManager.Instance.pathfindingRebuilder.useNavMesh) {
             NavMeshQueryFilter filter = new NavMeshQueryFilter();

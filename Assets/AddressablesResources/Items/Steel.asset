@@ -19,6 +19,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   viewModelOffset: {fileID: 0}
   worldModelOffset: {fileID: 0}
+  collider: {fileID: 0}
   model: {fileID: 0}
-  name: Steel
+  title: Steel
   description: An all-application iron alloy.
