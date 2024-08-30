@@ -32,7 +32,13 @@ public class Vehicle : MonoBehaviour, IInteraction {
 
     public virtual void Exit() {
         driven = false;
-        player.GetComponent<EntityMovement>().rotationIsLocal = false;
+
+        if (RotationFollows) {
+            player.GetComponent<EntityMovement>().rotationIsLocal = false;
+        }        
+
+        //player.ResetMovement(true);
+        //player.ApplyMouseDelta(Vector2.zero);
     }
 
     private void Update() {

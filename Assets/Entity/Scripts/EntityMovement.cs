@@ -138,7 +138,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        if (localWishRotation.normalized != Quaternion.identity && entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
+        if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
             Quaternion q = Quaternion.identity;
             if (rotationSmoothing == 0f) {
                 q = localWishRotation;

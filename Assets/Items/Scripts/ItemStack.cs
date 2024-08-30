@@ -42,11 +42,9 @@ public class ItemStack {
     }
 
     public ItemStack() {
-        /*
         this.count = 0;
         this.Data = null;
         this.logic = null; 
-        */
     }
 
     // this would have to be assigned on data change?

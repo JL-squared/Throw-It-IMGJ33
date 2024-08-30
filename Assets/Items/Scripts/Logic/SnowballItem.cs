@@ -61,7 +61,8 @@ public class SnowballItem : Item {
     }
 
     public override void OnWorldItemSpawned(WorldItem wi) {
-        wi.gameObject.AddComponent<SnowballItemToProjectile>();
+        var thingy = wi.gameObject.AddComponent<SnowballItemToProjectile>();
+        thingy.maxSpeed = 7;
     }
 
     public override void Unequipped(Player player) {

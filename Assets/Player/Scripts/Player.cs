@@ -544,8 +544,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
-    private void ApplyMouseDelta(Vector2 delta) {
+    public void ApplyMouseDelta(Vector2 delta) {
         targetMouseDelta = delta;
+        currentMouseDelta = delta;
         wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
@@ -850,7 +851,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         movement.localWishMovement = Vector2.zero;
         targetMouseDelta = Vector2.zero;
         currentMouseDelta = Vector2.zero;
-        ApplyMouseDelta(Vector2.zero);
 
         if (resetRotation) {
             movement.localWishRotation = Quaternion.identity;
@@ -859,15 +859,23 @@ public class Player : MonoBehaviour, IEntitySerializer {
             wishHeadDir = Vector2.zero;
         }
 
+        ApplyMouseDelta(Vector2.zero);
+
         stepValue = 0f;
     }
 
     public void ExitVehicle() {
+        Quaternion cpy2 = transform.rotation;
+        Vector2 cpy = wishHeadDir;
         vehicle.Exit();
         vehicle = null;
         lastInteraction = null;
         transform.SetParent(null);
+        
         ResetMovement();
+        Vector3 angles = cpy2.eulerAngles;
+        wishHeadDir.x = angles.y;
+        ApplyMouseDelta(Vector2.zero);
     }
 
     public void Serialize(EntityData data) {

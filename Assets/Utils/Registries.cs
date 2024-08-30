@@ -36,9 +36,10 @@ public static class Registries {
             case "projectiles":
                 sauce = Projectile.Spawn((ProjectileItemData)items[name], data.position.Value, data.velocity.Value);
                 break;
-            case "wi":
-                sauce = WorldItem.Spawn(data.itemStack, data.position.Value, data.rotation.Value);
-                //sauce = Projectile.Spawn((ProjectileItemData)items[name], data.position.Value, data.velocity.Value);
+            case "entity":
+                if (name == "world_item") {
+                    sauce = WorldItem.Spawn(data.itemStack, data.position.Value, data.rotation.Value);
+                }
                 break;
             case "vehicles":
                 //sauce = vehicles;
