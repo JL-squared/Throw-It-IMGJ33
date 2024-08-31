@@ -10,6 +10,7 @@ public class VoxelChunk : MonoBehaviour {
 
     // Current voxel edits that we must execute
     [HideInInspector] public IVoxelEdit pendingVoxelEdit = default;
+    [HideInInspector] public bool overwrite;
 
     // Callback that we must invoke when we finish meshing this voxel chunk
     [HideInInspector] public VoxelTerrain.VoxelEditCountersHandle voxelCountersHandle;

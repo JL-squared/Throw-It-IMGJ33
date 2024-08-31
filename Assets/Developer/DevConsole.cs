@@ -103,7 +103,7 @@ public class DevConsole : MonoBehaviour {
             },
             new ConsoleCommand {
                 main = "summon",
-                desc = "Summons an entity. Ex: bot base | item snowball | projectile snowball 10 ",
+                desc = "Summons an entity. Ex: bots base | items snowball | projectiles snowball 10 ",
                 moment = (args, player) => {
                     string type = args[0];
                     string name = args[1];
@@ -130,17 +130,22 @@ public class DevConsole : MonoBehaviour {
                 main = "save",
                 desc = "",
                 moment = (args, player) => {
-                    SaveState state = SaveState.Save();
-                    string bruh = Utils.Save("save.json", state);
-                    Debug.Log(bruh);
+                    if (PersistentSaveManager.Instance != null) {
+                        PersistentSaveManager.Instance.Save();
+                    } else {
+                        Debug.LogWarning("Can't do shit, don't have a save manager");
+                    }
                 },
             },
             new ConsoleCommand {
                 main = "load",
                 desc = "",
                 moment = (args, player) => {
-                    SaveState state = Utils.Load<SaveState>("save.json");
-                    state.Loaded();
+                    if (PersistentSaveManager.Instance != null) {
+                        PersistentSaveManager.Instance.Load();
+                    } else {
+                        Debug.LogWarning("Can't do shit, don't have a save manager");
+                    }
                 },
             },
         };
@@ -224,11 +229,13 @@ public class DevConsole : MonoBehaviour {
         if (cmd == null)
             return;
 
+        cmd.moment.Invoke(splat[1..], Player.Instance);
+        /*
         try {
-            cmd.moment.Invoke(splat[1..], Player.Instance);
         } catch (Exception) {
             Debug.LogWarning("Command invocation exception");
             throw;
         }
+        */
     }
 }

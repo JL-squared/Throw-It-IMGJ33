@@ -16,7 +16,7 @@ public class ProjectileShooter : MonoBehaviour {
         inheritVelocityMovement = GetComponent<EntityMovement>();
     }
 
-    public void Shoot(float forcePercentage = 1.0f) {
+    public void Shoot(float forcePercentage = 1.0f, Vector3 offsetVelocity=default) {
         Vector2 randomOffset = maxRandomDirection * new Vector2(Random.value - 0.5f, Random.value - 0.5f) * 2.0f;
         Vector3 tahini = new Vector3(randomOffset.x, randomOffset.y, 1f).normalized;
         Vector3 fwd = spawnHolster.TransformDirection(tahini);
@@ -36,6 +36,7 @@ public class ProjectileShooter : MonoBehaviour {
             }
         }
 
+        startingVelocity += offsetVelocity;
         Projectile.Spawn(data, startingPos, startingVelocity, this);
     }
 

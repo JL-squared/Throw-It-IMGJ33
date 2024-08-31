@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 // Game manager that contains all other managers and handles
 public class GameManager : MonoBehaviour {
@@ -77,5 +78,15 @@ public class GameManager : MonoBehaviour {
         this.paused = paused;
         onPausedChanged?.Invoke(paused);
         AudioListener.pause = paused;
+    }
+
+    private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1) {
+        /*
+        var dir = Utils.PersistentDir + "/terrain";
+        //VoxelTerrain.Instance.LoadMapSkibi(dir);
+
+        SaveState state = Utils.Load<SaveState>("save.json");
+        state.Loaded();
+        */
     }
 }

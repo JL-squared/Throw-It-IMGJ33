@@ -114,7 +114,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-    private Vector2 currentMouseDelta;
+    public Vector2 currentMouseDelta;
     private Vector2 targetMouseDelta;
     #endregion
 

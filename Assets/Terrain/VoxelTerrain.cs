@@ -9,6 +9,8 @@ using System.IO.Compression;
 using Task = System.Threading.Tasks.Task;
 using FileMode = System.IO.FileMode;
 using Unity.Mathematics;
+using UnityEngine.Rendering;
+
 
 
 
@@ -35,7 +37,7 @@ public class VoxelTerrain : MonoBehaviour {
 
     private bool alrDisposed = false;
     private int pendingChunks;
-    private bool firstGen = true;
+    private bool firstGen;
 
     public delegate void InitGen();
     public event InitGen Finished;
@@ -103,12 +105,17 @@ public class VoxelTerrain : MonoBehaviour {
     void Start() {
         KillChildren();
         Init(false);
-        LoadMap();
+
+        if (PersistentSaveManager.Instance == null || !PersistentSaveManager.Instance.load) {
+            LoadMapAll();
+            firstGen = true;
+        }
     }
 
     // Generate the fixed size map with a specific callback to execute for each chunk
     public void GenerateWith(Action<VoxelChunk, int> callback) {
         int index = 0;
+        totalChunks.Clear();
         for (int x = -mapChunkSize.x; x < mapChunkSize.x; x++) {
             for (int y = -mapChunkSize.y; y < mapChunkSize.y; y++) {
                 for (int z = -mapChunkSize.z; z < mapChunkSize.z; z++) {
@@ -124,8 +131,8 @@ public class VoxelTerrain : MonoBehaviour {
         }
     }
 
-    // Load the map from the saved voxel map representation
-    public bool LoadMap() {
+    public bool LoadMapAll() {
+        /*
         if (savedMap == null) {
             Debug.LogWarning("No map set!!");
             return false;
@@ -137,10 +144,30 @@ public class VoxelTerrain : MonoBehaviour {
             Debug.LogWarning("Current: " + mapChunkSize);
             return false;
         }
+        */
+
+        List<MemoryStream> streams = new List<MemoryStream>();
+
+        foreach (var item in savedMap.textAssets) {
+            streams.Add(new MemoryStream(item.bytes));
+        }
+
+        LoadMap2(streams);
+        Debug.Log("Loading terrain from editor map");
+        return true;
+    }
+
+    public void LoadMap2<T>(List<T> streams, bool sigmoidate=false) where T: Stream {
+        firstGen = true;
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
+
 
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
             voxelChunk.hasCollisions = true;
             voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
+            voxelChunk.overwrite = sigmoidate;
         }
 
         KillChildren();
@@ -148,16 +175,20 @@ public class VoxelTerrain : MonoBehaviour {
 
         List<BufferedStream> cachedStreams = new List<BufferedStream>();
 
-        for (int i = 0; i < savedMap.textAssets.Length; i++) {
-            var memoryStream = new MemoryStream(savedMap.textAssets[i].bytes);
-            var regionStream = new GZipStream(memoryStream, CompressionMode.Decompress);
-            cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024));
+        for (int i = 0; i < streams.Count; i++) {
+            if (streams[i] != null) {
+                var regionStream = new GZipStream(streams[i], CompressionMode.Decompress);
+                cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024 * 32));
+            } else {
+                cachedStreams.Add(null);
+            }
         }
 
-        VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks, savedMap.mapSize);
+        VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks, mapChunkSize);
 
-        for (int i = 0; i < savedMap.textAssets.Length; i++) {
-            cachedStreams[i].Dispose();
+        for (int i = 0; i < streams.Count; i++) {
+            if (cachedStreams[i] != null)
+                cachedStreams[i].Dispose();
         }
 
         for (int i = 0; i < totalChunks.Count; i++) {
@@ -165,42 +196,39 @@ public class VoxelTerrain : MonoBehaviour {
             voxelChunk.Remesh();
             pendingChunks++;
         }
+        Debug.Log("Took " + sw.ElapsedMilliseconds + "ms");
+    }
 
-        return true;
+    public void LoadMapSkibi(string directory) {
+        int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
+        List<Stream> streams = new List<Stream>();
+
+        for (int i = 0; i < maxRegionFiles; i++) {
+            streams.Add(new MemoryStream(savedMap.textAssets[i].bytes));
+        }
+
+        foreach (var item in Directory.EnumerateFiles(directory + "-regions", "*.bytes")) {
+            if (item.EndsWith(".bytes")) {
+                string name = Path.GetFileNameWithoutExtension(item);
+                string[] godThisIsHorrible = name.Split("reg");
+                string worse = godThisIsHorrible[1].Split(".bytes")[0];
+                int wtf = int.Parse(worse);
+
+                FileStream bruh = File.Open(item, FileMode.Open);
+                streams[wtf] = bruh;
+            }
+        }
+
+        LoadMap2(streams, sigmoidate: true);
+        Debug.Log("Loading terrain from user region files");
     }
 
     // CAN ONLY BE EXECUTED IN THE EDITOR
 #if UNITY_EDITOR
-    public void SaveMap() {
+    public void SaveMapEditor() {
         savedMap.mapSize = mapChunkSize;
-        int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
-
         string soPath = AssetDatabase.GetAssetPath(savedMap);
-        if (!Directory.Exists(soPath + "-regions")) {
-            Directory.CreateDirectory(soPath + "-regions");
-        }
-
-        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-        sw.Start();
-        List<BufferedStream> streamWriters = new List<BufferedStream>();
-        for (int i = 0; i < maxRegionFiles; i++) {
-            string p = soPath + "-regions/reg" + i + ".bytes";
-            FileStream fileStream = File.Open(p, FileMode.Create);
-            GZipStream gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
-            BufferedStream bufferedStream = new BufferedStream(gzipStream, 1024 * 1024 * 8);
-            streamWriters.Add(bufferedStream);
-        }
-
-        VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks, savedMap.mapSize);
-
-        List<Task> tasks = new List<Task>();
-        for (int i = 0; i < maxRegionFiles; i++) {
-            streamWriters[i].FlushAsync();
-            Task t = streamWriters[i].DisposeAsync().AsTask();
-            tasks.Add(t);
-        }
-
-        Task.WhenAll(tasks).Wait();
+        int maxRegionFiles = SaveMap(soPath, false);
 
         AssetDatabase.Refresh();
         savedMap.textAssets = new TextAsset[maxRegionFiles];
@@ -218,14 +246,63 @@ public class VoxelTerrain : MonoBehaviour {
     }
 #endif
 
+    // Returns the number of region files used
+    public int SaveMap(string directory, bool onlySaveTagged) {
+        if (!Directory.Exists(directory + "-regions")) {
+            Directory.CreateDirectory(directory + "-regions");
+        }
+
+        int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
+
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        List<BufferedStream> streamWriters = new List<BufferedStream>();
+        for (int i = 0; i < maxRegionFiles; i++) {
+            bool modified = false;
+            for (int k = 0; k < SavedVoxelMap.ChunksInRegion; k++) {
+                int offset = SavedVoxelMap.ChunksInRegion * i + k;
+                VoxelChunk chunk = totalChunks[offset].GetComponent<VoxelChunk>();
+                modified |= chunk.overwrite;
+            }
+            Debug.Log(sw.ElapsedMilliseconds);
+
+            BufferedStream bufferedStream = null;
+            if (modified | !onlySaveTagged) {
+                string p = directory + "-regions/reg" + i + ".bytes";
+                FileStream fileStream = File.Open(p, FileMode.Create);
+                GZipStream gzipStream = new GZipStream(fileStream, CompressionMode.Compress);
+                bufferedStream = new BufferedStream(gzipStream, 1024 * 1024 * 32);
+            }
+            Debug.Log(sw.ElapsedMilliseconds);
+
+            streamWriters.Add(bufferedStream);
+        }
+
+        Debug.Log(sw.ElapsedMilliseconds);
+        VoxelSerialization.SerializeIntoRegions(streamWriters, totalChunks, savedMap.mapSize);
+
+        List<Task> tasks = new List<Task>();
+        for (int i = 0; i < maxRegionFiles; i++) {
+            if (streamWriters[i] != null) {
+                streamWriters[i].FlushAsync();
+                Task t = streamWriters[i].DisposeAsync().AsTask();
+                tasks.Add(t);
+            }
+        }
+        Debug.Log(sw.ElapsedMilliseconds);
+
+        Task.WhenAll(tasks).Wait();
+        Debug.Log("Successfully saved the map!! Took " + sw.ElapsedMilliseconds + "ms");
+        return maxRegionFiles;
+    }
+
     public void KillChildren() {
         while (transform.childCount > 0) {
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
     }
 
-    // Dispose of all the native memory that we allocated
-    private void OnApplicationQuit() {
+    private void OnDestroy() {
         Dispose();
     }
 
@@ -415,6 +492,7 @@ public class VoxelTerrain : MonoBehaviour {
                 //voxelChunk.voxelCountersHandle = countersHandle;
                 //countersHandle.pending++;
                 voxelChunk.Remesh(immediate ? 0 : settings.maxFramesForDeferredEdits);
+                voxelChunk.overwrite = true;
             }
         }
 

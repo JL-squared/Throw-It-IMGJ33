@@ -5682,6 +5682,7 @@ MonoBehaviour:
   marketManager: {fileID: 0}
   devConsole: {fileID: 0}
   pathfindingRebuilder: {fileID: 0}
+  saver: {fileID: 0}
   volume: {fileID: 2559728800090142005}
   initialized: 0
 --- !u!114 &8780433711588789733
@@ -5842,7 +5843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingCurrency: 100
   chanceToFluctuate: 0.05
-  rngFluctuationsFactor: 0.2
+  rngFluctuationsFactor: 0.1
   marketResponseFactor: 0.4
 --- !u!114 &8941508539368422327
 MonoBehaviour:

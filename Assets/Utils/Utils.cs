@@ -62,7 +62,7 @@ public static class Utils {
         }
     }
 
-    static string PersistentDir = Application.persistentDataPath;
+    public static string PersistentDir = Application.persistentDataPath;
     static JsonSerializerSettings settings2 = InitSerializer();
 
     public static JsonSerializerSettings InitSerializer() {

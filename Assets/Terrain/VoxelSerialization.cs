@@ -16,8 +16,13 @@ public static class VoxelSerialization {
         for (int r = 0; r < streamWriters.Count; r++) {
             Stream writer = streamWriters[r];
 
+            if (writer == null) {
+                continue;
+            }
+
             int offset = SavedVoxelMap.ChunksInRegion * r;
 
+            
             for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
                 VoxelChunk chunk = totalChunks[c + offset].GetComponent<VoxelChunk>();
                 NativeArray<Voxel> voxels = chunk.voxels;
@@ -26,10 +31,9 @@ public static class VoxelSerialization {
                     materials[v] = voxels[v].material;
                 }
 
-                //writer.WriteByte(1);
                 writer.WriteAsync(materials);
             }
-
+            
             for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
                 VoxelChunk chunk = totalChunks[c + offset].GetComponent<VoxelChunk>();
                 NativeArray<Voxel> voxels = chunk.voxels;
@@ -50,6 +54,10 @@ public static class VoxelSerialization {
         List<Task> actFinal = new List<Task>();
         for (int r = 0; r < streamReaders.Count; r++) {
             Stream reader = streamReaders[r];
+
+            if (reader == null)
+                continue;
+
             int offset = SavedVoxelMap.ChunksInRegion * r;
             Task t = Task.Run(async () => {
                 for (int c = 0; c < SavedVoxelMap.ChunksInRegion; c++) {
@@ -94,6 +102,6 @@ public static class VoxelSerialization {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
         Task.WhenAll(actFinal).Wait();
-        //Debug.Log(sw.ElapsedMilliseconds);
+        Debug.Log(sw.ElapsedMilliseconds);
     }
 }
