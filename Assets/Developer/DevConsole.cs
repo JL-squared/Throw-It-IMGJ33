@@ -198,7 +198,7 @@ public class DevConsole : MonoBehaviour {
         }
 
         Event a = Event.current;
-        if (a.keyCode == KeyCode.Return) {
+        if (a.keyCode == KeyCode.Return || a.keyCode == KeyCode.KeypadEnter) {
             UIMaster.Instance.ToggleDevConsole();
             consoleNation = false;
             Parse(command);

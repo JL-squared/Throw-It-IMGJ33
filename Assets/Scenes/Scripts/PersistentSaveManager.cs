@@ -12,6 +12,7 @@ public class PersistentSaveManager : MonoBehaviour {
 
     public string GetGoodName => saveName.Trim() == "" ? "default" : saveName.Trim();
     public string Path => "saves/" + GetGoodName + "/";
+    public string GlobalPath => Utils.PersistentDir + "/" + Path;
     public static PersistentSaveManager Instance;
 
     bool testLoad = false;
@@ -34,11 +35,6 @@ public class PersistentSaveManager : MonoBehaviour {
             if (name == "MainMenu") {
                 LoadFromMenu(saveName);
             } else {
-                if (!Directory.Exists(Utils.PersistentDir + "/" + Path)) {
-                    Debug.LogError("Sorry bro, no save file for you!!!");
-                    return;
-                }
-
                 testLoad = true;
 
                 //StartCoroutine(DelayedLoad());
@@ -57,10 +53,16 @@ public class PersistentSaveManager : MonoBehaviour {
         }
     }
 
-    public void Create(string name) {
+    public bool Create(string name) {
         saveName = name;
         load = false;
-        Directory.CreateDirectory(Path);
+
+        if (Directory.Exists(GlobalPath)) {
+            Debug.LogWarning("Save folder already exists!");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     IEnumerator DelayedSave() {
@@ -76,7 +78,8 @@ public class PersistentSaveManager : MonoBehaviour {
     public void Save() {
         load = false;
         Debug.Log("Saving...");
-        VoxelTerrain.Instance.SaveMap(Utils.PersistentDir + "/" + Path + "terrain", true);
+        Directory.CreateDirectory(GlobalPath);
+        VoxelTerrain.Instance.SaveMap(GlobalPath + "terrain", true);
         SaveState state = SaveState.Save();
         Utils.Save(Path + "save.json", state);
         Debug.Log("Saved!");
@@ -85,7 +88,7 @@ public class PersistentSaveManager : MonoBehaviour {
     public void LoadInternal() {
         load = false;
         Debug.Log("Loading...");
-        VoxelTerrain.Instance.LoadMapSkibi(Utils.PersistentDir + "/" + Path + "terrain");
+        VoxelTerrain.Instance.LoadMapSkibi(GlobalPath + "terrain");
         SaveState state = Utils.Load<SaveState>(Path + "save.json");
         state.Loaded();
         Debug.Log("Loaded!");
@@ -97,14 +100,21 @@ public class PersistentSaveManager : MonoBehaviour {
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void LoadFromMenu(string name) {
+    public bool LoadFromMenu(string name) {
+        saveName = name;
+
         if (SceneManager.GetActiveScene().name != "MainMenu") {
             Debug.LogWarning("Load() must be called from within the menu scene");
-            return;
+            return false;
+        }
+        
+        if (!Directory.Exists(GlobalPath)) {
+            Debug.LogWarning("No save folder!");
+            return false;
         }
 
         load = true;
-        saveName = name;
         SceneManager.LoadScene("SampleScene");
+        return true;
     }
 }

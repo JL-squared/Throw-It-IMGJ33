@@ -122,6 +122,7 @@ public class VoxelTerrain : MonoBehaviour {
                     GameObject newChunk = FetchPooledChunk();
                     VoxelChunk voxelChunk = newChunk.GetComponent<VoxelChunk>();
                     voxelChunk.hideFlags = HideFlags.DontSave;
+                    voxelChunk.overwrite = false;
                     newChunk.transform.position = new Vector3(x, y, z) * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor;
                     callback.Invoke(voxelChunk, index);
                     totalChunks.Add(newChunk);
@@ -157,7 +158,7 @@ public class VoxelTerrain : MonoBehaviour {
         return true;
     }
 
-    public void LoadMap2<T>(List<T> streams, bool sigmoidate=false) where T: Stream {
+    public void LoadMap2<T>(List<T> streams, List<bool> streamsThatMustContainOverwrittenChunks=null) where T: Stream {
         firstGen = true;
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
@@ -167,7 +168,7 @@ public class VoxelTerrain : MonoBehaviour {
         void DecompressionCallback(VoxelChunk voxelChunk, int index) {
             voxelChunk.hasCollisions = true;
             voxelChunk.voxels = new NativeArray<Voxel>(VoxelUtils.Volume, Allocator.Persistent);
-            voxelChunk.overwrite = sigmoidate;
+            voxelChunk.overwrite = streamsThatMustContainOverwrittenChunks != null ? streamsThatMustContainOverwrittenChunks[index / SavedVoxelMap.ChunksInRegion] : false;
         }
 
         KillChildren();
@@ -176,19 +177,14 @@ public class VoxelTerrain : MonoBehaviour {
         List<BufferedStream> cachedStreams = new List<BufferedStream>();
 
         for (int i = 0; i < streams.Count; i++) {
-            if (streams[i] != null) {
-                var regionStream = new GZipStream(streams[i], CompressionMode.Decompress);
-                cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024 * 32));
-            } else {
-                cachedStreams.Add(null);
-            }
+            var regionStream = new GZipStream(streams[i], CompressionMode.Decompress);
+            cachedStreams.Add(new BufferedStream(regionStream, 1024 * 1024 * 32));
         }
 
         VoxelSerialization.DeserializeFromRegions(cachedStreams, totalChunks, mapChunkSize);
 
         for (int i = 0; i < streams.Count; i++) {
-            if (cachedStreams[i] != null)
-                cachedStreams[i].Dispose();
+            cachedStreams[i].Dispose();
         }
 
         for (int i = 0; i < totalChunks.Count; i++) {
@@ -202,9 +198,11 @@ public class VoxelTerrain : MonoBehaviour {
     public void LoadMapSkibi(string directory) {
         int maxRegionFiles = Mathf.CeilToInt((float)((mapChunkSize.x * 2) * (mapChunkSize.y * 2) * (mapChunkSize.z * 2)) / (float)SavedVoxelMap.ChunksInRegion);
         List<Stream> streams = new List<Stream>();
+        List<bool> bruhs = new List<bool>();
 
         for (int i = 0; i < maxRegionFiles; i++) {
             streams.Add(new MemoryStream(savedMap.textAssets[i].bytes));
+            bruhs.Add(false);
         }
 
         foreach (var item in Directory.EnumerateFiles(directory + "-regions", "*.bytes")) {
@@ -215,11 +213,12 @@ public class VoxelTerrain : MonoBehaviour {
                 int wtf = int.Parse(worse);
 
                 FileStream bruh = File.Open(item, FileMode.Open);
+                bruhs[wtf] = true;
                 streams[wtf] = bruh;
             }
         }
 
-        LoadMap2(streams, sigmoidate: true);
+        LoadMap2(streams, bruhs);
         Debug.Log("Loading terrain from user region files");
     }
 
@@ -264,6 +263,7 @@ public class VoxelTerrain : MonoBehaviour {
                 VoxelChunk chunk = totalChunks[offset].GetComponent<VoxelChunk>();
                 modified |= chunk.overwrite;
             }
+            //Debug.Log(modified);
             Debug.Log(sw.ElapsedMilliseconds);
 
             BufferedStream bufferedStream = null;

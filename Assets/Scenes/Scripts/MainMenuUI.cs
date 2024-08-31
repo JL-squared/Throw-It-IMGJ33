@@ -13,12 +13,14 @@ public class MainMenuUI : MonoBehaviour {
         if (saucington == null)
             saucington = inputField.text;
 
-        PersistentSaveManager.Instance.LoadFromMenu(inputField.text);
-        SceneManager.LoadScene("SampleScene");
+        if (PersistentSaveManager.Instance.LoadFromMenu(inputField.text)) {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 
     public void Create() {
-        PersistentSaveManager.Instance.Create(inputField.text);
-        SceneManager.LoadScene("SampleScene");
+        if (PersistentSaveManager.Instance.Create(inputField.text)) {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 }
