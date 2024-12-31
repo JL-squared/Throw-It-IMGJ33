@@ -13,7 +13,7 @@ public class Icicle : Projectile, IEntitySerializer {
     private void FixedUpdate() {
         if (!hit) {
             rb.AddForce(Physics.gravity * 2.2f, ForceMode.Acceleration);
-            rb.rotation = rb.velocity.SafeLookRotation();
+            rb.rotation = rb.linearVelocity.SafeLookRotation();
         }
     }
 

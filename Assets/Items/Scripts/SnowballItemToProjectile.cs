@@ -14,10 +14,10 @@ public class SnowballItemToProjectile : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (rb.velocity.magnitude > maxSpeed) {
+        if (rb.linearVelocity.magnitude > maxSpeed) {
             Destroy(gameObject);
             ProjectileItemData data = GetComponent<WorldItem>().item.Data as ProjectileItemData;
-            Projectile.Spawn(data, transform.position, rb.velocity);
+            Projectile.Spawn(data, transform.position, rb.linearVelocity);
         }
     }
 }

@@ -25,7 +25,7 @@ public class Entity : MonoBehaviour, IEntitySerializer {
 
             if (!rb.isKinematic) {
                 rb.angularVelocity = data.angularVelocity.Value;
-                rb.velocity = data.velocity.Value;
+                rb.linearVelocity = data.velocity.Value;
             }
 
             rb.interpolation = interpolation;
@@ -43,7 +43,7 @@ public class Entity : MonoBehaviour, IEntitySerializer {
             data.position = rb.position;
             data.rotation = rb.rotation;
             data.angularVelocity = rb.angularVelocity;
-            data.velocity = rb.velocity;
+            data.velocity = rb.linearVelocity;
         }
 
         if (unityFlags.HasFlag(EntityUnityFlags.Transform)) {

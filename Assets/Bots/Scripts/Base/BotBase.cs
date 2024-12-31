@@ -130,13 +130,13 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
     }
 
     private void OnDamaged(float damage, bool head) {
-        if (timeSinceDeath == 0)
-            tts.SayString(head ? "bruh" : "ouch", overwritePlaying: false);
+        if (timeSinceDeath == 0) { }
+            //tts.SayString(head ? "bruh" : "ouch", overwritePlaying: false);
     }
 
     private void OnHealed(float heal, bool head) {
         if (heal > 5f) {
-            tts.SayString("thank you");
+            //tts.SayString("thank you");
         }
     }
 

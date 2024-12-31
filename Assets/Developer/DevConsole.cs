@@ -88,7 +88,7 @@ public class DevConsole : MonoBehaviour {
                     foreach (Collider col in overlap) {
                         var speech = col.GetComponent<BotTextToSpeech>();
                         if (speech != null) {
-                            speech.SayString(txt);
+                            //speech.SayString(txt);
                         }
                     }
                 },
@@ -98,7 +98,7 @@ public class DevConsole : MonoBehaviour {
                 desc = "Say something using the TTS package",
                 moment = (args, player) => {
                     var txt = String.Join(' ', args);
-                    AudioSource.PlayClipAtPoint(TextToSpeech.Vocalize(txt), player.transform.position);
+                    //AudioSource.PlayClipAtPoint(TextToSpeech.Vocalize(txt), player.transform.position);
                 },
             },
             new ConsoleCommand {

@@ -98,8 +98,8 @@ public class Firework : MonoBehaviour {
         // Avoidance and drift correction
         Vector3 targetFwd = (forwardDir).normalized;
         targetFwd += avoidanceOffset * avoidanceStrength;
-        float dotted = Mathf.Pow(1 - Mathf.Clamp01(Vector3.Dot(transform.forward, rb.velocity.normalized)), driftCorrectionPow);
-        targetFwd += dotted * -rb.velocity.normalized * driftCorrectionStrength;
+        float dotted = Mathf.Pow(1 - Mathf.Clamp01(Vector3.Dot(transform.forward, rb.linearVelocity.normalized)), driftCorrectionPow);
+        targetFwd += dotted * -rb.linearVelocity.normalized * driftCorrectionStrength;
 
         // Noisy offset
         Vector3 localToWorldNoise = transform.TransformDirection(new Vector3(Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + localRngOffset * 25.0f) - 0.5f, Mathf.PerlinNoise1D(noisyScale * Time.fixedTime + 2531.321f + localRngOffset * 25.0f) - 0.5f, 0f));
@@ -115,8 +115,8 @@ public class Firework : MonoBehaviour {
         if (!launched)
             return;
 
-        if (rb.velocity.magnitude > 0.01) {
-            mesh.rotation = rb.velocity.normalized.SafeLookRotation() * Quaternion.Euler(90f, 0f, 0f);
+        if (rb.linearVelocity.magnitude > 0.01) {
+            mesh.rotation = rb.linearVelocity.normalized.SafeLookRotation() * Quaternion.Euler(90f, 0f, 0f);
         }
 
         if (launcher != null) {
