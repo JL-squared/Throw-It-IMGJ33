@@ -52,6 +52,8 @@ public class BombHead : BotBehaviour {
 
         if (timer <= 0) {
             Destroy(botBase.gameObject);
+
+            /*
             IVoxelEdit edit = new ProfiledExplosionVoxelEdit {
                 center = transform.position,
                 strength = editStrength,
@@ -63,6 +65,7 @@ public class BombHead : BotBehaviour {
             if (VoxelTerrain.Instance != null) {
                 VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
             }
+            */
 
             Vector3 center = botBase.transform.position;
             Collider[] colliders = Physics.OverlapSphere(center, radius);

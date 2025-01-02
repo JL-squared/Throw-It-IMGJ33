@@ -139,6 +139,7 @@ public class Firework : MonoBehaviour {
     }
 
     private void GoKaboom() {
+        /*
         if (VoxelTerrain.Instance != null) {
             VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
                 center = transform.position,
@@ -150,6 +151,7 @@ public class Firework : MonoBehaviour {
                 scale = new float3(1f, 1f, 1f),
             }, neverForget: true);
         }
+        */
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, ~LayerMask.GetMask("Firework"));
         Utils.ApplyExplosionKnockback(transform.position, explosionRadius, colliders, explosionForce);

@@ -14,6 +14,7 @@ public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
 
     public static void BlowUp(Vector3 position, float damage=50, float force=65, float radius=2, float editStrength=30f, float editRadiusOffset=1f) {
+        /*
         IVoxelEdit edit = new SphericalExplosionVoxelEdit {
             center = position,
             strength = editStrength,
@@ -24,7 +25,7 @@ public static class Utils {
         if (VoxelTerrain.Instance != null) {
             VoxelTerrain.Instance.ApplyVoxelEdit(edit, neverForget: true, symmetric: false);
         }
-
+        */
         Collider[] colliders = Physics.OverlapSphere(position, radius);
         Utils.ApplyExplosionKnockback(position, radius, colliders, force);
         Utils.ApplyExplosionDamage(position, radius, colliders, 1, damage);

@@ -69,6 +69,8 @@ public class WeatherManager : MonoBehaviour {
     }
 
     public void Update() {
+        if (Player.Instance == null) return;
+
         // Update volumetric fog settings
         // TODO: Fix cases where it just disapears
         float x = GetFogLerp();

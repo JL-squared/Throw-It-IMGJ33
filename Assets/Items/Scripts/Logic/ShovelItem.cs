@@ -11,6 +11,8 @@ public class ShovelItem : ToolItem {
 
         if (canPickupSnow && !context.canceled) {
             ShovelItemData data = (ShovelItemData)player.EquippedItem.Data;
+            
+            /*
             if (VoxelTerrain.Instance != null) {
                 VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
                     center = player.lookingAt.Value.point,
@@ -22,6 +24,7 @@ public class ShovelItem : ToolItem {
                     scale = new float3(1f),
                 });
             }
+            */
 
             player.AddItem(new ItemStack("snowball", 1));
         }
@@ -37,10 +40,12 @@ public class ShovelItem : ToolItem {
         canPickupSnow = false;
         if (player.lookingAt != null) {
             RaycastHit info = player.lookingAt.Value;
+            /*
             VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
             if (chunk != null) {
                 canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new ItemStack("snowball", 1));
             }
+            */
         }
 
         UIMaster.Instance.inGameHUD.SetRightClickHint(canPickupSnow);

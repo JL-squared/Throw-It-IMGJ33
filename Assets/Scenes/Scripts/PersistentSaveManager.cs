@@ -79,7 +79,7 @@ public class PersistentSaveManager : MonoBehaviour {
         load = false;
         Debug.Log("Saving...");
         Directory.CreateDirectory(GlobalPath);
-        VoxelTerrain.Instance.SaveMap(GlobalPath + "terrain", true);
+        //VoxelTerrain.Instance.SaveMap(GlobalPath + "terrain", true);
         SaveState state = SaveState.Save();
         Utils.Save(Path + "save.json", state);
         Debug.Log("Saved!");
@@ -88,7 +88,7 @@ public class PersistentSaveManager : MonoBehaviour {
     public void LoadInternal() {
         load = false;
         Debug.Log("Loading...");
-        VoxelTerrain.Instance.LoadMapSkibi(GlobalPath + "terrain");
+        //VoxelTerrain.Instance.LoadMapSkibi(GlobalPath + "terrain");
         SaveState state = Utils.Load<SaveState>(Path + "save.json");
         state.Loaded();
         Debug.Log("Loaded!");

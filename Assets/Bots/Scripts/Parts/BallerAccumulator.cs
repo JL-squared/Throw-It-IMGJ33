@@ -50,6 +50,7 @@ public class BallerAccumulator : BotBehaviour {
 
     void ApplyVoxelEdit() {
         if (increaseFactor > 0.1) {
+            /*
             IVoxelEdit edit = new AddVoxelEdit {
                 center = ball.transform.position,
                 material = 0,
@@ -62,13 +63,16 @@ public class BallerAccumulator : BotBehaviour {
             };
 
             VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+            */
         }
     }
 
     public void Update() {
+        /*
         if (VoxelTerrain.Instance == null) {
             Debug.LogWarning("Can't accumulate snow if terrain is disabled");
         }
+        */
 
         angularVelocity = Quaternion.identity;
         if (movement.IsGrounded) {
@@ -81,6 +85,7 @@ public class BallerAccumulator : BotBehaviour {
             // Value that we will integrate
             angularVelocity = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, dir);
 
+            /*
             // Check if we are on voxel terrain and if we are on the snow material
             if (movement.Ground != null && movement.Ground.GetComponent<VoxelChunk>() != null && VoxelTerrain.Instance.TryGetVoxel(ball.transform.position - Vector3.up * (radius + 2.5f)).material == 0) {
                 // Increase radius, apply edit, and update params
@@ -93,6 +98,7 @@ public class BallerAccumulator : BotBehaviour {
                     ApplyVoxelEdit();
                 }
             }
+            */
         }
 
         currentAngularVelocity = angularVelocity;

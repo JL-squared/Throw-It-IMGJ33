@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
             Instance = this;
         }
 
+        /*
         if (VoxelTerrain.Instance != null) {
             initialized = false;
             Time.timeScale = 0.0f;
@@ -38,9 +39,11 @@ public class GameManager : MonoBehaviour {
                 Time.timeScale = 1.0f;
             };
         } else {
-            initialized = true;
-            pathfindingRebuilder.UpdateNavMesh();
         }
+        */
+
+        initialized = true;
+        pathfindingRebuilder.UpdateNavMesh();
 
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);

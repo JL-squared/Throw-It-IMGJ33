@@ -45,6 +45,7 @@ public class Scooper : BotBehaviour {
     // zero degrees is when the scoop is horizontal, facing down (in front of snowman, ready to pickup snow)
     // 90 degrees would be straight into the ground
     public void Update() {
+        /*
         bool passthrough = VoxelTerrain.Instance == null;
         bool enabled = false;
 
@@ -53,6 +54,7 @@ public class Scooper : BotBehaviour {
         } else if (VoxelTerrain.Instance != null && VoxelTerrain.Instance.TryGetVoxel(snowPickupPos.position).IsSolidOfType(0)) {
             enabled = true;
         }
+        */
 
         // TODO: Actually predict time of flight using projectile motion?
         float lookAhead = 0.2f;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DynamiteBlowUp : MonoBehaviour {
@@ -10,7 +11,8 @@ public class DynamiteBlowUp : MonoBehaviour {
 
         if (timer < 0 && !blewUp) {
             blewUp = true;
-            Destroy(gameObject);
+
+            /*
             IVoxelEdit edit = new SphereVoxelEdit {
                 center = transform.position,
                 strength = -1000.0f,
@@ -20,6 +22,9 @@ public class DynamiteBlowUp : MonoBehaviour {
             };
 
             VoxelTerrain.Instance.ApplyVoxelEdit(edit);
+            */
+
+            Destroy(gameObject);
         }
     }
 }
