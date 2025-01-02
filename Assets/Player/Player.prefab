@@ -67,7 +67,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 90
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -563,7 +563,7 @@ MonoBehaviour:
     type: 3}
   placementGhost: {fileID: 0}
   items: []
-  selected: 0
+  equipped: 0
   selectedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -587,12 +587,14 @@ MonoBehaviour:
   bobbingSpeed: 2
   bobbingSteppiness: 20
   viewModelBobbingStrength: -0.8
-  defaultFOV: 90
+  defaultFOV: 70
   viewModelHolster: {fileID: 9178346958499585258}
   viewModelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100
   viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
+  PrimaryHeld: 0
+  SecondaryHeld: 0
   health: {fileID: 0}
   vehicle: {fileID: 0}
 --- !u!143 &8428834152011970357
@@ -633,9 +635,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c10120f623338443a3d233b4b034556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addressablesPrefabName: player
-  shouldSpawn: 0
-  shouldSerialize: 1
+  identifier: player
+  flags: 1
+  unityFlags: 1
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0

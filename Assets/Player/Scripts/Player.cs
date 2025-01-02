@@ -101,7 +101,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public float bobbingSpeed = 2.5f;
     public float bobbingSteppiness = 20f;
     public float viewModelBobbingStrength = 3.0f;
-    public float defaultFOV = 90.0f;
+    public float defaultFOV;
     #endregion
 
     #region View Model & View Model Sway
