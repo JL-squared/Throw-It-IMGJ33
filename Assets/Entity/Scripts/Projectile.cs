@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour {
         projectile.rb = projectile.GetComponent<Rigidbody>();
         projectile.rb.interpolation = RigidbodyInterpolation.Interpolate;
         projectile.collider = projectile.GetComponent<Collider>();
-        projectile.rb.velocity = velocity;
+        projectile.rb.linearVelocity = velocity;
         projectile.transform.position = pos;
         projectile.data = data;
         Destroy(spawned, data.lifetime);
@@ -57,9 +57,9 @@ public class Projectile : MonoBehaviour {
         Vector3 entityVelocity = movement != null ? movement.Velocity : Vector3.zero;
 
         Rigidbody otherRb = other.gameObject.GetComponent<Rigidbody>();
-        entityVelocity = otherRb != null ? otherRb.velocity : entityVelocity;
+        entityVelocity = otherRb != null ? otherRb.linearVelocity : entityVelocity;
 
-        Vector3 relativeVelocity = entityVelocity - rb.velocity;
+        Vector3 relativeVelocity = entityVelocity - rb.linearVelocity;
         if (otherRb != null) {
             otherRb.AddForceAtPosition(-relativeVelocity * rb.mass * data.rigidbodyForceFactor, rb.position, ForceMode.Impulse);
         }

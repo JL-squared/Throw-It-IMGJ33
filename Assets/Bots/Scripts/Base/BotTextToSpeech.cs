@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static TextToSpeech;
 
 public class BotTextToSpeech : MonoBehaviour {
-    public TextToSpeech tts;
     public float jitterFactor;
     private List<Transform> mouthBeads;
     private Vector3[] startingPositions;
@@ -28,15 +26,17 @@ public class BotTextToSpeech : MonoBehaviour {
             startingPositions[i] = mouthBeads[i].localPosition;
         }
 
-        tts.OnRawVolumeUpdate += OnVolumeUpdate;
+        //tts.OnRawVolumeUpdate += OnVolumeUpdate;
     }
 
+    /*
     public void SayString(string s, DeltaAttribs deltas = new DeltaAttribs(), float srcVolume = 1.0f, float srcPitch = 1.0f, bool overwritePlaying = true) {
         //Debug.Log("say: " + s);
         deltas.pitch = Random.Range(-10, 10);
         deltas.speed = Random.Range(-10, 10);
         tts.Say(s, deltas, srcVolume, srcPitch, overwritePlaying);
     }
+    */
 
     private void OnVolumeUpdate(float volume) {
         for (int i = 0; i < mouthBeads.Count; i++) {

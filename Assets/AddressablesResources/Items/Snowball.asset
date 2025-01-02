@@ -18,9 +18,10 @@ MonoBehaviour:
   marketSellCost: 0
   icon: {fileID: 21300000, guid: add0a19a1ebc9f54fa7bf86d7fbef2a7, type: 3}
   viewModelOffset: {fileID: 0}
-  worldModelOffset: {fileID: 0}
-  model: {fileID: 919132149155446097, guid: 918f323274fcc494d91d58a057538b1f, type: 3}
-  title: 
+  worldModelOffset: {fileID: 11400000, guid: 2944fde5d676e01458833317745dac41, type: 2}
+  collider: {fileID: 0}
+  model: {fileID: 6738572504615155268, guid: 68af4f16db05a3b42943a26e315be046, type: 3}
+  title: Snowball
   description: A perfectly round snowball. Purpose-built for use in projectile warfare.
   projectile: {fileID: 5488373698599033194, guid: b9e102afdbf683a4092ac606c7b350be,
     type: 3}

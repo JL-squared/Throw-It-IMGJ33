@@ -7,15 +7,13 @@ public class Icicle : Projectile, IEntitySerializer {
         base.Spawned(pos, velocity, shooter);
         rb.useGravity = false;
         hit = false;
-        if (velocity.magnitude > 0.01) {
-            transform.rotation = Quaternion.LookRotation(velocity);
-        }
+        transform.rotation = velocity.SafeLookRotation();
     }
 
     private void FixedUpdate() {
         if (!hit) {
             rb.AddForce(Physics.gravity * 2.2f, ForceMode.Acceleration);
-            rb.rotation = Quaternion.LookRotation(rb.velocity);
+            rb.rotation = rb.linearVelocity.SafeLookRotation();
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ModelOffset", menuName = "ScriptableObjects/New Model Offset", order = 2)]

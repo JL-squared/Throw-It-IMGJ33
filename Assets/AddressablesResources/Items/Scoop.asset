@@ -20,6 +20,6 @@ MonoBehaviour:
   viewModelOffset: {fileID: 0}
   worldModelOffset: {fileID: 0}
   model: {fileID: 0}
-  name: Scoop
+  title: 
   description: This terrible implement of war was devised in a feat of evil brilliance.
     It's great for scooping ice cream.

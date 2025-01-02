@@ -19,8 +19,8 @@ MonoBehaviour:
   icon: {fileID: 0}
   viewModelOffset: {fileID: 0}
   worldModelOffset: {fileID: 0}
-  model: {fileID: 919132149155446097, guid: 722764120e512864ab24e473d44410d0, type: 3}
-  title: 
+  model: {fileID: 0}
+  title: Spiky Boi
   description: One wrong move and these ice formations are quick to fracture. Handle
     with care. Avoid working end.
   projectile: {fileID: 9196792428175076912, guid: 00b4fcf673bff424494ea04e07b04194,

@@ -88,7 +88,7 @@ public class DevConsole : MonoBehaviour {
                     foreach (Collider col in overlap) {
                         var speech = col.GetComponent<BotTextToSpeech>();
                         if (speech != null) {
-                            speech.SayString(txt);
+                            //speech.SayString(txt);
                         }
                     }
                 },
@@ -98,12 +98,12 @@ public class DevConsole : MonoBehaviour {
                 desc = "Say something using the TTS package",
                 moment = (args, player) => {
                     var txt = String.Join(' ', args);
-                    AudioSource.PlayClipAtPoint(TextToSpeech.Vocalize(txt), player.transform.position);
+                    //AudioSource.PlayClipAtPoint(TextToSpeech.Vocalize(txt), player.transform.position);
                 },
             },
             new ConsoleCommand {
                 main = "summon",
-                desc = "Summons an entity. Ex: bot base | item snowball | projectile snowball 10 ",
+                desc = "Summons an entity. Ex: bots base | items snowball | projectiles snowball 10 ",
                 moment = (args, player) => {
                     string type = args[0];
                     string name = args[1];
@@ -130,17 +130,22 @@ public class DevConsole : MonoBehaviour {
                 main = "save",
                 desc = "",
                 moment = (args, player) => {
-                    SaveState state = SaveState.Save();
-                    string bruh = Utils.Save("save.json", state);
-                    Debug.Log(bruh);
+                    if (PersistentSaveManager.Instance != null) {
+                        PersistentSaveManager.Instance.Save();
+                    } else {
+                        Debug.LogWarning("Can't do shit, don't have a save manager");
+                    }
                 },
             },
             new ConsoleCommand {
                 main = "load",
                 desc = "",
                 moment = (args, player) => {
-                    SaveState state = Utils.Load<SaveState>("save.json");
-                    state.Loaded();
+                    if (PersistentSaveManager.Instance != null) {
+                        PersistentSaveManager.Instance.Load();
+                    } else {
+                        Debug.LogWarning("Can't do shit, don't have a save manager");
+                    }
                 },
             },
         };
@@ -193,7 +198,7 @@ public class DevConsole : MonoBehaviour {
         }
 
         Event a = Event.current;
-        if (a.keyCode == KeyCode.Return) {
+        if (a.keyCode == KeyCode.Return || a.keyCode == KeyCode.KeypadEnter) {
             UIMaster.Instance.ToggleDevConsole();
             consoleNation = false;
             Parse(command);
@@ -224,11 +229,13 @@ public class DevConsole : MonoBehaviour {
         if (cmd == null)
             return;
 
+        cmd.moment.Invoke(splat[1..], Player.Instance);
+        /*
         try {
-            cmd.moment.Invoke(splat[1..], Player.Instance);
         } catch (Exception) {
             Debug.LogWarning("Command invocation exception");
             throw;
         }
+        */
     }
 }

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 [Serializable]
 public class PlayerControlsSettings {
     public float mouseSensivity = 1f;
-    public float fov = 90f;
+    public float fov = 70f;
     public bool cameraBobbing = true;
     public bool viewModelSway = true;
 

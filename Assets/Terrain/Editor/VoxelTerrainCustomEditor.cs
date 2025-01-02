@@ -76,7 +76,7 @@ public class VoxelTerrainCustomEditor : Editor {
             terrain.Dispose();
             terrain.KillChildren();
             terrain.Init(true);
-            editor.allowedToEdit = terrain.LoadMap();
+            editor.allowedToEdit = terrain.LoadMapAll();
         }
 
         GUI.enabled = editor.allowedToEdit;
@@ -89,7 +89,7 @@ public class VoxelTerrainCustomEditor : Editor {
 
     private static void SaveUwu(VoxelTerrain terrain) {
         if (terrain.savedMap != null) {
-            terrain.SaveMap();
+            terrain.SaveMapEditor();
         }
     }
 

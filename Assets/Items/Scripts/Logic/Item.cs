@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,8 @@ public class Item : ICloneable {
     public virtual void EquippedUpdate(Player player) { 
     
     }
+
+    public virtual void OnWorldItemSpawned(WorldItem wi) { }
 
     public object Clone() {
         return MemberwiseClone();

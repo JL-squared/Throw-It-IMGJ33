@@ -74,9 +74,9 @@ public class BombHead : BotBehaviour {
 
         if (timer < boutToBlowTimer && !boutaBlow) {
             boutaBlow = true;
-            botTts.SayString("I am about to blow up. Indeed so. Get ready. Kabooeoeoeoeom");
+            //botTts.SayString("I am about to blow up. Indeed so. Get ready. Kabooeoeoeoeom");
         } else if (!boutaBlow) {
-            botTts.SayString("laalalallaaaalalalaa", overwritePlaying: false);
+            //botTts.SayString("laalalallaaaalalalaa", overwritePlaying: false);
         }
     }
 }

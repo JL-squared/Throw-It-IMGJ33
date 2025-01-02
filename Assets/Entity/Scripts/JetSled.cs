@@ -50,9 +50,9 @@ public class JetSled : Vehicle {
         rb.AddForceAtPosition(effective * thrusterRight.forward * force, thrusterRight.position);
         rb.AddForceAtPosition(effective * thrusterLeft.forward * force, thrusterLeft.position);
 
-        float aaa = Vector3.Dot(transform.right, rb.velocity.normalized);
+        float aaa = Vector3.Dot(transform.right, rb.linearVelocity.normalized);
         rb.AddForce(-aaa * transform.right * perpendicularFactor, ForceMode.VelocityChange);
 
-        tmp.text = $"{rb.velocity.magnitude:F1}m/s\n{effective * 100:F1}%";
+        tmp.text = $"{rb.linearVelocity.magnitude:F1}m/s\n{effective * 100:F1}%";
     }
 }
