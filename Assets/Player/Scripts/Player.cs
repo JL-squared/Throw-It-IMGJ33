@@ -8,6 +8,7 @@ using System;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
 using System.Linq;
+using UnityEngine.InputSystem.Utilities;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
@@ -112,14 +113,15 @@ public class Player : MonoBehaviour, IEntitySerializer {
     [Header("View Model")]
     public GameObject viewModelHolster;
     private GameObject viewModel;
-    private Vector3 viewModelRotationLocalOffset;
-    private Vector3 viewModelPositionLocalOffset;
-    public float viewModelSmoothingSpeed = 25f;
+    private Vector3 rotationLocalOffset;
+    private Vector3 positionLocalOffset;
+    public float holsterSwaySmoothingSpeed = 25f;
+    public float holsterSwayMouseAccelSmoothingSpeed = 20f;
     public float viewModelRotationClampMagnitude = 0.2f;
     public float viewModelRotationStrength = -0.001f;
     public float viewModelPositionStrength = 0.2f;
-    public Vector2 currentMouseDelta;
-    private Vector2 targetMouseDelta;
+    public Vector2 MouseDelta { private set; get; }
+    public Vector2 SmoothedMouseDelta { private set; get; }
     #endregion
 
     #region Interaction
@@ -253,6 +255,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
         foreach (ItemStack item in items) {
             item.logic.Update(this);
         }
+
+        if (viewModel != null && !EquippedItem.IsNullOrDestroyed() && !EquippedItem.IsEmpty()) {
+            viewModel.transform.localPosition = EquippedItem.Data.viewModelPositionOffset;
+            viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
+            viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
+        }
     }
 
     public void UpdateMovement() {
@@ -282,21 +290,20 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     private void ApplyHandSway(float bobbing) {
-        viewModelRotationLocalOffset = Vector3.ClampMagnitude((new Vector3(currentMouseDelta.x, currentMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
-        viewModelPositionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
-        if (viewModel != null) {
-            Vector3 current = viewModel.transform.localPosition;
-            Vector3 target = viewModelRotationLocalOffset + viewModelPositionLocalOffset;
-            target += Vector3.up * bobbing * viewModelBobbingStrength;
+        rotationLocalOffset = Vector3.ClampMagnitude((new Vector3(SmoothedMouseDelta.x, SmoothedMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
+        positionLocalOffset = transform.InverseTransformDirection(-movement.Velocity) * viewModelPositionStrength;
+        Vector3 current = viewModelHolster.transform.localPosition;
+        Vector3 target = rotationLocalOffset + positionLocalOffset;
+        target += Vector3.up * bobbing * viewModelBobbingStrength;
 
-            //if (itemLogic != null) {
-            //    target += itemLogic.swayOffset;
-            //}
+        //if (itemLogic != null) {
+        //    target += itemLogic.swayOffset;
+        //}
 
-            Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * viewModelSmoothingSpeed);
-            viewModel.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
-        }
-        currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * 25);
+        Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * holsterSwaySmoothingSpeed);
+        viewModelHolster.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
+        
+        SmoothedMouseDelta = Vector2.Lerp(SmoothedMouseDelta, MouseDelta, Time.deltaTime * holsterSwayMouseAccelSmoothingSpeed);
     }
 
     private float CalculateBobbing() {
@@ -493,6 +500,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
         EquippedItem.logic.Unequipped(this);
         function?.Invoke();
         EquippedItem.logic.Equipped(this);
+
+        if (viewModel != null) {
+            Destroy(viewModel);
+        }
+
+        if (EquippedItem != null && !EquippedItem.IsEmpty()) {
+            viewModel = Instantiate(EquippedItem.Data.prefab, viewModelHolster.transform);
+            viewModel.transform.localPosition = EquippedItem.Data.viewModelPositionOffset;
+            viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
+            viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
+        }
     }
     #endregion
 
@@ -557,9 +575,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void ApplyMouseDelta(Vector2 delta) {
-        targetMouseDelta = delta;
-        currentMouseDelta = delta;
-        wishHeadDir += targetMouseDelta * mouseSensitivity * 0.02f;
+        MouseDelta = delta;
+        wishHeadDir += MouseDelta * mouseSensitivity * 0.02f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
         movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
@@ -904,8 +921,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void ResetMovement(bool resetRotation = false) {
         movement.localWishMovement = Vector2.zero;
-        targetMouseDelta = Vector2.zero;
-        currentMouseDelta = Vector2.zero;
+        SmoothedMouseDelta = Vector2.zero;
+        MouseDelta = Vector2.zero;
 
         if (resetRotation) {
             movement.localWishRotation = Quaternion.identity;

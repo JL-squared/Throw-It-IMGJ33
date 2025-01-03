@@ -27,7 +27,7 @@ public class SnowballItem : Item {
             shooter.data = (SnowballItemData)player.EquippedItem.Data;
 
             // flick maxxing
-            Vector3 bruh = (player.transform.right * player.currentMouseDelta.x + player.transform.up * player.currentMouseDelta.y) * 0.05f;
+            Vector3 bruh = (player.transform.right * player.MouseDelta.x + player.transform.up * player.MouseDelta.y) * 0.05f;
             //Vector3 bruh = Vector3.zero;
             shooter.Shoot(forcePercentage, bruh);
 

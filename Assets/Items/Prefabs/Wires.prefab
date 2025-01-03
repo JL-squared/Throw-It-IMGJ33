@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2132675520111715572}
   - component: {fileID: 6832301067073961333}
   m_Layer: 11
-  m_Name: World Wires
+  m_Name: Wires
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

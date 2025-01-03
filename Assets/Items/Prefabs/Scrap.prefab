@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6440816207676490718}
   - component: {fileID: -5279275520035794566}
   m_Layer: 11
-  m_Name: World Scrap
+  m_Name: Scrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8475011839886367659}
   - component: {fileID: 1044303499233997442}
   m_Layer: 11
-  m_Name: World Snowball
+  m_Name: Snowball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
