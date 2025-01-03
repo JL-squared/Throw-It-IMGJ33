@@ -54,11 +54,12 @@ Material:
     m_Floats:
     - _Anisotropic_Intensity: 0
     - _Density: 0.3
+    - _Float: 0.04
     - _Multi_Scatter_Phase: -0.1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ZenithOffset: 0
-    - _Zenith_Offset: 0
+    - _Zenith_Offset: -0.01
     m_Colors:
     - _Sky_Colour: {r: 0.4, g: 0.5, b: 1, a: 0}
   m_BuildTextureStacks: []

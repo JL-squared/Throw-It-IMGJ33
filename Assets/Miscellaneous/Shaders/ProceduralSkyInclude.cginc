@@ -56,7 +56,7 @@ float3 getAtmosphericScattering(float2 p, float2 lp, float multiScatterPhase, fl
 	float3 mie = getMie(p, lp) * sunAbsorption;
 	
 	float3 totalSky = lerp(sky * absorption, sky / (sky + 0.5), sunPointDistMult);
-         totalSky += sun;
+         totalSky += mie * 0.2;
 	     totalSky *= sunAbsorption * 0.5 + 0.5 * length(sunAbsorption);
 	return totalSky;
 }
@@ -95,4 +95,23 @@ float3 sky(
 void MyFunctionA_float(float3 normal, float3 sun, float multiScatterPhase, float density, float zenithOffset, float anisotropicIntensity, float3 skyColorParams, out float3 colour)
 {
 	colour = sky(normal, sun, multiScatterPhase, density, zenithOffset, anisotropicIntensity, skyColorParams);
+}
+
+// https://tavianator.com/2011/ray_box.html
+// also gpted
+float3 intersection(float3 normal) {
+    float3 inv_dir = 1.0 / normal;
+    float3 tmin = (-1) * inv_dir;
+    float3 tmax = (1) * inv_dir;
+
+		float3 t1 = min(tmin, tmax);
+		float3 t2 = max(tmin, tmax);
+
+    float entry = max(t1.x, max(t1.y, t1.z));
+    return entry / inv_dir;
+}
+
+void MyFunctionB_float(float3 normal, out float3 mapped)
+{
+	mapped = -intersection(normal);
 }

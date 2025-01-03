@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
   m_Name: SSAO
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_Settings:
     AOMethod: 1
     Downsample: 1
@@ -125,7 +125,7 @@ MonoBehaviour:
     DirectLightingStrength: 0.25
     Radius: 0.25
     Samples: 2
-    BlurQuality: 1
+    BlurQuality: 0
     Falloff: 100
     SampleCount: -1
   m_BlueNoise256Textures:
