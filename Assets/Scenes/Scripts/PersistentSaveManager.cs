@@ -3,16 +3,19 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PersistentSaveManager : MonoBehaviour {
-    //[HideInInspector]
-    public string saveName;
-    //[HideInInspector]
-    public bool load;
+    /// <summary>
+    /// The name of the current save that we have created. Is empty when we are not using a save
+    /// </summary>
+    public string CurrentSaveName { get; set; }
 
-    public string GetGoodName => saveName.Trim() == "" ? "default" : saveName.Trim();
-    public string Path => "saves/" + GetGoodName + "/";
-    public string GlobalPath => Utils.PersistentDir + "/" + Path;
+    /// <summary>
+    /// Path relative to the local persistent di
+    /// </summary>
+    //public string Path => "saves/" + GetGoodName + "/";
+    //public string GlobalPath => Utils.PersistentDir + "/" + Path;
     public static PersistentSaveManager Instance;
 
     bool testLoad = false;
@@ -25,18 +28,22 @@ public class PersistentSaveManager : MonoBehaviour {
             return;
         }
 
-        SceneManager.sceneLoaded += SceneManager_sceneLoaded; ;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         DontDestroyOnLoad(this);
     }
 
-    private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1) {
+    private string GetGlobalPathForSaveFolder(string save) {
+        return $"{Utils.PersistentDir}/saves/{save.Trim()}/";
+    }
+
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1) {
+        /*
         string name = arg0.name;
         if (load) {
             if (name == "MainMenu") {
                 LoadFromMenu(saveName);
             } else {
                 testLoad = true;
-
                 //StartCoroutine(DelayedLoad());
             }
         } else {
@@ -44,6 +51,7 @@ public class PersistentSaveManager : MonoBehaviour {
                 //StartCoroutine(DelayedSave());
             }
         }
+        */
     }
 
     private void Update() {
@@ -53,68 +61,84 @@ public class PersistentSaveManager : MonoBehaviour {
         }
     }
 
-    public bool Create(string name) {
+    /// <summary>
+    /// Sets the save name and loads up into the SampleScene scene
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public void Create(string name) {
+        /*
         saveName = name;
         load = false;
 
+        
         if (Directory.Exists(GlobalPath)) {
-            Debug.LogWarning("Save folder already exists!");
-            return false;
-        } else {
-            return true;
+            Debug.LogWarning("Save folder already exists, aborting!");
+            return;
         }
+
+        Debug.Log("Loading into SampleScene");
+        SceneManager.LoadScene("SampleScene");
+        */
     }
 
-    IEnumerator DelayedSave() {
-        yield return 0;
-        Save();
-    }
-
-    IEnumerator DelayedLoad() {
-        yield return 0;
-        LoadInternal();
-    }
-
+    /// <summary>
+    /// Takes the current session and saves it to its respective save file
+    /// </summary>
     public void Save() {
-        load = false;
+        /*
         Debug.Log("Saving...");
-        Directory.CreateDirectory(GlobalPath);
+        Directory.CreateDirectory(GetGlobalPathForSaveFolder(curr));
         //VoxelTerrain.Instance.SaveMap(GlobalPath + "terrain", true);
         SaveState state = SaveState.Save();
         Utils.Save(Path + "save.json", state);
         Debug.Log("Saved!");
+        */
     }
 
+    /// <summary>
+    /// Loads the last save for the current session. Basically loads a backup
+    /// </summary>
     public void LoadInternal() {
+        /*
         load = false;
         Debug.Log("Loading...");
         //VoxelTerrain.Instance.LoadMapSkibi(GlobalPath + "terrain");
         SaveState state = Utils.Load<SaveState>(Path + "save.json");
         state.Loaded();
         Debug.Log("Loaded!");
+        */
     }
 
     public void Load() {
+        /*
         load = true;
         saveName = name;
+        Debug.Log($"Load: {name}");
         SceneManager.LoadScene("MainMenu");
+        */
     }
 
-    public bool LoadFromMenu(string name) {
-        saveName = name;
-
+    public void LoadFromMenu(string name) {
+        /*
         if (SceneManager.GetActiveScene().name != "MainMenu") {
             Debug.LogWarning("Load() must be called from within the menu scene");
-            return false;
+            return;
         }
-        
+
         if (!Directory.Exists(GlobalPath)) {
             Debug.LogWarning("No save folder!");
-            return false;
         }
+
+        saveName = name;
+        Debug.Log($"LoadFromMenu: {name}");
+
+
+        SceneManager.LoadScene("SampleScene");
 
         load = true;
         SceneManager.LoadScene("SampleScene");
         return true;
+        */
     }
 }

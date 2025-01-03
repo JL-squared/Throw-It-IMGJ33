@@ -9,18 +9,18 @@ using UnityEngine.SceneManagement;
 public class MainMenuUI : MonoBehaviour {
     public TMP_InputField inputField;
 
-    public void Load(string saucington=null) {
-        if (saucington == null)
-            saucington = inputField.text;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="saucington"></param>
+    public void Load() {
 
-        if (PersistentSaveManager.Instance.LoadFromMenu(inputField.text)) {
-            SceneManager.LoadScene("SampleScene");
-        }
     }
 
+    /// <summary>
+    /// Called from a UI button to create a new save
+    /// </summary>
     public void Create() {
-        if (PersistentSaveManager.Instance.Create(inputField.text)) {
-            SceneManager.LoadScene("SampleScene");
-        }
+        PersistentSaveManager.Instance.Create(inputField.text);
     }
 }
