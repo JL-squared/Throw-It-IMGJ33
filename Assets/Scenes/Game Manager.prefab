@@ -1,75 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &803927460194170717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5300311917416095223}
-  - component: {fileID: 524385166999783149}
-  m_Layer: 0
-  m_Name: Volumetric Fog
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &5300311917416095223
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803927460194170717}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6216006554208934372}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &524385166999783149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803927460194170717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6089276f0dab71e4d9b84574cf5d5d74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  density: 1
-  fogColor: {r: 8, g: 8, b: 8, a: 1}
-  skyDistance: 50
-  scatteringCoefficient: 1
-  extinctionCoefficient: 0.02
-  blueNoise: {fileID: 2800000, guid: 280c74f3a1e52664fbd8684a5ccd9344, type: 3}
-  anisotropy: 0.95
-  heightFog: 0
-  heightFogDensity: 200
-  heightBase: -10
-  heightTransitionSize: 50
-  noiseTexture: {fileID: 0}
-  noiseWeights: {x: 1, y: 1.5, z: 1, w: 1}
-  noiseSize: 100
-  noiseScrollSpeed: {x: 8, y: 0, z: 8}
-  minMaxNoiseValues: {x: 0.11, y: 0.43}
-  curlNoise: {fileID: 0}
-  curlSize: 1
-  curlStrength: 1
-  curlScrollSpeed: {x: 0, y: 0.015, z: 0}
-  directionalShadowExtinction: 0
-  directionalShadowDensity: 0
-  directionalShadowDistance: 0
-  additionalShadowExtinction: 0
-  additionalShadowDensity: 0
-  additionalShadowDistance: 0
 --- !u!1 &2085212200938640277
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +104,9 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_StaticBatchInfo:
@@ -5548,6 +5481,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5636,7 +5572,6 @@ GameObject:
   - component: {fileID: 6216006554208934372}
   - component: {fileID: 3711022125120825706}
   - component: {fileID: 8780433711588789733}
-  - component: {fileID: 6575133725039191861}
   - component: {fileID: 6832101547815883108}
   - component: {fileID: 8941508539368422327}
   m_Layer: 0
@@ -5659,7 +5594,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5300311917416095223}
   - {fileID: 7702056786558023304}
   - {fileID: 5676692344385997879}
   - {fileID: 5705809990759556932}
@@ -5681,8 +5615,6 @@ MonoBehaviour:
   weatherManager: {fileID: 0}
   marketManager: {fileID: 0}
   devConsole: {fileID: 0}
-  pathfindingRebuilder: {fileID: 0}
-  saver: {fileID: 0}
   volume: {fileID: 2559728800090142005}
   initialized: 0
 --- !u!114 &8780433711588789733
@@ -5711,7 +5643,6 @@ MonoBehaviour:
   windyParticlesNoiseFactor: 0.2
   windParticleField: {fileID: 6787259401343288416}
   snowParticleSystem: {fileID: 1624129142068695749}
-  fog: {fileID: 524385166999783149}
   densityFogCurve:
     serializedVersion: 2
     m_Curve:
@@ -5811,24 +5742,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6575133725039191861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7738069126821496426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53bfd9045c0d5a4ba27ed7cb13fc199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useNavMesh: 0
-  testSurface: {fileID: 0}
-  terrainSurface: {fileID: 0}
-  mask:
-    serializedVersion: 2
-    m_Bits: 79
 --- !u!114 &6832101547815883108
 MonoBehaviour:
   m_ObjectHideFlags: 0

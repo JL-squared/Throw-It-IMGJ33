@@ -12,13 +12,11 @@ public class GameManager : MonoBehaviour {
     public DevConsole devConsole;
     public static GameManager Instance;
     [HideInInspector]
-    public NavMeshRebuilder pathfindingRebuilder;
     private GraphicsQualitySettings graphicsSettings;
     public Volume volume;
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
-        pathfindingRebuilder = GetComponent<NavMeshRebuilder>();
         marketManager = GetComponent<MarketManager>();
         devConsole = GetComponent<DevConsole>();
 
@@ -43,7 +41,6 @@ public class GameManager : MonoBehaviour {
         */
 
         initialized = true;
-        pathfindingRebuilder.UpdateNavMesh();
 
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);
