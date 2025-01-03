@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Runtime.CompilerServices;
+using System.Linq;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
@@ -124,6 +126,14 @@ public static class Utils {
         foreach (var child in children) {
             method?.Invoke(child.gameObject);
         }
+    }
+    
+    // Jarvis, randomize his balls
+    public static V Random<K, V>(this Dictionary<K, V> dict) {
+        // very stupid but it works
+        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
+        int index = UnityEngine.Random.Range(0, Registries.snowBrickPlace.data.Count);
+        return dict.ToList()[index].Value;
     }
 
     public static float SmoothAbsClamped01(float x, float h) {

@@ -686,7 +686,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.layer = LayerMask.NameToLayer("Piece");
 
         var audio = builtPiece.AddComponent<AudioSource>();
-        audio.clip = Registries.snowBrickPlace.ElementAt((int)UnityEngine.Random.Range(0, Registries.snowBrickPlace.Count)).Value;
+        audio.clip = Registries.snowBrickPlace.data.Random();
+        audio.Play();
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
