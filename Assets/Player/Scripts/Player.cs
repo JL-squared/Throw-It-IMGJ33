@@ -125,6 +125,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public Vector2 SmoothedMouseDelta { private set; get; }
     #endregion
 
+    #region Audio
+    [Header("Audio")]
+    public AudioSource footsteps;
+    public AudioSource music;
+    #endregion
+
     #region Interaction
     [HideInInspector]
     public RaycastHit? lookingAt;
@@ -307,6 +313,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         SmoothedMouseDelta = Vector2.Lerp(SmoothedMouseDelta, MouseDelta, Time.deltaTime * holsterSwayMouseAccelSmoothingSpeed);
     }
 
+    bool stepped;
     private float CalculateBobbing() {
         Vector2 velocity2d = new Vector2(movement.Velocity.x, movement.Velocity.z);
 
@@ -335,6 +342,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         if (!isDead)
             head.transform.localPosition = new Vector3(horizontalBobbing, baseCameraHeight + verticalBobbing, 0);
+
+        if (verticalBobbing < 0f && !stepped) {
+            if(isSprinting) {
+                PlaySound(footsteps, Registries.rockRun);
+            } else {
+                PlaySound(footsteps, Registries.rockWalk);
+            }
+            stepped = true;
+        } else if (verticalBobbing > 0f) {
+            stepped = false;
+        }
 
         return verticalBobbing;
     }
@@ -587,6 +605,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void Jump(InputAction.CallbackContext context) {
         if (Performed(context)) {
+            if (movement.IsGrounded) PlaySound(footsteps, Registries.rockJump);
             movement.Jump();
         }
     }
@@ -687,8 +706,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.layer = LayerMask.NameToLayer("Piece");
 
         var audio = builtPiece.AddComponent<AudioSource>();
-        audio.clip = Registries.snowBrickPlace.data.Random();
-        audio.Play();
+        PlaySound(audio, Registries.snowBrickPlace);
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
@@ -1005,6 +1023,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
         foreach (var item in items) {
             item.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
+    }
+
+    public void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
+        source.clip = registry.data.Random();
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
     }
     #endregion
 }
