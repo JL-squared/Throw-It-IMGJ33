@@ -2,13 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Tweens.Core;
 using Tweens;
 using System;
-using Newtonsoft.Json;
-using System.Linq.Expressions;
 using System.Linq;
-using UnityEngine.InputSystem.Utilities;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {

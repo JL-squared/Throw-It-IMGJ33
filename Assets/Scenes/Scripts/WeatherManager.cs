@@ -1,4 +1,3 @@
-using Andicraft.VolumetricFog;
 using UnityEngine;
 
 // Simple weather system that affects each wave
@@ -22,7 +21,7 @@ public class WeatherManager : MonoBehaviour {
     public ParticleSystemForceField windParticleField;
     public ParticleSystem snowParticleSystem;
 
-    public VolumetricFog fog;
+    //public VolumetricFog fog;
     public AnimationCurve densityFogCurve;
     public AnimationCurve extinctionCoefficientCurve;
     public AnimationCurve effectsScalingFactor;
@@ -74,9 +73,9 @@ public class WeatherManager : MonoBehaviour {
         // Update volumetric fog settings
         // TODO: Fix cases where it just disapears
         float x = GetFogLerp();
-        fog.density = densityFogCurve.Evaluate(x);
-        fog.extinctionCoefficient = extinctionCoefficientCurve.Evaluate(x);
-        fog.UpdateValues();
+        //fog.density = densityFogCurve.Evaluate(x);
+        //fog.extinctionCoefficient = extinctionCoefficientCurve.Evaluate(x);
+        //fog.UpdateValues();
 
         // Calculate parameters based on game time
         float time = globalTimeScale * Time.time;

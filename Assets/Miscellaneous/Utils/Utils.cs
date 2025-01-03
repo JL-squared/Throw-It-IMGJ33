@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.InputSystem.Utilities;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;

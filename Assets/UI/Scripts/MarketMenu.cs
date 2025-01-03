@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
 public class MarketMenu : MonoBehaviour {
     private List<MarketSlot> slots;

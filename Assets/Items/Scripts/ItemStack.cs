@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System;
-using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]

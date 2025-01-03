@@ -1,6 +1,5 @@
 using System.Reflection;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Rendering;
 using GraphicsSettings = UnityEngine.Rendering.GraphicsSettings;
 
 public static class UnityGraphicsBullshitWtf {

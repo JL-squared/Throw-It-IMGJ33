@@ -6,7 +6,6 @@ using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
-using Unity.Properties;
 
 [Serializable]
 public class GraphicsQualitySettings {
@@ -50,7 +49,8 @@ public class GraphicsQualitySettings {
         }
 
         UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
-        asset.renderScale = renderScale;
+        //asset.renderScale = renderScale;
+        asset.renderScale = 0.8f;
         asset.msaaSampleCount = Select(msaa, 0, 2, 4, 8);
 
         var res = Select(mainLightShadows, ShadowResolution._256, ShadowResolution._256, ShadowResolution._1024, ShadowResolution._4096);

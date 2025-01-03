@@ -1,8 +1,5 @@
-using Newtonsoft.Json;
 using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 
 [Serializable]
 public class Item : ICloneable {

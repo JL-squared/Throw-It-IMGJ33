@@ -1,7 +1,5 @@
-using System;
 using Tweens;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class HealthBar : MonoBehaviour {
     public RectTransform bar;

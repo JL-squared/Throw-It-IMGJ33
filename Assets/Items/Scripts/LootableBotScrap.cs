@@ -1,5 +1,3 @@
-using TMPro;
-using Tweens;
 using UnityEngine;
 
 public class LootableBotScrap : MonoBehaviour, IInteraction {

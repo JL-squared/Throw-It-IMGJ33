@@ -1,9 +1,5 @@
-using System.Collections;
-using System.IO;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PersistentSaveManager : MonoBehaviour {
     /// <summary>

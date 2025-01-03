@@ -1,7 +1,5 @@
 using Unity.Mathematics;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.UI.Image;
 
 public class Scooper : BotBehaviour {
 
