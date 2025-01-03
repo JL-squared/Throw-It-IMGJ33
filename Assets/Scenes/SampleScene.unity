@@ -2941,8 +2941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ec000eec366b74ab1345a7604fe3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveName: 
-  load: 0
 --- !u!4 &1034877478
 Transform:
   m_ObjectHideFlags: 0
@@ -5315,6 +5313,11 @@ PrefabInstance:
       propertyPath: defaultFOV
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: hologramMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

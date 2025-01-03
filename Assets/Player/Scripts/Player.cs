@@ -7,6 +7,7 @@ using Tweens;
 using System;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
+using System.Linq;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     List<Piece> tempPieces = new List<Piece>(); // i also don't know what this does
     public GameObject selectedBuildPrefab; // irrelevant
     public GameObject selectedTemp2Prefab;
+    public Material hologramMaterial;
     int placeRayMask; // need to know how this works
     [SerializeField]
     private GameObject placementTarget;
@@ -659,6 +661,16 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
 
         placementTarget = Instantiate(prefab);
+
+        MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
+        foreach (var item in renderers) {
+            int length = item.materials.Length;
+            Material[] materials = new Material[length];
+            Array.Fill(materials, hologramMaterial);
+            item.SetMaterials(materials.ToList());
+        }
+
+
         placementTarget.name = prefab.name;
 
         Collider[] componentsInChildren1 = placementTarget.GetComponentsInChildren<Collider>();
@@ -785,6 +797,13 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         } else {
             placementTarget.SetActive(false);
+        }
+
+        MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
+        foreach (var item in renderers) {
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetInt("_Valid", placementStatus ? 1 : 0);
+            item.SetPropertyBlock(block);
         }
     }
 
