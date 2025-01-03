@@ -54,6 +54,7 @@ Material:
     m_Floats:
     - _Darkness: 0.5
     - _Float: 2000
+    - _Outline_Thickness: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Step_Edge: 1.5
