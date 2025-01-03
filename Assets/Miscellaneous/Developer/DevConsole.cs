@@ -42,13 +42,6 @@ public class DevConsole : MonoBehaviour {
                 },
             },
             new ConsoleCommand {
-                main = "sigmoidate",
-                desc = "Sigmoidate",
-                moment = (args, player) => {
-                    player.movement.AddImpulse(UnityEngine.Random.onUnitSphere * 10000);
-                },
-            },
-            new ConsoleCommand {
                 main = "set_speed",
                 desc = "Sets the speed of the player to #1",
                 moment = (args, player) => {
@@ -79,31 +72,8 @@ public class DevConsole : MonoBehaviour {
                 },
             },
             new ConsoleCommand {
-                main = "nearby_say",
-                desc = "Makes nearby bots say something using the TTS package",
-                moment = (args, player) => {
-                    Collider[] overlap = Physics.OverlapSphere(player.transform.position, 5);
-
-                    var txt = String.Join(' ', args);
-                    foreach (Collider col in overlap) {
-                        var speech = col.GetComponent<BotTextToSpeech>();
-                        if (speech != null) {
-                            //speech.SayString(txt);
-                        }
-                    }
-                },
-            },
-            new ConsoleCommand {
-                main = "say",
-                desc = "Say something using the TTS package",
-                moment = (args, player) => {
-                    var txt = String.Join(' ', args);
-                    //AudioSource.PlayClipAtPoint(TextToSpeech.Vocalize(txt), player.transform.position);
-                },
-            },
-            new ConsoleCommand {
                 main = "summon",
-                desc = "Summons an entity. Ex: bots base | items snowball | projectiles snowball 10 ",
+                desc = "Summons an entity (#1). Ex: bots base | items snowball | projectiles snowball 10",
                 moment = (args, player) => {
                     string type = args[0];
                     string name = args[1];
@@ -128,7 +98,7 @@ public class DevConsole : MonoBehaviour {
             },
             new ConsoleCommand {
                 main = "save",
-                desc = "",
+                desc = "Save the current session to the appopriate save folder",
                 moment = (args, player) => {
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Save();
@@ -139,7 +109,7 @@ public class DevConsole : MonoBehaviour {
             },
             new ConsoleCommand {
                 main = "load",
-                desc = "",
+                desc = "Load a backup of the current save (last save state)",
                 moment = (args, player) => {
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Load();

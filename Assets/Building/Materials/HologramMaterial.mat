@@ -55,9 +55,9 @@ Material:
     - _Float: 2000
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Step_Edge: 1.5
-    - _Step_Size: 3
-    - _Time_Factor: 5
+    - _Step_Edge: 0.5
+    - _Step_Size: 1
+    - _Time_Factor: 0
     - _Valid: 0
     m_Colors:
     - _Color: {r: 0, g: 0.332057, b: 1, a: 0}

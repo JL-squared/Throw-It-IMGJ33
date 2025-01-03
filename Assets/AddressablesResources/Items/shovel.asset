@@ -17,9 +17,10 @@ MonoBehaviour:
   marketBuyCost: 20
   marketSellCost: 4
   icon: {fileID: 21300000, guid: 882baa3b17829e0418283005c03031ed, type: 3}
-  viewModelOffset: {fileID: 0}
-  worldModelOffset: {fileID: 0}
-  model: {fileID: 2361069447993902772, guid: 1aa041a09a1c0f948bf31481f4b54724, type: 3}
+  viewModelPositionOffset: {x: 0.3, y: -0.5, z: 0.2}
+  viewModelScaleOffset: {x: 1, y: 1, z: 1}
+  viewModelRotationOffset: {x: 0.49991366, y: -0.5000863, z: -0.49991366, w: -0.5000863}
+  prefab: {fileID: 2361069447993902772, guid: 1aa041a09a1c0f948bf31481f4b54724, type: 3}
   title: Shovel
   description: A digging tool.
   digRadius: 0.5

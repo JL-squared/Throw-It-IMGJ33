@@ -15,9 +15,10 @@ public class ItemData : ScriptableObject {
 
     [Header("Visual Assets")]
     public Sprite icon;
-    public ModelOffset viewModelOffset;
-    public ModelOffset worldModelOffset;
-    public GameObject model;
+    public Vector3 viewModelPositionOffset = Vector3.zero;
+    public Vector3 viewModelScaleOffset = Vector3.one;
+    public Quaternion viewModelRotationOffset = Quaternion.identity;
+    public GameObject prefab;
 
     [Header("Language Assets (Locale WIP)")]
     public string title;

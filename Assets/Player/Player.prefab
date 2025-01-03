@@ -131,12 +131,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &6914026416981438280
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: d3fd9fe4-d803-4d08-a7e0-3e6f3626c270
-    m_ActionName: Player Map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+    m_ActionName: 'Player Map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -234,7 +234,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 6d228c0f-0fdf-4871-863d-75338e24153b
-    m_ActionName: Player Map/Look[/Mouse/delta]
+    m_ActionName: 'Player Map/Look[/Mouse/delta]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -250,7 +250,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: da3339bc-347e-4c7d-9939-12ef5c806e80
-    m_ActionName: Player Map/Jump[/Keyboard/space]
+    m_ActionName: 'Player Map/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -266,7 +266,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 8c007f53-4be4-438f-ab69-37995d7de8df
-    m_ActionName: Player Map/Crouch[/Keyboard/ctrl]
+    m_ActionName: 'Player Map/Crouch[/Keyboard/ctrl]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -282,7 +282,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: e59b8ad8-4ade-435b-b7e4-51c49c8b9e5c
-    m_ActionName: Player Map/Build Button Temp[/Keyboard/b]
+    m_ActionName: 'Player Map/Build Button Temp[/Keyboard/b]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -298,7 +298,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 630afdc7-1af8-4eb8-b9e9-7c6194781048
-    m_ActionName: Player Map/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]
+    m_ActionName: 'Player Map/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -314,7 +314,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: f19177ee-7fb3-4ba3-b0ff-54fca7bd271b
-    m_ActionName: Player Map/Select Slot[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]
+    m_ActionName: 'Player Map/Select Slot[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -330,7 +330,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 37107d33-1622-4550-8dd9-03630b24d67f
-    m_ActionName: Player Map/Primary Action[/Mouse/leftButton]
+    m_ActionName: 'Player Map/Primary Action[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -346,7 +346,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 148c65b4-7587-4030-9ec2-ed8546279833
-    m_ActionName: Player Map/Secondary Action[/Mouse/rightButton]
+    m_ActionName: 'Player Map/Secondary Action[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -362,7 +362,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: bfd21d64-7a7f-4a06-878c-2869d298fa26
-    m_ActionName: Player Map/Exit Button[/Keyboard/escape]
+    m_ActionName: 'Player Map/Exit Button[/Keyboard/escape]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -378,7 +378,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: a4ef294a-99c6-40c0-a971-079ab75ae310
-    m_ActionName: Player Map/Inventory Toggle[/Keyboard/tab]
+    m_ActionName: 'Player Map/Inventory Toggle[/Keyboard/tab]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -394,7 +394,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 0d52b0b6-c2de-4883-8eb0-f891019cdde8
-    m_ActionName: Player Map/Interact[/Keyboard/f]
+    m_ActionName: 'Player Map/Interact[/Keyboard/f]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -410,7 +410,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: bb2b9c3f-86b1-4ccb-bebd-ef35010caaa1
-    m_ActionName: Player Map/Drop Item[/Keyboard/q]
+    m_ActionName: 'Player Map/Drop Item[/Keyboard/q]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -426,7 +426,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: ec51cb40-2d73-46d7-9cb6-00b1f7b194dc
-    m_ActionName: Player Map/Market Toggle[/Keyboard/capsLock]
+    m_ActionName: 'Player Map/Market Toggle[/Keyboard/capsLock]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -442,7 +442,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 094be338-b362-40a2-8b7b-28eb0fb920b0
-    m_ActionName: Player Map/Sprint[/Keyboard/leftShift]
+    m_ActionName: 'Player Map/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8669513143636214874}
@@ -458,7 +458,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 5befd4ad-4843-46ce-b177-847e98bfcfea
-    m_ActionName: Player Map/Toggle Dev Console[/Keyboard/y]
+    m_ActionName: 'Player Map/Toggle Dev Console[/Keyboard/y]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -561,7 +561,9 @@ MonoBehaviour:
     type: 3}
   selectedTemp2Prefab: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
     type: 3}
-  placementGhost: {fileID: 0}
+  hologramMaterial: {fileID: 0}
+  placementTarget: {fileID: 0}
+  placementDistance: 50
   items: []
   equipped: 0
   selectedEvent:
@@ -588,11 +590,12 @@ MonoBehaviour:
   bobbingSteppiness: 20
   viewModelBobbingStrength: -0.8
   defaultFOV: 70
-  viewModelHolster: {fileID: 9178346958499585258}
+  viewModelHolster: {fileID: 7656322688971084677}
   viewModelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100
   viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
+  currentMouseDelta: {x: 0, y: 0}
   PrimaryHeld: 0
   SecondaryHeld: 0
   health: {fileID: 0}
@@ -612,7 +615,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -696,6 +698,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -721,6 +726,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7656322688971084677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1790932266172390474}
+  m_Layer: 8
+  m_Name: View Model Holster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1790932266172390474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7656322688971084677}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2218872323040887123}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8274589430038261866
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,6 +802,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 914ba10134356b345964123e1561d2e0, type: 3}
+  m_Resource: {fileID: 8300000, guid: 914ba10134356b345964123e1561d2e0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -861,7 +898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2218872323040887123}
   m_Layer: 8
-  m_Name: View Model Holster
+  m_Name: Transformed Holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -879,6 +916,7 @@ Transform:
   m_LocalPosition: {x: 0.25, y: -0.15, z: 0.2}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1790932266172390474}
   m_Father: {fileID: 921606742461663924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
