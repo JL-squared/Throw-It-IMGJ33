@@ -49,6 +49,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     private float placementRotation = 0f;
     public float placementDistance;
     private bool altAction = false;
+    public Piece currentOutline = null;
     #endregion
 
     #region Inventory
@@ -637,9 +638,15 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
-            //BuildActionSecondary();
+            DestroySelectedBuilding();
         } else if (!EquippedItem.IsEmpty()) {
             EquippedItem.logic.SecondaryAction(context, this);
+        }
+    }
+
+    public void DestroySelectedBuilding() {
+        if (currentOutline != null) {
+            Destroy(currentOutline.gameObject);
         }
     }
 
@@ -647,6 +654,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (Performed(context)) {
             isBuilding = !isBuilding;
             placementTarget.SetActive(false);
+            if (!isBuilding)
+                ClearOutline();
         }
     }
 
@@ -761,6 +770,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         bool manualPlacement = altAction; // this currently cannot be changed
 
         if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
+            OutlineObject(piece);
+
             placementTarget.SetActive(true); // yess we found one get the hologram working
             placementStatus = true; // cant remember what this was used for
             Collider[] componentsInChildren = placementTarget.GetComponentsInChildren<Collider>();
@@ -806,8 +817,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
                     placementTarget.transform.position = vector4;
                     if (!IsOverlappingOtherPiece(vector4, placementTarget.transform.rotation, placementTarget.name, tempPieces, true)) {
                         placementTarget.transform.position = vector4;
-                    } else {
-                        Debug.Log(placementTarget.transform.position);
                     }
                 }
             }
@@ -817,6 +826,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
 
         } else {
+            OutlineObject(null);
             placementTarget.SetActive(false);
         }
 
@@ -825,6 +835,27 @@ public class Player : MonoBehaviour, IEntitySerializer {
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             block.SetInt("_Valid", placementStatus ? 1 : 0);
             item.SetPropertyBlock(block);
+        }
+    }
+
+    private void OutlineObject(Piece piece) {
+        if (piece != currentOutline) {
+            ClearOutline();
+            currentOutline = piece;
+            if (piece != null) {
+                var outline = piece.gameObject.AddComponent<Outline>();
+                outline.OutlineColor = Color.black;
+                outline.OutlineWidth = 2;
+            }
+        } else if (piece == null) {
+            ClearOutline();
+        }
+    }
+
+    private void ClearOutline() {
+        if (currentOutline != null) {
+            Destroy(currentOutline.gameObject.GetComponent<Outline>());
+            currentOutline = null;
         }
     }
 
@@ -871,7 +902,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     /// <summary>
-    /// Purportedly checks the amount the ghost penetrates another piece (does not do a very good job rn)
+    /// Checks the amount the ghost penetrates another piece
     /// </summary>
     /// <param name="ghost"></param>
     /// <param name="maxPenetration"></param>
