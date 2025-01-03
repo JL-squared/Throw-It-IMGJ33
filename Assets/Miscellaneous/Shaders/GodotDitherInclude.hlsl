@@ -14,10 +14,11 @@ void MyFunctionA_float(float2 frag, float3 coloured, out float3 tahini)
 	int x = int(frag.x) % 4;
 	int y = int(frag.y) % 4;
 
-	int temp = pattern[y * 4 + x];
-	if (all(rounded >= 4)) {
-		rounded += temp;
-	}
+	int dither = pattern[y * 4 + x];
+	int3 temp = int3(rounded);
+	temp += dither;
+	temp = clamp(temp, 0, 255);
+	rounded = uint3(temp);
 	rounded = clamp(rounded, 0, 255);
 
 	//rounded >>= (8 - depth);
