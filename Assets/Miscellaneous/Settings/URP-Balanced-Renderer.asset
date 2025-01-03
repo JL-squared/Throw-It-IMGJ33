@@ -62,6 +62,24 @@ MonoBehaviour:
   selfShadowing: 0
   directionalShadowSteps: 2
   additionalLightShadowSteps: 2
+--- !u!114 &-5161198137108838982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdbe9f940a2ed543bf7ad704ff1337a, type: 3}
+  m_Name: CustomRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    horizontalBlur: 0
+    verticalBlur: 0
+  material: {fileID: -876546973899608171, guid: f955b7038265efc4f976d32a4d23f41e,
+    type: 3}
 --- !u!114 &-2352578931427388645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +147,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: DitherColorCompression
   m_EditorClassIdentifier: 
   m_Active: 1
   injectionPoint: 600

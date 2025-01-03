@@ -46,13 +46,13 @@ Material:
     - _Float: 0.05
     - _Float_1: 0
     - _Float_2: 0.05
-    - _Noise_Scale: 500
+    - _Noise_Scale: 0.01
     - _Offset: 2.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Scale: 400
     - _Scale_2: 2000
-    - _UV_Grid_Scale: 3000
+    - _UV_Grid_Scale: 0.04
     m_Colors:
     - _Speed: {r: 0.0001, g: 0.00003, b: 0, a: 0}
   m_BuildTextureStacks: []
