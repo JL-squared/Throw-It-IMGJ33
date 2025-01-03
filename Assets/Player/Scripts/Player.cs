@@ -331,6 +331,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         float suace = Mathf.Sin(0.5f * stepValue * bobbingSpeed);
         float horizontalBobbing = Mathf.Pow(Mathf.Abs(suace), 1f / 1.5f) * Mathf.Sign(suace) * effectiveBobbingStrength;
         //float verticalBobbing = Mathf.Sin(stepValue * bobbingSpeed) * effectiveBobbingStrength;
+        
 
         if (!isDead)
             head.transform.localPosition = new Vector3(horizontalBobbing, baseCameraHeight + verticalBobbing, 0);

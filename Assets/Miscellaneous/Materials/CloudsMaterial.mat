@@ -43,9 +43,11 @@ Material:
     - _Alpha_Gradient_Factor: 0.05
     - _Color_Factor: 2
     - _Coverage_Offset: -0.09
-    - _Float: 0.05
-    - _Float_1: 0
+    - _Float: -100
+    - _Float_1: 1
     - _Float_2: 0.05
+    - _Light_Factor: 4
+    - _Light_Offset: 0.05
     - _Noise_Scale: 0.01
     - _Offset: 2.5
     - _QueueControl: 0
@@ -55,6 +57,7 @@ Material:
     - _UV_Grid_Scale: 0.04
     m_Colors:
     - _Speed: {r: 1, g: 2, b: 0, a: 0}
+    - _Vector2: {r: -10, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &7463710743623826998
