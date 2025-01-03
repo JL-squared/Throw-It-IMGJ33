@@ -391,7 +391,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public void AddItemUnclamped(ItemStack itemIn) {
         int count = itemIn.Count;
         while (count > 0) {
-            AddItem(new ItemStack(itemIn.Data, itemIn.Data.stackSize));
+            int tempCount = Mathf.Min(itemIn.Data.stackSize, count);
+            AddItem(new ItemStack(itemIn.Data, tempCount));
             count -= itemIn.Data.stackSize;
         }
     }
@@ -648,7 +649,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (Performed(context)) {
             ItemStack item = items[equipped];
             if (item.Count > 0) {
-                if (WorldItem.Spawn(items[equipped].NewCount(1), gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity))
+                if (WorldItem.Spawn(items[equipped].NewCount(1), gameCamera.transform.position + gameCamera.transform.forward, Quaternion.identity, movement.Velocity))
                     RemoveItem(equipped, 1);
             }
         }

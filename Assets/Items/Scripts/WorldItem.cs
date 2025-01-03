@@ -13,11 +13,12 @@ public class WorldItem : MonoBehaviour, IInteraction, IEntitySerializer {
         player.AddItem(item);
     }
 
-    public static GameObject Spawn(ItemStack item, Vector3 position, Quaternion rotation) {
+    public static GameObject Spawn(ItemStack item, Vector3 position, Quaternion rotation, Vector3 velocity=default) {
         if (item.Data.prefab == null) return null;
 
         GameObject gameObject = new GameObject();
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+        rb.linearVelocity = velocity;
         rb.position = position;
         rb.rotation = rotation;
         gameObject.transform.position = position;

@@ -67,7 +67,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 70
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -561,7 +561,7 @@ MonoBehaviour:
     type: 3}
   selectedTemp2Prefab: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
     type: 3}
-  hologramMaterial: {fileID: 0}
+  hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
   placementDistance: 50
   items: []
@@ -591,11 +591,11 @@ MonoBehaviour:
   viewModelBobbingStrength: -0.8
   defaultFOV: 70
   viewModelHolster: {fileID: 7656322688971084677}
-  viewModelSmoothingSpeed: 25
+  holsterSwaySmoothingSpeed: 25
+  holsterSwayMouseAccelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100
   viewModelRotationStrength: -0.003
   viewModelPositionStrength: 0.01
-  currentMouseDelta: {x: 0, y: 0}
   PrimaryHeld: 0
   SecondaryHeld: 0
   health: {fileID: 0}

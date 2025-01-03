@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
-  m_Data:
-    m_SerializedData: []
   m_GUID: a0a2a8ccd64768346a5ad2bb76163ca0
   m_SerializeEntries:
+  - m_GUID: 2b048fe6ed69c334ab0bc2f27ca21e66
+    m_Address: Assets/AddressablesResources/Entity/Projectiles
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Projectiles
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
     m_Address: Assets/AddressablesResources/Entity/Bots
     m_ReadOnly: 0
@@ -29,15 +33,9 @@ MonoBehaviour:
     m_SerializedLabels:
     - Items
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2b048fe6ed69c334ab0bc2f27ca21e66
-    m_Address: Assets/AddressablesResources/Entity/Projectiles
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Projectiles
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da40d6b3b74a26d41a24aff6c41a6298, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 8c1d6f08cf6372546ba7827c83f77e04, type: 2}
     - {fileID: 11400000, guid: 091d411bafec9f945abd670ccb917215, type: 2}
+    - {fileID: 11400000, guid: 8c1d6f08cf6372546ba7827c83f77e04, type: 2}
