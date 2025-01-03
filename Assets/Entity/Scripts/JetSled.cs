@@ -53,6 +53,6 @@ public class JetSled : Vehicle {
         float aaa = Vector3.Dot(transform.right, rb.linearVelocity.normalized);
         rb.AddForce(-aaa * transform.right * perpendicularFactor, ForceMode.VelocityChange);
 
-        tmp.text = $"{rb.linearVelocity.magnitude:F1}m/s\n{effective * 100:F1}%";
+        tmp.text = $"{rb.linearVelocity.magnitude * 3.6f:F1}km/h\n{effective * 100:F1}%";
     }
 }
