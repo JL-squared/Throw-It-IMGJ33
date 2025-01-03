@@ -27,6 +27,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Snow Brick Place
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a24dd46a269b7743a11e0028664db42
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Jump
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Rock Jump
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b0df4b7e501e914282832ec027f653b
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Walk
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Rock Walk
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dd1c0161c409f442b03ade4a6f853ce
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Run
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Rock Run
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
     m_Address: Assets/AddressablesResources/Entity/Bots
     m_ReadOnly: 0

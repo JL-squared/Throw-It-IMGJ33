@@ -7,7 +7,13 @@ public static class Registries {
     public static AddressablesRegistry<BotData> bots;
     public static AddressablesRegistry<GameObject> projectiles;
     public static AddressablesRegistry<GameObject> vehicles;
+
+    #region Sounds
     public static AddressablesRegistry<AudioClip> snowBrickPlace;
+    public static AddressablesRegistry<AudioClip> rockWalk;
+    public static AddressablesRegistry<AudioClip> rockRun;
+    public static AddressablesRegistry<AudioClip> rockJump;
+    #endregion
     private static Dictionary<Type, Item> itemsLogic = new Dictionary<Type, Item>();
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -16,6 +22,10 @@ public static class Registries {
         bots = new AddressablesRegistry<BotData>("Bots");
         projectiles = new AddressablesRegistry<GameObject>("Projectiles");
         snowBrickPlace = new AddressablesRegistry<AudioClip>("Snow Brick Place");
+
+        rockWalk = new AddressablesRegistry<AudioClip>("Rock Walk");
+        rockRun = new AddressablesRegistry<AudioClip>("Rock Run");
+        rockJump = new AddressablesRegistry<AudioClip>("Rock Jump");
     }
 
     public static GameObject Summon(string id, EntityData data) {
