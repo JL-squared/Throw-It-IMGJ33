@@ -459,6 +459,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5befd4ad-4843-46ce-b177-847e98bfcfea
     m_ActionName: 'Player Map/Toggle Dev Console[/Keyboard/y]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8669513143636214874}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: AltAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8b42f6fc-4bf6-410a-a843-473b3eaf7ab8
+    m_ActionName: 'Player Map/Shift[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Map
@@ -563,7 +579,7 @@ MonoBehaviour:
     type: 3}
   hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
-  placementDistance: 50
+  placementDistance: 10
   items: []
   equipped: 0
   selectedEvent:
