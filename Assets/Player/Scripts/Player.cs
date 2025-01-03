@@ -604,7 +604,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void Jump(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            PlaySound(footsteps, Registries.rockJump);
+            if (movement.IsGrounded) PlaySound(footsteps, Registries.rockJump);
             movement.Jump();
         }
     }
@@ -1026,7 +1026,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
         source.clip = registry.data.Random();
-        source.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
     }
     #endregion
