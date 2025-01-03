@@ -54,7 +54,7 @@
                     "name": "Scroll",
                     "type": "Button",
                     "id": "630afdc7-1af8-4eb8-b9e9-7c6194781048",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

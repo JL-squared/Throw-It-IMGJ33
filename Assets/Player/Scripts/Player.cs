@@ -565,7 +565,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public void Scroll(InputAction.CallbackContext context) {
         if (Performed(context)) {
             float scroll = -context.ReadValue<float>();
-            scroll /= 120;
 
             if (isBuilding) {
                 placementRotation += scroll * 22.5f;
