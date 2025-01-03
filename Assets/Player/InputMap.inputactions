@@ -72,7 +72,7 @@
                     "name": "Primary Action",
                     "type": "Button",
                     "id": "37107d33-1622-4550-8dd9-03630b24d67f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -81,7 +81,7 @@
                     "name": "Secondary Action",
                     "type": "Button",
                     "id": "148c65b4-7587-4030-9ec2-ed8546279833",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -90,7 +90,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "0d52b0b6-c2de-4883-8eb0-f891019cdde8",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -135,7 +135,7 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "094be338-b362-40a2-8b7b-28eb0fb920b0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -145,6 +145,15 @@
                     "type": "Button",
                     "id": "5befd4ad-4843-46ce-b177-847e98bfcfea",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shift",
+                    "type": "Button",
+                    "id": "8b42f6fc-4bf6-410a-a843-473b3eaf7ab8",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -632,6 +641,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Toggle Dev Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "35d6ee24-96b7-4b93-bd1f-370e038bd24d",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc4ec064-622b-4d10-9ed6-6da3def3ac18",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
