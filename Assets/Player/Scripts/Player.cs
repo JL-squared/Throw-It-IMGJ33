@@ -768,7 +768,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
                             offset = closestPoint;
                             maxPointsDistance = pointsDistance;
                         }
-                        // collider.enabled = false; kind of a redneck fix
+                        collider.enabled = false;
                     }
                 }
                 Vector3 positionOffset = placementTarget.transform.position - offset;
@@ -859,13 +859,16 @@ public class Player : MonoBehaviour, IEntitySerializer {
         Collider[] objectsClipping = Physics.OverlapSphere(ghost.transform.position, 10f, placeRayMask);
         Collider[] _componentsInChildren = componentsInChildren;
         foreach (Collider collider in _componentsInChildren) {
+            collider.enabled = true;
             Collider[] array3 = objectsClipping;
             foreach (Collider collider2 in array3) {
                 if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation, collider2, collider2.transform.position, collider2.transform.rotation, out var _, out var distance) && distance > maxPenetration) {
                     Debug.Log("Distance: " + distance);
+                    collider.enabled = false;
                     return true;
                 }
             }
+            collider.enabled = false;
         }
         return false;
     }
