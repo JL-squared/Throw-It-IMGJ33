@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: a0a2a8ccd64768346a5ad2bb76163ca0
   m_currentHash:
     serializedVersion: 2
-    Hash: 6630bdbbf8b647b689c93d81d1243dcb
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -105,6 +105,7 @@ MonoBehaviour:
     - Bots
     - Vehicle
     - Projectiles
+    - Snow Brick Place
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 56a410a2a27dfaf4cb7f8fcfc264e8c5, type: 2}
@@ -112,10 +113,9 @@ MonoBehaviour:
   m_CertificateHandlerType:
     m_AssemblyName: 
     m_ClassName: 
-  m_ActivePlayerDataBuilderIndex: 3
+  m_ActivePlayerDataBuilderIndex: 2
   m_DataBuilders:
   - {fileID: 11400000, guid: d472c26099a45374594031ab3cc9c5ab, type: 2}
-  - {fileID: 11400000, guid: c4a37aec332e738458a66b1c56444e1e, type: 2}
   - {fileID: 11400000, guid: 79cc54598674d8649b80b2a29014bf3d, type: 2}
   - {fileID: 11400000, guid: 030b6f58e6dd6ce429eb12a0219f189c, type: 2}
   m_ActiveProfileId: 1834379bbc8f4c943ab39cfda82a2b4a

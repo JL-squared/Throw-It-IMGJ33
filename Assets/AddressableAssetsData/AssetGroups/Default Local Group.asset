@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Projectiles
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f36fdb56c94d874691c2d87078fde18
+    m_Address: Assets/Miscellaneous/Sounds
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Snow Brick Place
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
     m_Address: Assets/AddressablesResources/Entity/Bots
     m_ReadOnly: 0

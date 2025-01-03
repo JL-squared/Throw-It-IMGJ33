@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Tweens;
 using System;
 using System.Linq;
+using UnityEngine.XR;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
@@ -683,6 +684,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
+
+        var audio = builtPiece.AddComponent<AudioSource>();
+        audio.clip = Registries.snowBrickPlace.ElementAt((int)UnityEngine.Random.Range(0, Registries.snowBrickPlace.Count)).Value;
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
