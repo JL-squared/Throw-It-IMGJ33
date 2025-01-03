@@ -37,17 +37,18 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     #region Building
     [Header("Building")]
-    public bool isBuilding;
-    List<Transform> tempSnapPoints1 = new List<Transform>();
-    List<Transform> tempSnapPoints2 = new List<Transform>();
-    List<Piece> tempPieces = new List<Piece>();
-    public GameObject selectedBuildPrefab;
+    public bool isBuilding; // irrelevant for now
+    List<Transform> tempSnapPoints1 = new List<Transform>(); // idk what this does
+    List<Transform> tempSnapPoints2 = new List<Transform>(); // idk what this does either
+    List<Piece> tempPieces = new List<Piece>(); // i also don't know what this does
+    public GameObject selectedBuildPrefab; // irrelevant
     public GameObject selectedTemp2Prefab;
-    int placeRayMask;
+    int placeRayMask; // need to know how this works
     [SerializeField]
-    private GameObject placementGhost;
+    private GameObject placementTarget;
     private bool placementStatus = false;
     private float placementRotation = 0f;
+    public float placementDistance = 50f;
     #endregion
 
     #region Inventory
@@ -154,8 +155,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         movement = GetComponent<EntityMovement>();
 
         // Setup building stuff
-        SetupPlacementGhost(selectedBuildPrefab);
-        placementGhost.SetActive(false);
+        SetupPlacementTarget(selectedBuildPrefab);
+        placementTarget.SetActive(false);
 
         // Hook onto health component
         health = GetComponent<EntityHealth>();
@@ -224,7 +225,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
         }
         
-        if (!UnityEngine.Object.ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
+        if (!ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
                 interaction.StartHover(this);
             }
@@ -260,7 +261,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     private void LateUpdate() {
-        if (isBuilding) UpdatePlacementGhost();
+        if (isBuilding) UpdatePlacementTarget();
     }
 
     #region Polish & Effects
@@ -612,7 +613,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
-            BuildActionSecondary();
+            //BuildActionSecondary();
         } else if (!EquippedItem.IsEmpty()) {
             EquippedItem.logic.SecondaryAction(context, this);
         }
@@ -621,7 +622,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public void TempActivateBuildingMode(InputAction.CallbackContext context) {
         if (Performed(context)) {
             isBuilding = !isBuilding;
-            placementGhost.SetActive(false);
+            placementTarget.SetActive(false);
         }
     }
 
@@ -637,31 +638,30 @@ public class Player : MonoBehaviour, IEntitySerializer {
     #endregion
 
     #region Building
+
+    // This is just the placement action
     private void BuildActionPrimary() {
-        GameObject builtPiece = Instantiate(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
-        builtPiece.transform.SetPositionAndRotation(placementGhost.transform.position, placementGhost.transform.rotation);
+
+        // HOW DOES THIS WORK!!!!!!!!
+        GameObject builtPiece = Instantiate(selectedBuildPrefab);
+        builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
     }
 
-    
-    bool whichThing = true;
-    [Obsolete("DONT USE BuildActionSecondary THIS WE HAVE A BUILD MENU NOW")]
-    private void BuildActionSecondary() {
-        whichThing = !whichThing;
-        SetupPlacementGhost(whichThing ? selectedBuildPrefab : selectedTemp2Prefab);
-    }
+    // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
+    private void SetupPlacementTarget(GameObject prefab) {
+        // This is probably where you do the thing JED
 
-    private void SetupPlacementGhost(GameObject prefab) {
-        if ((bool)placementGhost) {
-            Destroy(placementGhost);
-            placementGhost = null;
+        if ((bool)placementTarget) {
+            Destroy(placementTarget);
+            placementTarget = null;
         }
 
-        placementGhost = Instantiate(prefab);
-        placementGhost.name = prefab.name;
+        placementTarget = Instantiate(prefab);
+        placementTarget.name = prefab.name;
 
-        Collider[] componentsInChildren1 = placementGhost.GetComponentsInChildren<Collider>();
+        Collider[] componentsInChildren1 = placementTarget.GetComponentsInChildren<Collider>();
         foreach (Collider collider in componentsInChildren1) {
             if (((1 << collider.gameObject.layer) & placeRayMask) == 0) {
                 Debug.Log("Disabling " + collider.gameObject.name + "  " + LayerMask.LayerToName(collider.gameObject.layer));
@@ -669,32 +669,47 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        Transform[] componentsInChildren2 = placementGhost.GetComponentsInChildren<Transform>();
+        Transform[] componentsInChildren2 = placementTarget.GetComponentsInChildren<Transform>();
         int layer = LayerMask.NameToLayer("Ghost");
         Transform[] array = componentsInChildren2;
         for (int i = 0; i < array.Length; i++) {
             array[i].gameObject.layer = layer;
         }
 
-        placementGhost.transform.position = transform.position;
+        placementTarget.transform.position = transform.position;
     }
 
+    /// <summary>
+    /// Function for determining a valid placement destination forward from the camera.
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="normal"></param>
+    /// <param name="piece"></param>
+    /// <returns>
+    /// Returns true if something is hit, false if not.
+    /// Also pushes out the point, normal, and optional piece information of what was hit.
+    /// </returns>
     private bool PieceRayTest(out Vector3 point, out Vector3 normal, out Piece piece) {
         int layerMask = placeRayMask;
 
         // Send a raycast
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, 50f, layerMask)) {
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, placementDistance, layerMask)) {
             float num = 30f;
-            if ((bool)placementGhost) {
-                Piece component = placementGhost.GetComponent<Piece>();
-                //if ((object)component != null) {
-                //    num += (float)component.m_extraPlacementDistance;
-                //}
+
+            /* not sure what this does
+            if ((bool)placementTarget) {
+                Piece component = placementTarget.GetComponent<Piece>();
+                if ((object)component != null) {
+                    num += (float)component.m_extraPlacementDistance;
+                }
             }
+            */
+
+            // if we hit something, return true and set the things
             if ((bool)hitInfo.collider && !hitInfo.collider.attachedRigidbody && Vector3.Distance(head.position, hitInfo.point) < num) {
                 point = hitInfo.point;
                 normal = hitInfo.normal;
-                piece = hitInfo.collider.GetComponentInParent<Piece>();
+                piece = hitInfo.collider.GetComponentInParent<Piece>(); // this can either return a piece or just not do anything
                 return true;
             }
         }
@@ -706,65 +721,70 @@ public class Player : MonoBehaviour, IEntitySerializer {
         return false;
     }
 
-    // time to do a review of this
-    private void UpdatePlacementGhost() {
-        bool flag = false; // manual placement mode btw
+    /// <summary>
+    /// Update function for building placement targeting, mostly involves the target object
+    /// </summary>
+    private void UpdatePlacementTarget() {
+        bool manualPlacement = false; // this currently cannot be changed
 
-        if (PieceRayTest(out var point, out var normal, out Piece piece)) {
-            placementGhost.SetActive(true);
-            placementStatus = true;
-            Collider[] componentsInChildren = placementGhost.GetComponentsInChildren<Collider>();
+        if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
+            placementTarget.SetActive(true); // yess we found one get the hologram working
+            placementStatus = true; // cant remember what this was used for
+            Collider[] componentsInChildren = placementTarget.GetComponentsInChildren<Collider>();
 
-            Quaternion quaternion = Quaternion.Euler(new Vector3(0f, placementRotation, 0f));
+            Quaternion quatPlacementRotation = Quaternion.Euler(new Vector3(0f, placementRotation, 0f));
 
-            // now it's true time freaky true (piss)
+            // Put it in the right place by offsetting it so it isn't inside of the point we found
             if (componentsInChildren.Length != 0) {
-                placementGhost.transform.position = point + normal * 50f;
-                placementGhost.transform.rotation = quaternion;
-                Vector3 vector = Vector3.zero;
-                float num2 = 999999f;
+                placementTarget.transform.position = point + normal * 50f;
+                placementTarget.transform.rotation = quatPlacementRotation;
+                Vector3 offset = Vector3.zero;
+                float maxPointsDistance = 999999f;
                 Collider[] array = componentsInChildren;
+
                 foreach (Collider collider in array) {
                     collider.enabled = true;
                     if (collider.isTrigger || !collider.enabled) {
-
+                        // something should be here
                         continue;
                     }
 
                     MeshCollider meshCollider = collider as MeshCollider;
                     if (!(meshCollider != null) || meshCollider.convex) {
-                        Vector3 vector2 = collider.ClosestPoint(point);
-                        float num3 = Vector3.Distance(vector2, point);
-                        if (num3 < num2) {
-                            vector = vector2;
-                            num2 = num3;
+                        Vector3 closestPoint = collider.ClosestPoint(point);
+                        float pointsDistance = Vector3.Distance(closestPoint, point);
+                        if (pointsDistance < maxPointsDistance) {
+                            offset = closestPoint;
+                            maxPointsDistance = pointsDistance;
                         }
-                        collider.enabled = false;
+                        // collider.enabled = false; kind of a redneck fix
                     }
                 }
-                Vector3 vector3 = placementGhost.transform.position - vector;
-                placementGhost.transform.position = point + vector3;
-                placementGhost.transform.rotation = quaternion;
+                Vector3 positionOffset = placementTarget.transform.position - offset;
+                placementTarget.transform.position = point + positionOffset;
             }
 
-            if (!flag) {
+            // Snapping
+            if (!manualPlacement) {
                 tempPieces.Clear();
-                if (FindClosestSnapPoints(placementGhost.transform, 0.5f, out var a, out var b, tempPieces)) {
+                if (FindClosestSnapPoints(placementTarget.transform, 0.5f, out var a, out var b, tempPieces)) {
                     _ = b.parent.position;
-                    Vector3 vector4 = b.position - (a.position - placementGhost.transform.position);
-                    placementGhost.transform.position = vector4;
-                    if (!IsOverlappingOtherPiece(vector4, placementGhost.transform.rotation, placementGhost.name, tempPieces, true)) {
-                        placementGhost.transform.position = vector4;
+                    Vector3 vector4 = b.position - (a.position - placementTarget.transform.position);
+                    placementTarget.transform.position = vector4;
+                    if (!IsOverlappingOtherPiece(vector4, placementTarget.transform.rotation, placementTarget.name, tempPieces, true)) {
+                        placementTarget.transform.position = vector4;
+                    } else {
+                        Debug.Log(placementTarget.transform.position);
                     }
                 }
             }
 
-            if (TestGhostClipping(placementGhost, 0.001f)) {
+            if (TestGhostClipping(placementTarget, 0.2f)) {
                 placementStatus = false;
             }
 
         } else {
-            placementGhost.SetActive(false);
+            placementTarget.SetActive(false);
         }
     }
 
@@ -797,7 +817,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         return a != null;
     }
 
-    private bool FindClosestSnappoint(Vector3 p, List<Transform> snapPoints, float maxDistance, out Transform closest, out float distance) {
+    private bool FindClosestSnappoint(Vector3 p, List<Transform> snapPoints, float maxDistance, out Transform closest, out float distance) { // i think this gets the closest snap point
         closest = null;
         distance = 999999f;
         foreach (Transform snapPoint in snapPoints) {
@@ -810,12 +830,18 @@ public class Player : MonoBehaviour, IEntitySerializer {
         return closest != null;
     }
 
+    /// <summary>
+    /// Purportedly checks the amount the ghost penetrates another piece (does not do a very good job rn)
+    /// </summary>
+    /// <param name="ghost"></param>
+    /// <param name="maxPenetration"></param>
+    /// <returns></returns>
     private bool TestGhostClipping(GameObject ghost, float maxPenetration) {
         Collider[] componentsInChildren = ghost.GetComponentsInChildren<Collider>();
-        Collider[] array = Physics.OverlapSphere(ghost.transform.position, 10f, placeRayMask);
-        Collider[] array2 = componentsInChildren;
-        foreach (Collider collider in array2) {
-            Collider[] array3 = array;
+        Collider[] objectsClipping = Physics.OverlapSphere(ghost.transform.position, 10f, placeRayMask);
+        Collider[] _componentsInChildren = componentsInChildren;
+        foreach (Collider collider in _componentsInChildren) {
+            Collider[] array3 = objectsClipping;
             foreach (Collider collider2 in array3) {
                 if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation, collider2, collider2.transform.position, collider2.transform.rotation, out var _, out var distance) && distance > maxPenetration) {
                     Debug.Log("Distance: " + distance);
@@ -826,6 +852,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         return false;
     }
 
+    // this function only kinda works
     private bool IsOverlappingOtherPiece(Vector3 p, Quaternion rotation, string pieceName, List<Piece> pieces, bool allowRotatedOverlap) {
         foreach (Piece tempPiece in tempPieces) {
             if (Vector3.Distance(p, tempPiece.transform.position) < 0.05f && (!allowRotatedOverlap || !(Quaternion.Angle(tempPiece.transform.rotation, rotation) > 10f))) {

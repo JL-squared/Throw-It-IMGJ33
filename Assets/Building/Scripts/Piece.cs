@@ -6,20 +6,13 @@ public class Piece : MonoBehaviour {
 
     static int pieceRayMask;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Awake() {
         pieceRayMask = LayerMask.GetMask("Piece");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // Get snap points on a piece
     public static void GetSnapPoints(Vector3 point, float radius, List<Transform> points, List<Piece> pieces) {
-        int num = Physics.OverlapSphereNonAlloc(point, radius, pieceColliders, pieceRayMask);
+        int num = Physics.OverlapSphereNonAlloc(point, radius, pieceColliders, pieceRayMask); // overlap sphere to test for all piece colliders
         for (int i = 0; i < num; i++) {
             Piece componentInParent = pieceColliders[i].GetComponentInParent<Piece>();
             if (componentInParent != null) {
@@ -29,6 +22,7 @@ public class Piece : MonoBehaviour {
         }
     }
 
+    // Get snap points on a specific object
     public void GetSnapPoints(List<Transform> listOut) {
         for (int i = 0; i < transform.childCount; i++) {
             Transform child = transform.GetChild(i);
