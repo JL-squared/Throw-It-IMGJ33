@@ -52,16 +52,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Darkness: 0.5
     - _Float: 2000
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Step_Edge: 1.5
     - _Step_Size: 3
-    - _Time_Factor: 5
+    - _Time_Factor: 2
     - _Valid: 0
     m_Colors:
     - _Color: {r: 0, g: 0.332057, b: 1, a: 0}
-    - _Invalid_Color: {r: 1, g: 0, b: 0, a: 0}
-    - _Valid_Color: {r: 0, g: 0.15949917, b: 1, a: 0}
+    - _Invalid_Color: {r: 1, g: 0.4764151, b: 0.4764151, a: 0}
+    - _Valid_Color: {r: 0.5235849, g: 0.9813171, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

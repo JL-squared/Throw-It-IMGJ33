@@ -50,7 +50,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
     private GameObject placementTarget;
     private bool placementStatus = false;
     private float placementRotation = 0f;
-    public float placementDistance = 50f;
+    public float placementDistance;
+    private bool altAction = false;
     #endregion
 
     #region Inventory
@@ -511,6 +512,14 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
+    public void AltAction(InputAction.CallbackContext context) {
+        if(context.performed) {
+            altAction = true;
+        } else if (context.canceled) {
+            altAction = false;
+        }
+    }
+
     public void Crouch(InputAction.CallbackContext context) {
         if (!isSprinting && Performed()) {
             isCrouching = context.ReadValue<float>() > 0.5f;
@@ -669,7 +678,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.SetMaterials(materials.ToList());
         }
 
-
         placementTarget.name = prefab.name;
 
         Collider[] componentsInChildren1 = placementTarget.GetComponentsInChildren<Collider>();
@@ -704,8 +712,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         int layerMask = placeRayMask;
 
         // Send a raycast
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, placementDistance, layerMask)) {
-            float num = 30f;
+        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, 50f, layerMask)) {
+            float num = placementDistance;
 
             /* not sure what this does
             if ((bool)placementTarget) {
@@ -736,7 +744,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     /// Update function for building placement targeting, mostly involves the target object
     /// </summary>
     private void UpdatePlacementTarget() {
-        bool manualPlacement = false; // this currently cannot be changed
+        bool manualPlacement = altAction; // this currently cannot be changed
 
         if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
             placementTarget.SetActive(true); // yess we found one get the hologram working
@@ -863,7 +871,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
             Collider[] array3 = objectsClipping;
             foreach (Collider collider2 in array3) {
                 if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation, collider2, collider2.transform.position, collider2.transform.rotation, out var _, out var distance) && distance > maxPenetration) {
-                    Debug.Log("Distance: " + distance);
                     collider.enabled = false;
                     return true;
                 }
