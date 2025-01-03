@@ -255,7 +255,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.logic.Update(this);
         }
 
-        if (viewModel != null) {
+        if (viewModel != null && !EquippedItem.IsNullOrDestroyed() && !EquippedItem.IsEmpty()) {
             viewModel.transform.localPosition = EquippedItem.Data.viewModelPositionOffset;
             viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
             viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
