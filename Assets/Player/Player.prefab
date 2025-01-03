@@ -580,6 +580,9 @@ MonoBehaviour:
   hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
   placementDistance: 10
+  currentOutline: {fileID: 0}
+  outlineColor: {r: 1, g: 0.616603, b: 0.23113209, a: 1}
+  outlineWidth: 10
   items: []
   equipped: 0
   selectedEvent:

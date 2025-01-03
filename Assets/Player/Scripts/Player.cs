@@ -50,6 +50,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public float placementDistance;
     private bool altAction = false;
     public Piece currentOutline = null;
+    public Color outlineColor = Color.black;
+    [Range(0f,10f)]
+    public float outlineWidth = 2f;
     #endregion
 
     #region Inventory
@@ -844,8 +847,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
             currentOutline = piece;
             if (piece != null) {
                 var outline = piece.gameObject.AddComponent<Outline>();
-                outline.OutlineColor = Color.black;
-                outline.OutlineWidth = 2;
+                outline.OutlineColor = outlineColor;
+                outline.OutlineWidth = outlineWidth;
             }
         } else if (piece == null) {
             ClearOutline();
