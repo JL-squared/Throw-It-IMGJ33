@@ -21,6 +21,11 @@ public class WeatherManager : MonoBehaviour {
     public ParticleSystemForceField windParticleField;
     public ParticleSystem snowParticleSystem;
 
+    public GameObject[] cloudLayers;
+    public Vector2[] uvOffsetsCloud;
+
+    public Vector2 cloudWindFactor;
+
     //public VolumetricFog fog;
     public AnimationCurve densityFogCurve;
     public AnimationCurve extinctionCoefficientCurve;
@@ -67,6 +72,18 @@ public class WeatherManager : MonoBehaviour {
         return baseTemp - (windyFactor + snowyFactor + stormyFactor);
     }
 
+    private void Start() {
+        uvOffsetsCloud = new Vector2[cloudLayers.Length];
+    }
+
+    // https://discussions.unity.com/t/whats-the-best-way-to-rotate-a-vector2-in-unity/754872/4
+    public static Vector2 Rotate(Vector2 v, float delta) {
+        return new Vector2(
+            v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+            v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+        );
+    }
+
     public void Update() {
         if (Player.Instance == null) return;
 
@@ -100,5 +117,19 @@ public class WeatherManager : MonoBehaviour {
         float snowEmissionRate = Mathf.Lerp(minSnowEmissionRate, maxSnowEmissionRate, snowy);
         var emission = snowParticleSystem.emission;
         emission.rateOverTime = snowEmissionRate;
+
+        // Cloud wind direction!!!
+        for (int i = 0; i < cloudLayers.Length; i++) {
+            float layerRng = Mathf.PerlinNoise1D(time * 0.04f + (i * 12.013f - 321.321f)) * 1.0f;
+
+
+
+            uvOffsetsCloud[i] += Rotate(windEffect, layerRng) * cloudWindFactor * windy * Time.deltaTime * globalTimeScale;
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetVector("_UV_Offset", uvOffsetsCloud[i]);
+            block.SetFloat("_Coverage_Offset", stormy - 0.5f);
+            cloudLayers[i].GetComponent<MeshRenderer>().SetPropertyBlock(block);
+        }
+
     }
 }

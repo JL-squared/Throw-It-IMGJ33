@@ -51,7 +51,7 @@ public class UIMaster : MonoBehaviour {
         foreach (PieceDefinition definition in Registries.pieces.data.Values) {
             var thing = Instantiate(inGameHUD.buildEntryPrefab);
             thing.transform.parent = parent.transform;
-            thing.GetComponent<BuildingEntry>().Init(definition);
+            //thing.GetComponent<BuildingEntry>().Init(definition);
         }
     }
 

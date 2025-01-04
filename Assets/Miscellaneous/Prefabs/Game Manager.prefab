@@ -5616,6 +5616,7 @@ MonoBehaviour:
   marketManager: {fileID: 0}
   devConsole: {fileID: 0}
   volume: {fileID: 2559728800090142005}
+  paused: 0
   initialized: 0
 --- !u!114 &8780433711588789733
 MonoBehaviour:

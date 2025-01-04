@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     [HideInInspector]
     private GraphicsQualitySettings graphicsSettings;
+    public ReflectionProbe reflectionProbe;
     public Volume volume;
 
     private void Start() {
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour {
         }
         */
 
+        //reflectionProbe.realtimeTexture.filterMode = FilterMode.Point;
+
         initialized = true;
 
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
@@ -63,7 +66,8 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
             onTimeSinceDeath?.Invoke(timeSinceDeath);
         }
-
+        
+        
         //DynamicGI.UpdateEnvironment();
     }
 

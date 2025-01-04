@@ -252,10 +252,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         if (vehicle != null) {
             movement.entityMovementFlags.RemoveFlag(EntityMovementFlags.ApplyMovement);
-            GetComponent<CharacterController>().enabled = false;
+            //GetComponent<CharacterController>().enabled = false;
         } else {
             movement.entityMovementFlags.AddFlag(EntityMovementFlags.ApplyMovement);
-            GetComponent<CharacterController>().enabled = true;
+            //GetComponent<CharacterController>().enabled = true;
         }
 
         EquippedItem.logic.EquippedUpdate(this);

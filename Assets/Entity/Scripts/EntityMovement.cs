@@ -73,7 +73,10 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     // Start is called before the first frame update
     void Start() {
         cc = GetComponent<CharacterController>();
+        cc.detectCollisions = false;
     }
+
+    float tempAccum;
 
     // TODO: Will eventually need to migrate all frame based systems to fixed step to keep logic consistent across FPSes (because even if we use deltaTime, it would always be better to use a fixed tick system instead)
     // Will need to figure out how to handle character interpolation though....
@@ -126,14 +129,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             jumpCounter++;
         }
 
-        // Move the character and fix head bump problem
-        if (cc.enabled) {
-            Debug.DrawRay(transform.position, movement);
-            CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
-            if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
-                movement.y = 0;
-            }
-        }
+
 
         if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
             Quaternion q = Quaternion.identity;
@@ -149,8 +145,23 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
                 transform.rotation = q;
             }
         }
+
+        tempAccum -= Time.deltaTime;
+        Debug.Log(tempAccum);
     }
-    
+
+    private void FixedUpdate() {
+        tempAccum = Time.fixedDeltaTime;
+        // Move the character and fix head bump problem
+        if (cc.enabled) {
+            Debug.DrawRay(transform.position, movement);
+            CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
+            if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
+                movement.y = 0;
+            }
+        }
+    }
+
     public void ExplosionAt(Vector3 position, float force, float radius) {
         Vector3 f = transform.position - position;
 
@@ -194,9 +205,9 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
         // TODO: Rewrite the entity movement using a kinematic rigidbody instead so we can handle proper rigidbody interactions and entity to entity interactions
         if (hit.rigidbody != null) {
-            Vector3 scaled = hit.moveDirection * hit.rigidbody.mass * Time.deltaTime * 160;
+            Vector3 scaled = hit.moveDirection * Time.deltaTime * 160;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
-            hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.point);
+            hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.rigidbody.transform.position - Vector3.up * 0.25f);
         }
 
         EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();
