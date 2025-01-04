@@ -4,21 +4,16 @@ using UnityEngine;
 public class IngameHUD : MonoBehaviour {
     public GameObject craftingMenuObject;
     public GameObject marketMenuObject;
+    public GameObject buildingMenuObject;
     public GameObject rightClickHint;
     public GameObject interactHint;
     public RectTransform chargeMeter;
     public GameObject crosshairGroup;
     public TextMeshProUGUI marketCurrencyText;
 
-    // Start is called before the first frame update
     void Start() {
         SetRightClickHint(false);
         SetInteractHint(false);
-    }
-
-    // Update is called once per frame
-    void Update() {
-        
     }
 
     public void SetRightClickHint(bool on) {
@@ -45,6 +40,11 @@ public class IngameHUD : MonoBehaviour {
         marketMenuObject.SetActive(true);
     }
 
+    internal void SetBuildingMenu() {
+        SetMenu();
+        buildingMenuObject.SetActive(true);
+    }
+
     public void SetMarketCurrency(float currency) {
         marketCurrencyText.text = currency.ToString();
     }
@@ -53,6 +53,7 @@ public class IngameHUD : MonoBehaviour {
     public void SetIngame() {
         marketMenuObject.SetActive(false);
         craftingMenuObject.SetActive(false);
+        buildingMenuObject.SetActive(false);
         crosshairGroup.SetActive(true);
     }
 
