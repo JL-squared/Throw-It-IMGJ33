@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public static class Registries {
     public static AddressablesRegistry<ItemData> items;
     public static AddressablesRegistry<BotData> bots;
     public static AddressablesRegistry<GameObject> projectiles;
     public static AddressablesRegistry<GameObject> vehicles;
+    public static AddressablesRegistry<PieceDefinition> pieces;
 
     #region Sounds
     public static AddressablesRegistry<AudioClip> music;
@@ -16,6 +18,7 @@ public static class Registries {
     public static AddressablesRegistry<AudioClip> rockJump;
     #endregion
 
+    public static UnityEvent onLoaded = new UnityEvent();
 
     private static Dictionary<Type, Item> itemsLogic = new Dictionary<Type, Item>();
     
@@ -33,7 +36,11 @@ public static class Registries {
         rockRun = new AddressablesRegistry<AudioClip>("Rock Run");
         rockJump = new AddressablesRegistry<AudioClip>("Rock Jump");
 
+        pieces = new AddressablesRegistry<PieceDefinition>("Pieces");
+
         Player.Instance.PlayMusic();
+
+        onLoaded.Invoke();
     }
 
     public static GameObject Summon(string id, EntityData data) {

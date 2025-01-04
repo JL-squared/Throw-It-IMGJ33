@@ -23,7 +23,10 @@ public class UIMaster : MonoBehaviour {
 
     public MenuState state = MenuState.None;
 
-    // Start is called before the first frame update
+    private void Awake() {
+        Registries.onLoaded.AddListener(loadBuildPieces);
+    }
+
     void Start() {
         Instance = this;
         inGameHUD.craftingMenuObject.SetActive(false);
@@ -38,6 +41,15 @@ public class UIMaster : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Main Menu") {
             state = MenuState.MainMenu;
             Evaluate();
+        }
+    }
+
+    public void loadBuildPieces() {
+        var parent = inGameHUD.buildingMenuContent;
+        foreach (PieceDefinition definition in Registries.pieces.data.Values) {
+            var thing = Instantiate(inGameHUD.buildEntryPrefab);
+            thing.transform.parent = parent.transform;
+            thing.GetComponent<BuildingEntry>().Init(definition);
         }
     }
 

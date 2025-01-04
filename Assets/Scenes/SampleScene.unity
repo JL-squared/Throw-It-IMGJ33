@@ -4544,14 +4544,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7832396002830471532, guid: 63f74ddd5f988984ab565c394b0ef86f,
         type: 3}
+      propertyPath: buildEntryPrefab
+      value: 
+      objectReference: {fileID: 8657179329295630068, guid: 5d43725b0e6964c468362a61959e7da2,
+        type: 3}
+    - target: {fileID: 7832396002830471532, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
       propertyPath: buildingMenuObject
       value: 
       objectReference: {fileID: 1092879594}
+    - target: {fileID: 7832396002830471532, guid: 63f74ddd5f988984ab565c394b0ef86f,
+        type: 3}
+      propertyPath: buildingMenuContent
+      value: 
+      objectReference: {fileID: 1824190298}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f74ddd5f988984ab565c394b0ef86f, type: 3}
+--- !u!1 &1824190298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4695417617753256496, guid: 63f74ddd5f988984ab565c394b0ef86f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1823213132}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1844296490
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ public class IngameHUD : MonoBehaviour {
     public GameObject craftingMenuObject;
     public GameObject marketMenuObject;
     public GameObject buildingMenuObject;
+    public GameObject buildingMenuContent;
+    public GameObject buildEntryPrefab;
     public GameObject rightClickHint;
     public GameObject interactHint;
     public RectTransform chargeMeter;
