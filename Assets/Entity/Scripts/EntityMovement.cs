@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -73,7 +74,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     // Start is called before the first frame update
     void Start() {
         cc = GetComponent<CharacterController>();
-        cc.detectCollisions = false;
+        //cc.detectCollisions = false;
     }
 
     float tempAccum;
@@ -84,7 +85,8 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         if (!GameManager.Instance.initialized)
             return;
 
-        float control = cc.isGrounded ? groundControl : airControl;
+        //float control = cc.isGrounded ? groundControl : airControl;
+        float control = groundControl;
 
         // Transform local wish movement to global world movement direction
         Vector2 normalized = localWishMovement.normalized;
@@ -101,7 +103,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
         movement.y += 2 * gravity * Time.deltaTime;
     
-
+        /*
         // When we hit the ground and the input is buffered
         if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
             nextJumpTime = 0;
@@ -128,6 +130,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             isJumping = false;
             jumpCounter++;
         }
+        */
 
 
 
@@ -146,16 +149,24 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        tempAccum -= Time.deltaTime;
-        Debug.Log(tempAccum);
+        float interpolationAlpha = (Time.time - time) / Time.fixedDeltaTime;
+        cc.enabled = false;
+        transform.position = Vector3.Lerp(old, newPos, interpolationAlpha);
     }
 
+    float time;
+    Vector3 old;
+    Vector3 newPos;
     private void FixedUpdate() {
         tempAccum = Time.fixedDeltaTime;
+        time = Time.fixedTime;
         // Move the character and fix head bump problem
+        cc.enabled = true;
         if (cc.enabled) {
             Debug.DrawRay(transform.position, movement);
+            old = transform.position;
             CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
+            newPos = cc.transform.position;
             if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
                 movement.y = 0;
             }
@@ -205,14 +216,14 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
         // TODO: Rewrite the entity movement using a kinematic rigidbody instead so we can handle proper rigidbody interactions and entity to entity interactions
         if (hit.rigidbody != null) {
-            Vector3 scaled = hit.moveDirection * Time.deltaTime * 160;
+            Vector3 scaled = hit.moveDirection / Time.fixedDeltaTime * 1;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
-            hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.rigidbody.transform.position - Vector3.up * 0.25f);
+            hit.rigidbody.AddForceAtPosition(scaled * pushForce * 0.2f, hit.rigidbody.transform.position - Vector3.up * 0.25f);
         }
 
         EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();
         if (em != null) {
-            Vector3 a = hit.moveDirection * hit.moveLength * 10 * Time.deltaTime * 100;
+            Vector3 a = hit.moveDirection * hit.moveLength * 10 * Time.fixedDeltaTime * 100;
             a.y = 0f;
             em.movement += a;
         }
