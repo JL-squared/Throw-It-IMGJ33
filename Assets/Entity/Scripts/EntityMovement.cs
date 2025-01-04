@@ -1,13 +1,10 @@
 using System;
-using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour, IEntitySerializer {
-    public GameObject wrapper;
-
     [Header("Speed")]
     public float speed = 7f;
 
@@ -29,7 +26,6 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public float groundControl = 0;
     public float rotationSmoothing = 0;
     public float maxAcceleration = 5;
-    public float acceleration = 20;
     public float jump = 5.0F;
     public float coyoteTime = 0.0f;
     public float jumpBufferTime = 0.0f;
@@ -44,7 +40,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public float maxPushForce = 20;
 
     [HideInInspector]
-    public Rigidbody rb;
+    public CharacterController cc;
     private float lastGroundedTime = 0;
     private float nextJumpTime = 0;
     private int jumpCounter = 0;
@@ -54,13 +50,20 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     public Vector3 Velocity {
         get {
-            return rb.linearVelocity;
+            if (cc.enabled) {
+                return cc.velocity;
+            } else {
+                return Vector3.zero;
+            }
         }
     }
 
     public bool IsGrounded {
-        get {
-            return true;
+        get {if (cc.enabled) {
+                return cc.isGrounded && !groundJustExploded;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -68,26 +71,21 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     // Start is called before the first frame update
     void Start() {
-        rb = GetComponent<Rigidbody>();
-        //cc.detectCollisions = false;
+        cc = GetComponent<CharacterController>();
     }
-
-    float tempAccum;
-    public float tempini;
 
     // TODO: Will eventually need to migrate all frame based systems to fixed step to keep logic consistent across FPSes (because even if we use deltaTime, it would always be better to use a fixed tick system instead)
     // Will need to figure out how to handle character interpolation though....
     void Update() {
         if (!GameManager.Instance.initialized)
             return;
-        /*
+
+        float control = cc.isGrounded ? groundControl : airControl;
+
+        // Transform local wish movement to global world movement direction
         Vector2 normalized = localWishMovement.normalized;
         wishMovement.x = speed * speedModifier * normalized.x;
         wishMovement.z = speed * speedModifier * normalized.y;
-        //float control = cc.isGrounded ? groundControl : airControl;
-        float control = groundControl;
-
-        // Transform local wish movement to global world movement direction
         if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
             wishMovement = transform.TransformDirection(wishMovement);
         } else {
@@ -98,9 +96,8 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         wishMovement.y = movement.y;
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
         movement.y += 2 * gravity * Time.deltaTime;
-        */
 
-        /*
+
         // When we hit the ground and the input is buffered
         if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
             nextJumpTime = 0;
@@ -127,79 +124,30 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             isJumping = false;
             jumpCounter++;
         }
-        */
 
-
-
-
-
-        /*
-        float interpolationAlpha = (Time.time - time) / Time.fixedDeltaTime;
-        cc.enabled = false;
-        transform.position = Vector3.Lerp(old, newPos, interpolationAlpha);
-        */
-        wrapper.transform.rotation = localWishRotation;
-    }
-
-
-
-    private void FixedUpdate() {
-        Vector2 normalized = localWishMovement.normalized;
-        wishMovement.x = speed * speedModifier * normalized.x;
-        wishMovement.z = speed * speedModifier * normalized.y;
-
-        //wishMovement = Matrix4x4.Rotate(Quaternion.Euler(0f, Time.fixedTime * 180f, 0f)).MultiplyVector(wishMovement);
-        wishMovement = Matrix4x4.Rotate(localWishRotation).MultiplyVector(wishMovement);
-        wishMovement.y = movement.y;
-        movement += Vector3.ClampMagnitude((wishMovement - movement) * acceleration, maxAcceleration) * Time.fixedDeltaTime;
-        movement.y += 2 * gravity * Time.fixedDeltaTime;
-        
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.2f)) {
-            movement.y = 0f;
-            rb.AddForce(Vector3.ProjectOnPlane(Vector3.down * gravity, hit.normal), ForceMode.Acceleration);
-            //movement += -hit.normal * 6.0f;
-            //movement = Vector3.ProjectOnPlane(movement, hit.normal);
-        }
-
-        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red, Time.fixedDeltaTime);
-        Debug.DrawRay(transform.position + movement * Time.fixedDeltaTime, Vector3.down * 2.0f, Color.green, Time.fixedDeltaTime);
-        if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out RaycastHit hit1, 1.2f)) {
-            if (Physics.SphereCast(transform.position + movement * Time.fixedDeltaTime, 0.5f, Vector3.down, out RaycastHit hit2, 2.4f)) {
-                DebugUtils.DrawSphere(transform.position + movement * Time.fixedDeltaTime + Vector3.down * hit2.distance, 0.5f, Color.magenta, Time.fixedDeltaTime);
-                if (hit2.distance > hit1.distance) {
-                    //rb.MovePosition(transform.position + movement * Time.fixedDeltaTime + Vector3.down * hit2.distance + Vector3.up * tempini);
-                }
-            }
-        }
-
-        
-
-
-        rb.linearVelocity = movement;
-        //Debug.Log(rb.linearVelocity);
-        //rb.MovePosition(movement * Time.fixedDeltaTime + rb.position);
-                
-        //Vector3 tes = (movement - rb.linearVelocity);
-        //tes.y = 0f;
-        //rb.AddForce(tes * Time.fixedDeltaTime, ForceMode.VelocityChange);
-
-
-        //rb.AddForce(accel * Time.fixedDeltaTime, ForceMode.VelocityChange);
-        /*
-        tempAccum = Time.fixedDeltaTime;
-        time = Time.fixedTime;
         // Move the character and fix head bump problem
-        cc.enabled = true;
         if (cc.enabled) {
             Debug.DrawRay(transform.position, movement);
-            old = transform.position;
             CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
-            newPos = cc.transform.position;
             if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
                 movement.y = 0;
             }
         }
-        */
+
+        if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
+            Quaternion q = Quaternion.identity;
+            if (rotationSmoothing == 0f) {
+                q = localWishRotation;
+            } else {
+                q = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
+            }
+
+            if (rotationIsLocal) {
+                transform.localRotation = q;
+            } else {
+                transform.rotation = q;
+            }
+        }
     }
 
     public void ExplosionAt(Vector3 position, float force, float radius) {
@@ -245,29 +193,26 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
         // TODO: Rewrite the entity movement using a kinematic rigidbody instead so we can handle proper rigidbody interactions and entity to entity interactions
         if (hit.rigidbody != null) {
-            Vector3 scaled = hit.moveDirection / Time.fixedDeltaTime * 1;
+            Vector3 scaled = hit.moveDirection * hit.rigidbody.mass * Time.deltaTime * 160;
             scaled = Vector3.ClampMagnitude(scaled, maxPushForce);
-            hit.rigidbody.AddForceAtPosition(scaled * pushForce * 0.2f, hit.rigidbody.transform.position - Vector3.up * 0.25f);
+            hit.rigidbody.AddForceAtPosition(scaled * pushForce, hit.point);
         }
 
         EntityMovement em = hit.gameObject.GetComponent<EntityMovement>();
         if (em != null) {
-            Vector3 a = hit.moveDirection * hit.moveLength * 10 * Time.fixedDeltaTime * 100;
+            Vector3 a = hit.moveDirection * hit.moveLength * 10 * Time.deltaTime * 100;
             a.y = 0f;
             em.movement += a;
         }
     }
 
     public void Serialize(EntityData data) {
-        /*
         data.position = transform.position;
         data.rotation = transform.rotation;
         data.velocity = movement;
-        */
     }
 
     public void Deserialize(EntityData data) {
-        /*
         cc.enabled = false;
         localWishMovement = Vector2.zero;
         localWishRotation = Quaternion.identity;
@@ -276,7 +221,6 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         movement = data.velocity.Value;
         localWishRotation = data.rotation.Value;
         cc.enabled = true;
-        */
     }
 }
 
@@ -302,38 +246,3 @@ public static class EntityMovementFlagsExt {
         myFlags &= ~flag;
     }
 }
-
-/*
-public class EntityMovementConverter : JsonConverter {
-    public override bool CanRead => true;
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-        EntityMovement movement = (EntityMovement)value;
-        Transform transform = movement.transform;
-        writer.WriteStartObject();
-        writer.WritePropertyName("position");
-        serializer.Serialize(writer, transform.position);
-        
-        writer.WritePropertyName("velocity");
-        serializer.Serialize(writer, movement.Velocity);
-        
-        writer.WritePropertyName("rotation");
-        serializer.Serialize(writer, transform.rotation);
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-        Debug.Log("wtf");
-        JObject jo = JObject.Load(reader);
-        EntityMovement movement = (EntityMovement)existingValue;
-        Debug.Log(movement == null);
-        movement.transform.position = JsonConvert.DeserializeObject<Vector3>(jo["position"].ToString());
-        movement.transform.rotation = JsonConvert.DeserializeObject<Quaternion>(jo["rotation"].ToString());
-        movement.movement = JsonConvert.DeserializeObject<Vector3>(jo["velocity"].ToString());
-        Debug.Log("aaa");
-        return movement;
-    }
-
-    public override bool CanConvert(Type objectType) {
-        return objectType == typeof(EntityMovement);
-    }
-}
-*/
