@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BuildingEntry : MonoBehaviour {
-    Image icon;
-    Button button;
+    public Image icon;
+    public Button button;
     PieceDefinition definition;
 
     public void Init(PieceDefinition definition) {
@@ -13,6 +13,7 @@ public class BuildingEntry : MonoBehaviour {
     }
 
     public void Thing() {
+        Player.Instance.selectedBuildPrefab = definition.piecePrefab;
         Player.Instance.SetupPlacementTarget(definition.piecePrefab);
         UIMaster.Instance.ToggleBuilding();
     }

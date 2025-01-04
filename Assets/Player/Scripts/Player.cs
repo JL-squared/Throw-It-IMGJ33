@@ -220,6 +220,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         float bobbing = settings.cameraBobbing ? CalculateBobbing() : 0f;
 
+        Debug.Log($"Camera bobbing is {settings.cameraBobbing}");
+        Debug.Log($"ViewModelSway is {settings.viewModelSway}");
+
         if (settings.viewModelSway) {
             ApplyHandSway(bobbing);
         } else {

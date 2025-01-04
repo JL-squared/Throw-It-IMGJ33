@@ -60,7 +60,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     public bool IsGrounded {
         get {
-            return false;
+            return true;
         }
     }
 
@@ -176,7 +176,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
 
         rb.linearVelocity = movement;
-        Debug.Log(rb.linearVelocity);
+        //Debug.Log(rb.linearVelocity);
         //rb.MovePosition(movement * Time.fixedDeltaTime + rb.position);
                 
         //Vector3 tes = (movement - rb.linearVelocity);

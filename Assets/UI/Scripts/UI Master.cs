@@ -50,8 +50,8 @@ public class UIMaster : MonoBehaviour {
         var parent = inGameHUD.buildingMenuContent;
         foreach (PieceDefinition definition in Registries.pieces.data.Values) {
             var thing = Instantiate(inGameHUD.buildEntryPrefab);
-            thing.transform.parent = parent.transform;
-            //thing.GetComponent<BuildingEntry>().Init(definition);
+            thing.transform.SetParent(parent.transform);
+            thing.GetComponent<BuildingEntry>().Init(definition);
         }
     }
 
