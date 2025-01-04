@@ -659,16 +659,24 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if (!Performed() || context.performed)
+        if (context.performed)
             return;
 
-        SecondaryHeld = !context.canceled;
+        bool pressed = !context.canceled;
+        if (isBuilding && pressed) {
+            UIMaster.Instance.ToggleBuilding();
+        } else if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.SecondaryAction(context, this);
+        }
+    }
+
+    public void TertiaryAction(InputAction.CallbackContext context) {
+        if (context.performed)
+            return;
 
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
             DestroySelectedBuilding();
-        } else if (!EquippedItem.IsEmpty()) {
-            EquippedItem.logic.SecondaryAction(context, this);
         }
     }
 
@@ -682,8 +690,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (Performed(context)) {
             isBuilding = !isBuilding;
             placementTarget.SetActive(false);
-            if (!isBuilding)
+            if (!isBuilding) {
                 ClearOutline();
+                UIMaster.Instance.Clear();
+            }
         }
     }
 
@@ -712,7 +722,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
-    private void SetupPlacementTarget(GameObject prefab) {
+    public void SetupPlacementTarget(GameObject prefab) {
         // This is probably where you do the thing JED
 
         if ((bool)placementTarget) {

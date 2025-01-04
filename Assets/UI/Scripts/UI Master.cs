@@ -17,12 +17,16 @@ public class UIMaster : MonoBehaviour {
         Market,
         Paused,
         Console,
-        MainMenu
+        MainMenu,
+        Building
     }
 
     public MenuState state = MenuState.None;
 
-    // Start is called before the first frame update
+    private void Awake() {
+        Registries.onLoaded.AddListener(loadBuildPieces);
+    }
+
     void Start() {
         Instance = this;
         inGameHUD.craftingMenuObject.SetActive(false);
@@ -40,12 +44,21 @@ public class UIMaster : MonoBehaviour {
         }
     }
 
+    public void loadBuildPieces() {
+        var parent = inGameHUD.buildingMenuContent;
+        foreach (PieceDefinition definition in Registries.pieces.data.Values) {
+            var thing = Instantiate(inGameHUD.buildEntryPrefab);
+            thing.transform.parent = parent.transform;
+            thing.GetComponent<BuildingEntry>().Init(definition);
+        }
+    }
+
     public bool MovementPossible() {
         bool i = true;
         switch(state) {
             case MenuState.None:
             i = true; break;
-            case MenuState.Crafting or MenuState.Market or MenuState.Paused or MenuState.MainMenu or MenuState.Console:
+            default:
             i = false; break;
         }
         return i;
@@ -95,6 +108,16 @@ public class UIMaster : MonoBehaviour {
         Evaluate();
     }
 
+    public void ToggleBuilding() {
+        ToggleState(MenuState.Building);
+        Evaluate();
+    }
+
+    public void Clear() {
+        ToggleState(MenuState.None);
+        Evaluate();
+    }
+
     // THIS JUST EVALUATES THE STATE
     public void Evaluate() {
         switch(state) {
@@ -125,6 +148,12 @@ public class UIMaster : MonoBehaviour {
                 pauseMenu.SetActive(false);
                 inGameHUD.SetMenu();
                 healthBarGroup.SetActive(false);
+            break;
+
+            case MenuState.Building:
+                pauseMenu.SetActive(false);
+                healthBarGroup.SetActive(true);
+                inGameHUD.SetBuildingMenu();
             break;
         }
 
