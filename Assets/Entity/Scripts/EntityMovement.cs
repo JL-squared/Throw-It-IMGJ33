@@ -6,6 +6,8 @@ using static UnityEngine.Rendering.DebugUI;
 
 // Rigidbody based character controller
 public class EntityMovement : MonoBehaviour, IEntitySerializer {
+    public GameObject wrapper;
+
     [Header("Speed")]
     public float speed = 7f;
 
@@ -27,6 +29,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public float groundControl = 0;
     public float rotationSmoothing = 0;
     public float maxAcceleration = 5;
+    public float acceleration = 20;
     public float jump = 5.0F;
     public float coyoteTime = 0.0f;
     public float jumpBufferTime = 0.0f;
@@ -41,7 +44,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public float maxPushForce = 20;
 
     [HideInInspector]
-    public CharacterController cc;
+    public Rigidbody rb;
     private float lastGroundedTime = 0;
     private float nextJumpTime = 0;
     private int jumpCounter = 0;
@@ -51,21 +54,13 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     public Vector3 Velocity {
         get {
-            if (cc.enabled) {
-                return cc.velocity;
-            } else {
-                return Vector3.zero;
-            }
+            return rb.linearVelocity;
         }
     }
 
     public bool IsGrounded {
         get {
-            if (cc.enabled) {
-                return cc.isGrounded && !groundJustExploded;
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -73,25 +68,26 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     // Start is called before the first frame update
     void Start() {
-        cc = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         //cc.detectCollisions = false;
     }
 
     float tempAccum;
+    public float tempini;
 
     // TODO: Will eventually need to migrate all frame based systems to fixed step to keep logic consistent across FPSes (because even if we use deltaTime, it would always be better to use a fixed tick system instead)
     // Will need to figure out how to handle character interpolation though....
     void Update() {
         if (!GameManager.Instance.initialized)
             return;
-
+        /*
+        Vector2 normalized = localWishMovement.normalized;
+        wishMovement.x = speed * speedModifier * normalized.x;
+        wishMovement.z = speed * speedModifier * normalized.y;
         //float control = cc.isGrounded ? groundControl : airControl;
         float control = groundControl;
 
         // Transform local wish movement to global world movement direction
-        Vector2 normalized = localWishMovement.normalized;
-        wishMovement.x = speed * speedModifier * normalized.x;
-        wishMovement.z = speed * speedModifier * normalized.y;
         if (entityMovementFlags.HasFlag(EntityMovementFlags.ApplyMovement)) {
             wishMovement = transform.TransformDirection(wishMovement);
         } else {
@@ -102,7 +98,8 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         wishMovement.y = movement.y;
         movement += Vector3.ClampMagnitude(wishMovement - movement, maxAcceleration) * Time.deltaTime * control;
         movement.y += 2 * gravity * Time.deltaTime;
-    
+        */
+
         /*
         // When we hit the ground and the input is buffered
         if (Time.time < nextJumpTime && buffered && cc.isGrounded) {
@@ -134,30 +131,61 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
 
 
-        if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
-            Quaternion q = Quaternion.identity;
-            if (rotationSmoothing == 0f) {
-                q = localWishRotation;
-            } else {
-                q = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
-            }
 
-            if (rotationIsLocal) {
-                transform.localRotation = q;
-            } else {
-                transform.rotation = q;
-            }
-        }
 
+        /*
         float interpolationAlpha = (Time.time - time) / Time.fixedDeltaTime;
         cc.enabled = false;
         transform.position = Vector3.Lerp(old, newPos, interpolationAlpha);
+        */
+        wrapper.transform.rotation = localWishRotation;
     }
 
-    float time;
-    Vector3 old;
-    Vector3 newPos;
+
+
     private void FixedUpdate() {
+        Vector2 normalized = localWishMovement.normalized;
+        wishMovement.x = speed * speedModifier * normalized.x;
+        wishMovement.z = speed * speedModifier * normalized.y;
+
+        //wishMovement = Matrix4x4.Rotate(Quaternion.Euler(0f, Time.fixedTime * 180f, 0f)).MultiplyVector(wishMovement);
+        wishMovement = Matrix4x4.Rotate(localWishRotation).MultiplyVector(wishMovement);
+        wishMovement.y = movement.y;
+        movement += Vector3.ClampMagnitude((wishMovement - movement) * acceleration, maxAcceleration) * Time.fixedDeltaTime;
+        movement.y += 2 * gravity * Time.fixedDeltaTime;
+        
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.2f)) {
+            movement.y = 0f;
+            rb.AddForce(Vector3.ProjectOnPlane(Vector3.down * gravity, hit.normal), ForceMode.Acceleration);
+            //movement += -hit.normal * 6.0f;
+            //movement = Vector3.ProjectOnPlane(movement, hit.normal);
+        }
+
+        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red, Time.fixedDeltaTime);
+        Debug.DrawRay(transform.position + movement * Time.fixedDeltaTime, Vector3.down * 2.0f, Color.green, Time.fixedDeltaTime);
+        if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out RaycastHit hit1, 1.2f)) {
+            if (Physics.SphereCast(transform.position + movement * Time.fixedDeltaTime, 0.5f, Vector3.down, out RaycastHit hit2, 2.4f)) {
+                DebugUtils.DrawSphere(transform.position + movement * Time.fixedDeltaTime + Vector3.down * hit2.distance, 0.5f, Color.magenta, Time.fixedDeltaTime);
+                if (hit2.distance > hit1.distance) {
+                    //rb.MovePosition(transform.position + movement * Time.fixedDeltaTime + Vector3.down * hit2.distance + Vector3.up * tempini);
+                }
+            }
+        }
+
+        
+
+
+        rb.linearVelocity = movement;
+        Debug.Log(rb.linearVelocity);
+        //rb.MovePosition(movement * Time.fixedDeltaTime + rb.position);
+                
+        //Vector3 tes = (movement - rb.linearVelocity);
+        //tes.y = 0f;
+        //rb.AddForce(tes * Time.fixedDeltaTime, ForceMode.VelocityChange);
+
+
+        //rb.AddForce(accel * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        /*
         tempAccum = Time.fixedDeltaTime;
         time = Time.fixedTime;
         // Move the character and fix head bump problem
@@ -171,6 +199,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
                 movement.y = 0;
             }
         }
+        */
     }
 
     public void ExplosionAt(Vector3 position, float force, float radius) {
@@ -230,12 +259,15 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     }
 
     public void Serialize(EntityData data) {
+        /*
         data.position = transform.position;
         data.rotation = transform.rotation;
         data.velocity = movement;
+        */
     }
 
     public void Deserialize(EntityData data) {
+        /*
         cc.enabled = false;
         localWishMovement = Vector2.zero;
         localWishRotation = Quaternion.identity;
@@ -244,6 +276,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         movement = data.velocity.Value;
         localWishRotation = data.rotation.Value;
         cc.enabled = true;
+        */
     }
 }
 

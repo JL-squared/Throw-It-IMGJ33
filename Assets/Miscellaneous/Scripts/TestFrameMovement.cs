@@ -10,12 +10,12 @@ public class TestFrameMovement : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         float fac = 1.0f;
-        if (Time.time % 2 < 1) {
+        if (Time.fixedTime % 2 < 1) {
             fac = -1;
         }
 
-        transform.position = transform.position + Vector3.forward * speed * fac * Time.deltaTime;
+        GetComponent<Rigidbody>().linearVelocity = Vector3.forward * speed * fac;
     }
 }

@@ -302,7 +302,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 921606742461663924}
   - {fileID: 8839413808973732309}
   - {fileID: 1962780639234917808}
   m_Father: {fileID: 0}
@@ -622,6 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6607515291658fa41869d18899cd5500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wrapper: {fileID: 0}
   speed: 7
   speedModifier: 1
   localWishMovement: {x: 0, y: 0}
@@ -632,6 +632,7 @@ MonoBehaviour:
   groundControl: 20
   rotationSmoothing: 0
   maxAcceleration: 8
+  acceleration: 20
   jump: 5
   coyoteTime: 0.1
   jumpBufferTime: 0.1
@@ -642,7 +643,7 @@ MonoBehaviour:
   isJumping: 0
   pushForce: 8
   maxPushForce: 12
-  cc: {fileID: 0}
+  rb: {fileID: 0}
   entityMovementFlags: -1
 --- !u!114 &6734361764533788892
 MonoBehaviour:
@@ -803,12 +804,12 @@ GameObject:
   - component: {fileID: 5363673760127486619}
   - component: {fileID: 5671619806476930392}
   m_Layer: 8
-  m_Name: Capsule
+  m_Name: Wrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8839413808973732309
 Transform:
   m_ObjectHideFlags: 0
@@ -821,7 +822,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 921606742461663924}
   m_Father: {fileID: 4392259301960969222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5363673760127486619
@@ -933,15 +935,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8274589430038261866}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.79999995, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8958385453144995485}
   - {fileID: 2218872323040887123}
   - {fileID: 2621379672988711464}
-  m_Father: {fileID: 4392259301960969222}
+  m_Father: {fileID: 8839413808973732309}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2071300713959991023
 AudioSource:

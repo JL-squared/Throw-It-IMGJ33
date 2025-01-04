@@ -272,6 +272,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if(!music.isPlaying && !GameManager.Instance.paused) {
             PlayMusic();
         }
+
+        test = false;
     }
 
     public void UpdateMovement() {
@@ -599,12 +601,18 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
+    bool test;
     public void ApplyMouseDelta(Vector2 delta) {
         MouseDelta = delta;
         wishHeadDir += MouseDelta * mouseSensitivity * 0.02f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
         movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
+
+        //GetComponent<Rigidbody>().MoveRotation(movement.localWishRotation);
+        if (!test) {
+            test = true;
+        }
     }
 
     public void Jump(InputAction.CallbackContext context) {
