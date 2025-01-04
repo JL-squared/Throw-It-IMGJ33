@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
     public event OnDeath onDeath;
     public delegate void OnPauseChanged(bool paused);
     public event OnPauseChanged onPausedChanged;
-    bool paused;
+    public bool paused;
     public bool initialized;
     private bool toggle;
     private void Update() {

@@ -33,6 +33,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Rock Jump
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bb5129eed454144b94e2b0ab5cd0d63
+    m_Address: Assets/Music
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b0df4b7e501e914282832ec027f653b
     m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Walk
     m_ReadOnly: 0
