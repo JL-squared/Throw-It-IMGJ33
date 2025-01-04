@@ -9,11 +9,14 @@ public static class Registries {
     public static AddressablesRegistry<GameObject> vehicles;
 
     #region Sounds
+    public static AddressablesRegistry<AudioClip> music;
     public static AddressablesRegistry<AudioClip> snowBrickPlace;
     public static AddressablesRegistry<AudioClip> rockWalk;
     public static AddressablesRegistry<AudioClip> rockRun;
     public static AddressablesRegistry<AudioClip> rockJump;
     #endregion
+
+
     private static Dictionary<Type, Item> itemsLogic = new Dictionary<Type, Item>();
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -21,11 +24,16 @@ public static class Registries {
         items = new AddressablesRegistry<ItemData>("Items");
         bots = new AddressablesRegistry<BotData>("Bots");
         projectiles = new AddressablesRegistry<GameObject>("Projectiles");
+
+        music = new AddressablesRegistry<AudioClip>("Music");
+
         snowBrickPlace = new AddressablesRegistry<AudioClip>("Snow Brick Place");
 
         rockWalk = new AddressablesRegistry<AudioClip>("Rock Walk");
         rockRun = new AddressablesRegistry<AudioClip>("Rock Run");
         rockJump = new AddressablesRegistry<AudioClip>("Rock Jump");
+
+        Player.Instance.PlayMusic();
     }
 
     public static GameObject Summon(string id, EntityData data) {

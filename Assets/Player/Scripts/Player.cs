@@ -268,6 +268,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
             viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
             viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
         }
+
+        if(!music.isPlaying && !GameManager.Instance.paused) {
+            PlayMusic();
+        }
     }
 
     public void UpdateMovement() {
@@ -1029,6 +1033,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
         source.clip = registry.data.Random();
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
+    }
+
+    AudioClip lastPlayedMusic;
+    public void PlayMusic() {
+        music.clip = Registries.music.data.Random();
+        if (music.clip == lastPlayedMusic) {
+            PlayMusic();
+        } else {
+            music.Play();
+            lastPlayedMusic = music.clip;
+        }
     }
     #endregion
 }
