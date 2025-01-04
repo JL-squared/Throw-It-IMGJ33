@@ -28,7 +28,7 @@ MonoBehaviour:
     - Snow Brick Place
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4a24dd46a269b7743a11e0028664db42
-    m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Jump
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Jump_End
     m_ReadOnly: 0
     m_SerializedLabels:
     - Rock Jump

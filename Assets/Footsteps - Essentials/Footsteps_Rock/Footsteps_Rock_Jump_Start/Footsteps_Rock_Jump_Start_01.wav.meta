@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e708389b7a8f64a46aa12d201c187b69
+guid: 8525d8a8a81cc31409af49bcd02bfa22
 AudioImporter:
   externalObjects: {}
   serializedVersion: 6
@@ -20,10 +20,3 @@ AudioImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 189879
-  packageName: Footsteps - Essentials
-  packageVersion: 1.3
-  assetPath: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Jump/Footsteps_Rock_Jump_Start_02.wav
-  uploadId: 473093

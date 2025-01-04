@@ -708,9 +708,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
-
-        var audio = builtPiece.AddComponent<AudioSource>();
-        PlaySound(audio, Registries.snowBrickPlace);
+        PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
@@ -1029,21 +1027,30 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
+    
     public void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
-        source.clip = registry.data.Random();
+        source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
     }
 
-    AudioClip lastPlayedMusic;
+    public void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry) {
+        GameObject obj = new GameObject();
+        obj.transform.position = point;
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.clip = registry.data.Random().Item2;
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
+        Destroy(obj, source.clip.length / source.pitch);
+    }
+
+
+    int lastPlayedMusicIndex = -1;
     public void PlayMusic() {
-        music.clip = Registries.music.data.Random();
-        if (music.clip == lastPlayedMusic) {
-            PlayMusic();
-        } else {
-            music.Play();
-            lastPlayedMusic = music.clip;
-        }
+        var temp = Registries.music.data.Random(lastPlayedMusicIndex);
+        music.clip = temp.Item2;
+        lastPlayedMusicIndex = temp.Item1;
+        music.Play();
     }
     #endregion
 }

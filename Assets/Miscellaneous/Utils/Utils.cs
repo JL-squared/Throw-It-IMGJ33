@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Runtime.CompilerServices;
 using System.Linq;
+using UnityEngine.UIElements;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
@@ -129,11 +130,26 @@ public static class Utils {
     }
     
     // Jarvis, randomize his balls
-    public static V Random<K, V>(this Dictionary<K, V> dict) {
+    public static (int, V) Random<K, V>(this Dictionary<K, V> dict) {
         // very stupid but it works
         // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
-        int index = UnityEngine.Random.Range(0, Registries.snowBrickPlace.data.Count);
-        return dict.ToList()[index].Value;
+        int index = UnityEngine.Random.Range(0, dict.Count);
+        return (index, dict.ToList()[index].Value);
+    }
+
+    // Jarvis, randomize his balls but exclude a single number
+    public static (int, V) Random<K, V>(this Dictionary<K, V> dict, int exclusionIndex) {
+        if (exclusionIndex >= dict.Count || exclusionIndex < 0) {
+            return Random(dict);
+        }
+
+        int lower = UnityEngine.Random.Range(0, exclusionIndex);
+        int upper = UnityEngine.Random.Range(exclusionIndex+1, dict.Count);
+        int rng = UnityEngine.Random.value > 0.5f ? lower : upper;
+
+        // very stupid but it works
+        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
+        return (rng, dict.ToList()[rng].Value);
     }
 
     public static float SmoothAbsClamped01(float x, float h) {
