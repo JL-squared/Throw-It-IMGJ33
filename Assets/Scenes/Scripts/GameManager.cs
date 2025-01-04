@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
             onTimeSinceDeath?.Invoke(timeSinceDeath);
         }
+
+        //DynamicGI.UpdateEnvironment();
     }
 
     public void PlayerKilled() {
