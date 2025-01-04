@@ -24,7 +24,7 @@ public class UIMaster : MonoBehaviour {
     public MenuState state = MenuState.None;
 
     private void Awake() {
-        Registries.onLoaded.AddListener(loadBuildPieces);
+        //Registries.onLoaded.AddListener(loadBuildPieces);
     }
 
     void Start() {
@@ -42,6 +42,8 @@ public class UIMaster : MonoBehaviour {
             state = MenuState.MainMenu;
             Evaluate();
         }
+
+        loadBuildPieces();
     }
 
     public void loadBuildPieces() {
