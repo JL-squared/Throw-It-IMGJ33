@@ -15,3 +15,32 @@ MonoBehaviour:
   piecePrefab: {fileID: 3016930163665873526, guid: b1ff6a5848d200649b8499bae06f2253,
     type: 3}
   icon: {fileID: 0}
+  m_name: Snow Brick
+  description: 
+  requirement1:
+    count: 4
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
+  requirement2:
+    count: 0
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}
+  requirement3:
+    count: 0
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}

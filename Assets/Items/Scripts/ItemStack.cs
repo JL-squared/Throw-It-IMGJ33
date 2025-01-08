@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [Serializable]
 public class ItemStack {
     [JsonProperty]
-    int count;
+    public int count;
 
     [JsonIgnore]
     public int Count { 
@@ -29,7 +29,7 @@ public class ItemStack {
 
     [JsonProperty(PropertyName = "id")]
     [JsonConverter(typeof(ItemDataConverter))]
-    private ItemData data;
+    public ItemData data;
 
     [JsonIgnore]
     public ItemData Data { get { return data; } 

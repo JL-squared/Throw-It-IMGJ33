@@ -20,7 +20,7 @@ public class MarketMenu : MonoBehaviour {
     }
 
     public void SellAnythingTest() {
-        int slot = Player.Instance.CheckForItem("scrap");
+        int slot = Player.Instance.CheckForUnfullMatchingStack("scrap");
         int removed = -1;
         if (slot >= 0) {
             removed = Player.Instance.RemoveItem(slot, 1000);

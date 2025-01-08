@@ -6,6 +6,7 @@ public class IngameHUD : MonoBehaviour {
     public GameObject marketMenuObject;
     public GameObject buildingMenuObject;
     public GameObject buildingMenuContent;
+    public BuildingMenu buildingMenu;
     public GameObject buildEntryPrefab;
     public GameObject rightClickHint;
     public GameObject interactHint;

@@ -40,8 +40,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     List<Transform> tempSnapPoints1 = new List<Transform>(); // idk what this does
     List<Transform> tempSnapPoints2 = new List<Transform>(); // idk what this does either
     List<Piece> tempPieces = new List<Piece>(); // i also don't know what this does
-    public GameObject selectedBuildPrefab; // irrelevant
-    public GameObject selectedTemp2Prefab;
+    public PieceDefinition selectedPiece;
     public Material hologramMaterial;
     int placeRayMask; // need to know how this works
     [SerializeField]
@@ -167,7 +166,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         movement = GetComponent<EntityMovement>();
 
         // Setup building stuff
-        SetupPlacementTarget(selectedBuildPrefab);
+        SetupPlacementTarget(selectedPiece.piecePrefab);
         placementTarget.SetActive(false);
 
         // Hook onto health component
@@ -219,9 +218,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         UpdateMovement();
 
         float bobbing = settings.cameraBobbing ? CalculateBobbing() : 0f;
-
-        Debug.Log($"Camera bobbing is {settings.cameraBobbing}");
-        Debug.Log($"ViewModelSway is {settings.viewModelSway}");
 
         if (settings.viewModelSway) {
             ApplyHandSway(bobbing);
@@ -289,6 +285,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     private void LateUpdate() {
         if (isBuilding) UpdatePlacementTarget();
+
+        if (!(CheckForItems(selectedPiece.requirement1) && CheckForItems(selectedPiece.requirement2) && CheckForItems(selectedPiece.requirement3))) {
+            placementStatus = false;
+        }
+
+        MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
+        foreach (var item in renderers) {
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetInt("_Valid", placementStatus ? 1 : 0);
+            item.SetPropertyBlock(block);
+        }
     }
 
     #region Polish & Effects
@@ -511,7 +518,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     // Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1
-    public int CheckForItem(string id, int count = 1) {
+    public int CheckForUnfullMatchingStack(string id, int count = 1) {
         int i = 0;
         foreach (ItemStack item in items) {
             if (item.Count >= count && item.Data == Registries.items.data[id]) {
@@ -521,6 +528,42 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
 
         return -1;
+    }
+
+    public bool CheckForItems(ItemStack stack) {
+        if (stack.IsNullOrDestroyed() || stack.IsEmpty()) return true;
+        return CheckForItemAmount(stack.data.name, stack.count);
+    }
+
+    public bool CheckForItemAmount(string id, int count) {
+        foreach (ItemStack item in items) {
+            if (count <= 0)
+                return true;
+           
+            if (item.Data == Registries.items.data[id]) {
+                count -= item.Count;
+            }
+        }
+        return false;
+    }
+
+    // Both of these functions are super unsafe, fix later
+    public void TakeItems(ItemStack stack) {
+        if (!stack.IsNullOrDestroyed() && !stack.IsEmpty()) {
+            TakeItemAmount(stack.data.name, stack.count);
+        }
+    }
+
+    public void TakeItemAmount(string id, int count = 0) {
+        foreach (ItemStack item in items) {
+            if (count <= 0)
+                return;
+
+            if (item.Data == Registries.items.data[id]) {
+                count -= item.Count;
+                item.Count = count <= 0 ? -count : 0; // if count goes below 0, give it back to the item. othwerwise stack should become 0
+            }
+        }
     }
 
     // Only called when the following happens:
@@ -649,11 +692,11 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (!Performed() || context.performed)
             return;
 
-        PrimaryHeld = !context.canceled;
+        PrimaryHeld = !context.canceled && !isBuilding;
 
         if (isBuilding && placementStatus && !context.canceled) {
             BuildActionPrimary();
-        } else if (!EquippedItem.IsEmpty()) {
+        } else if (!EquippedItem.IsEmpty() && !isBuilding) {
             EquippedItem.logic.PrimaryAction(context, this);
         }
     }
@@ -725,11 +768,14 @@ public class Player : MonoBehaviour, IEntitySerializer {
     private void BuildActionPrimary() {
 
         // HOW DOES THIS WORK!!!!!!!!
-        GameObject builtPiece = Instantiate(selectedBuildPrefab);
+        GameObject builtPiece = Instantiate(selectedPiece.piecePrefab);
         builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
         PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
+        TakeItems(selectedPiece.requirement1);
+        TakeItems(selectedPiece.requirement2);
+        TakeItems(selectedPiece.requirement3);
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
@@ -878,13 +924,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         } else {
             OutlineObject(null);
             placementTarget.SetActive(false);
-        }
-
-        MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
-        foreach (var item in renderers) {
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            block.SetInt("_Valid", placementStatus ? 1 : 0);
-            item.SetPropertyBlock(block);
         }
     }
 
@@ -1072,6 +1111,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
         music.clip = temp.Item2;
         lastPlayedMusicIndex = temp.Item1;
         music.Play();
+    }
+
+    public void Trace(int i = 0) {
+        Debug.Log("is this calling " + i);
     }
     #endregion
 }
