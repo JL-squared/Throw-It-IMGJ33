@@ -32,20 +32,46 @@ public class ShovelItem : ToolItem {
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
         base.PrimaryAction(context, player);
-
+        var shovelItemData = ((ShovelItemData)ItemReference.Data);
         if (!context.canceled && player.lookingAt.HasValue) {
-            Rigidbody rb = player.lookingAt.Value.rigidbody;
+            bool doTheAnimation = false;
 
+
+            Rigidbody rb = player.lookingAt.Value.rigidbody;
             if (rb != null) {
                 Vector3 forward = player.gameCamera.transform.forward;
                 rb.AddForceAtPosition(forward * 500.0f, player.lookingAt.Value.point);
-                player.viewModelHolster.AddTween(new LocalRotationTween {
-                    to = Quaternion.identity,
+                doTheAnimation = true;
+            }
+
+            EntityHealth health = player.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
+            if (health != null) {
+                doTheAnimation = true;
+                health.Damage(5.0f);
+            }
+
+            if (doTheAnimation) {
+                player.viewModel.AddTween(new LocalRotationTween {
+                    from = shovelItemData.viewModelRotationOffset,
+                    to = shovelItemData.animationRotation,
                     duration = 0.2f,
-                    easeType = EaseType.QuadOut,
+                    easeType = EaseType.QuadIn,
+                    usePingPong = true,
+                });
+
+                player.viewModel.AddTween(new LocalPositionTween {
+                    from = shovelItemData.viewModelPositionOffset,
+                    to = shovelItemData.animationPosition,
+                    duration = 0.2f,
+                    easeType = EaseType.QuadIn,
+                    usePingPong = true,
                 });
             }
         }
+    }
+
+    public override void Update(Player player) {
+        base.Update(player);
     }
 
     public override void Unequipped(Player player) {

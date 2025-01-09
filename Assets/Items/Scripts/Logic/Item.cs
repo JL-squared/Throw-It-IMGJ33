@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 [Serializable]
 public class Item : ICloneable {
+    public ItemStack ItemReference { get; set; }
+
     public virtual void PrimaryAction(InputAction.CallbackContext context, Player player) { 
         
     }
