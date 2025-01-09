@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
@@ -23,7 +24,9 @@ public class ItemStack {
     }
 
     [JsonIgnore]
+    [HideInInspector]
     public UnityEvent emptyEvent = new UnityEvent();
+    [HideInInspector]
     [JsonIgnore]
     public UnityEvent<ItemStack> updateEvent = new UnityEvent<ItemStack>();
 

@@ -1,3 +1,4 @@
+using Tweens;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,24 @@ public class ShovelItem : ToolItem {
             */
 
             player.AddItem(new ItemStack("snowball", 1));
+        }
+    }
+
+    public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
+        base.PrimaryAction(context, player);
+
+        if (!context.canceled && player.lookingAt.HasValue) {
+            Rigidbody rb = player.lookingAt.Value.rigidbody;
+
+            if (rb != null) {
+                Vector3 forward = player.gameCamera.transform.forward;
+                rb.AddForceAtPosition(forward * 500.0f, player.lookingAt.Value.point);
+                player.viewModelHolster.AddTween(new LocalRotationTween {
+                    to = Quaternion.identity,
+                    duration = 0.2f,
+                    easeType = EaseType.QuadOut,
+                });
+            }
         }
     }
 

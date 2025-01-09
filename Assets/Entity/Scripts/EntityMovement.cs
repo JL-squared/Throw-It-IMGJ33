@@ -222,6 +222,11 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         localWishRotation = data.rotation.Value;
         cc.enabled = true;
     }
+
+    public void ToggleCollision(bool v) {
+        //GetComponent<CharacterController>().enabled = false;
+        cc.enabled = v;
+    }
 }
 
 [Flags]
