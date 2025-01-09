@@ -6215,6 +6215,11 @@ PrefabInstance:
       propertyPath: noBuildingCost
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: animationViewModel
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8839413808973732309, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_LocalRotation.w

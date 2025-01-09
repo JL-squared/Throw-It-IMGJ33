@@ -25,3 +25,5 @@ MonoBehaviour:
   description: A digging tool.
   digRadius: 0.5
   digStrength: 100
+  animationRotation: {x: 0, y: 0, z: 0, w: 1}
+  animationPosition: {x: 0.5, y: -1, z: 0.5}

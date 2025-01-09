@@ -637,7 +637,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6607515291658fa41869d18899cd5500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wrapper: {fileID: 0}
   speed: 7
   speedModifier: 1
   localWishMovement: {x: 0, y: 0}
@@ -648,7 +647,6 @@ MonoBehaviour:
   groundControl: 20
   rotationSmoothing: 0
   maxAcceleration: 8
-  acceleration: 20
   jump: 5
   coyoteTime: 0.1
   jumpBufferTime: 0.1
@@ -659,7 +657,7 @@ MonoBehaviour:
   isJumping: 0
   pushForce: 8
   maxPushForce: 12
-  rb: {fileID: 0}
+  cc: {fileID: 0}
   entityMovementFlags: -1
 --- !u!114 &6734361764533788892
 MonoBehaviour:
@@ -720,10 +718,8 @@ MonoBehaviour:
   shiveringShakeFactor: 0.01
   shiveringShakeRotationFactor: 0.01
   isBuilding: 0
-  selectedBuildPrefab: {fileID: 3016930163665873526, guid: b1ff6a5848d200649b8499bae06f2253,
-    type: 3}
-  selectedTemp2Prefab: {fileID: 3016930163665873526, guid: 77598be04d3242e448d98bea6b34b828,
-    type: 3}
+  noBuildingCost: 0
+  selectedPiece: {fileID: 0}
   hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
   placementDistance: 10
@@ -757,6 +753,7 @@ MonoBehaviour:
   viewModelBobbingStrength: -0.8
   defaultFOV: 70
   viewModelHolster: {fileID: 7656322688971084677}
+  animationViewModel: {fileID: 0}
   holsterSwaySmoothingSpeed: 25
   holsterSwayMouseAccelSmoothingSpeed: 25
   viewModelRotationClampMagnitude: 100

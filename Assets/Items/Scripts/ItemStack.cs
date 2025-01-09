@@ -39,6 +39,7 @@ public class ItemStack {
         set { 
             data = value;
             logic = value != null ? Registries.GetItem(data) : new Item();
+            logic.ItemReference = this;
             updateEvent.Invoke(this); 
         } 
     }

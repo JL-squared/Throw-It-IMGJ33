@@ -112,8 +112,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     #region View Model & View Model Sway
     [Header("View Model")]
+    public bool keepUpdatingHolsterTransform;
     public GameObject viewModelHolster;
-    private GameObject viewModel;
+    public GameObject viewModel;
     private Vector3 rotationLocalOffset;
     private Vector3 positionLocalOffset;
     public float holsterSwaySmoothingSpeed = 25f;
@@ -263,7 +264,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.logic.Update(this);
         }
 
-        if (viewModel != null && !EquippedItem.IsNullOrDestroyed() && !EquippedItem.IsEmpty()) {
+        if (viewModel != null && !EquippedItem.IsNullOrDestroyed() && !EquippedItem.IsEmpty() && keepUpdatingHolsterTransform) {
             viewModel.transform.localPosition = EquippedItem.Data.viewModelPositionOffset;
             viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
             viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
