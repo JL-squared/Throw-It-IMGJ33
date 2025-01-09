@@ -7,6 +7,8 @@ public class CraftingRecipe : ScriptableObject {
     public ItemStack output;
     public int craftingTime;
 
+    public string m_name;
+
     public bool CheckForRequirements(List<ItemStack> items) {
         List<ItemStack> tempRequirements = new List<ItemStack>(requirements);
 
