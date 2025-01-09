@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1679815499248925888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5361457892440788241}
+  - component: {fileID: 261666173128335063}
+  - component: {fileID: 5435573634283810322}
+  - component: {fileID: 2489052534160842304}
+  - component: {fileID: 5281816153287127206}
+  - component: {fileID: 6444445910934618811}
+  - component: {fileID: 1577235817153720782}
+  m_Layer: 0
+  m_Name: Voxel Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5361457892440788241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &261666173128335063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5e6b6604d0aba4aace8d256007cf0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunkPrefab: {fileID: 6177338312385691531, guid: 4d388002189c96345901f85821f1a600,
+    type: 3}
+--- !u!114 &5435573634283810322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 901e500f95df29d48bd82e980dc5039f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 0}
+  mapChunkSize: {x: 2, y: 2, z: 2}
+--- !u!114 &2489052534160842304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bef0f1433829e458439ecec3acd6bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 0}
+--- !u!114 &5281816153287127206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 998d14371a252d844953b5096474c997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 0}
+  meshJobsPerFrame: 1
+  smoothing: 1
+  skirts: 1
+  perVertexNormals: 1
+  perVertexUvs: 1
+  ambientOcclusionOffset: 0.4
+  ambientOcclusionPower: 2
+  ambientOcclusionSpread: 0.4
+  ambientOcclusionGlobalOffset: 0
+  voxelMaterials:
+  - {fileID: 2100000, guid: 6458531e40e67ca4db57ebc29d13733b, type: 2}
+--- !u!114 &6444445910934618811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a066558079a8145a0717980575810b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed: 1234
+  permutationSeed: {x: -202, y: 791, z: -362}
+  moduloSeed: {x: 893, y: -322, z: 897}
+  debugTextures:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &1577235817153720782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63db0a6741bd3c499e011988935cdea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugName: 1
+  autoCompile: 1
+  shader: {fileID: 7200000, guid: 439ac30d16567684abc57007dabffda7, type: 3}
+  scale:
+    x: 0.04
+  amplitude:
+    x: 5
