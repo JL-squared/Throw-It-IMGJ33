@@ -247,7 +247,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        UIMaster.Instance.inGameHUD.SetInteractHint(interaction != null && interaction.Interactable);
+        UIMaster.Instance.SetInteractHint(interaction != null && interaction.Interactable);
         lastInteraction = interaction;
 
         if (vehicle != null) {
@@ -643,7 +643,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void ToggleDevConsole(InputAction.CallbackContext context) {
-        if (Performed(context) && !GameManager.Instance.devConsole.consoleNation) {
+        if (Performed(context) && !GameManager.Instance.devConsole.fardNation) {
             UIMaster.Instance.ToggleDevConsole();
         }
     }

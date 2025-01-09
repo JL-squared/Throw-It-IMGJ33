@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CraftingRecipe", menuName = "ScriptableObjects/New Crafting Recipe", order = 2)]
+[CreateAssetMenu(fileName = "CraftingRecipe", menuName = "Scriptable Objects/New Crafting Recipe", order = 2)]
 public class CraftingRecipe : ScriptableObject {
     public List<ItemStack> requirements;
     public ItemStack output;

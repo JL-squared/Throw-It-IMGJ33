@@ -50,7 +50,7 @@ public class SnowballItem : Item {
         //swayOffset = new Vector3(Mathf.PerlinNoise1D(Time.time * s), Mathf.PerlinNoise1D(Time.time * s - 12.31546f), Mathf.PerlinNoise1D(Time.time * s + 3.5654f)) * charge * 0.035f;
         //swayOffset += (-Vector3.forward + Vector3.right * 0.2f) * charge * 0.125f;
 
-        UIMaster.Instance.inGameHUD.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
+        UIMaster.Instance.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
 
         if (player.PrimaryHeld && !isCharging) {
             if (throwDelay == 0.0f) isCharging = true;
@@ -73,6 +73,6 @@ public class SnowballItem : Item {
         base.Unequipped(player);
         isCharging = false;
         time = 0f;
-        UIMaster.Instance.inGameHUD.UpdateChargeMeter(0f);
+        UIMaster.Instance.UpdateChargeMeter(0f);
     }
 }

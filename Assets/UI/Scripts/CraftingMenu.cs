@@ -31,7 +31,7 @@ public class CraftingMenu : MonoBehaviour {
         }
     }
 
-    void SelectRecipe(CraftingRecipe recipe) {
+    public void SelectRecipe(CraftingRecipe recipe) {
         if(!image.gameObject.activeSelf) {
             image.gameObject.SetActive(true);
         }

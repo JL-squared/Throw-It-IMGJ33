@@ -15,11 +15,11 @@ public class BuildingEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        UIMaster.Instance.inGameHUD.buildingMenu.Display(null);
+        UIMaster.Instance.buildingMenu.Display(null);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        UIMaster.Instance.inGameHUD.buildingMenu.Display(definition);
+        UIMaster.Instance.buildingMenu.Display(definition);
     }
 
     public void Thing() {
