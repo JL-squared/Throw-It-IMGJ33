@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     #region Building
     [Header("Building")]
     public bool isBuilding; // irrelevant for now
+    public bool noBuildingCost;
     List<Transform> tempSnapPoints1 = new List<Transform>(); // idk what this does
     List<Transform> tempSnapPoints2 = new List<Transform>(); // idk what this does either
     List<Piece> tempPieces = new List<Piece>(); // i also don't know what this does
@@ -286,7 +287,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     private void LateUpdate() {
         if (isBuilding) UpdatePlacementTarget();
 
-        if (!(CheckForItems(selectedPiece.requirement1) && CheckForItems(selectedPiece.requirement2) && CheckForItems(selectedPiece.requirement3))) {
+        if (!noBuildingCost && !(CheckForItems(selectedPiece.requirement1) && CheckForItems(selectedPiece.requirement2) && CheckForItems(selectedPiece.requirement3))) {
             placementStatus = false;
         }
 
@@ -773,9 +774,11 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
         PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
-        TakeItems(selectedPiece.requirement1);
-        TakeItems(selectedPiece.requirement2);
-        TakeItems(selectedPiece.requirement3);
+        if (!noBuildingCost) {
+            TakeItems(selectedPiece.requirement1);
+            TakeItems(selectedPiece.requirement2);
+            TakeItems(selectedPiece.requirement3);
+        }
     }
 
     // Creates the placement hologram by instantiating the prefab and then modifying it and its children (somehow)
