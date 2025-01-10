@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2489052534160842304}
   - component: {fileID: 5281816153287127206}
   - component: {fileID: 6444445910934618811}
-  - component: {fileID: 1577235817153720782}
   m_Layer: 0
   m_Name: Voxel Terrain
   m_TagString: Untagged
@@ -51,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunkPrefab: {fileID: 6177338312385691531, guid: 4d388002189c96345901f85821f1a600,
     type: 3}
+  testino: 0
+  initted: 0
 --- !u!114 &5435573634283810322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,22 +121,3 @@ MonoBehaviour:
   debugTextures:
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &1577235817153720782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679815499248925888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e63db0a6741bd3c499e011988935cdea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugName: 1
-  autoCompile: 1
-  shader: {fileID: 7200000, guid: 439ac30d16567684abc57007dabffda7, type: 3}
-  scale:
-    x: 0.04
-  amplitude:
-    x: 5

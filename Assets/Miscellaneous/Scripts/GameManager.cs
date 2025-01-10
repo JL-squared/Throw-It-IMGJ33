@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -35,13 +36,23 @@ public class GameManager : MonoBehaviour {
                 Physics.simulationMode = SimulationMode.FixedUpdate;
                 Time.timeScale = 1.0f;
             };
-        } 
+        }
+        reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
         //reflectionProbe.realtimeTexture.filterMode = FilterMode.Point;
 
         //initialized = true;
 
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);
+
+        StartCoroutine("RefreshCoroutine");
+    }
+
+    IEnumerator RefreshCoroutine() {
+        while (true) {
+            reflectionProbe.RenderProbe();
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     bool dead;

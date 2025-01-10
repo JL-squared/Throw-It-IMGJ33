@@ -18,8 +18,8 @@ void MyFunctionA_float(float2 frag, float3 coloured, float2 uv, float2 texelSize
 	int dither = pattern[y * 4 + x];
 	int3 temp = int3(rounded);
 	
-	temp.x += rounded2.x * 100;
-	//temp += dither;
+	//temp.x += rounded2.x * 100;
+	temp += dither;
 	temp = clamp(temp, 0, 255);
 	rounded = uint3(temp);
 	rounded = clamp(rounded, 0, 255);

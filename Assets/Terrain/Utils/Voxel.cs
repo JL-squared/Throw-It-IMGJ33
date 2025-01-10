@@ -9,7 +9,7 @@ public struct Voxel {
     public const int size = sizeof(int) / 2;
 
     // Density of the voxel as a half to save some memory
-    public float density;
+    public half density;
 
     public byte material { get { return 0; } }
 
