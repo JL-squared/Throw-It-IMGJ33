@@ -55,17 +55,32 @@ public class ShovelItem : ToolItem {
                     from = shovelItemData.viewModelRotationOffset,
                     to = shovelItemData.animationRotation,
                     duration = 0.2f,
-                    easeType = EaseType.QuadIn,
-                    usePingPong = true,
+                    easeType = EaseType.ElasticOut,
+                    onEnd = (TweenInstance<Transform, Quaternion> instance) => {
+                        
+
+                        player.viewModel.AddTween(new LocalRotationTween {
+                            from = shovelItemData.animationRotation,
+                            to = shovelItemData.viewModelRotationOffset,
+                            duration = 0.2f,
+                            easeType = EaseType.Linear,
+                        });
+                    },
                 });
 
+                Utils.PlaySound(player.lookingAt.Value.point, Registries.snowBrickPlace);
+
+                /*
                 player.viewModel.AddTween(new LocalPositionTween {
                     from = shovelItemData.viewModelPositionOffset,
                     to = shovelItemData.animationPosition,
                     duration = 0.2f,
-                    easeType = EaseType.QuadIn,
+                    easeType = EaseType.ExpoIn,
                     usePingPong = true,
                 });
+                */
+
+
             }
         }
     }

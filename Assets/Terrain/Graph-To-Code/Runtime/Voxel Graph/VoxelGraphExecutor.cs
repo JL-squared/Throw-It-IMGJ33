@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -62,12 +61,12 @@ public class VoxelGraphExecutor : MonoBehaviour {
     }
 
     public void ExecuteShader(int newSize, Vector3 offset, Vector3 scale, bool updateInjected=true) {
+        graph = GetComponent<VoxelGraph>();
+        graph.PrepareForExecution();
+
         if (newSize != setSize || Textures == null) {
             CreateIntermediateTextures(newSize);
         }
-        
-        graph = GetComponent<VoxelGraph>();
-        graph.PrepareForExecution();
 
         ComputeShader shader = graph.shader;
         shader.SetInt("size", newSize);

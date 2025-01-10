@@ -1,6 +1,3 @@
-using System;
-
-
 public class RandomNode<I, O> : Variable<O> {
     public Variable<I> input;
 

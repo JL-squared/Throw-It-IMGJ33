@@ -1,5 +1,4 @@
 using Unity.Mathematics;
-using UnityEngine.Rendering;
 
 public class SimpleWarpingTerrain : VoxelGraph {
     // Main transform

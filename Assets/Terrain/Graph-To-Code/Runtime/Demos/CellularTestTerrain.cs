@@ -1,5 +1,4 @@
 using Unity.Mathematics;
-using UnityEngine.Rendering;
 
 public class CellularTestTerrain : VoxelGraph {
     // Main transform

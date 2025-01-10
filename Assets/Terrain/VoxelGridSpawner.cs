@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -26,9 +23,12 @@ public class VoxelGridSpawner : VoxelBehaviour {
     public override void LateInit() {
         var executor = GetComponent<VoxelGraphExecutor>();
 
+        terrain.testino = 0;
+        terrain.initted = true;
         for (int x = -mapChunkSize.x; x < mapChunkSize.x; x++) {
             for (int y = -mapChunkSize.y; y < mapChunkSize.y; y++) {
                 for (int z = -mapChunkSize.z; z < mapChunkSize.z; z++) {
+                    terrain.testino++;
                     Vector3 position = new Vector3(x, y, z) * VoxelUtils.Size * VoxelUtils.VoxelSizeFactor;
                     var container = new UniqueVoxelContainer();
                     //var temp = (new TestJob { voxels = container.voxels }).Schedule(VoxelUtils.Volume, 2048);

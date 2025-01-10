@@ -1,5 +1,4 @@
 using Unity.Mathematics;
-using UnityEngine.Rendering;
 
 public class LeTerrainIndeed : VoxelGraph {
     public Inject<float> scale;

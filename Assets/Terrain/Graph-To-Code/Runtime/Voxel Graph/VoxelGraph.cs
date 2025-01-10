@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using System.Drawing;
 
 
 #if UNITY_EDITOR

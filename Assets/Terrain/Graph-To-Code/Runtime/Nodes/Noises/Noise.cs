@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public abstract class AbstractNoiseNode<I> : Variable<float>, ICloneable {
     public Variable<float> amplitude;

@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 // Used internally by the classes that handle terrain

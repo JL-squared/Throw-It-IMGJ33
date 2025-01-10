@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class KernelOutput {
     public ScopeArgument output;
     public string outputTextureName;

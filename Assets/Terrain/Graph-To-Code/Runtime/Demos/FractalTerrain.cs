@@ -1,6 +1,5 @@
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class FractalTerrain : VoxelGraph {
     // Main transform

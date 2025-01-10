@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class SampleableTexture<T> {
     public string textureName;

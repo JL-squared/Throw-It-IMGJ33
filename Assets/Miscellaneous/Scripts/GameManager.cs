@@ -25,25 +25,20 @@ public class GameManager : MonoBehaviour {
             Instance = this;
         }
 
-        /*
         if (VoxelTerrain.Instance != null) {
             initialized = false;
             Time.timeScale = 0.0f;
             Physics.simulationMode = SimulationMode.Script;
 
-            VoxelTerrain.Instance.Finished += () => {
+            VoxelTerrain.Instance.onFinished += () => {
                 initialized = true;
-                pathfindingRebuilder.UpdateNavMesh();
                 Physics.simulationMode = SimulationMode.FixedUpdate;
                 Time.timeScale = 1.0f;
             };
-        } else {
-        }
-        */
-
+        } 
         //reflectionProbe.realtimeTexture.filterMode = FilterMode.Point;
 
-        initialized = true;
+        //initialized = true;
 
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);

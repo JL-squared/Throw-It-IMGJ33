@@ -1,10 +1,8 @@
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using Unity.Burst.CompilerServices;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 // Common terrain utility methods
 public static class VoxelUtils {

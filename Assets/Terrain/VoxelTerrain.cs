@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class VoxelTerrain : MonoBehaviour {
@@ -10,8 +9,18 @@ public class VoxelTerrain : MonoBehaviour {
     public static VoxelTerrain Instance { get; private set; }
     private Dictionary<Type, VoxelBehaviour> behaviours;
 
-    public void Start() {
+    public event Action onFinished;
+
+    [HideInInspector]
+    public int testino;
+    [HideInInspector]
+    public bool initted;
+
+    public void Awake() {
         Instance = this;
+    }
+
+    public void Start() {
         behaviours = new Dictionary<Type, VoxelBehaviour>();
         totalChunks = new List<GameObject>();
         List<VoxelBehaviour> list = GetComponents<VoxelBehaviour>().ToList();
@@ -35,6 +44,13 @@ public class VoxelTerrain : MonoBehaviour {
 
         foreach (var item in totalChunks) {
             item.GetComponent<VoxelChunk>().container.Dispose();
+        }
+    }
+
+    private void Update() {
+        if (initted && testino == 0) {
+            initted = false;
+            onFinished?.Invoke();
         }
     }
 

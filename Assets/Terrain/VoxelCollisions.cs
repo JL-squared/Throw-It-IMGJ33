@@ -26,6 +26,7 @@ public class VoxelCollisions : VoxelBehaviour {
             ongoingBakeJobs.Add((handle, chunk, voxelMesh));
         } else {
             onCollisionBakingComplete?.Invoke(chunk, VoxelMesh.Empty);
+            terrain.testino--;
         }
     }
 
@@ -35,6 +36,7 @@ public class VoxelCollisions : VoxelBehaviour {
                 handle.Complete();
                 chunk.GetComponent<MeshCollider>().sharedMesh = chunk.sharedMesh;
                 onCollisionBakingComplete?.Invoke(chunk, mesh);
+                terrain.testino--;
             }
         }
         ongoingBakeJobs.RemoveAll(item => item.Item1.IsCompleted);

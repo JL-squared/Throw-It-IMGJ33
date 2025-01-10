@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using Unity.Jobs;
 using UnityEngine;
 using System.Linq;
-using Unity.Mathematics;
 using Unity.Collections;
-using UnityEditorInternal;
 
 // Responsible for creating and executing the mesh generation jobs
 public class VoxelMesher : VoxelBehaviour {
