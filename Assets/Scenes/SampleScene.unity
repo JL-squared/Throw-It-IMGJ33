@@ -3855,7 +3855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1382309241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3900,7 +3900,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c7c1b66b480421b49847c7e08828c893, type: 2}
+  - {fileID: 2100000, guid: fb175d2e0abbd8a42808279498e33235, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4199,6 +4199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Voxel Terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679815499248925888, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5281816153287127206, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
@@ -5391,7 +5396,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &2135391344
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5422,7 +5427,7 @@ Transform:
   m_GameObject: {fileID: 2135391343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -40, z: 0}
+  m_LocalPosition: {x: 0, y: -200, z: 0}
   m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []

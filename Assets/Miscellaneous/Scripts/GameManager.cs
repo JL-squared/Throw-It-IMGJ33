@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
             Instance = this;
         }
 
-        if (VoxelTerrain.Instance != null) {
+        if (VoxelTerrain.Instance != null && !VoxelTerrain.Instance.isActiveAndEnabled) {
             initialized = false;
             Time.timeScale = 0.0f;
             Physics.simulationMode = SimulationMode.Script;
@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
                 Physics.simulationMode = SimulationMode.FixedUpdate;
                 Time.timeScale = 1.0f;
             };
+        } else {
+            initialized = true;
         }
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
         //reflectionProbe.realtimeTexture.filterMode = FilterMode.Point;
