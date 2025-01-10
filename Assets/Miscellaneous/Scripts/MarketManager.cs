@@ -21,7 +21,7 @@ public class MarketManager : MonoBehaviour {
     public int Current {
         private set {
             _current = value;
-            UIMaster.Instance.inGameHUD.SetMarketCurrency(value);
+            //UIScriptMaster.Instance.SetMarketCurrency(value);
         }
         get { return _current; }
     }
@@ -77,7 +77,7 @@ public class MarketManager : MonoBehaviour {
             stock.percents[1] = new Vector2(values.x, values.y);
         }
 
-        UIMaster.Instance.inGameHUD.RefreshMarket();
+        //UIMaster.Instance.RefreshMarket();
 
         foreach (var stock in stocks) {
             stock.percents[0] = stock.percents[1];

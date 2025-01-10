@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class RecipeEntry : MonoBehaviour {
     public Button button;
     public TextMeshProUGUI title;
-    public CraftingRecipe craftingRecipe;
+    private CraftingRecipe craftingRecipe;
 
     public void Init(CraftingRecipe craftingRecipe) {
         this.craftingRecipe = craftingRecipe;
@@ -15,6 +15,6 @@ public class RecipeEntry : MonoBehaviour {
     }
 
     private void DoWhateverTheFuckTheButtonDoes() {
-        // p
+        UIScriptMaster.Instance.craftingMenu.SelectRecipe(craftingRecipe);
     }
 }

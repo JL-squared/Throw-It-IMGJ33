@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 
 public class DevConsole : MonoBehaviour {
-    public bool consoleNation = false;
+    public bool fardNation = false;
     bool tabbed = false;
     string command = "";
     string lastCommand = "";
@@ -117,7 +117,7 @@ public class DevConsole : MonoBehaviour {
     }
 
     private void OnGUI() {
-        if (!consoleNation)
+        if (!fardNation)
             return;
 
         GUIStyle style = new GUIStyle();
@@ -164,8 +164,8 @@ public class DevConsole : MonoBehaviour {
 
         Event a = Event.current;
         if (a.keyCode == KeyCode.Return || a.keyCode == KeyCode.KeypadEnter) {
-            UIMaster.Instance.ToggleDevConsole();
-            consoleNation = false;
+            UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
+            fardNation = false;
             Parse(command);
             lastCommand = command;
             command = "";

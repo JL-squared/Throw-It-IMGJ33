@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ea700d2d452304592e91beb1091d15, type: 3}
+  m_Name: Big Ass Ramp
+  m_EditorClassIdentifier: 
+  piecePrefab: {fileID: 923935289999147269, guid: 685c89ea41bd81a4dbc04b696c3039d9,
+    type: 3}
+  icon: {fileID: 0}
+  m_name: Big Ass Ramp
+  description: It's Huge
+  requirement1:
+    count: 0
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}
+  requirement2:
+    count: 0
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}
+  requirement3:
+    count: 0
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}

@@ -173,7 +173,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         // Hook onto health component
         health = GetComponent<EntityHealth>();
         health.OnHealthChanged += (float p) => {
-            UIMaster.Instance.healthBar.HealthChanged(p);
+            UIScriptMaster.Instance.healthBar.HealthChanged(p);
         };
         health.OnKilled += Killed;
 
@@ -247,7 +247,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        UIMaster.Instance.inGameHUD.SetInteractHint(interaction != null && interaction.Interactable);
+        UIScriptMaster.Instance.crosshairHints.SetInteractKeyHint(interaction != null && interaction.Interactable);
         lastInteraction = interaction;
 
         if (vehicle != null) {
@@ -620,19 +620,13 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void ToggleInventory(InputAction.CallbackContext context) {
         if (context.performed && !isDead) {
-            UIMaster.Instance.ToggleInventory();
-        }
-    }
-
-    public void ToggleMarket(InputAction.CallbackContext context) {
-        if (context.performed && !isDead) {
-            UIMaster.Instance.ToggleMarket();
+            UIScriptMaster.Instance.inGameHUD.ToggleInventory();
         }
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
         if (context.performed) {
-            UIMaster.Instance.EscPressed();
+            UIScriptMaster.Instance.inGameHUD.EscPressed();
         }
     }
 
@@ -643,8 +637,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void ToggleDevConsole(InputAction.CallbackContext context) {
-        if (Performed(context) && !GameManager.Instance.devConsole.consoleNation) {
-            UIMaster.Instance.ToggleDevConsole();
+        if (Performed(context) && !GameManager.Instance.devConsole.fardNation) {
+            UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
         }
     }
 
@@ -719,7 +713,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         bool pressed = !context.canceled;
         if (isBuilding && pressed) {
-            UIMaster.Instance.ToggleBuilding();
+            UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
         } else if (!EquippedItem.IsEmpty()) {
             EquippedItem.logic.SecondaryAction(context, this);
         }
@@ -745,10 +739,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (Performed(context)) {
             isBuilding = !isBuilding;
             placementTarget.SetActive(false);
-            if (!isBuilding) {
-                ClearOutline();
-                UIMaster.Instance.Clear();
-            }
         }
     }
 
@@ -1031,12 +1021,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
     #region Util
     // Checks if the given input can be executed (using context.performed)
     private bool Performed(InputAction.CallbackContext context) {
-        return context.performed && UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
+        return context.performed && UIScriptMaster.Instance.inGameHUD.MovementPossible() && !isDead && GameManager.Instance.initialized;
     }
 
     // Checks if we can do *any* movement
     private bool Performed() {
-        return UIMaster.Instance.MovementPossible() && !isDead && GameManager.Instance.initialized;
+        return UIScriptMaster.Instance.inGameHUD.MovementPossible() && !isDead && GameManager.Instance.initialized;
     }
 
     public void ResetMovement(bool resetRotation = false) {

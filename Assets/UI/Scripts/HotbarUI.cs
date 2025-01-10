@@ -6,17 +6,12 @@ public class HotbarUI : MonoBehaviour {
     public readonly Color deselected = new Color(0f, 0f, 0f, .73f);
     public readonly Color selected = new Color(.1f, .1f, .1f, .73f);
 
-    private void Awake() {
-        
-    }
-
     // Start is called before the first frame update
     void Start() {
         if (Player.Instance != null) {
             Player.Instance.selectedEvent?.AddListener(Select);
             Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
             Player.Instance.inventoryUpdateEvent?.AddListener(Refresh);
-            //Refresh(PlayerScript.singleton.items);
         }
     }
 
