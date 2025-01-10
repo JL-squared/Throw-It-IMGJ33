@@ -44,6 +44,9 @@ public class IngameHUDManager : MonoBehaviour {
         set {
             pauseMenu.SetActive(value);
             paused = value;
+
+            if (paused && screenState == ScreenState.Default) screenState = ScreenState.Paused;
+            if (!paused && screenState == ScreenState.Paused) screenState = ScreenState.Default;
         }
     }
 
