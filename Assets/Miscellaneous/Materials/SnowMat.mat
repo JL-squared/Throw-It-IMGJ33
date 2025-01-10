@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SparkleTestMaterial
+  m_Name: SnowMat
   m_Shader: {fileID: -6465566751694194690, guid: 79c9fabe168263a48ad2e1a60dcfc446,
     type: 3}
   m_Parent: {fileID: 0}
@@ -39,11 +39,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Float: 0.01
-    - _Float_1: 30
+    - _Float: 0.005
+    - _Float_1: 20
+    - _Float_2: 0.004
+    - _Float_3: 0.4
+    - _Float_4: 4.6
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _Smoothness: 0.2
+    m_Colors:
+    - _Color: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4442637452743812877

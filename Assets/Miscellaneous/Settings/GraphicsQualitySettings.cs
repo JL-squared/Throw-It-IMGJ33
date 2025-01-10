@@ -6,6 +6,7 @@ using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.Internal;
 
 [Serializable]
 public class GraphicsQualitySettings {
@@ -20,7 +21,8 @@ public class GraphicsQualitySettings {
     public bool bloom = true;
     public bool vignette = true;
     public bool whiteBalance = true;
-
+    public bool ditheringColorCompression = true;
+    
     [Serializable]
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Quality {
@@ -75,6 +77,7 @@ public class GraphicsQualitySettings {
             features.Add(data2.name, data2);
         }
         features["SSAO"].SetActive(ambientOcclusion);
+        features["DitherColorCompression"].SetActive(ditheringColorCompression);
 
         if (fpsLimit <= 0) {
             UnityEngine.QualitySettings.vSyncCount = 1;

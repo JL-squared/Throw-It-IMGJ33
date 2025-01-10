@@ -3,7 +3,22 @@ guid: 04506b7de26ef63438c7a6bf1c55f677
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Handle Mat
+    second: {fileID: 2100000, guid: a8c4f408b39ec674e82fa047cdf882f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rod Mat
+    second: {fileID: 2100000, guid: f502f4db4616df3448e638376e7d6e84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shovel Mat
+    second: {fileID: 2100000, guid: 4f6ba67315bc6b44685c58efcef9c122, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -16,8 +31,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 

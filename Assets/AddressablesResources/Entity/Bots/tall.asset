@@ -184,8 +184,8 @@ MonoBehaviour:
   movementFlags: -1
   baseMovementSpeed: 3
   baseAttackSpeed: 1
-  baseBodyHealth: 2
-  baseHeadHealth: 5
+  baseBodyHealth: 20
+  baseHeadHealth: 10
   baseAccuracy: 0.4
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2

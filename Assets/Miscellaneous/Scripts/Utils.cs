@@ -93,7 +93,7 @@ public static class Utils {
         settings.Formatting = Formatting.Indented;
         settings.ObjectCreationHandling = ObjectCreationHandling.Reuse;
         settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+        settings.DefaultValueHandling = DefaultValueHandling.Include;
         settings.NullValueHandling = NullValueHandling.Ignore;
         settings.TypeNameHandling = TypeNameHandling.Auto;
         JsonConvert.DefaultSettings = () => settings;

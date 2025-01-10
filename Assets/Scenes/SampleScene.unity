@@ -1191,7 +1191,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7943e57f65b5f434f96fc6ff298a176a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2515,7 +2515,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7943e57f65b5f434f96fc6ff298a176a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4200,6 +4200,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Voxel Terrain
       objectReference: {fileID: 0}
+    - target: {fileID: 5281816153287127206, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: 'voxelMaterials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fb175d2e0abbd8a42808279498e33235, type: 2}
     - target: {fileID: 5361457892440788241, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5116,7 +5121,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 7943e57f65b5f434f96fc6ff298a176a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5982,26 +5987,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1868965620078110042, guid: 98d71f976d5b0f64f9b172f8b0ead599,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868965620078110042, guid: 98d71f976d5b0f64f9b172f8b0ead599,
-        type: 3}
-      propertyPath: useOcclusion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868965620078110042, guid: 98d71f976d5b0f64f9b172f8b0ead599,
-        type: 3}
-      propertyPath: occlusionOffset
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868965620078110042, guid: 98d71f976d5b0f64f9b172f8b0ead599,
-        type: 3}
-      propertyPath: occlusionRadius
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7969667625914140529, guid: 98d71f976d5b0f64f9b172f8b0ead599,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6158,6 +6143,16 @@ PrefabInstance:
     - target: {fileID: 7052703045771101861, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8029250893140543358, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8029250893140543358, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8029250893140543358, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
