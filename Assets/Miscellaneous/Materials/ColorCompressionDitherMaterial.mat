@@ -38,12 +38,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Enable_Godot_Shader: 1
-    - _Float: 0.01
-    - _Float_1: 256
+    - _Enable_Godot_Shader: 0
+    - _Float: 0.005
+    - _Float_1: 128
     - _Float_2: 1
     - _Float_3: 0
-    - _Lerp_Factor: 0.5
+    - _Lerp_Factor: 1
     - _Switch: 1
     m_Colors: []
   m_BuildTextureStacks: []

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class BuildingEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     public UnityEngine.UI.Image icon;

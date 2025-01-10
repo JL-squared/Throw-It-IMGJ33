@@ -8,12 +8,26 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System.Runtime.CompilerServices;
 using System.Linq;
-using UnityEngine.UIElements;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
+
+    public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
+        source.clip = registry.data.Random().Item2;
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
+    }
+
+    public static void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry) {
+        GameObject obj = new GameObject();
+        obj.transform.position = point;
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.clip = registry.data.Random().Item2;
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
+        UnityEngine.Object.Destroy(obj, source.clip.length / source.pitch);
+    }
 
     public static void BlowUp(Vector3 position, float damage=50, float force=65, float radius=2, float editStrength=30f, float editRadiusOffset=1f) {
         /*
