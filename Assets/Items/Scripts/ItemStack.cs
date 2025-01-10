@@ -17,18 +17,18 @@ public class ItemStack {
             count = value;
             if (count == 0) {
                 Data = null;
-                emptyEvent?.Invoke();
+                onEmpty?.Invoke();
             }
-            updateEvent.Invoke(this);
+            onUpdate.Invoke(this);
         }
     }
 
     [JsonIgnore]
     [HideInInspector]
-    public UnityEvent emptyEvent = new UnityEvent();
+    public UnityEvent onEmpty = new UnityEvent();
     [HideInInspector]
     [JsonIgnore]
-    public UnityEvent<ItemStack> updateEvent = new UnityEvent<ItemStack>();
+    public UnityEvent<ItemStack> onUpdate = new UnityEvent<ItemStack>();
 
     [JsonProperty(PropertyName = "id")]
     [JsonConverter(typeof(ItemDataConverter))]
@@ -40,7 +40,7 @@ public class ItemStack {
             data = value;
             logic = value != null ? Registries.GetItem(data) : new Item();
             logic.ItemReference = this;
-            updateEvent.Invoke(this); 
+            onUpdate.Invoke(this); 
         } 
     }
 

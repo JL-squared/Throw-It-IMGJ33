@@ -182,7 +182,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         for (int i = 0; i < 10; i++) {
             ItemStack temp = new ItemStack(null, 0);
             items.Add(temp);
-            temp.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
+            temp.onUpdate?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
 
         // Add temp items at start
@@ -1092,7 +1092,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         inventoryUpdateEvent?.Invoke(items);
 
         foreach (var item in items) {
-            item.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
+            item.onUpdate?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
     }
 
