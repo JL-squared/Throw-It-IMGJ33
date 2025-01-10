@@ -625,12 +625,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
-    public void ToggleMarket(InputAction.CallbackContext context) {
-        if (context.performed && !isDead) {
-            UIScriptMaster.Instance.inGameHUD.ToggleMarket();
-        }
-    }
-
     public void ExitButton(InputAction.CallbackContext context) {
         if (context.performed) {
             UIScriptMaster.Instance.inGameHUD.EscPressed();

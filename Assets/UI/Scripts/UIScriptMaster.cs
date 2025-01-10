@@ -12,7 +12,6 @@ public class UIScriptMaster : MonoBehaviour {
     [Header("Scripts")]
     public BuildingMenu buildingMenu;
     public CraftingMenu craftingMenu;
-    public MarketMenu marketMenu;
     public HealthBar healthBar;
     public HotbarUI hotbarUI;
     public CrosshairHints crosshairHints;

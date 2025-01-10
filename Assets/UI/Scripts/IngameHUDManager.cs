@@ -11,7 +11,6 @@ public class IngameHUDManager : MonoBehaviour {
 
     [Header("Panel Objects")]
     public GameObject craftingMenuObject;
-    public GameObject marketMenuObject;
     public GameObject buildingMenuObject;
 
     [Header("Screen Objects")]
@@ -23,7 +22,6 @@ public class IngameHUDManager : MonoBehaviour {
     private enum PanelState {
         None,
         Crafting,
-        Market,
         Building
     }
 
@@ -63,7 +61,6 @@ public class IngameHUDManager : MonoBehaviour {
 
     // Group of methods for when you're ingame
     public void SetIngame() {
-        marketMenuObject.SetActive(false);
         craftingMenuObject.SetActive(false);
         buildingMenuObject.SetActive(false);
         screenGraphics.SetActive(true);
@@ -76,7 +73,6 @@ public class IngameHUDManager : MonoBehaviour {
     
     public void SetDefault() {
         craftingMenuObject.SetActive(false);
-        marketMenuObject.SetActive(false);
         buildingMenuObject.SetActive(false);
         hotbarGroup.SetActive(true);
         deathScreen.SetActive(false);
@@ -121,11 +117,6 @@ public class IngameHUDManager : MonoBehaviour {
         Evaluate();
     }
 
-    public void ToggleMarket() {
-        TogglePanel(PanelState.Market);
-        Evaluate();
-    }
-
     public void ToggleDevConsole() {
         consoleActivated = !consoleActivated;
         Evaluate();
@@ -139,7 +130,6 @@ public class IngameHUDManager : MonoBehaviour {
     public void ClearPanels() {
         buildingMenuObject.SetActive(false);
         craftingMenuObject.SetActive(false);
-        marketMenuObject.SetActive(false);
     }
 
     // THIS JUST EVALUATES THE STATE
@@ -151,10 +141,6 @@ public class IngameHUDManager : MonoBehaviour {
         switch (panelState) {
             case(PanelState.Building):
                 buildingMenuObject.SetActive(true);
-                break;
-
-            case(PanelState.Market):
-                marketMenuObject.SetActive(true);
                 break;
 
             case(PanelState.Crafting):
