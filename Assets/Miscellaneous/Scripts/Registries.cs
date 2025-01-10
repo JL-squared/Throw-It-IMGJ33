@@ -40,7 +40,7 @@ public static class Registries {
 
         Player.Instance.PlayMusic();
 
-        //onLoaded.Invoke();
+        onLoaded?.Invoke();
     }
 
     public static GameObject Summon(string id, EntityData data) {

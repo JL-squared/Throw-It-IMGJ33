@@ -31,5 +31,11 @@ public class UIScriptMaster : MonoBehaviour {
         } else {
             Instance = this;
         }
+
+        Registries.onLoaded.AddListener(Load);
+    }
+
+    private void Load() {
+        loadCall.Invoke();
     }
 }

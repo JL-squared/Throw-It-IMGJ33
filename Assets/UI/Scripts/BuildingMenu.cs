@@ -13,6 +13,7 @@ public class BuildingMenu : MonoBehaviour {
 
     private void Awake() {
         Display(null);
+        UIScriptMaster.Instance.loadCall?.AddListener(LoadBuildPieces);
     }
 
     public void LoadBuildPieces() {
