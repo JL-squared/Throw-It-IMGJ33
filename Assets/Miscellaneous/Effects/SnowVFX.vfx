@@ -20,7 +20,7 @@ MonoBehaviour:
     x: -221
     y: -190
     width: 1586
-    height: 1911
+    height: 1927
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,7 +111,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Snow VFX
+  m_Name: SnowVFX
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:

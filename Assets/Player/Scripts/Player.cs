@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 using Tweens;
 using System;
 using System.Linq;
-using UnityEngine.XR;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
@@ -363,9 +362,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         if (verticalBobbing < 0f && !stepped) {
             if(isSprinting) {
-                PlaySound(footsteps, Registries.rockRun);
+                Utils.PlaySound(footsteps, Registries.rockRun);
             } else {
-                PlaySound(footsteps, Registries.rockWalk);
+                Utils.PlaySound(footsteps, Registries.rockWalk);
             }
             stepped = true;
         } else if (verticalBobbing > 0f) {
@@ -675,7 +674,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     public void Jump(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            if (movement.IsGrounded) PlaySound(footsteps, Registries.rockJump);
+            if (movement.IsGrounded) Utils.PlaySound(footsteps, Registries.rockJump);
             movement.Jump();
         }
     }
@@ -780,7 +779,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
         builtPiece.layer = LayerMask.NameToLayer("Piece");
-        PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
+        Utils.PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
         if (!noBuildingCost) {
             TakeItems(selectedPiece.requirement1);
             TakeItems(selectedPiece.requirement2);
@@ -1095,23 +1094,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         foreach (var item in items) {
             item.updateEvent?.AddListener((ItemStack item) => { inventoryUpdateEvent.Invoke(items); });
         }
-    }
-
-    
-    public void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
-        source.clip = registry.data.Random().Item2;
-        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
-        source.Play();
-    }
-
-    public void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry) {
-        GameObject obj = new GameObject();
-        obj.transform.position = point;
-        AudioSource source = obj.AddComponent<AudioSource>();
-        source.clip = registry.data.Random().Item2;
-        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
-        source.Play();
-        Destroy(obj, source.clip.length / source.pitch);
     }
 
 

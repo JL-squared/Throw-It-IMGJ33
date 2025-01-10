@@ -94,7 +94,11 @@ float3 sky(
 
 void MyFunctionA_float(float3 normal, float3 sun, float multiScatterPhase, float density, float zenithOffset, float anisotropicIntensity, float3 skyColorParams, out float3 colour)
 {
-	colour = sky(normal, sun, multiScatterPhase, density, zenithOffset, anisotropicIntensity, skyColorParams);
+	colour = sky(normalize(normal), sun, multiScatterPhase, density, zenithOffset, anisotropicIntensity, skyColorParams);
+
+	if (normal.y < -0.5) {
+		colour *= 0.2;
+	}
 }
 
 // https://tavianator.com/2011/ray_box.html
