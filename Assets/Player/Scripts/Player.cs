@@ -755,6 +755,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if (Performed(context)) {
             isBuilding = !isBuilding;
             placementTarget.SetActive(false);
+            if (!isBuilding) {
+                ClearOutline();
+            }
         }
     }
 
