@@ -15,6 +15,6 @@ public class RecipeEntry : MonoBehaviour {
     }
 
     private void DoWhateverTheFuckTheButtonDoes() {
-        UIMaster.Instance.craftingMenu.SelectRecipe(craftingRecipe);
+        UIScriptMaster.Instance.craftingMenu.SelectRecipe(craftingRecipe);
     }
 }

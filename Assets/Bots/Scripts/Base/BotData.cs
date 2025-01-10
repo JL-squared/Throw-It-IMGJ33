@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BotData", menuName = "ScriptableObjects/New Bot Type", order = 1)]
+[CreateAssetMenu(fileName = "BotData", menuName = "Scriptable Objects/New Bot Type", order = 1)]
 public class BotData : ScriptableObject {
     public RngList<BotPartData> center;
     public RngList<BotPartData> left;

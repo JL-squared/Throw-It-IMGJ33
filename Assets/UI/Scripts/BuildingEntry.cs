@@ -11,20 +11,20 @@ public class BuildingEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void Init(PieceDefinition definition) {
         this.definition = definition;
         icon.sprite = definition.icon;
-        button.onClick.AddListener(Thing);
+        button.onClick.AddListener(Execute);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        UIMaster.Instance.buildingMenu.Display(null);
+        UIScriptMaster.Instance.buildingMenu.Display(null);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        UIMaster.Instance.buildingMenu.Display(definition);
+        UIScriptMaster.Instance.buildingMenu.Display(definition);
     }
 
-    public void Thing() {
+    public void Execute() {
         Player.Instance.selectedPiece = definition;
         Player.Instance.SetupPlacementTarget(definition.piecePrefab);
-        UIMaster.Instance.ToggleBuilding();
+        UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
     }
 }

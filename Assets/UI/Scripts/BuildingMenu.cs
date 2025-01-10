@@ -9,9 +9,18 @@ public class BuildingMenu : MonoBehaviour {
     public ItemDisplay requirement1;
     public ItemDisplay requirement2;
     public ItemDisplay requirement3;
+    public GameObject content;
 
     private void Awake() {
         Display(null);
+    }
+
+    public void LoadBuildPieces() {
+        foreach (PieceDefinition definition in Registries.pieces.data.Values) {
+            var thing = Instantiate(UIScriptMaster.Instance.pieceEntryPrefab);
+            thing.transform.SetParent(content.transform);
+            thing.GetComponent<BuildingEntry>().Init(definition);
+        }
     }
 
     public void Display(PieceDefinition definition) {

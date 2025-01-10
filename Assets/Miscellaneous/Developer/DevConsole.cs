@@ -164,7 +164,7 @@ public class DevConsole : MonoBehaviour {
 
         Event a = Event.current;
         if (a.keyCode == KeyCode.Return || a.keyCode == KeyCode.KeypadEnter) {
-            UIMaster.Instance.ToggleDevConsole();
+            UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
             fardNation = false;
             Parse(command);
             lastCommand = command;

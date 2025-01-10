@@ -77,7 +77,7 @@ public class ShovelItem : ToolItem {
     public override void Unequipped(Player player) {
         base.Unequipped(player);
         canPickupSnow = false;
-        UIMaster.Instance.SetRightClickHint(false);
+        UIScriptMaster.Instance.crosshairHints.SetRightClickHint(false);
     }
 
     public override void EquippedUpdate(Player player) {
@@ -92,6 +92,6 @@ public class ShovelItem : ToolItem {
             */
         }
 
-        UIMaster.Instance.SetRightClickHint(canPickupSnow);
+        UIScriptMaster.Instance.crosshairHints.SetRightClickHint(canPickupSnow);
     }
 }
