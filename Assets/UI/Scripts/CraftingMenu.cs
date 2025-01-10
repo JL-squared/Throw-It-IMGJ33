@@ -10,6 +10,11 @@ public class CraftingMenu : MonoBehaviour {
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
     public Image image;
+    public GameObject content;
+
+    private void Awake() {
+        UIScriptMaster.Instance.loadCall.AddListener(Load);
+    }
 
     void Start () {
         // load all necessary recipes
@@ -17,17 +22,23 @@ public class CraftingMenu : MonoBehaviour {
         Player.Instance.inventoryUpdateEvent.AddListener(Refresh);
     }
 
-    void Update () {
-
+    public void Load() {
+        foreach (CraftingRecipe definition in Registries.craftingRecipes.data.Values) {
+            var thing = Instantiate(UIScriptMaster.Instance.recipeEntryPrefab);
+            thing.transform.SetParent(content.transform);
+            thing.GetComponent<RecipeEntry>().Init(definition);
+        }
     }
 
     void Refresh(List<ItemStack> items) {
+        /*
         foreach(CraftingListEntry entry in craftingListEntries) {
             entry.Refresh(entry.recipe.CheckForRequirements(items));
         }
+        */
 
         if(selectedRecipe != null) {
-            craftingButton.interactable = selectedRecipe.CheckForRequirements(items);
+            craftingButton.interactable = Player.Instance.CheckForRequirements(selectedRecipe.requirements);
         }
     }
 
@@ -36,13 +47,27 @@ public class CraftingMenu : MonoBehaviour {
             image.gameObject.SetActive(true);
         }
 
-        selectedRecipe = recipe.Clone();
+        selectedRecipe = recipe;
         // refresh the thingy stuff
-        title.text = recipe.output.Data.name;
-        description.text = recipe.output.Data.description;
-        image.sprite = recipe.output.Data.icon;
+        title.text = recipe.m_name;
+        //description.text = recipe.output.Data.description;
+        //image.sprite = recipe.output.Data.icon;
         // this is when we put in requirements into the requirement slot
         // this is when we update the status of the crafting button (this will require that we scan the inventory) (we need an inventory reference probably)
         
+    }
+
+    public void CraftRecipeTemp() {
+        if (selectedRecipe != null) {
+            bool i = true;
+
+            if (i) {
+                foreach (ItemStack requirement in selectedRecipe.requirements) {
+                    Player.Instance.TakeItems(requirement);
+                }
+
+                Player.Instance.PutItem(selectedRecipe.output);
+            }
+        }
     }
 }

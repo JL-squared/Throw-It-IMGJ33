@@ -209,7 +209,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3892774236024865682}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5860729799701883497}
+        m_TargetAssemblyTypeName: CraftingMenu, Assembly-CSharp
+        m_MethodName: CraftRecipeTemp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &534945305113466113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,7 +2002,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00016277767}
+  m_AnchoredPosition: {x: 0, y: 0.000027740529}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4718936087862736883
@@ -2603,7 +2615,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6001458259636481133}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99966204
+  m_Size: 0.9991678
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3024,7 +3036,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingMenu: {fileID: 1026968691695501987}
   craftingMenu: {fileID: 5860729799701883497}
-  marketMenu: {fileID: 0}
   healthBar: {fileID: 7665322645003267670}
   hotbarUI: {fileID: 5033080232978648762}
   crosshairHints: {fileID: 2338686496049723903}
@@ -3099,8 +3110,9 @@ MonoBehaviour:
   selectedRecipe: {fileID: 0}
   craftingButton: {fileID: 649758301586686891}
   title: {fileID: 9161248533856157772}
-  description: {fileID: 0}
-  image: {fileID: 0}
+  description: {fileID: 9107107599615792096}
+  image: {fileID: 5096604903290519632}
+  content: {fileID: 5091133321793437551}
 --- !u!114 &1026968691695501987
 MonoBehaviour:
   m_ObjectHideFlags: 0

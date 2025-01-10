@@ -4,7 +4,7 @@ public class EntityHealth : MonoBehaviour, IEntitySerializer {
     public float maxHealth;
     public float health;
 
-    public bool DeleteOnKill;
+    public bool DeleteOnKill = true;
     public delegate void Killed();
     public event Killed OnKilled;
 

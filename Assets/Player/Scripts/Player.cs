@@ -441,10 +441,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
     // DO NOT INSERT INVALID STACK COUNT ITEM, (clamped anyways)
     // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
     public void AddItem(ItemStack itemIn) {
+        /*
         if (itemIn.Count > itemIn.Data.stackSize) {
             Debug.LogWarning("Given item count was greater than stack size. Clamping. Use AddItemUnclamped for unclamped stack sizes");
             itemIn.Count = itemIn.Data.stackSize;
         }
+        */
 
         int firstEmpty = -1;
         int i = 0;
@@ -481,6 +483,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
 
         inventoryUpdateEvent.Invoke(items);
+    }
+
+    public void PutItem(ItemStack itemIn) {
+        var itemInEvenMore = itemIn.Clone();
+
+        AddItem(itemInEvenMore);
     }
 
     // Checks if we can fit a specific item
@@ -547,6 +555,14 @@ public class Player : MonoBehaviour, IEntitySerializer {
             }
         }
         return false;
+    }
+
+    public bool CheckForRequirements(List<ItemStack> items) {
+        bool i = true;
+        foreach (ItemStack item in items) {
+            i = i && CheckForItems(item);
+        }
+        return i;
     }
 
     // Both of these functions are super unsafe, fix later

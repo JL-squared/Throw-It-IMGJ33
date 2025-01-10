@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Rock Walk
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8130206cfde0b534c8287070049126b9
+    m_Address: Assets/Items/Crafting Recipes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item Recipes
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9dd1c0161c409f442b03ade4a6f853ce
     m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Run
     m_ReadOnly: 0

@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class PieceHealth : MonoBehaviour {
+public class PieceHealth : EntityHealth {
     
 }

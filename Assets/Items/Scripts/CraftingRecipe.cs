@@ -9,20 +9,6 @@ public class CraftingRecipe : ScriptableObject {
 
     public string m_name;
 
-    public bool CheckForRequirements(List<ItemStack> items) {
-        List<ItemStack> tempRequirements = new List<ItemStack>(requirements);
-
-        foreach(ItemStack item in items) {
-            foreach(ItemStack requirement in requirements) {
-                if(requirement.Equals(item)) {
-                    tempRequirements.Remove(requirement);
-                }
-            }
-        }
-
-        return tempRequirements.Count == 0;
-    }
-
     // This should be running ONLY WHEN WE ACTUALLY KNOW IF THERE'S ALL THE REQUIREMENTS (pretty please)
     public void CraftItem(List<ItemStack> items) {
         foreach (ItemStack item in items) {

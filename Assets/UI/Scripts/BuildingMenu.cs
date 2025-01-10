@@ -13,10 +13,10 @@ public class BuildingMenu : MonoBehaviour {
 
     private void Awake() {
         Display(null);
-        UIScriptMaster.Instance.loadCall?.AddListener(LoadBuildPieces);
+        UIScriptMaster.Instance.loadCall?.AddListener(Load);
     }
 
-    public void LoadBuildPieces() {
+    public void Load() {
         foreach (PieceDefinition definition in Registries.pieces.data.Values) {
             var thing = Instantiate(UIScriptMaster.Instance.pieceEntryPrefab);
             thing.transform.SetParent(content.transform);

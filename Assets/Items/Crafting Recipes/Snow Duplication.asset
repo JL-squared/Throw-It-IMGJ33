@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a46ca6bf0aecfb439f67f36284ccc32, type: 3}
+  m_Name: Snow Duplication
+  m_EditorClassIdentifier: 
+  requirements:
+  - count: 1
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
+  output:
+    count: 2
+    emptyEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    updateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 11400000, guid: 9ed82c4d284114843bc6616647afe30a, type: 2}
+  craftingTime: 10
+  m_name: Snow Duplication

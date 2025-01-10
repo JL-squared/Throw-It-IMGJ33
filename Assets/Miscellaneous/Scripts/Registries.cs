@@ -9,6 +9,7 @@ public static class Registries {
     public static AddressablesRegistry<GameObject> projectiles;
     public static AddressablesRegistry<GameObject> vehicles;
     public static AddressablesRegistry<PieceDefinition> pieces;
+    public static AddressablesRegistry<CraftingRecipe> craftingRecipes;
 
     #region Sounds
     public static AddressablesRegistry<AudioClip> music;
@@ -37,6 +38,8 @@ public static class Registries {
         rockJump = new AddressablesRegistry<AudioClip>("Rock Jump");
 
         pieces = new AddressablesRegistry<PieceDefinition>("Pieces");
+
+        craftingRecipes = new AddressablesRegistry<CraftingRecipe>("Item Recipes");
 
         Player.Instance.PlayMusic();
 
