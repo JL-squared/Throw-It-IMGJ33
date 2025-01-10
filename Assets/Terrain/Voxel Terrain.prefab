@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2489052534160842304}
   - component: {fileID: 5281816153287127206}
   - component: {fileID: 6444445910934618811}
+  - component: {fileID: 782274344075948848}
   m_Layer: 0
   m_Name: Voxel Terrain
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 0}
-  mapChunkSize: {x: 2, y: 2, z: 2}
+  mapChunkSize: {x: 4, y: 1, z: 4}
 --- !u!114 &2489052534160842304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,17 +93,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 0}
-  meshJobsPerFrame: 1
+  meshJobsPerFrame: 4
   smoothing: 1
   skirts: 1
   perVertexNormals: 1
   perVertexUvs: 1
   ambientOcclusionOffset: 0.4
   ambientOcclusionPower: 2
-  ambientOcclusionSpread: 0.4
-  ambientOcclusionGlobalOffset: 0
+  ambientOcclusionSpread: 1
+  ambientOcclusionGlobalOffset: 0.5
   voxelMaterials:
-  - {fileID: 2100000, guid: 6458531e40e67ca4db57ebc29d13733b, type: 2}
+  - {fileID: 2100000, guid: 07ae7dc315fb1324383cb31f04c96eb0, type: 2}
 --- !u!114 &6444445910934618811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,3 +122,62 @@ MonoBehaviour:
   debugTextures:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &782274344075948848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679815499248925888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1964f9915237e104bbf6a80ee84a37c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugName: 1
+  autoCompile: 0
+  shader: {fileID: 7200000, guid: 439ac30d16567684abc57007dabffda7, type: 3}
+  transform1:
+    position: {x: -10, y: 20, z: -10}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  scale:
+    x: 0.005
+  amplitude:
+    x: 20
+  persistence:
+    x: 0.2
+  lacunarity:
+    x: 2
+  mode: 2
+  gradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
+    key2: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 1, g: 1, b: 1, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 16769
+    ctime1: 30455
+    ctime2: 34502
+    ctime3: 48188
+    ctime4: 65535
+    ctime5: 65535
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  octaves: 4

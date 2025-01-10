@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator RefreshCoroutine() {
         while (true) {
             reflectionProbe.RenderProbe();
+            DynamicGI.UpdateEnvironment();
             yield return new WaitForSeconds(1f);
         }
     }
