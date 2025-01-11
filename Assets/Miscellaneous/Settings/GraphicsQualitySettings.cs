@@ -10,7 +10,6 @@ using UnityEngine.Internal;
 
 [Serializable]
 public class GraphicsQualitySettings {
-    public float renderScale = 1f;
     public int fpsLimit = 144;
     public int additionalLightPerObjectLimit = 5;
     public Quality mainLightShadows = Quality.High;
@@ -50,9 +49,6 @@ public class GraphicsQualitySettings {
         }
 
         UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
-        //asset.renderScale = renderScale;
-        //asset.renderScale = 0.8f;
-
         var res = Select(mainLightShadows, ShadowResolution._256, ShadowResolution._256, ShadowResolution._1024, ShadowResolution._4096);
         UnityGraphicsBullshitWtf.MainLightCastShadows = mainLightShadows != Quality.Disabled;
         UnityGraphicsBullshitWtf.MainLightShadowResolution = res;

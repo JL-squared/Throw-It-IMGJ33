@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 400, z: 0}
-  m_LocalScale: {x: 1000, y: -1, z: 1000}
+  m_LocalScale: {x: 1000, y: 1, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6216006554208934372}
@@ -103,7 +103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5705809990759556932
 Transform:
   m_ObjectHideFlags: 0
@@ -140,10 +140,10 @@ VisualEffect:
       - m_Value: 0.25
         m_Name: Starting Size
         m_Overridden: 1
-      - m_Value: 0.3
+      - m_Value: 0.01
         m_Name: New float
         m_Overridden: 1
-      - m_Value: 0.45
+      - m_Value: 0.05
         m_Name: New float 1
         m_Overridden: 1
     m_Vector2f:
@@ -155,7 +155,7 @@ VisualEffect:
       - m_Value: {x: 2.1185477, y: 2.1185477, z: 2.1185477, w: 0}
         m_Name: New Color
         m_Overridden: 1
-      - m_Value: {x: 2, y: 2, z: 2, w: 0}
+      - m_Value: {x: 1.4980392, y: 1.4980392, z: 1.4980392, w: 0}
         m_Name: Snow Particles Color
         m_Overridden: 1
     m_Uint:
@@ -180,7 +180,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2085212200938640277}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -280,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5676692344385997879
 Transform:
   m_ObjectHideFlags: 0
@@ -5690,9 +5690,9 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 1
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
-  m_Resolution: 512
+  m_Resolution: 256
   m_UpdateFrequency: 0
   m_BoxSize: {x: 10000, y: 100000, z: 100000}
   m_BoxOffset: {x: 0, y: 0, z: 0}
@@ -5704,7 +5704,7 @@ ReflectionProbe:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 8192
-  m_IntensityMultiplier: 1
+  m_IntensityMultiplier: 0.7
   m_BlendDistance: 1
   m_HDR: 1
   m_BoxProjection: 0
@@ -5740,7 +5740,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1107, y: 536, z: 252}
-  m_LocalScale: {x: 1000, y: -1, z: 1000}
+  m_LocalScale: {x: 1000, y: 1, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6216006554208934372}
@@ -5798,6 +5798,258 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7279865973966160384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7804653338174137517}
+  - component: {fileID: 7425203504377488668}
+  - component: {fileID: 4480918347388582618}
+  - component: {fileID: 4677534628707742450}
+  m_Layer: 0
+  m_Name: Main Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7804653338174137517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279865973966160384}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6216006554208934372}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+--- !u!108 &7425203504377488668
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279865973966160384}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1.5
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 1.52
+    m_NormalBias: 0
+    m_NearPlane: 0.96
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 5000
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!114 &4480918347388582618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279865973966160384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!114 &4677534628707742450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279865973966160384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc4d76f733087744991913c9d19d5274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LensFlareData: {fileID: 11400000, guid: 0b813d1911ba051499a148bff3a98f77, type: 2}
+  version: 0
+  intensity: 1
+  maxAttenuationDistance: 100
+  maxAttenuationScale: 100
+  distanceAttenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleByDistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attenuationByLightShape: 1
+  radialScreenAttenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.3993826
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useOcclusion: 1
+  useBackgroundCloudOcclusion: 0
+  environmentOcclusion: 0
+  useWaterOcclusion: 0
+  occlusionRadius: 0.2
+  sampleCount: 16
+  occlusionOffset: 6000
+  scale: 1.5
+  allowOffScreen: 0
+  volumetricCloudOcclusion: 0
+  occlusionRemapCurve:
+    <length>k__BackingField: 2
+    m_Loop: 0
+    m_ZeroValue: 1
+    m_Range: 1
+    m_Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  lightOverride: {fileID: 0}
 --- !u!1 &7738069126821496426
 GameObject:
   m_ObjectHideFlags: 0
@@ -5809,7 +6061,6 @@ GameObject:
   - component: {fileID: 6216006554208934372}
   - component: {fileID: 3711022125120825706}
   - component: {fileID: 8780433711588789733}
-  - component: {fileID: 6832101547815883108}
   - component: {fileID: 8941508539368422327}
   m_Layer: 0
   m_Name: Game Manager
@@ -5838,6 +6089,7 @@ Transform:
   - {fileID: 24666424425384132}
   - {fileID: 8100339630755361656}
   - {fileID: 7298017310590589783}
+  - {fileID: 7804653338174137517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3711022125120825706
@@ -5853,7 +6105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weatherManager: {fileID: 0}
-  marketManager: {fileID: 0}
   devConsole: {fileID: 0}
   reflectionProbe: {fileID: 3434340239976544474}
   volume: {fileID: 2559728800090142005}
@@ -5871,140 +6122,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9be54bf21148144b9470b692cdcee77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  windy: 0.2
-  snowy: 0
-  stormy: 0.5
-  noisyParams: 0
-  windyNoiseScale: 0.02
-  snowyNoiseScale: 0.01
-  stormyNoiseScale: 0.004
   globalTimeScale: 1
-  minSnowEmissionRate: 100
-  maxSnowEmissionRate: 5000
-  windyParticlesNoiseScale: 0.02
-  windyParticlesNoiseFactor: 0.2
-  windParticleField: {fileID: 6787259401343288416}
-  snowParticleSystem: {fileID: 1624129142068695749}
   cloudLayers:
   - {fileID: 1171857909092353858}
   - {fileID: 7254926234373092921}
   uvOffsetsCloud: []
   cloudWindFactor: {x: 200, y: 200}
-  densityFogCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 12.368063
-      outSlope: 12.368063
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.38426653
-    - serializedVersion: 3
-      time: 1
-      value: 50
-      inSlope: 5.391834
-      outSlope: 5.391834
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.26829922
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  extinctionCoefficientCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.002646681
-      value: 0.0035028276
-      inSlope: 0.038428035
-      outSlope: 0.038428035
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.2036978
-    - serializedVersion: 3
-      time: 1
-      value: 0.019622803
-      inSlope: -0.0031664805
-      outSlope: -0.0031664805
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14936963
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  effectsScalingFactor:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.21358252
-      value: -0.012064755
-      inSlope: 0.012199528
-      outSlope: 0.012199528
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.44116026
-    - serializedVersion: 3
-      time: 0.5025743
-      value: 0.48842818
-      inSlope: -0.1431882
-      outSlope: -0.1431882
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.6844783
-    - serializedVersion: 3
-      time: 0.65000004
-      value: 1
-      inSlope: -0.009930591
-      outSlope: -0.009930591
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0.99999934
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &6832101547815883108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7738069126821496426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1be7f9190abdc74fa995b3aa6064180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingCurrency: 100
-  chanceToFluctuate: 0.05
-  rngFluctuationsFactor: 0.1
-  marketResponseFactor: 0.4
 --- !u!114 &8941508539368422327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6017,4 +6140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afa6f72f0f449a408e1e23b5addee4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consoleNation: 0
+  fardNation: 0

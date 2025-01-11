@@ -15,6 +15,18 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: a0a2a8ccd64768346a5ad2bb76163ca0
   m_SerializeEntries:
+  - m_GUID: 0d0bee0aa142da84fbbb556d855ffe0b
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Snow/Footsteps_Snow_Jump_Start
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Snow Jump
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f76e87534e72e44ea7373dd73ab86d6
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Snow/Footsteps_Snow_Run
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Snow Run
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2b048fe6ed69c334ab0bc2f27ca21e66
     m_Address: Assets/AddressablesResources/Entity/Projectiles
     m_ReadOnly: 0
@@ -38,6 +50,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dff9aff73f58f3448830267d2449a26
+    m_Address: Assets/Footsteps - Essentials/Footsteps_Snow/Footsteps_Snow_Walk
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Snow Walk
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b0df4b7e501e914282832ec027f653b
     m_Address: Assets/Footsteps - Essentials/Footsteps_Rock/Footsteps_Rock_Walk

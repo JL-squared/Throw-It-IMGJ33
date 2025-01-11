@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.Rendering.DebugUI;
 
 // Rigidbody based character controller
@@ -47,6 +48,9 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     private bool buffered;
     private bool groundJustExploded;
     public EntityMovementFlags entityMovementFlags = EntityMovementFlags.Default;
+
+    [HideInInspector]
+    public UnityEvent onJumping;
 
     public Vector3 Velocity {
         get {
@@ -121,6 +125,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         // Could change the restriction on jumpCounter to enable double jumping
         if (isJumping && jumpCounter == 0) {
             movement.y = jump;
+            onJumping?.Invoke();
             isJumping = false;
             jumpCounter++;
         }

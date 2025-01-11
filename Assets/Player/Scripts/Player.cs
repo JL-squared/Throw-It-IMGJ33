@@ -192,6 +192,8 @@ public class Player : MonoBehaviour, IEntitySerializer {
         AddItem(new ItemStack("wires", 1));
 
         gameCamera.fieldOfView = defaultFOV;
+
+        movement.onJumping.AddListener(() => { Utils.PlaySound(footsteps, Registries.snowJump); });
     }
 
     private void Killed() {
@@ -272,8 +274,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
         if(!music.isPlaying && !GameManager.Instance.paused) {
             PlayMusic();
         }
-
-        test = false;
     }
 
     public void UpdateMovement() {
@@ -362,9 +362,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         if (verticalBobbing < 0f && !stepped) {
             if(isSprinting) {
-                Utils.PlaySound(footsteps, Registries.rockRun);
+                Utils.PlaySound(footsteps, Registries.snowRun);
             } else {
-                Utils.PlaySound(footsteps, Registries.rockWalk);
+                Utils.PlaySound(footsteps, Registries.snowWalk);
             }
             stepped = true;
         } else if (verticalBobbing > 0f) {
@@ -658,23 +658,16 @@ public class Player : MonoBehaviour, IEntitySerializer {
         }
     }
 
-    bool test;
     public void ApplyMouseDelta(Vector2 delta) {
         MouseDelta = delta;
         wishHeadDir += MouseDelta * mouseSensitivity * 0.02f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
         movement.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;
-
-        //GetComponent<Rigidbody>().MoveRotation(movement.localWishRotation);
-        if (!test) {
-            test = true;
-        }
     }
 
     public void Jump(InputAction.CallbackContext context) {
         if (Performed(context)) {
-            if (movement.IsGrounded) Utils.PlaySound(footsteps, Registries.rockJump);
             movement.Jump();
         }
     }

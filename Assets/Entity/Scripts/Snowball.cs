@@ -34,5 +34,7 @@ public class Snowball : Projectile {
             velOverLifetime.y = new ParticleSystem.MinMaxCurve(vel.y);
             velOverLifetime.z = new ParticleSystem.MinMaxCurve(vel.z);
         }
+
+        Utils.PlaySound(transform.position, Registries.snowJump);
     }
 }

@@ -48,6 +48,7 @@ Material:
     - _Float_2: 0.05
     - _Light_Factor: 4
     - _Light_Offset: 0.05
+    - _Light_Test_Offset: 0.3
     - _Noise_Scale: 0.01
     - _Offset: 2.5
     - _QueueControl: 0

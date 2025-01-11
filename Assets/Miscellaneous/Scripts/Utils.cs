@@ -23,6 +23,8 @@ public static class Utils {
         GameObject obj = new GameObject();
         obj.transform.position = point;
         AudioSource source = obj.AddComponent<AudioSource>();
+        source.spatialize = true;
+        source.spatialBlend = 1.0f;
         source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();

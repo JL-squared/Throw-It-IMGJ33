@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public WeatherManager weatherManager;
     [HideInInspector]
-    public MarketManager marketManager;
-    [HideInInspector]
     public DevConsole devConsole;
     public static GameManager Instance;
     [HideInInspector]
@@ -19,7 +17,6 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         weatherManager = GetComponent<WeatherManager>();
-        marketManager = GetComponent<MarketManager>();
         devConsole = GetComponent<DevConsole>();
 
         if (Instance == null) {
@@ -39,14 +36,10 @@ public class GameManager : MonoBehaviour {
         } else {
             initialized = true;
         }
+
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
-        //reflectionProbe.realtimeTexture.filterMode = FilterMode.Point;
-
-        //initialized = true;
-
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
         graphicsSettings.Apply(volume.profile);
-
         StartCoroutine("RefreshCoroutine");
     }
 
@@ -75,9 +68,6 @@ public class GameManager : MonoBehaviour {
             Time.timeScale = Mathf.SmoothStep(1.0f, 0.0f, timeSinceDeath);
             onTimeSinceDeath?.Invoke(timeSinceDeath);
         }
-        
-        
-        //DynamicGI.UpdateEnvironment();
     }
 
     public void PlayerKilled() {

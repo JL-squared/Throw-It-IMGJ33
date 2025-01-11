@@ -17,6 +17,9 @@ public static class Registries {
     public static AddressablesRegistry<AudioClip> rockWalk;
     public static AddressablesRegistry<AudioClip> rockRun;
     public static AddressablesRegistry<AudioClip> rockJump;
+    public static AddressablesRegistry<AudioClip> snowWalk;
+    public static AddressablesRegistry<AudioClip> snowRun;
+    public static AddressablesRegistry<AudioClip> snowJump;
     #endregion
 
     public static UnityEvent onLoaded = new UnityEvent();
@@ -36,6 +39,9 @@ public static class Registries {
         rockWalk = new AddressablesRegistry<AudioClip>("Rock Walk");
         rockRun = new AddressablesRegistry<AudioClip>("Rock Run");
         rockJump = new AddressablesRegistry<AudioClip>("Rock Jump");
+        snowWalk = new AddressablesRegistry<AudioClip>("Snow Walk");
+        snowRun = new AddressablesRegistry<AudioClip>("Snow Run");
+        snowJump = new AddressablesRegistry<AudioClip>("Snow Jump");
 
         pieces = new AddressablesRegistry<PieceDefinition>("Pieces");
 
