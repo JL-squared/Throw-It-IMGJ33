@@ -3,6 +3,15 @@ using UnityEngine;
 using System.Linq;
 
 public class DevConsole : MonoBehaviour {
+    public class ConsoleCommand {
+        public string main;
+        public string desc;
+
+        public delegate void Action(string[] args, Player player);
+        public Action moment;
+    }
+
+
     public bool fardNation = false;
     bool tabbed = false;
     string command = "";

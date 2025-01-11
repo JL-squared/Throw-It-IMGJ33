@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour {
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json", resave: true);
         graphicsSettings.Apply(volume.profile);
+
         StartCoroutine("RefreshCoroutine");
     }
 

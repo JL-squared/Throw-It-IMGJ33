@@ -39,7 +39,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Screen_Noise_Scale: 2
+    - Screen_Noise_Scale: 1
     - _Emission_Strength: 10
     - _Float: 0.01
     - _Float_1: 20
@@ -47,12 +47,12 @@ Material:
     - _Float_3: 2
     - _Float_4: 4
     - _Offset: 0.01
-    - _Pixelation_Size: 0.01
+    - _Pixelation_Size: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Screen_Noise_Power: 4
-    - _Smoothness: 0.7
-    - _Strength: 0
+    - _Screen_Noise_Power: 5
+    - _Smoothness: 0.2
+    - _Strength: 1
     m_Colors:
     - _Color: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 0}
   m_BuildTextureStacks: []

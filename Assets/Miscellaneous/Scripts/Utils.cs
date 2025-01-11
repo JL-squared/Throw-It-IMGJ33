@@ -103,20 +103,36 @@ public static class Utils {
         return settings;
     }
 
-    public static T Load<T>(string file, bool createIfMissing=true, bool resave=false) where T: class, new() {
+    // Loads a string from a file, creating it if given a callback
+    public static string LoadString(string file, Func<string> missingCallback = null) {
         if (!File.Exists(PersistentDir + "/" + file)) {
-            if (!createIfMissing) {
+            if (missingCallback == null) {
                 return null;
             }
 
             Debug.LogWarning("File : " + file + " does not exist !");
-            T val = new T();
-            Save(file, val);
-            return val;
+            string pt = missingCallback.Invoke();
+            SaveString(file, pt);
+            return pt;
         }
 
 
         string data = File.ReadAllText(PersistentDir + "/" + file);
+        return data;
+
+    }
+
+    // Loads a general object using Json conversion
+    public static T Load<T>(string file, bool createIfMissing=true, bool resave=false) where T: class, new() {
+        Func<string> missingCallback = null;
+        
+        if (createIfMissing) {
+            missingCallback = () => {
+                return JsonConvert.SerializeObject(new T());
+            };
+        }
+
+        string data = LoadString(file, missingCallback);
         T obj = JsonConvert.DeserializeObject<T>(data);
 
         if (resave)
@@ -124,10 +140,15 @@ public static class Utils {
         return obj;
     }
 
-    public static string Save<T>(string file, T data) {
+    // Saves a string as text into a file
+    public static void SaveString(string file, string data) {
+        File.WriteAllText(PersistentDir + "/" + file, data);
+    }
+
+    // Saves a general object using Json conversion
+    public static void Save<T>(string file, T data) {
         string stringData = JsonConvert.SerializeObject(data);
-        File.WriteAllText(PersistentDir + "/" + file, stringData);
-        return stringData;
+        SaveString(file, stringData);
     }
 
     // Jarvis, scan this guys balls
