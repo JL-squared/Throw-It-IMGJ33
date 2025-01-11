@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
         }
 
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
-        graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json");
+        graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json", resave: true);
         graphicsSettings.Apply(volume.profile);
         StartCoroutine("RefreshCoroutine");
     }

@@ -103,7 +103,7 @@ public static class Utils {
         return settings;
     }
 
-    public static T Load<T>(string file, bool createIfMissing=true) where T: class, new() {
+    public static T Load<T>(string file, bool createIfMissing=true, bool resave=false) where T: class, new() {
         if (!File.Exists(PersistentDir + "/" + file)) {
             if (!createIfMissing) {
                 return null;
@@ -118,7 +118,9 @@ public static class Utils {
 
         string data = File.ReadAllText(PersistentDir + "/" + file);
         T obj = JsonConvert.DeserializeObject<T>(data);
-        //Save(file, obj);
+
+        if (resave)
+            Save(file, obj);
         return obj;
     }
 

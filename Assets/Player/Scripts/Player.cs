@@ -193,7 +193,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         gameCamera.fieldOfView = defaultFOV;
 
-        movement.onJumping.AddListener(() => { Utils.PlaySound(footsteps, Registries.snowJump); });
+        movement.onJumping.AddListener(() => { Utils.PlaySound(footsteps, Registries.rockJump); });
     }
 
     private void Killed() {
@@ -362,9 +362,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
         if (verticalBobbing < 0f && !stepped) {
             if(isSprinting) {
-                Utils.PlaySound(footsteps, Registries.snowRun);
+                Utils.PlaySound(footsteps, Registries.rockRun);
             } else {
-                Utils.PlaySound(footsteps, Registries.snowWalk);
+                Utils.PlaySound(footsteps, Registries.rockWalk);
             }
             stepped = true;
         } else if (verticalBobbing > 0f) {

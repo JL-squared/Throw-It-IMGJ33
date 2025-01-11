@@ -20,7 +20,7 @@ public class GraphicsQualitySettings {
     public bool bloom = true;
     public bool vignette = true;
     public bool whiteBalance = true;
-    public bool ditheringColorCompression = true;
+    public bool pixelatedDitherColorCompression = true;
     
     [Serializable]
     [JsonConverter(typeof(StringEnumConverter))]
@@ -73,7 +73,7 @@ public class GraphicsQualitySettings {
             features.Add(data2.name, data2);
         }
         features["SSAO"].SetActive(ambientOcclusion);
-        features["DitherColorCompression"].SetActive(ditheringColorCompression);
+        features["PixelationDitherColorCompression"].SetActive(pixelatedDitherColorCompression);
 
         if (fpsLimit <= 0) {
             UnityEngine.QualitySettings.vSyncCount = 1;

@@ -70,7 +70,7 @@ float2 screen2world(float2 pos)
 #define invAtanTest float2(0.1591, 0.3183);
 float2 sample_spherical_map(float3 v)
 {
-    float2 uv = float2(atan2(v.z, v.x), asin(v.y * 0.999));
+    float2 uv = float2(atan2(v.z * 0.999 + 0.01, v.x * 0.999 + 0.01), asin(v.y * 0.999));
     uv *= invAtanTest;
     uv += 0.5;
     return uv;

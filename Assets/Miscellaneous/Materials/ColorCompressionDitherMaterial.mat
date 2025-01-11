@@ -38,13 +38,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Enable_Godot_Shader: 0
-    - _Float: 0.005
-    - _Float_1: 128
+    - _Depth: 7
+    - _Enable_Godot_Shader: 1
+    - _Float: 0.72
+    - _Float_1: 127.79
     - _Float_2: 1
     - _Float_3: 0
-    - _Lerp_Factor: 1
+    - _Lerp_Factor: 0
+    - _Multiplier: 128
+    - _Resolution_Scaling: 3
     - _Switch: 1
+    - _Tightness: 0
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

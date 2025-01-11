@@ -930,7 +930,7 @@ PrefabInstance:
     - target: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2913550287921865011, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
@@ -2288,7 +2288,7 @@ PrefabInstance:
     - target: {fileID: 1659643390288692191, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2913550287921865011, guid: 3485f4ebbab138d488721993d43782e8,
         type: 3}
@@ -5986,6 +5986,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[17].m_ActionName
       value: 'Player Map/Tertiary Action[/Mouse/middleButton]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6683454675366619724, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: m_Dithering
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6914026416981438280, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}

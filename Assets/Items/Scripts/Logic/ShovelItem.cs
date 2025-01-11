@@ -51,6 +51,7 @@ public class ShovelItem : ToolItem {
             }
 
             if (doTheAnimation) {
+                player.viewModel.CancelTweens();
                 player.viewModel.AddTween(new LocalRotationTween {
                     from = shovelItemData.viewModelRotationOffset,
                     to = shovelItemData.animationRotation,
