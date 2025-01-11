@@ -28,7 +28,7 @@ public class GradientNode<T> : Variable<T> {
 
         string textureName = context.GenId($"_gradient_texture");
         gradientTextureName = textureName;
-        context.properties.Add($"Texture1D {textureName}_read;");
+        context.properties.Add($"Texture2D {textureName}_read;");
         context.properties.Add($"SamplerState sampler{textureName}_read;");
 
         context.Inject2((compute, textures) => {
@@ -45,7 +45,7 @@ public class GradientNode<T> : Variable<T> {
 
         string swizzle = Utils.SwizzleFromFloat4<T>();
         Variable<float> firstRemap = context.AssignTempVariable<float>($"{context[mixer]}_gradient_remapped", $"Remap({context[mixer]}, {context[inputMin]}, {context[inputMax]}, 0.0, 1.0)");
-        Variable<T> sample = context.AssignTempVariable<T>($"{textureName}_gradient", $"{textureName}_read.SampleLevel(sampler{textureName}_read, {context[firstRemap]}, 0).{swizzle}");
+        Variable<T> sample = context.AssignTempVariable<T>($"{textureName}_gradient", $"{textureName}_read.SampleLevel(sampler{textureName}_read, float2({context[firstRemap]}, 0), 0).{swizzle}");
         //Variable<T> sample = context.AssignTempVariable<T>( $"{textureName}_gradient", $"SampleBicubic({textureName}_read, sampler{textureName}_read, {context[firstRemap]}, 0, 128).{swizzle}"); ;
         
         if (remapOutput) {

@@ -4195,6 +4195,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 782274344075948848, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: octaves
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 782274344075948848, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: scale.x
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 782274344075948848, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: debugName
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 782274344075948848, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: autoCompile
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 782274344075948848, guid: 82a4cf1f03a5827428a45efc70738c15,
+        type: 3}
+      propertyPath: gradient.ctime0
+      value: 13300
+      objectReference: {fileID: 0}
     - target: {fileID: 1679815499248925888, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: m_Name
@@ -4203,13 +4228,13 @@ PrefabInstance:
     - target: {fileID: 1679815499248925888, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5281816153287127206, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: 'voxelMaterials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: fb175d2e0abbd8a42808279498e33235, type: 2}
+      objectReference: {fileID: 2100000, guid: 07ae7dc315fb1324383cb31f04c96eb0, type: 2}
     - target: {fileID: 5361457892440788241, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6187,6 +6212,21 @@ PrefabInstance:
     - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: noBuildingCost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: outlineColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8669513143636214874, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
