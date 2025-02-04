@@ -78,12 +78,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
 
     // Checks if a button has been pressed in the current frame
     public bool Pressed(InputAction.CallbackContext context) {
-        return context.performed && !context.canceled && CanPerform();
+        return !context.canceled && Performed(context);
+    }
+
+    // Checks if a button has been released in the current frame
+    public bool Released(InputAction.CallbackContext context) {
+        return context.canceled && Performed(context);
     }
 
     // Checks if we can do *any* movement
-    public bool CanPerform() {
-        return UIScriptMaster.Instance.inGameHUD.MovementPossible() && state != State.Dead && GameManager.Instance.initialized;
+    public bool Performed(InputAction.CallbackContext context) {
+        return (context.performed ^ context.canceled) && UIScriptMaster.Instance.inGameHUD.MovementPossible() && state != State.Dead && GameManager.Instance.initialized;
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
@@ -114,7 +119,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
-        if (!CanPerform())
+        if (!Performed(context))
             return;
 
         PrimaryHeld = !context.canceled && state == State.Default;
@@ -138,7 +143,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if (!CanPerform())
+        if (!Performed(context))
             return;
 
         SecondaryHeld = !context.canceled && state == State.Default;
@@ -151,7 +156,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
     public void TertiaryAction(InputAction.CallbackContext context) {
-        if (!CanPerform())
+        if (!Performed(context))
             return;
 
         if (state == State.Building) {

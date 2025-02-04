@@ -49,6 +49,7 @@ public class ShovelItem : ToolItem {
             if (health != null) {
                 doTheAnimation = true;
                 health.Damage(5.0f);
+                Debug.Log("a");
             }
 
             if (doTheAnimation) {

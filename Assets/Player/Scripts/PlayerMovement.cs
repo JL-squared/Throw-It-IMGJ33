@@ -86,7 +86,7 @@ public class PlayerMovement : PlayerBehaviour {
     }
 
     public void Movement(InputAction.CallbackContext context) {
-        if (CanPerform()) {
+        if (Performed(context)) {
             localWishMovement = context.ReadValue<Vector2>();
             inner.localWishMovement = localWishMovement;
             FOVTween();
@@ -94,7 +94,7 @@ public class PlayerMovement : PlayerBehaviour {
     }
 
     public void Sprint(InputAction.CallbackContext context) {
-        if (!isCrouching && CanPerform()) {
+        if (!isCrouching && Performed(context)) {
             isSprinting = context.ReadValue<float>() > 0.5f;
             FOVTween();
         }
@@ -114,7 +114,7 @@ public class PlayerMovement : PlayerBehaviour {
     }
 
     public void Look(InputAction.CallbackContext context) {
-        if (Cursor.lockState != CursorLockMode.None && CanPerform()) {
+        if (Cursor.lockState != CursorLockMode.None && Performed(context)) {
             ApplyMouseDelta(context.ReadValue<Vector2>());
         }
     }

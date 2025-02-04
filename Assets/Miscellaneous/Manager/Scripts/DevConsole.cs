@@ -49,14 +49,14 @@ public class DevConsole : MonoBehaviour {
                 main = "set_speed",
                 desc = "Sets the speed of the player to #1",
                 moment = (args, player) => {
-                    //player.controller.speed = float.Parse(args[0]);
+                    player.movement.inner.speed = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
                 main = "set_accel",
                 desc = "Sets the acceleration of the player to #1",
                 moment = (args, player) => {
-                    //player.controller.maxAcceleration = float.Parse(args[0]);
+                    player.movement.inner.maxAcceleration = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
