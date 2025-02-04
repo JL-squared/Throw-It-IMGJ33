@@ -49,14 +49,14 @@ public class DevConsole : MonoBehaviour {
                 main = "set_speed",
                 desc = "Sets the speed of the player to #1",
                 moment = (args, player) => {
-                    //player.controller.speed = float.Parse(args[0]);
+                    player.movement.inner.speed = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
                 main = "set_accel",
                 desc = "Sets the acceleration of the player to #1",
                 moment = (args, player) => {
-                    //player.controller.maxAcceleration = float.Parse(args[0]);
+                    player.movement.inner.maxAcceleration = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
@@ -104,22 +104,26 @@ public class DevConsole : MonoBehaviour {
                 main = "save",
                 desc = "Save the current session to the appopriate save folder",
                 moment = (args, player) => {
+                    /*
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Save();
                     } else {
                         Debug.LogWarning("Can't do shit, don't have a save manager");
                     }
+                    */
                 },
             },
             new ConsoleCommand {
                 main = "load",
                 desc = "Load a backup of the current save (last save state)",
                 moment = (args, player) => {
+                    /*
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Load();
                     } else {
                         Debug.LogWarning("Can't do shit, don't have a save manager");
                     }
+                    */
                 },
             },
         };

@@ -10,8 +10,6 @@ public class ItemData : ScriptableObject {
     [Header("Settings")]
     public int stackSize;
     public int marketLimit;
-    public int marketBuyCost;
-    public int marketSellCost;
 
     [Header("Visual Assets")]
     public Sprite icon;

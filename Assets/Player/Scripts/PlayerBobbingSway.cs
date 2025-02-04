@@ -49,25 +49,15 @@ public class PlayerBobbingSway : PlayerBehaviour {
         } else {
             if (player.state != Player.State.Dead)
                 player.movement.head.transform.localPosition = new Vector3(horizontalBobbing, baseCameraHeight + verticalBobbing, 0);
-            ApplyHandSway(verticalBobbing);
+            rotationLocalOffset = Vector3.ClampMagnitude((new Vector3(smoothedMouseDelta.x, smoothedMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
+            positionLocalOffset = transform.InverseTransformDirection(-player.movement.inner.Velocity) * viewModelPositionStrength;
+            Vector3 current = viewModelHolster.transform.localPosition;
+            Vector3 target = rotationLocalOffset + positionLocalOffset;
+            target += Vector3.up * verticalBobbing * viewModelBobbingStrength;
+            Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * holsterSwaySmoothingSpeed);
+            viewModelHolster.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
         }
 
         smoothedMouseDelta = Vector2.Lerp(smoothedMouseDelta, player.movement.mouseDelta, Time.deltaTime * holsterSwayMouseAccelSmoothingSpeed);
-    }
-
-
-    private void ApplyHandSway(float bobbing) {
-        rotationLocalOffset = Vector3.ClampMagnitude((new Vector3(smoothedMouseDelta.x, smoothedMouseDelta.y, 0) / (Time.deltaTime + 0.001f)) * 0.01f, viewModelRotationClampMagnitude) * viewModelRotationStrength;
-        positionLocalOffset = transform.InverseTransformDirection(-player.movement.inner.Velocity) * viewModelPositionStrength;
-        Vector3 current = viewModelHolster.transform.localPosition;
-        Vector3 target = rotationLocalOffset + positionLocalOffset;
-        target += Vector3.up * bobbing * viewModelBobbingStrength;
-
-        //if (itemLogic != null) {
-        //    target += itemLogic.swayOffset;
-        //}
-
-        Vector3 localPosition = Vector3.Lerp(current, target, Time.deltaTime * holsterSwaySmoothingSpeed);
-        viewModelHolster.transform.localPosition = Vector3.ClampMagnitude(localPosition, 1f);
     }
 }

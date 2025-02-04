@@ -11,11 +11,16 @@ public class EntityHealth : MonoBehaviour, IEntitySerializer {
     public delegate void HealthChanged(float percentage);
     public event HealthChanged OnHealthChanged;
 
-    public delegate void HealthDamaged(float damage);
+    public class DamageSourceData {
+        public GameObject source;
+        public Vector3 direction;
+    }
+
+    public delegate void HealthDamaged(float damage, DamageSourceData source);
     public event HealthDamaged OnDamaged;
 
     public delegate void HealthHealed(float healing);
-    public event HealthDamaged OnHealed;
+    public event HealthHealed OnHealed;
 
     public delegate void PreDamageModifier(ref float damage);
     public event PreDamageModifier OnPreDamageModifier;
@@ -29,14 +34,14 @@ public class EntityHealth : MonoBehaviour, IEntitySerializer {
         if (DeleteOnKill) OnKilled += () => { Destroy(gameObject); };
     }
 
-    public void Damage(float damage) {
+    public void Damage(float damage, DamageSourceData data = null) {
         if (AlreadyKilled)
             return;
 
         OnPreDamageModifier?.Invoke(ref damage);
         health = Mathf.Clamp(health - damage, 0, maxHealth);
          
-        OnDamaged?.Invoke(damage);
+        OnDamaged?.Invoke(damage, data);
         OnHealthChanged?.Invoke(health / maxHealth);
         if (health == 0) {
             AlreadyKilled = true;

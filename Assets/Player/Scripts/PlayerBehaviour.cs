@@ -13,7 +13,7 @@ public class PlayerBehaviour : MonoBehaviour {
         return player.Pressed(context);
     }
 
-    protected bool CanPerform() {
-        return player.CanPerform();
+    protected bool Performed(InputAction.CallbackContext context) {
+        return player.Performed(context);
     }
 }

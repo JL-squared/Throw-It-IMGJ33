@@ -9,7 +9,11 @@ public class WeatherManager : MonoBehaviour {
     [Header("Clouds")]
     public GameObject[] cloudLayers;
     public float cloudCoverageOffset = 0.0f;
-    public AnimationCurve shadowStrengthCloudCoverage;
+    public AnimationCurve coverageCurve;
+    public Color baseSunColor = Color.white;
+    public Color overcastSunColor = Color.white / 2.0f;
+    public float baseSunIntensity = 1.5f;
+    public float overcastSunIntensity = 0.5f;
 
     [HideInInspector]
     public Vector2[] uvOffsetsCloud;
@@ -24,7 +28,7 @@ public class WeatherManager : MonoBehaviour {
     }
 
     public float GetOutsideTemperature() {
-        return 0.0f;
+        return -20.0f;
     }
 
     private void Start() {
@@ -47,6 +51,10 @@ public class WeatherManager : MonoBehaviour {
             cloudLayers[i].GetComponent<MeshRenderer>().SetPropertyBlock(block);
         }
 
-        directionalLight.shadowStrength = shadowStrengthCloudCoverage.Evaluate(cloudCoverageOffset);
+        float basic = coverageCurve.Evaluate(cloudCoverageOffset);
+        float invert = 1 - coverageCurve.Evaluate(cloudCoverageOffset);
+        directionalLight.shadowStrength = invert;
+        directionalLight.color = Color.Lerp(baseSunColor, overcastSunColor, basic);
+        directionalLight.intensity = Mathf.Lerp(baseSunIntensity, overcastSunIntensity, basic);
     }
 }

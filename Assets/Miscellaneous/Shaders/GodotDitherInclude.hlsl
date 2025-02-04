@@ -37,6 +37,15 @@ void MyFunctionA_float(float2 frag, float depth1, float multiplier, float tightn
         4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
         16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
     };
+
+	float Bayer5x5[25] = {
+    0.0f / 25.0f, 12.0f / 25.0f,  3.0f / 25.0f, 15.0f / 25.0f,  8.0f / 25.0f,
+   16.0f / 25.0f,  4.0f / 25.0f, 19.0f / 25.0f,  7.0f / 25.0f, 23.0f / 25.0f,
+    5.0f / 25.0f, 21.0f / 25.0f, 13.0f / 25.0f, 24.0f / 25.0f,  1.0f / 25.0f,
+   17.0f / 25.0f, 10.0f / 25.0f, 22.0f / 25.0f,  6.0f / 25.0f, 18.0f / 25.0f,
+    9.0f / 25.0f,  2.0f / 25.0f, 14.0f / 25.0f, 11.0f / 25.0f, 20.0f / 25.0f
+};
+
     uint index = (round(frag.x) % 4) * 4 + round(frag.y) % 4;
 
 	float3 offset = 0.0;

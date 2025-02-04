@@ -48,7 +48,10 @@ public class ShovelItem : ToolItem {
             EntityHealth health = player.interactions.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
             if (health != null) {
                 doTheAnimation = true;
-                health.Damage(5.0f);
+                health.Damage(5.0f, new EntityHealth.DamageSourceData {
+                    source = player.gameObject,
+                    direction = player.camera.transform.forward,
+                });
             }
 
             if (doTheAnimation) {

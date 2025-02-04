@@ -198,7 +198,6 @@ public class PlayerBuilding : PlayerBehaviour {
     private void UpdatePlacementTarget() {
         bool manualPlacement = altAction; // this currently cannot be changed
         if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
-            Debug.Log("adsf");
             OutlineObject(piece);
 
 

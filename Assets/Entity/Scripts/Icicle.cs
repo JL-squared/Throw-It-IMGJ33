@@ -40,7 +40,10 @@ public class Icicle : Projectile, IEntitySerializer {
 
         EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
         if (health != null) {
-            health.Damage(2f);
+            health.Damage(2f, new EntityHealth.DamageSourceData {
+                source = gameObject,
+                direction = relativeVelocity,
+            });
             rb.interpolation = RigidbodyInterpolation.None;
             transform.SetParent(health.transform, true);
         }
