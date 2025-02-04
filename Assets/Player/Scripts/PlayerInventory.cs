@@ -62,12 +62,9 @@ public class PlayerInventory : PlayerBehaviour {
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        Debug.Log("nuhuh");
-        /*
         if (context.performed && !context.canceled && player.state != Player.State.Dead && GameManager.Instance.initialized) {
             UIScriptMaster.Instance.inGameHUD.ToggleInventory();
         }
-        */
     }
 
     public void SelectSlot(InputAction.CallbackContext context) {
