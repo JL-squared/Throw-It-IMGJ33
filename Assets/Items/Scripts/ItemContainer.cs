@@ -14,71 +14,66 @@ public class ItemContainer : MonoBehaviour {
         int count = itemIn.Count;
         while (count > 0) {
             int tempCount = Mathf.Min(itemIn.Data.stackSize, count);
-            AddItem(new ItemStack(itemIn.Data, tempCount));
+            TransferItem(new ItemStack(itemIn.Data, tempCount));
             count -= itemIn.Data.stackSize;
         }
     }
 
-    // Add item to inventory if possible,
-    // DO NOT INSERT INVALID STACK COUNT ITEM, (clamped anyways)
-    // THIS WILL TAKE FROM THE ITEM YOU INSERT. YOU HAVE BEEN WARNED
-    public void AddItem(ItemStack itemIn) {
-        /*
-        if (itemIn.Count > itemIn.Data.stackSize) {
-            Debug.LogWarning("Given item count was greater than stack size. Clamping. Use AddItemUnclamped for unclamped stack sizes");
-            itemIn.Count = itemIn.Data.stackSize;
-        }
-        */
+    public void PutItem(ItemStack itemIn) {
+        ItemStack item = itemIn.Clone();
+        TransferItem(item);
+    }
 
-        int firstEmpty = -1;
-        int i = 0;
-        foreach (ItemStack item in items) {
-            if (item.IsEmpty() && firstEmpty == -1) {
-                firstEmpty = i;
+    public void TransferItem(ItemStack itemIn) {
+        foreach (ItemStack item in items) { // Iterate over partial stacks and subtract
+            if (itemIn.IsEmpty()) {
+                return;
             }
-            else if (itemIn.Data == item.Data && !item.IsFull()) { // this will keep running for as many partial stacks as we can find
-                int transferSize = item.Data.stackSize - item.Count; // amount we can fit in here
-                transferSize = Mathf.Min(transferSize, itemIn.Count);
 
-                item.Count += transferSize; // transfer
-                itemIn.Count -= transferSize;
-                if (itemIn.IsEmpty()) {
-                    return; // break when done adding into partial stacks
+            if (item.Data == itemIn.Data && !item.IsFull()) {
+                int amountWeCanPutIn = item.Data.stackSize - item.Count;
+                int amountWePutIn = itemIn.Count < amountWeCanPutIn ? itemIn.Count : amountWeCanPutIn;
+                item.Count += amountWePutIn;
+                itemIn.Count -= amountWePutIn;
+            }
+        }
+
+        foreach (ItemStack item in items) { // Iterate over empty stacks and subtract
+            if (itemIn.IsEmpty()) {
+                return;
+            }
+
+            if (item.IsEmpty()) {
+                item.Data = itemIn.Data;
+                if (itemIn.Count < itemIn.Data.stackSize) {
+                    item.Count = itemIn.Count;
+                    itemIn.Count = 0;
+                } else {
+                    item.Count = itemIn.Data.stackSize;
+                    itemIn.Count -= itemIn.Data.stackSize;
                 }
             }
-            i++;
         }
 
-        // by this point we should have exited if everything is handled, otherwise;
-        if (firstEmpty != -1) {
-            //Debug.Log("oh yeah, slot was empty. It's sex time...");
-            items[firstEmpty].CopyItem(itemIn.Clone()); // Don't know if we actually have to Clone this lol but wtv
-            itemIn.MakeEmpty();
-        }
-        else {
+        /* This is for throwing things but context wise idk if this is needed lol
+        if (!itemIn.IsEmpty()) { // If anything is left then poopity scoop
             Debug.LogWarning("Could not find spot to add item, spawning as World Item!");
             for (int k = 0; k < itemIn.Count; k++) {
                 WorldItem.Spawn(itemIn, transform.position, transform.rotation);
             }
         }
+        */
 
         onUpdate.Invoke(items);
     }
 
-    public void PutItem(ItemStack itemIn) {
-        var itemInEvenMore = itemIn.Clone();
-
-        AddItem(itemInEvenMore);
-    }
-
     // Checks if we can fit a specific item
-    // Count must be within stack count (valid item moment)
     public bool CanFitItem(ItemStack itemIn) {
         int emptyCounts = 0;
 
         foreach (ItemStack item in items) {
             if (item.IsEmpty()) {
-                return true;
+                emptyCounts += itemIn.Data.stackSize;
             }
             else if (itemIn.Data == item.Data && !item.IsFull()) {
                 emptyCounts += itemIn.Data.stackSize - item.Count;
