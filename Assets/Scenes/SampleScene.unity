@@ -1591,11 +1591,11 @@ MonoBehaviour:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
-  damageSmoothinSpeed: 7
-  damagedDirectionFactor: 5
+  damageSmoothinSpeed: 2.5
+  damagedDirectionFactor: 3
   shiverer: {fileID: 352060475}
   tiltStrafeStrength: 2
-  tiltStrafeSmoothingSpeed: 2
+  tiltStrafeSmoothingSpeed: 12
 --- !u!1 &606583469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &851044223
 Transform:
   m_ObjectHideFlags: 0
@@ -5325,7 +5325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2066023228
 Transform:
   m_ObjectHideFlags: 0
