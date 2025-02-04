@@ -104,22 +104,26 @@ public class DevConsole : MonoBehaviour {
                 main = "save",
                 desc = "Save the current session to the appopriate save folder",
                 moment = (args, player) => {
+                    /*
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Save();
                     } else {
                         Debug.LogWarning("Can't do shit, don't have a save manager");
                     }
+                    */
                 },
             },
             new ConsoleCommand {
                 main = "load",
                 desc = "Load a backup of the current save (last save state)",
                 moment = (args, player) => {
+                    /*
                     if (PersistentSaveManager.Instance != null) {
                         PersistentSaveManager.Instance.Load();
                     } else {
                         Debug.LogWarning("Can't do shit, don't have a save manager");
                     }
+                    */
                 },
             },
         };

@@ -121,7 +121,7 @@ public class PlayerMovement : PlayerBehaviour {
 
     public void ApplyMouseDelta(Vector2 delta) {
         mouseDelta = delta;
-        wishHeadDir += delta * mouseSensitivity * 0.02f;
+        wishHeadDir += delta * mouseSensitivity * 0.1f;
         wishHeadDir.y = Mathf.Clamp(wishHeadDir.y, -90f, 90f);
         head.localRotation = Quaternion.Euler(-wishHeadDir.y, 0f, 0f);
         inner.localWishRotation = Quaternion.Euler(0f, wishHeadDir.x, 0f).normalized;

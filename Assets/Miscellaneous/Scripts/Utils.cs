@@ -87,7 +87,10 @@ public static class Utils {
                 // 1 => closest to bomb
                 // 0 => furthest from bomb 
                 float factor = 1 - Mathf.Clamp01(math.unlerp(minDamageRadius, radius, dist));
-                health.Damage(factor * damage);
+                health.Damage(factor * damage, new EntityHealth.DamageSourceData {
+                    source = null,
+                    direction = collider.transform.position - center,
+                });
             }
         }
     }
@@ -185,6 +188,21 @@ public static class Utils {
         // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
         int index = UnityEngine.Random.Range(0, dict.Count);
         return (index, dict.ToList()[index].Value);
+    }
+
+    // Jarvis, randomize his balls but exclude a single number
+    public static (int, V) Random<K, V>(this Dictionary<K, V> dict, int exclusionIndex) {
+        if (exclusionIndex >= (dict.Count-1) || exclusionIndex < 0) {
+            return Random(dict);
+        }
+
+        int lower = UnityEngine.Random.Range(0, exclusionIndex);
+        int upper = UnityEngine.Random.Range(exclusionIndex+1, dict.Count);
+        int rng = UnityEngine.Random.value > 0.5f ? lower : upper;
+
+        // very stupid but it works
+        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
+        return (rng, dict.ToList()[rng].Value);
     }
 
     // Jarvis, calculate the absolute whilst somehow smoothing and keeping the range 0-1

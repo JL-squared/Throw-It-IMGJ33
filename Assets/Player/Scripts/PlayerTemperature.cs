@@ -11,7 +11,6 @@ public class PlayerTemperature : PlayerBehaviour {
     public float reachSpeedIncrease = 4.0f;
     public float reachSpeedDecrease = 0.25f;
     public float shivering;
-    public GameObject shiverer;
 
     private void Start() {
         bodyTemp = maxBodyTemp;
@@ -58,7 +57,7 @@ public class PlayerTemperature : PlayerBehaviour {
     }
 
     private void Update() {
-        shiverer.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, Time.deltaTime * shivering * shiveringShakeRotationFactor);
+        //shiverer.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, Time.deltaTime * shivering * shiveringShakeRotationFactor);
     }
 
     /*

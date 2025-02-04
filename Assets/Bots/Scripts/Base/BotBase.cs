@@ -238,8 +238,8 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
         // I know this looks ugly but it works for now. Will need to refactor this whole class later anyways
         _bodyHealth.OnPreDamageModifier += (ref float dmg) => OnPreDamage(ref dmg, false);
         _headHealth.OnPreDamageModifier += (ref float dmg) => OnPreDamage(ref dmg, true);
-        _bodyHealth.OnDamaged += (float dmg) => OnDamaged(dmg, false);
-        _headHealth.OnDamaged += (float dmg) => OnDamaged(dmg, true);
+        _bodyHealth.OnDamaged += (float dmg, EntityHealth.DamageSourceData source) => OnDamaged(dmg, false);
+        _headHealth.OnDamaged += (float dmg, EntityHealth.DamageSourceData source) => OnDamaged(dmg, true);
         _bodyHealth.OnHealed += (float heal) => OnHealed(heal, false);
         _headHealth.OnHealed += (float heal) => OnHealed(heal, true);
         _bodyHealth.OnKilled += () => { OnKilled(false); };

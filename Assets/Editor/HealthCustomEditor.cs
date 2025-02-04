@@ -9,7 +9,7 @@ public class HealthCustomEditor : Editor {
         EntityHealth health = (EntityHealth)target;
 
         if (GUILayout.Button("Deal 10 damage")) {
-            health.Damage(10.0f);
+            health.Damage(10.0f, null);
         }
 
         if (GUILayout.Button("Heal 10 points")) {
@@ -17,7 +17,7 @@ public class HealthCustomEditor : Editor {
         }
 
         if (GUILayout.Button("Kill")) {
-            health.Damage(100000.0f);
+            health.Damage(100000.0f, null);
         }
     }
 }

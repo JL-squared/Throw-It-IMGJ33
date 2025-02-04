@@ -19,7 +19,10 @@ public class Snowball : Projectile {
 
         EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
         if (health != null) {
-            health.Damage(relativeVelocity.magnitude * dataParent.speedFactor + dataParent.baseDamage);
+            health.Damage(relativeVelocity.magnitude * dataParent.speedFactor + dataParent.baseDamage, new EntityHealth.DamageSourceData {
+                source = gameObject,
+                direction = relativeVelocity,
+            });
         }
 
         Destroy(gameObject);

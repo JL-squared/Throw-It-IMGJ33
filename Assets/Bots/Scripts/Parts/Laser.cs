@@ -24,7 +24,10 @@ public class Laser : BotBehaviour {
             var emission = particles.emission;
             if (hit.collider.GetComponent<EntityHealth>() != null) {
                 // health bar kinda doesn't like per frame damage
-                hit.collider.GetComponent<EntityHealth>().Damage(3 * Time.deltaTime);
+                hit.collider.GetComponent<EntityHealth>().Damage(3 * Time.deltaTime, new EntityHealth.DamageSourceData {
+                    source = gameObject,
+                    direction = laser.forward
+                });
                 emission.enabled = false;
             } else {
                 emission.enabled = true;

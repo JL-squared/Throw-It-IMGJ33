@@ -41,6 +41,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
     [HideInInspector]
     public PlayerFootsteps footsteps;
 
+    [HideInInspector]
+    public PlayerCameraShake cameraShake;
+
     public new Camera camera;
 
     public State state;
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         health = GetComponent<PlayerHealth>();
         inventory = GetComponent<PlayerInventory>();
         footsteps = GetComponent<PlayerFootsteps>();
+        cameraShake = GetComponent<PlayerCameraShake>();
 
         foreach (var item in GetComponents<PlayerBehaviour>()) {
             item.settings = settings;
