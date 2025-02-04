@@ -13,18 +13,29 @@ using System.Linq;
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
 
-    public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
+    public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
     }
 
-    public static void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry) {
+    public static void PlaySound(AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
+        GameObject obj = new GameObject();
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.volume = volume;
+        source.clip = registry.data.Random().Item2;
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
+        UnityEngine.Object.Destroy(obj, source.clip.length / source.pitch);
+    }
+
+    public static void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         GameObject obj = new GameObject();
         obj.transform.position = point;
         AudioSource source = obj.AddComponent<AudioSource>();
         source.spatialize = true;
         source.spatialBlend = 1.0f;
+        source.volume = volume;
         source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
