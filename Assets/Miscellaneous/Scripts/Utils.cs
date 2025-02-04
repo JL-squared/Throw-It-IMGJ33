@@ -13,18 +13,29 @@ using System.Linq;
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
 
-    public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry) {
+    public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
     }
 
-    public static void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry) {
+    public static void PlaySound(AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
+        GameObject obj = new GameObject();
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.volume = volume;
+        source.clip = registry.data.Random().Item2;
+        source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
+        source.Play();
+        UnityEngine.Object.Destroy(obj, source.clip.length / source.pitch);
+    }
+
+    public static void PlaySound(Vector3 point, AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         GameObject obj = new GameObject();
         obj.transform.position = point;
         AudioSource source = obj.AddComponent<AudioSource>();
         source.spatialize = true;
         source.spatialBlend = 1.0f;
+        source.volume = volume;
         source.clip = registry.data.Random().Item2;
         source.pitch = UnityEngine.Random.Range(0.7f, 1.3f);
         source.Play();
@@ -176,21 +187,7 @@ public static class Utils {
         return (index, dict.ToList()[index].Value);
     }
 
-    // Jarvis, randomize his balls but exclude a single number
-    public static (int, V) Random<K, V>(this Dictionary<K, V> dict, int exclusionIndex) {
-        if (exclusionIndex >= dict.Count || exclusionIndex < 0) {
-            return Random(dict);
-        }
-
-        int lower = UnityEngine.Random.Range(0, exclusionIndex);
-        int upper = UnityEngine.Random.Range(exclusionIndex+1, dict.Count);
-        int rng = UnityEngine.Random.value > 0.5f ? lower : upper;
-
-        // very stupid but it works
-        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
-        return (rng, dict.ToList()[rng].Value);
-    }
-
+    // Jarvis, calculate the absolute whilst somehow smoothing and keeping the range 0-1
     public static float SmoothAbsClamped01(float x, float h) {
         float J(float x) {
             return Mathf.Sqrt(x*x + h) - Mathf.Sqrt(h);

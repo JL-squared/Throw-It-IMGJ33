@@ -31,8 +31,8 @@ public class ProjectileShooter : MonoBehaviour {
         }
 
         if (Player.Instance.gameObject == gameObject) {
-            if (Player.Instance.vehicle != null && Player.Instance.vehicle.GetComponent<Rigidbody>() != null) {
-                startingVelocity += Player.Instance.vehicle.GetComponent<Rigidbody>().linearVelocity;
+            if (Player.Instance.movement.vehicle != null && Player.Instance.movement.vehicle.GetComponent<Rigidbody>() != null) {
+                startingVelocity += Player.Instance.movement.vehicle.GetComponent<Rigidbody>().linearVelocity;
             }
         }
 

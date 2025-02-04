@@ -161,7 +161,7 @@ public class IngameHUDManager : MonoBehaviour {
         if (MovementPossible()) {
             Cursor.lockState = CursorLockMode.Locked;
         } else {
-            Player.Instance.ResetMovement();
+            Player.Instance.movement.ResetMovement();
             Cursor.lockState = CursorLockMode.None;
         }
 

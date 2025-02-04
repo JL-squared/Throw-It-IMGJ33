@@ -16,7 +16,7 @@ public class PlayerCustomEditor : Editor {
             if (item == null) {
                 Debug.LogWarning($"{text} wasn't loaded :(");
             } else {
-                player.AddItem(new ItemStack(item, 1));
+                player.inventory.AddItem(new ItemStack(item, 1));
             }
         }
     }

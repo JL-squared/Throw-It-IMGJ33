@@ -36,6 +36,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public bool rotationIsLocal = false;
     [HideInInspector]
     public bool isJumping;
+    private bool lastTimeGrounded;
     [Header("Rigidbody Interaction")]
     public float pushForce = 8;
     public float maxPushForce = 20;
@@ -50,7 +51,8 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     public EntityMovementFlags entityMovementFlags = EntityMovementFlags.Default;
 
     [HideInInspector]
-    public UnityEvent onJumping;
+    public UnityEvent onJumpStart;
+    public UnityEvent<float> onTouchedGround;
 
     public Vector3 Velocity {
         get {
@@ -111,10 +113,16 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
         // Handles being grounded (resets jump buffer and coyote time thing)
         if (cc.isGrounded && !groundJustExploded) {
+            if (!lastTimeGrounded) {
+                onTouchedGround?.Invoke(movement.y);
+            }
+
             movement.y = groundedOffsetVelocity;
+            lastTimeGrounded = true;
             lastGroundedTime = Time.time;
             jumpCounter = 0;
         } else {
+            lastTimeGrounded = false;
             Ground = null;
         }
 
@@ -125,7 +133,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         // Could change the restriction on jumpCounter to enable double jumping
         if (isJumping && jumpCounter == 0) {
             movement.y = jump;
-            onJumping?.Invoke();
+            onJumpStart?.Invoke();
             isJumping = false;
             jumpCounter++;
         }

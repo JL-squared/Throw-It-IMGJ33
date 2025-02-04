@@ -9,9 +9,9 @@ public class HotbarUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         if (Player.Instance != null) {
-            Player.Instance.selectedEvent?.AddListener(Select);
+            Player.Instance.inventory.selectedEvent?.AddListener(Select);
             Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
-            Player.Instance.inventoryUpdateEvent?.AddListener(Refresh);
+            Player.Instance.inventory.inventoryUpdateEvent?.AddListener(Refresh);
         }
     }
 

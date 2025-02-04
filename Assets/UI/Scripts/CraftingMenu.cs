@@ -19,7 +19,7 @@ public class CraftingMenu : MonoBehaviour {
     void Start () {
         // load all necessary recipes
         // hook onto inventory change
-        Player.Instance.inventoryUpdateEvent.AddListener(Refresh);
+        Player.Instance.inventory.inventoryUpdateEvent.AddListener(Refresh);
     }
 
     public void Load() {
@@ -38,7 +38,7 @@ public class CraftingMenu : MonoBehaviour {
         */
 
         if(selectedRecipe != null) {
-            craftingButton.interactable = Player.Instance.CheckForRequirements(selectedRecipe.requirements);
+            craftingButton.interactable = Player.Instance.inventory.CheckForRequirements(selectedRecipe.requirements);
         }
     }
 
@@ -63,10 +63,10 @@ public class CraftingMenu : MonoBehaviour {
 
             if (i) {
                 foreach (ItemStack requirement in selectedRecipe.requirements) {
-                    Player.Instance.TakeItems(requirement);
+                    Player.Instance.inventory.TakeItems(requirement);
                 }
 
-                Player.Instance.PutItem(selectedRecipe.output);
+                Player.Instance.inventory.PutItem(selectedRecipe.output);
             }
         }
     }

@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour {
 
         if (shooterCollider != null) {
             Player player = shooterCollider.GetComponent<Player>();
-            if (player != null && player.vehicle != null && player.vehicle.gameObject == other.gameObject) {
+            if (player != null && player.movement.vehicle != null && player.movement.vehicle.gameObject == other.gameObject) {
                 return false;
             }
         }

@@ -34,7 +34,7 @@ public class DevConsole : MonoBehaviour {
             new ConsoleCommand {
                 main = "kill",
                 desc = "Kills the player",
-                moment = (args, player) => { player.health.Damage(100000); },
+                moment = (args, player) => { player.health.health.Damage(100000); },
             },
             new ConsoleCommand {
                 main = "give",
@@ -42,21 +42,21 @@ public class DevConsole : MonoBehaviour {
                 moment = (args, player) => {
                     string item = args[0];
                     int count = args.Length == 1 ? 1 : int.Parse(args[1]);
-                    player.AddItemUnclamped(new ItemStack(item, count));
+                    player.inventory.AddItemUnclamped(new ItemStack(item, count));
                 },
             },
             new ConsoleCommand {
                 main = "set_speed",
                 desc = "Sets the speed of the player to #1",
                 moment = (args, player) => {
-                    player.movement.speed = float.Parse(args[0]);
+                    //player.controller.speed = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
                 main = "set_accel",
                 desc = "Sets the acceleration of the player to #1",
                 moment = (args, player) => {
-                    player.movement.maxAcceleration = float.Parse(args[0]);
+                    //player.controller.maxAcceleration = float.Parse(args[0]);
                 },
             },
             new ConsoleCommand {
@@ -64,7 +64,7 @@ public class DevConsole : MonoBehaviour {
                 desc = "Heals the player by the ammount specified by #1",
                 moment = (args, player) => {
                     float ammount = float.Parse(args[0]);
-                    player.health.Heal(ammount);
+                    player.health.health.Heal(ammount);
                 },
             },
             new ConsoleCommand {
@@ -72,7 +72,7 @@ public class DevConsole : MonoBehaviour {
                 desc = "Damages the player by the ammount specified by #1",
                 moment = (args, player) => {
                     float ammount = float.Parse(args[0]);
-                    player.health.Damage(ammount);
+                    player.health.health.Damage(ammount);
                 },
             },
             new ConsoleCommand {
@@ -86,10 +86,10 @@ public class DevConsole : MonoBehaviour {
                         BotData data = Registries.bots[name];
                         BotBase.Summon(data, player.transform.position, Quaternion.identity);
                     } else if (type == "items") {
-                        WorldItem.Spawn(new ItemStack(name, 1), player.gameCamera.transform.forward + player.gameCamera.transform.position, Quaternion.identity);
+                        WorldItem.Spawn(new ItemStack(name, 1), player.camera.transform.forward + player.camera.transform.position, Quaternion.identity);
                     } else if (type == "projectiles") {
                         ProjectileItemData data = (ProjectileItemData)Registries.items[name];
-                        Projectile.Spawn(data, player.gameCamera.transform.forward + player.gameCamera.transform.position, player.gameCamera.transform.forward * float.Parse(args[2]));
+                        Projectile.Spawn(data, player.camera.transform.forward + player.camera.transform.position, player.camera.transform.forward * float.Parse(args[2]));
                     }
                 },
             },
