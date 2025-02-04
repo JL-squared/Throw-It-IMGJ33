@@ -4,6 +4,7 @@ using UnityEngine;
 using static EntityHealth;
 
 public class PlayerHealth : PlayerBehaviour {
+    [HideInInspector]
     public EntityHealth health;
 
     private void Start() {
@@ -17,7 +18,7 @@ public class PlayerHealth : PlayerBehaviour {
 
     private void Killed() {
         Debug.Log("Skill issue, you dead");
-        player.isDead = true;
+        player.state = Player.State.Dead;
 
         // Literal hell
         //ambatakamChoir.Play();

@@ -21,8 +21,8 @@ public class BuildingEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void Execute() {
-        Player.Instance.selectedPiece = definition;
-        Player.Instance.SetupPlacementTarget(definition.piecePrefab);
+        Player.Instance.building.selectedPiece = definition;
+        Player.Instance.building.SetupPlacementTarget(definition.piecePrefab);
         UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
     }
 }

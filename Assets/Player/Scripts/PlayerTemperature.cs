@@ -1,20 +1,7 @@
 using UnityEngine;
 
 public class PlayerTemperature : PlayerBehaviour {
-    public float targetTemperature = 37.0f;
-    private float outsideTemperature;
-    private float heatSourcesTemperature;
-    private float bodyTemperature;
-    public float targetReachSpeed = 0.5f;
-    public float outsideReachSpeed = 0.5f;
-    public float shiverMeTimbers = 0.0f;
-    public float shiveringCurrentTime = 10.0f;
-    public float shiveringDelay = 10.0f;
-    public float minShiveringTemp = 36.0f;
-    public float shiveringShakeScale = 0.3f;
-    public float shiveringShakeFactor = 2.0f;
-    public float shiveringShakeRotationFactor = 2.0f;
-
+    /*
     public void Start() {
         bodyTemperature = targetTemperature;
     }
@@ -63,4 +50,5 @@ public class PlayerTemperature : PlayerBehaviour {
         //gameCamera.transform.localPosition = localCamPos;
         //gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
     }
+    */
 }

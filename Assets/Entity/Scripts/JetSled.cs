@@ -42,7 +42,7 @@ public class JetSled : Vehicle {
     public void FixedUpdate() {
         if (!driven)
             return;
-        Vector2 mv = player.localWishMovement.normalized;
+        Vector2 mv = player.movement.localWishMovement.normalized;
 
         throttle = mv.y + Mathf.Abs(mv.x) * 0.5f;
         float effective = Mathf.Clamp01(throttle);

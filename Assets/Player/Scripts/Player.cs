@@ -8,18 +8,42 @@ using System.Linq;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {
+    public enum State {
+        Default,
+        Building,
+        Driving,
+        Dead,
+    }
+
     public static Player Instance { get; private set; }
+
+    [HideInInspector]
     public PlayerBobbingSway bobbing;
+
+    [HideInInspector]
     public PlayerBuilding building;
-    public PlayerController controller;
+
+    [HideInInspector]
+    public PlayerMovement movement;
+
+    [HideInInspector]
     public PlayerTemperature temperature;
+
+    [HideInInspector]
     public PlayerInteractions interactions;
+
+    [HideInInspector]
     public PlayerInventory inventory;
+
+    [HideInInspector]
     public PlayerHealth health;
 
+    [HideInInspector]
+    public PlayerFootsteps footsteps;
+
     public new Camera camera;
-    
-    public bool isDead;
+
+    public State state;
     public AudioSource music;
 
     public PlayerControlsSettings settings;
@@ -27,10 +51,6 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public bool PrimaryHeld = false;
     [HideInInspector]
     public bool SecondaryHeld = false;
-
-    public UnityEvent<float> onSpeedPercentageUpdate;
-    public UnityEvent<float> onStepUpdate;
-
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -43,45 +63,34 @@ public class Player : MonoBehaviour, IEntitySerializer {
         settings = Utils.Load<PlayerControlsSettings>("player.json");
         bobbing = GetComponent<PlayerBobbingSway>();
         building = GetComponent<PlayerBuilding>();
-        controller = GetComponent<PlayerController>();
+        movement = GetComponent<PlayerMovement>();
         temperature = GetComponent<PlayerTemperature>();
         interactions = GetComponent<PlayerInteractions>();
         health = GetComponent<PlayerHealth>();
         inventory = GetComponent<PlayerInventory>();
+        footsteps = GetComponent<PlayerFootsteps>();
+
+        foreach (var item in GetComponents<PlayerBehaviour>()) {
+            item.settings = settings;
+            item.player = this;
+        }
     }
 
-    private void Update() {
-        if(!music.isPlaying && !GameManager.Instance.paused) {
-            PlayMusic();
-        }
+    // Checks if a button has been pressed in the current frame
+    public bool Pressed(InputAction.CallbackContext context) {
+        return context.performed && !context.canceled && CanPerform();
+    }
+
+    // Checks if we can do *any* movement
+    public bool CanPerform() {
+        return UIScriptMaster.Instance.inGameHUD.MovementPossible() && state != State.Dead && GameManager.Instance.initialized;
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
-        if (context.performed) {
-            UIScriptMaster.Instance.inGameHUD.EscPressed();
-        }
-    }
-
-    public void ToggleDevConsole(InputAction.CallbackContext context) {
-        if (Performed(context) && !GameManager.Instance.devConsole.fardNation) {
-            UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
-        }
+        UIScriptMaster.Instance.inGameHUD.EscPressed();
     }
 
     /*
-    public void ToggleInventory(InputAction.CallbackContext context) {
-        if (context.performed && !isDead) {
-            UIScriptMaster.Instance.inGameHUD.ToggleInventory();
-        }
-    }
-
-    public void ExitButton(InputAction.CallbackContext context) {
-        if (context.performed) {
-            UIScriptMaster.Instance.inGameHUD.EscPressed();
-        }
-    }
-
-
     public void AltAction(InputAction.CallbackContext context) {
         if(context.performed) {
             altAction = true;
@@ -89,94 +98,67 @@ public class Player : MonoBehaviour, IEntitySerializer {
             altAction = false;
         }
     }
-
-
-
-    public void ToggleDevConsole(InputAction.CallbackContext context) {
-        if (Performed(context) && !GameManager.Instance.devConsole.fardNation) {
-            UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
-        }
-    }
-
+    */
 
 
     public void Scroll(InputAction.CallbackContext context) {
-        if (Performed(context)) {
-            float scroll = -context.ReadValue<float>();
+        if (!Pressed(context))
+            return;
 
-            if (isBuilding) {
-                placementRotation += scroll * 22.5f;
-            } else {
-                SelectionChanged( () => {
-                    int newSelected = (Equipped + (int)scroll) % 10;
-                    Equipped = (newSelected < 0) ? 9 : newSelected;
-                });
-            }
+        float scroll = -context.ReadValue<float>();
+        if (state == State.Building) {
+            building.Scroll(scroll);
+        } else {
+            inventory.Scroll(scroll);
         }
     }
 
-    public void SelectSlot(InputAction.CallbackContext context) {
-        if (Performed(context))
-            SelectionChanged(() => { Equipped = (int)context.ReadValue<float>(); });
-    }
-
     public void PrimaryAction(InputAction.CallbackContext context) {
-        if (!Performed() || context.performed)
+        if (!CanPerform())
             return;
 
-        PrimaryHeld = !context.canceled && !isBuilding;
+        PrimaryHeld = !context.canceled && state == State.Default;
 
-        if (isBuilding && placementStatus && !context.canceled) {
-            BuildActionPrimary();
-        } else if (!EquippedItem.IsEmpty() && !isBuilding) {
-            EquippedItem.logic.PrimaryAction(context, this);
+        if (state == State.Building) {
+            building.PrimaryAction(context);
+        } else {
+            inventory.PrimaryAction(context);
         }
     }
 
     public void InteractAction(InputAction.CallbackContext context) {
-        if (!Performed(context) || !lookingAt.HasValue)
+        if (!Pressed(context))
             return;
 
-        if (interaction != null && interaction.Interactable && vehicle == null) {
-            interaction.Interact(this);
-        } else if (vehicle != null) {
-            ExitVehicle();
+        if (state == State.Driving) {
+            movement.ExitVehicle();
+        } else {
+            interactions.Interact();
         }
     }
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if (context.performed)
+        if (!CanPerform())
             return;
 
-        bool pressed = !context.canceled;
-        if (isBuilding && pressed) {
-            UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
-        } else if (!EquippedItem.IsEmpty()) {
-            EquippedItem.logic.SecondaryAction(context, this);
+        SecondaryHeld = !context.canceled && state == State.Default;
+
+        if (state == State.Building) {
+            building.SecondaryAction(context);
+        } else {
+            inventory.SecondaryAction(context);
         }
     }
 
     public void TertiaryAction(InputAction.CallbackContext context) {
-        if (context.performed)
+        if (!CanPerform())
             return;
 
-        bool pressed = !context.canceled;
-        if (isBuilding && pressed) {
-            DestroySelectedBuilding();
+        if (state == State.Building) {
+            building.TertiaryAction(context);
         }
-    }
-
-    public void TempActivateBuildingMode(InputAction.CallbackContext context) {
-        if (Performed(context)) {
-            isBuilding = !isBuilding;
-            placementTarget.SetActive(false);
-            if (!isBuilding) {
-                ClearOutline();
-            }
-        }
-    }
-    */
-
+    }    
+        
     public void Serialize(EntityData data) {
         /*
         data.inventory = items;
@@ -201,12 +183,20 @@ public class Player : MonoBehaviour, IEntitySerializer {
         */
     }
 
+    private void Update() {
+        if (!music.isPlaying && !GameManager.Instance.paused) {
+            PlayMusic();
+        }
+    }
+
 
     int lastPlayedMusicIndex = -1;
     public void PlayMusic() {
+        /*
         var temp = Registries.music.data.Random(lastPlayedMusicIndex);
         music.clip = temp.Item2;
         lastPlayedMusicIndex = temp.Item1;
         music.Play();
+        */
     }
 }

@@ -24,16 +24,16 @@ public class SnowballItem : Item {
             float forcePercentage = Mathf.Lerp(minFactor, 1f, charge);
 
             ProjectileShooter shooter = player.GetComponent<ProjectileShooter>();
-            shooter.data = (SnowballItemData)player.EquippedItem.Data;
+            shooter.data = (SnowballItemData)player.inventory.EquippedItem.Data;
 
             // flick maxxing
-            Vector3 bruh = (player.transform.right * player.MouseDelta.x + player.transform.up * player.MouseDelta.y) * 0.05f;
+            Vector3 bruh = (player.transform.right * player.movement.mouseDelta.x + player.transform.up * player.movement.mouseDelta.y) * 0.05f;
             //Vector3 bruh = Vector3.zero;
             shooter.Shoot(forcePercentage, bruh);
 
             throwDelay = maxThrowDelay * charge;
             time = 0;
-            player.RemoveItem(player.Equipped, 1);
+            player.inventory.RemoveItem(player.inventory.Equipped, 1);
             return;
         }
     }

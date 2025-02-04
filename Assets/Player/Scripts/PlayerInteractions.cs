@@ -7,8 +7,8 @@ public class PlayerInteractions : PlayerBehaviour {
     private IInteraction lastInteraction;
 
     private void Update() {
-        if (vehicle == null) {
-            if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
+        if (player.movement.vehicle == null) {
+            if (Physics.Raycast(player.camera.transform.position, player.camera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
                 GameObject other = info.collider.gameObject;
                 interaction = other.GetComponent<IInteraction>();
                 lookingAt = info;
@@ -20,15 +20,21 @@ public class PlayerInteractions : PlayerBehaviour {
 
         if (!ReferenceEquals(lastInteraction, interaction) || (lastInteraction.IsNullOrDestroyed() ^ interaction.IsNullOrDestroyed())) {
             if (!interaction.IsNullOrDestroyed()) {
-                interaction.StartHover(this);
+                interaction.StartHover(player);
             }
 
             if (!lastInteraction.IsNullOrDestroyed()) {
-                lastInteraction.StopHover(this);
+                lastInteraction.StopHover(player);
             }
         }
 
         UIScriptMaster.Instance.crosshairHints.SetInteractKeyHint(interaction != null && interaction.Interactable);
         lastInteraction = interaction;
+    }
+
+    public void Interact() {
+        if (interaction != null && interaction.Interactable) {
+            interaction.Interact(player);
+        }
     }
 }

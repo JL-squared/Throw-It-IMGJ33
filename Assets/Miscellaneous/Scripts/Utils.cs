@@ -176,21 +176,7 @@ public static class Utils {
         return (index, dict.ToList()[index].Value);
     }
 
-    // Jarvis, randomize his balls but exclude a single number
-    public static (int, V) Random<K, V>(this Dictionary<K, V> dict, int exclusionIndex) {
-        if (exclusionIndex >= dict.Count || exclusionIndex < 0) {
-            return Random(dict);
-        }
-
-        int lower = UnityEngine.Random.Range(0, exclusionIndex);
-        int upper = UnityEngine.Random.Range(exclusionIndex+1, dict.Count);
-        int rng = UnityEngine.Random.value > 0.5f ? lower : upper;
-
-        // very stupid but it works
-        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
-        return (rng, dict.ToList()[rng].Value);
-    }
-
+    // Jarvis, calculate the absolute whilst somehow smoothing and keeping the range 0-1
     public static float SmoothAbsClamped01(float x, float h) {
         float J(float x) {
             return Mathf.Sqrt(x*x + h) - Mathf.Sqrt(h);

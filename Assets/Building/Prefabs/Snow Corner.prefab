@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6813733549614143694}
   - component: {fileID: 2203743512642556854}
   m_Layer: 6
-  m_Name: Snow Slope
+  m_Name: Snow Corner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5836231620952523681}
-  - component: {fileID: 2038799918051976653}
+  - component: {fileID: 8603720066991106626}
   m_Layer: 6
   m_Name: snappoint1
   m_TagString: Snappoint
@@ -146,7 +146,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2038799918051976653
+--- !u!114 &8603720066991106626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8593979695789259842}
-  - component: {fileID: 1066133858882913198}
+  - component: {fileID: 5139893747405215816}
   m_Layer: 6
   m_Name: snappoint2
   m_TagString: Snappoint
@@ -190,7 +190,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1066133858882913198
+--- !u!114 &5139893747405215816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6376621093038280693}
-  - component: {fileID: 1799231597020930520}
+  - component: {fileID: 1959227073806961938}
   m_Layer: 6
   m_Name: snappoint4
   m_TagString: Snappoint
@@ -234,7 +234,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1799231597020930520
+--- !u!114 &1959227073806961938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1968229421755331621}
-  - component: {fileID: 957344363719594608}
+  - component: {fileID: 5870859017182675723}
   m_Layer: 6
   m_Name: snappoint6
   m_TagString: Snappoint
@@ -278,7 +278,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &957344363719594608
+--- !u!114 &5870859017182675723
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4939261312018387094}
-  - component: {fileID: 1657850615502680132}
+  - component: {fileID: 1949244157406226914}
   m_Layer: 6
   m_Name: snappoint7
   m_TagString: Snappoint
@@ -322,7 +322,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1657850615502680132
+--- !u!114 &1949244157406226914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3640951433356074991}
-  - component: {fileID: 2874162672834296871}
+  - component: {fileID: 6056975621384697965}
   m_Layer: 6
   m_Name: snappoint8
   m_TagString: Snappoint
@@ -366,7 +366,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2874162672834296871
+--- !u!114 &6056975621384697965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -404,13 +404,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6878190696621641995}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!23 &6921832599051403472
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -473,7 +473,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6193113304005603180}
-  - component: {fileID: 6024543261500692126}
+  - component: {fileID: 5052411196869104141}
   m_Layer: 6
   m_Name: snappoint3
   m_TagString: Snappoint
@@ -496,7 +496,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6024543261500692126
+--- !u!114 &5052411196869104141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -517,7 +517,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8141603614349819988}
-  - component: {fileID: 6437090572834706007}
+  - component: {fileID: 39363907017733605}
   m_Layer: 6
   m_Name: snappoint5
   m_TagString: Snappoint
@@ -540,7 +540,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6462716667248018184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6437090572834706007
+--- !u!114 &39363907017733605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

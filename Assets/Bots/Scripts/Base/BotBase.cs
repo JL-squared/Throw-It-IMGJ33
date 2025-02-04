@@ -280,7 +280,7 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
             part.targetVelocity = velocity;
         }
 
-        lookTarget = Player.Instance.head.position;
+        lookTarget = Player.Instance.camera.transform.position;
         float distance = Vector3.Distance(neckObject.transform.position, lookTarget);
         Vector3 thingyMaBob = lookTarget - headObject.transform.position;
 

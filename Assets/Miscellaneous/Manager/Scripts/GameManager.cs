@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
             Instance = this;
         }
 
+        /*
         if (VoxelTerrain.Instance != null && !VoxelTerrain.Instance.isActiveAndEnabled) {
             initialized = false;
             Time.timeScale = 0.0f;
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour {
         } else {
             initialized = true;
         }
-
+        */
+        initialized = true;
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json", resave: true);
         graphicsSettings.Apply(volume.profile);

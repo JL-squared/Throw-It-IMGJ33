@@ -13,18 +13,20 @@ public class Vehicle : MonoBehaviour, IInteraction {
     private Vector2 lastWishMovement;
 
     public void Interact(Player player) {
-        if (player.vehicle != null) {
-            player.ExitVehicle();
+        if (player.movement.vehicle != null) {
+            player.movement.ExitVehicle();
         }
 
         player.GetComponent<EntityMovement>().rotationIsLocal = RotationFollows;
-        player.vehicle = this;
+        player.movement.vehicle = this;
         player.transform.SetParent(transform);
         player.transform.localPosition = playerSeat.localPosition;
         player.transform.localRotation = Quaternion.identity;
-        player.ResetMovement(true);
+        player.movement.ResetMovement(true);
         ((IInteraction)this).SetHighlight(false);
         driven = true;
+        player.state = Player.State.Driving;
+        player.movement.inner.cc.enabled = false;
     }
 
     public virtual void WishMovementChanged(Vector2 newWishMovement) {
@@ -46,7 +48,7 @@ public class Vehicle : MonoBehaviour, IInteraction {
         if (driven) {
             player.transform.localPosition = playerSeat.localPosition;
 
-            Vector2 newWish = player.localWishMovement.normalized;
+            Vector2 newWish = player.movement.localWishMovement.normalized;
             if (Vector2.Distance(newWish, lastWishMovement) > 0.001) {
                 WishMovementChanged(newWish);
             }

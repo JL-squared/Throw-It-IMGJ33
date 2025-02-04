@@ -4,6 +4,7 @@ using UnityEngine;
 using static UnityEditor.Profiling.HierarchyFrameDataView;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.UIElements;
 
 public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;
@@ -22,10 +23,14 @@ public class PlayerInventory : PlayerBehaviour {
             selectedEvent?.Invoke(equipped);
         }
     }
+    [HideInInspector]
     public ItemStack EquippedItem { get { return items[equipped]; } }
 
+    [HideInInspector]
     public UnityEvent<int> selectedEvent;
+    [HideInInspector]
     public UnityEvent<List<ItemStack>> inventoryUpdateEvent;
+    [HideInInspector]
     public UnityEvent<int, bool> slotUpdateEvent;
 
     public void Start() {
@@ -57,14 +62,37 @@ public class PlayerInventory : PlayerBehaviour {
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if (context.performed && !player.isDead) {
+        Debug.Log("nuhuh");
+        /*
+        if (context.performed && !context.canceled && player.state != Player.State.Dead && GameManager.Instance.initialized) {
             UIScriptMaster.Instance.inGameHUD.ToggleInventory();
         }
+        */
     }
 
     public void SelectSlot(InputAction.CallbackContext context) {
-        if (Performed(context))
+        if (Pressed(context)) {
             SelectionChanged(() => { Equipped = (int)context.ReadValue<float>(); });
+        }
+    }
+
+    public void Scroll(float scroll) {
+        SelectionChanged(() => {
+            int newSelected = (Equipped + (int)scroll) % 10;
+            Equipped = (newSelected < 0) ? 9 : newSelected;
+        });
+    }
+
+    public void PrimaryAction(InputAction.CallbackContext context) {
+        if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.PrimaryAction(context, player);
+        }
+    }
+
+    public void SecondaryAction(InputAction.CallbackContext context) {
+        if (!EquippedItem.IsEmpty()) {
+            EquippedItem.logic.SecondaryAction(context, player);
+        }
     }
 
     // Add item to inventory if possible,
@@ -248,10 +276,10 @@ public class PlayerInventory : PlayerBehaviour {
     }
 
     public void DropItem(InputAction.CallbackContext context) {
-        if (Performed(context)) {
+        if (Pressed(context)) {
             ItemStack item = items[equipped];
             if (item.Count > 0) {
-                if (WorldItem.Spawn(items[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.controller.inner.Velocity))
+                if (WorldItem.Spawn(items[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.movement.inner.Velocity))
                     RemoveItem(equipped, 1);
             }
         }

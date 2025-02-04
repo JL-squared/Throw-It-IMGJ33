@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerBuilding : PlayerBehaviour {
-    public bool isBuilding; // irrelevant for now
     public bool noBuildingCost;
     List<Transform> tempSnapPoints1 = new List<Transform>(); // idk what this does
     List<Transform> tempSnapPoints2 = new List<Transform>(); // idk what this does either
@@ -17,7 +16,7 @@ public class PlayerBuilding : PlayerBehaviour {
     private GameObject placementTarget;
     private bool placementStatus = false;
     private float placementRotation = 0f;
-    public float placementDistance;
+    public float placementDistance = 10f;
     private bool altAction = false;
     public Piece currentOutline = null;
     public Color outlineColor = Color.black;
@@ -26,6 +25,7 @@ public class PlayerBuilding : PlayerBehaviour {
 
     private void Awake() {
         placeRayMask = LayerMask.GetMask("Default", "Piece");
+        //placeRayMask = ~LayerMask.GetMask("Player");
     }
 
     private void Start() {
@@ -34,79 +34,64 @@ public class PlayerBuilding : PlayerBehaviour {
     }
 
     private void LateUpdate() {
-        if (isBuilding) UpdatePlacementTarget();
+        if (placementTarget != null) {
+            if (player.state == Player.State.Building)
+                UpdatePlacementTarget();
 
-        if (!noBuildingCost && !(player.inventory.CheckForItems(selectedPiece.requirement1) && player.inventory.CheckForItems(selectedPiece.requirement2) && player.inventory.CheckForItems(selectedPiece.requirement3))) {
-            placementStatus = false;
-        }
+            if (!noBuildingCost && !(player.inventory.CheckForItems(selectedPiece.requirement1) && player.inventory.CheckForItems(selectedPiece.requirement2) && player.inventory.CheckForItems(selectedPiece.requirement3))) {
+                placementStatus = false;
+            }
 
-        MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
-        foreach (var item in renderers) {
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            block.SetInt("_Valid", placementStatus ? 1 : 0);
-            item.SetPropertyBlock(block);
+            MeshRenderer[] renderers = placementTarget.GetComponentsInChildren<MeshRenderer>();
+            foreach (var item in renderers) {
+                MaterialPropertyBlock block = new MaterialPropertyBlock();
+                block.SetInt("_Valid", placementStatus ? 1 : 0);
+                item.SetPropertyBlock(block);
+            }
         }
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
-        if (!Performed() || context.performed)
-            return;
-
-        PrimaryHeld = !context.canceled && !isBuilding;
-
-        if (isBuilding && placementStatus && !context.canceled) {
+        if (Pressed(context)) {
             BuildActionPrimary();
-        } else if (!EquippedItem.IsEmpty() && !isBuilding) {
-            EquippedItem.logic.PrimaryAction(context, this);
-        }
-    }
-
-    public void InteractAction(InputAction.CallbackContext context) {
-        if (!Performed(context) || !lookingAt.HasValue)
-            return;
-
-        if (interaction != null && interaction.Interactable && vehicle == null) {
-            interaction.Interact(this);
-        } else if (vehicle != null) {
-            ExitVehicle();
         }
     }
 
     public void SecondaryAction(InputAction.CallbackContext context) {
-        if (context.performed)
-            return;
-
-        bool pressed = !context.canceled;
-        if (isBuilding && pressed) {
+        if (Pressed(context)) {
             UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
-        } else if (!EquippedItem.IsEmpty()) {
-            EquippedItem.logic.SecondaryAction(context, this);
         }
     }
 
-    public void TertiaryAction(InputAction.CallbackContext context) {
-        if (context.performed)
-            return;
+    public void Scroll(float scroll) {
+        placementRotation += scroll * 22.5f;
+    }
 
-        bool pressed = !context.canceled;
-        if (isBuilding && pressed) {
+    public void TertiaryAction(InputAction.CallbackContext context) {
+        if (Pressed(context)) {
             DestroySelectedBuilding();
+        }
+    }
+
+    public void TempActivateBuildingMode(InputAction.CallbackContext context) {
+        if (Pressed(context) && (player.state == Player.State.Default || player.state == Player.State.Building)) {
+
+            if (player.state == Player.State.Default) {
+                player.state = Player.State.Building;
+            } else if (player.state == Player.State.Building) {
+                player.state = Player.State.Default;
+            }
+
+            placementTarget.SetActive(false);
+            if (player.state != Player.State.Building) {
+                ClearOutline();
+            }
         }
     }
 
     public void DestroySelectedBuilding() {
         if (currentOutline != null) {
             Destroy(currentOutline.gameObject);
-        }
-    }
-
-    public void TempActivateBuildingMode(InputAction.CallbackContext context) {
-        if (Performed(context)) {
-            isBuilding = !isBuilding;
-            placementTarget.SetActive(false);
-            if (!isBuilding) {
-                ClearOutline();
-            }
         }
     }
 
@@ -120,9 +105,9 @@ public class PlayerBuilding : PlayerBehaviour {
         builtPiece.layer = LayerMask.NameToLayer("Piece");
         Utils.PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
         if (!noBuildingCost) {
-            TakeItems(selectedPiece.requirement1);
-            TakeItems(selectedPiece.requirement2);
-            TakeItems(selectedPiece.requirement3);
+            player.inventory.TakeItems(selectedPiece.requirement1);
+            player.inventory.TakeItems(selectedPiece.requirement2);
+            player.inventory.TakeItems(selectedPiece.requirement3);
         }
     }
 
@@ -179,8 +164,8 @@ public class PlayerBuilding : PlayerBehaviour {
         int layerMask = placeRayMask;
 
         // Send a raycast
-        if (Physics.Raycast(gameCamera.transform.position, gameCamera.transform.forward, out var hitInfo, 50f, layerMask)) {
-            float num = placementDistance;
+        if (Physics.Raycast(player.camera.transform.position, player.camera.transform.forward, out var hitInfo, placementDistance, ~LayerMask.GetMask("Player"))) {
+            Debug.DrawRay(player.camera.transform.position, player.camera.transform.forward * hitInfo.distance, Color.black);
 
             /* not sure what this does
             if ((bool)placementTarget) {
@@ -192,7 +177,7 @@ public class PlayerBuilding : PlayerBehaviour {
             */
 
             // if we hit something, return true and set the things
-            if ((bool)hitInfo.collider && !hitInfo.collider.attachedRigidbody && Vector3.Distance(head.position, hitInfo.point) < num) {
+            if ((bool)hitInfo.collider && !hitInfo.collider.attachedRigidbody) {
                 point = hitInfo.point;
                 normal = hitInfo.normal;
                 piece = hitInfo.collider.GetComponentInParent<Piece>(); // this can either return a piece or just not do anything
@@ -212,9 +197,10 @@ public class PlayerBuilding : PlayerBehaviour {
     /// </summary>
     private void UpdatePlacementTarget() {
         bool manualPlacement = altAction; // this currently cannot be changed
-
         if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
+            Debug.Log("adsf");
             OutlineObject(piece);
+
 
             placementTarget.SetActive(true); // yess we found one get the hologram working
             placementStatus = true; // cant remember what this was used for

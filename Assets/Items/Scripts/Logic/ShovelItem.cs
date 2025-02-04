@@ -6,11 +6,12 @@ public class ShovelItem : ToolItem {
     bool canPickupSnow;
     float durability;
 
+
     public override void SecondaryAction(InputAction.CallbackContext context, Player player) {
         base.SecondaryAction(context, player);
 
         if (canPickupSnow && !context.canceled) {
-            ShovelItemData data = (ShovelItemData)player.EquippedItem.Data;
+            ShovelItemData data = (ShovelItemData)player.inventory.EquippedItem.Data;
             
             /*
             if (VoxelTerrain.Instance != null) {
@@ -26,33 +27,33 @@ public class ShovelItem : ToolItem {
             }
             */
 
-            player.AddItem(new ItemStack("snowball", 1));
+            player.inventory.AddItem(new ItemStack("snowball", 1));
         }
     }
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
         base.PrimaryAction(context, player);
         var shovelItemData = ((ShovelItemData)ItemReference.Data);
-        if (!context.canceled && player.lookingAt.HasValue) {
+        if (!context.canceled && player.interactions.lookingAt.HasValue) {
             bool doTheAnimation = false;
 
 
-            Rigidbody rb = player.lookingAt.Value.rigidbody;
+            Rigidbody rb = player.interactions.lookingAt.Value.rigidbody;
             if (rb != null) {
-                Vector3 forward = player.gameCamera.transform.forward;
-                rb.AddForceAtPosition(forward * 500.0f, player.lookingAt.Value.point);
+                Vector3 forward = player.camera.transform.forward;
+                rb.AddForceAtPosition(forward * 500.0f, player.interactions.lookingAt.Value.point);
                 doTheAnimation = true;
             }
 
-            EntityHealth health = player.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
+            EntityHealth health = player.interactions.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
             if (health != null) {
                 doTheAnimation = true;
                 health.Damage(5.0f);
             }
 
             if (doTheAnimation) {
-                player.viewModel.CancelTweens();
-                player.viewModel.AddTween(new LocalRotationTween {
+                player.inventory.viewModel.CancelTweens();
+                player.inventory.viewModel.AddTween(new LocalRotationTween {
                     from = shovelItemData.viewModelRotationOffset,
                     to = shovelItemData.animationRotation,
                     duration = 0.2f,
@@ -60,7 +61,7 @@ public class ShovelItem : ToolItem {
                     onEnd = (TweenInstance<Transform, Quaternion> instance) => {
                         
 
-                        player.viewModel.AddTween(new LocalRotationTween {
+                        player.inventory.viewModel.AddTween(new LocalRotationTween {
                             from = shovelItemData.animationRotation,
                             to = shovelItemData.viewModelRotationOffset,
                             duration = 0.2f,
@@ -69,7 +70,7 @@ public class ShovelItem : ToolItem {
                     },
                 });
 
-                Utils.PlaySound(player.lookingAt.Value.point, Registries.snowBrickPlace);
+                Utils.PlaySound(player.interactions.lookingAt.Value.point, Registries.snowBrickPlace);
 
                 /*
                 player.viewModel.AddTween(new LocalPositionTween {
@@ -98,15 +99,19 @@ public class ShovelItem : ToolItem {
 
     public override void EquippedUpdate(Player player) {
         canPickupSnow = false;
+        /*
         if (player.lookingAt != null) {
             RaycastHit info = player.lookingAt.Value;
-            /*
-            VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
-            if (chunk != null) {
-                canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new ItemStack("snowball", 1));
-            }
-            */
+
         }
+        */
+
+        /*
+        VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
+        if (chunk != null) {
+            canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new ItemStack("snowball", 1));
+        }
+        */
 
         UIScriptMaster.Instance.crosshairHints.SetRightClickHint(canPickupSnow);
     }
