@@ -1,6 +1,7 @@
 using Tweens;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.ParticleSystem;
 
 public class ShovelItem : ToolItem {
     bool canPickupSnow;
@@ -56,13 +57,15 @@ public class ShovelItem : ToolItem {
 
             if (doTheAnimation) {
                 player.inventory.viewModel.CancelTweens();
+                var gm = GameObject.Instantiate(shovelItemData.particles, player.interactions.lookingAt.Value.point, Quaternion.LookRotation(player.interactions.lookingAt.Value.normal));
+                GameObject.Destroy(gm, 0.2f);
                 player.inventory.viewModel.AddTween(new LocalRotationTween {
                     from = shovelItemData.viewModelRotationOffset,
                     to = shovelItemData.animationRotation,
                     duration = 0.2f,
                     easeType = EaseType.ElasticOut,
                     onEnd = (TweenInstance<Transform, Quaternion> instance) => {
-                        
+
 
                         player.inventory.viewModel.AddTween(new LocalRotationTween {
                             from = shovelItemData.animationRotation,

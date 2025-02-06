@@ -1,7 +1,5 @@
-using System;
 using Tweens;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : PlayerBehaviour {

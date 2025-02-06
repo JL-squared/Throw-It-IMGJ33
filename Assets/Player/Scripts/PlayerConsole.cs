@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine.Events;
-using UnityEngine;
-using static EntityHealth;
 using UnityEngine.InputSystem;
 
 public class PlayerConsole : PlayerBehaviour {

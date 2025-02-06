@@ -52,7 +52,7 @@ public class PlayerBuilding : PlayerBehaviour {
     }
 
     public void PrimaryAction(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
+        if (Pressed(context) && placementStatus) {
             BuildActionPrimary();
         }
     }

@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
-using static UnityEditor.Profiling.HierarchyFrameDataView;
 using UnityEngine.InputSystem;
 using System;
-using UnityEngine.UIElements;
 
 public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;

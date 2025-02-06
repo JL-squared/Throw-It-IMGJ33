@@ -6,7 +6,6 @@ using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
-using UnityEngine.Internal;
 
 [Serializable]
 public class GraphicsQualitySettings {

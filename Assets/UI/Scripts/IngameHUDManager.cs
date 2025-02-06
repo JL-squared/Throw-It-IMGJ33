@@ -1,7 +1,4 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// State manager for ingame menu objects.

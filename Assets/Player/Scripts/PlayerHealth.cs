@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine;
-using static EntityHealth;
 
 public class PlayerHealth : PlayerBehaviour {
     [HideInInspector]

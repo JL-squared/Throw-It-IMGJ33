@@ -1,10 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Tweens;
-using System;
-using System.Linq;
 
 // Full Player script holding all necessary functions and variables
 public class Player : MonoBehaviour, IEntitySerializer {

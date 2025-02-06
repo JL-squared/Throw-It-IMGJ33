@@ -7,4 +7,5 @@ public class ShovelItemData : ItemData {
     public new ShovelItem item;
     public Quaternion animationRotation;
     public Vector3 animationPosition;
+    public GameObject particles;
 }
