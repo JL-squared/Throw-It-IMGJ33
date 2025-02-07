@@ -1,11 +1,29 @@
+using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemContainer : MonoBehaviour {
+public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
+    [Min(1)]
+    public int size;
     public List<ItemStack> items;
 
     public UnityEvent<List<ItemStack>> onUpdate;
+
+    public ItemStack this[int i] {
+        get => items[i];
+        set => items[i] = value;
+    }
+
+    private void Awake() {
+        for (int i = 0; i < size; i++) {
+            ItemStack emptySlot = new ItemStack();
+            items.Add(emptySlot);
+            emptySlot.onUpdate?.AddListener((ItemStack item) => { onUpdate.Invoke(items); });
+        }
+    }
+
 
     // Add item to inventory if possible,
     // Works with invalid stack sizes
@@ -27,6 +45,7 @@ public class ItemContainer : MonoBehaviour {
     public void TransferItem(ItemStack itemIn) {
         foreach (ItemStack item in items) { // Iterate over partial stacks and subtract
             if (itemIn.IsEmpty()) {
+                onUpdate.Invoke(items);
                 return;
             }
 
@@ -40,6 +59,7 @@ public class ItemContainer : MonoBehaviour {
 
         foreach (ItemStack item in items) { // Iterate over empty stacks and subtract
             if (itemIn.IsEmpty()) {
+                onUpdate.Invoke(items);
                 return;
             }
 
@@ -92,7 +112,7 @@ public class ItemContainer : MonoBehaviour {
             //int missingCount = Mathf.Max(count - currentCount, 0);
 
             if (currentCount == 0) {
-                //SelectionChanged(() => { items[slot].Data = null; });
+                items[slot].onEmpty.Invoke();
             }
 
             items[slot].Count = currentCount;
@@ -159,4 +179,14 @@ public class ItemContainer : MonoBehaviour {
             }
         }
     }
+
+    public IEnumerator<ItemStack> GetEnumerator() {
+        return items.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() {
+        return items.GetEnumerator();
+    }
+
+    public static implicit operator List<ItemStack>(ItemContainer container) { return container.items; }
 }

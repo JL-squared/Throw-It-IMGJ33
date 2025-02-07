@@ -28,7 +28,7 @@ public class ShovelItem : ToolItem {
             }
             */
 
-            player.inventory.AddItem(new ItemStack("snowball", 1));
+            player.inventory.container.PutItem(new ItemStack("snowball", 1));
         }
     }
 

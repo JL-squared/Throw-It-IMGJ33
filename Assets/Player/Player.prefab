@@ -323,6 +323,8 @@ GameObject:
   - component: {fileID: 4217417654151337624}
   - component: {fileID: 5170455056947594119}
   - component: {fileID: 7260989372531060555}
+  - component: {fileID: 2771658500311237328}
+  - component: {fileID: 1761805463429731269}
   m_Layer: 3
   m_Name: Player
   m_TagString: PlayerTag
@@ -748,6 +750,7 @@ MonoBehaviour:
   inventory: {fileID: 0}
   health: {fileID: 0}
   footsteps: {fileID: 3488795955197241747}
+  cameraShake: {fileID: 0}
   camera: {fileID: 2262149761271955649}
   state: 0
   music: {fileID: 8029250893140543358}
@@ -898,6 +901,16 @@ MonoBehaviour:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
+  shiveringShakeRotationFactor: 0.01
+  bodyTemp: 36
+  minBodyTemp: 30
+  maxBodyTemp: 37
+  maxSourcesTemp: 50
+  maxAllowedSecondsHypothermia: 35
+  currentHypothermiaSeconds: 0
+  reachSpeedIncrease: 0.05
+  reachSpeedDecrease: 0.001
+  shivering: 0
 --- !u!114 &37526116491265086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,12 +947,9 @@ MonoBehaviour:
     bobbing: 1
   keepUpdatingHolsterTransform: 0
   viewModel: {fileID: 0}
-  items: []
+  container: {fileID: 2771658500311237328}
   equipped: 0
   selectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  inventoryUpdateEvent:
     m_PersistentCalls:
       m_Calls: []
   slotUpdateEvent:
@@ -998,6 +1008,45 @@ MonoBehaviour:
     fov: 70
     bobbing: 1
   footsteps: {fileID: 3488795955197241747}
+--- !u!114 &2771658500311237328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e654e6fe84e2441afbef7a5ad34595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 10
+  items: []
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1761805463429731269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c603baf0c03bed94095f1be6b57d7df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  settings:
+    mouseSensivity: 1
+    fov: 70
+    bobbing: 1
+  damageSmoothinSpeed: 2.5
+  damagedDirectionFactor: 3
+  shiverer: {fileID: 4191656104483949294}
+  tiltStrafeStrength: 2
+  tiltStrafeSmoothingSpeed: 12
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0

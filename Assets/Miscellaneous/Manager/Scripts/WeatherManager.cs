@@ -20,11 +20,13 @@ public class WeatherManager : MonoBehaviour {
 
     public enum WeatherType {
         Calm,
-        Windy,
-        Snowy,
+        Wind,
+        Snowing,
         Overcast,
-        Stormy,
+        Storm,
     }
+
+    public WeatherType status = WeatherType.Calm;
 
     public float GetOutsideTemperature() {
         return -20.0f;
