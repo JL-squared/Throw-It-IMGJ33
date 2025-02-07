@@ -11,7 +11,7 @@ public class HotbarUI : MonoBehaviour {
         if (Player.Instance != null) {
             Player.Instance.inventory.selectedEvent?.AddListener(Select);
             Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
-            Player.Instance.inventory.inventoryUpdateEvent?.AddListener(Refresh);
+            Player.Instance.inventory.container.onUpdate.AddListener(Refresh);
         }
     }
 

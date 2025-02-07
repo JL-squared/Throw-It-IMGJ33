@@ -33,7 +33,7 @@ public class SnowballItem : Item {
 
             throwDelay = maxThrowDelay * charge;
             time = 0;
-            player.inventory.RemoveItem(player.inventory.Equipped, 1);
+            player.inventory.container.RemoveItem(player.inventory.Equipped, 1);
             return;
         }
     }

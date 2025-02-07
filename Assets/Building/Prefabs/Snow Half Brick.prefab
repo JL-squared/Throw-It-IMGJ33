@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5612993854864577866}
   - component: {fileID: 76371231796988630}
   m_Layer: 6
-  m_Name: Small Snow Brick
+  m_Name: Snow Half Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

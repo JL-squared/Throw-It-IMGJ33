@@ -1595,7 +1595,24 @@ MonoBehaviour:
   damagedDirectionFactor: 5
   shiverer: {fileID: 352060475}
   tiltStrafeStrength: 2
-  tiltStrafeSmoothingSpeed: 2
+  tiltStrafeSmoothingSpeed: 10
+--- !u!114 &582050546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582050510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e654e6fe84e2441afbef7a5ad34595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 10
+  items: []
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &606583469
 GameObject:
   m_ObjectHideFlags: 0
@@ -6256,6 +6273,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3400830642981070834, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: items
+      value: 
+      objectReference: {fileID: 582050546}
+    - target: {fileID: 3400830642981070834, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: container
+      value: 
+      objectReference: {fileID: 582050546}
     - target: {fileID: 4392259301960969222, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6359,6 +6386,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 582050528}
+    - targetCorrespondingSourceObject: {fileID: 6914026416981438280, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 582050546}
   m_SourcePrefab: {fileID: 100100000, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
