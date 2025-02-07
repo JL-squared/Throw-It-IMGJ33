@@ -98,7 +98,7 @@ public class PlayerMovement : PlayerBehaviour {
     }
 
     public void FOVTween() {
-        bool movingHorizontally = new Vector2(inner.Velocity.x, inner.Velocity.z).magnitude > 5.5f || localWishMovement.magnitude > 0.5f;
+        bool movingHorizontally = new Vector2(inner.Velocity.x, inner.Velocity.z).magnitude > 3.5f || localWishMovement.magnitude > 0.5f;
 
         var tween = new FloatTween {
             from = player.camera.fieldOfView,

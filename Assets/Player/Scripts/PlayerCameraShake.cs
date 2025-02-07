@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static IngameHUDManager;
 
 public class PlayerCameraShake : PlayerBehaviour {
     struct ShakeData {
@@ -19,6 +20,10 @@ public class PlayerCameraShake : PlayerBehaviour {
     public float cameraShakeIntensity;
     public float cameraShakeSmoothin;
     private Quaternion cameraShake;
+
+    [HideInInspector]
+    public float shivering;
+    public float shiveringStrength = 0.0002f;
 
     private List<ShakeData> shakes;
 
@@ -60,7 +65,12 @@ public class PlayerCameraShake : PlayerBehaviour {
 
         tiltStrafe = Quaternion.Euler(0f, 0f, horizontal * tiltStrafeStrength);
         damageRotation = Quaternion.Lerp(damageRotation, Quaternion.identity, Time.deltaTime * damageSmoothinSpeed);
-        shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShake;
+
+        Quaternion shiverRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shivering * shiveringStrength);
+
+        if (!UIScriptMaster.Instance.inGameHUD.Paused) {
+            shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShake * shiverRotation;
+        }
     }
 
     public void ShakeCamera(float duration, float intensity, Vector3 position) {

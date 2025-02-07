@@ -7,6 +7,7 @@ public class WeatherManager : MonoBehaviour {
 
     [Header("Clouds")]
     public GameObject[] cloudLayers;
+    public float[] cloudLayersSpeeds;
     public float cloudCoverageOffset = 0.0f;
     public AnimationCurve coverageCurve;
     public Color baseSunColor = Color.white;
@@ -17,6 +18,9 @@ public class WeatherManager : MonoBehaviour {
     [HideInInspector]
     public Vector2[] uvOffsetsCloud;
     public Vector2 cloudWindFactor;
+
+    [Header("Skybox")]
+    public Material skybox;
 
     public enum WeatherType {
         Calm,
@@ -43,7 +47,7 @@ public class WeatherManager : MonoBehaviour {
         // Accumulates the wind UV offset directions and applies them to the cloud materials
         for (int i = 0; i < cloudLayers.Length; i++) {
             // Accumulate wind offset
-            uvOffsetsCloud[i] += Time.deltaTime * globalTimeScale * Vector2.one * cloudWindFactor;
+            uvOffsetsCloud[i] += Time.deltaTime * globalTimeScale * Vector2.one * cloudWindFactor * cloudLayersSpeeds[i];
             
             // Apply the UV offsets and overcast values to the clouds
             MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -57,5 +61,6 @@ public class WeatherManager : MonoBehaviour {
         directionalLight.shadowStrength = invert;
         directionalLight.color = Color.Lerp(baseSunColor, overcastSunColor, basic);
         directionalLight.intensity = Mathf.Lerp(baseSunIntensity, overcastSunIntensity, basic);
+        skybox.SetFloat("_Cloud_Coverage", Mathf.Pow(basic, 2f));
     }
 }

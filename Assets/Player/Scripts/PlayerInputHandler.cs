@@ -12,12 +12,12 @@ public class PlayerInputHandler : PlayerBehaviour {
 
     // Checks if a button has been pressed in the current frame
     public bool Pressed(InputAction.CallbackContext context) {
-        return !context.canceled;
+        return !context.canceled && context.performed;
     }
 
     // Checks if a button has been released in the current frame
     public bool Released(InputAction.CallbackContext context) {
-        return context.canceled;
+        return context.canceled && !context.performed;
     }
 
     // Checks if we can do *any* movement (or if we are in a specific panel state)
@@ -26,7 +26,9 @@ public class PlayerInputHandler : PlayerBehaviour {
     }
 
     public void ExitButton(InputAction.CallbackContext context) {
-        UIScriptMaster.Instance.inGameHUD.EscPressed();
+        if (Pressed(context)) {
+            UIScriptMaster.Instance.inGameHUD.EscPressed();
+        }
     }
 
     /*
@@ -52,7 +54,7 @@ public class PlayerInputHandler : PlayerBehaviour {
     }
 
     public void ToggleInventory(InputAction.CallbackContext context) {
-        if (Performed(context) && Pressed(context)) {
+        if ((Performed(context) || Performed(context, IngameHUDManager.PanelState.Crafting)) && Pressed(context)) {
             inventory.ToggleInventory();
         }
     }
@@ -120,7 +122,7 @@ public class PlayerInputHandler : PlayerBehaviour {
     }
 
     public void ToggleDevConsole(InputAction.CallbackContext context) {
-        if (Pressed(context) && Performed(context) && !GameManager.Instance.devConsole.fardNation) {
+        if (Pressed(context) && Performed(context)) {
             UIScriptMaster.Instance.inGameHUD.ToggleDevConsole();
         }
     }

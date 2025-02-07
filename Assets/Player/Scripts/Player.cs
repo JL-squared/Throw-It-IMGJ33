@@ -39,16 +39,15 @@ public class Player : MonoBehaviour, IEntitySerializer {
     [HideInInspector]
     public PlayerCameraShake cameraShake;
 
+    [HideInInspector]
+    public PlayerInputHandler input;
+
     public new Camera camera;
 
     public State state;
     public AudioSource music;
 
     public PlayerControlsSettings settings;
-    [HideInInspector]
-    public bool PrimaryHeld = false;
-    [HideInInspector]
-    public bool SecondaryHeld = false;
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -68,6 +67,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         inventory = GetComponent<PlayerInventory>();
         footsteps = GetComponent<PlayerFootsteps>();
         cameraShake = GetComponent<PlayerCameraShake>();
+        input = GetComponent<PlayerInputHandler>();
 
         foreach (var item in GetComponents<PlayerBehaviour>()) {
             item.settings = settings;
@@ -80,6 +80,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.health = health;
             item.inventory = inventory;
             item.footsteps = footsteps;
+            item.cameraShake = cameraShake;
         }
     }
 

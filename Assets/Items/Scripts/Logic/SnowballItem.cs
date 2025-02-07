@@ -52,7 +52,7 @@ public class SnowballItem : Item {
 
         UIScriptMaster.Instance.crosshairHints.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
 
-        if (player.PrimaryHeld && !isCharging) {
+        if (player.input.PrimaryHeld && !isCharging) {
             if (throwDelay == 0.0f) isCharging = true;
         }
     }

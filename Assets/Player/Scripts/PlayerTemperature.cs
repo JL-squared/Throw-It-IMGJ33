@@ -54,39 +54,6 @@ public class PlayerTemperature : PlayerBehaviour {
         }
 
         shivering = Mathf.Clamp01(shivering);
+        cameraShake.shivering = shivering;
     }
-
-    private void Update() {
-        //shiverer.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, Time.deltaTime * shivering * shiveringShakeRotationFactor);
-    }
-
-    /*
-    public void Start() {
-        bodyTemperature = targetTemperature;
-    }
-
-
-
-    private void UpdateShivering() {
-        if (bodyTemperature < minShiveringTemp) {
-            shiveringCurrentTime += Time.deltaTime;
-        } else {
-            shiveringCurrentTime = 0.0f;
-        }
-
-        if (shiveringCurrentTime > shiveringDelay) {
-            shiverMeTimbers += Time.deltaTime;
-        } else {
-            shiverMeTimbers -= Time.deltaTime;
-        }
-        shiverMeTimbers = Mathf.Clamp01(shiverMeTimbers);
-
-
-        Vector3 localCamPos = new Vector3(Mathf.PerlinNoise1D(Time.time * shiveringShakeScale + 32.123f) - 0.5f, Mathf.PerlinNoise1D(Time.time * shiveringShakeScale - 2.123f) - 0.5f, 0.0f);
-        localCamPos *= shiverMeTimbers;
-        localCamPos *= shiveringShakeFactor;
-        //gameCamera.transform.localPosition = localCamPos;
-        //gameCamera.transform.localRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shiverMeTimbers * Time.deltaTime * shiveringShakeRotationFactor);
-    }
-    */
 }
