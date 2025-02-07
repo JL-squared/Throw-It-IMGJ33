@@ -36,60 +36,41 @@ public class ShovelItem : ToolItem {
         base.PrimaryAction(context, player);
         var shovelItemData = ((ShovelItemData)ItemReference.Data);
         if (!context.canceled && player.interactions.lookingAt.HasValue) {
-            bool doTheAnimation = false;
-
-
             Rigidbody rb = player.interactions.lookingAt.Value.rigidbody;
             if (rb != null) {
                 Vector3 forward = player.camera.transform.forward;
                 rb.AddForceAtPosition(forward * 500.0f, player.interactions.lookingAt.Value.point);
-                doTheAnimation = true;
             }
 
             EntityHealth health = player.interactions.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
             if (health != null) {
-                doTheAnimation = true;
                 health.Damage(5.0f, new EntityHealth.DamageSourceData {
                     source = player.gameObject,
                     direction = player.camera.transform.forward,
                 });
             }
 
-            if (doTheAnimation) {
-                player.inventory.viewModel.CancelTweens();
-                var gm = GameObject.Instantiate(shovelItemData.particles, player.interactions.lookingAt.Value.point, Quaternion.LookRotation(player.interactions.lookingAt.Value.normal));
-                GameObject.Destroy(gm, 0.2f);
-                player.inventory.viewModel.AddTween(new LocalRotationTween {
-                    from = shovelItemData.viewModelRotationOffset,
-                    to = shovelItemData.animationRotation,
-                    duration = 0.2f,
-                    easeType = EaseType.ElasticOut,
-                    onEnd = (TweenInstance<Transform, Quaternion> instance) => {
+            player.inventory.viewModel.CancelTweens();
+            var gm = GameObject.Instantiate(shovelItemData.particles, player.interactions.lookingAt.Value.point, Quaternion.LookRotation(player.interactions.lookingAt.Value.normal));
+            GameObject.Destroy(gm, 0.2f);
+            player.inventory.viewModel.AddTween(new LocalRotationTween {
+                from = shovelItemData.viewModelRotationOffset,
+                to = shovelItemData.animationRotation,
+                duration = 0.2f,
+                easeType = EaseType.ElasticOut,
+                onEnd = (TweenInstance<Transform, Quaternion> instance) => {
 
 
-                        player.inventory.viewModel.AddTween(new LocalRotationTween {
-                            from = shovelItemData.animationRotation,
-                            to = shovelItemData.viewModelRotationOffset,
-                            duration = 0.2f,
-                            easeType = EaseType.Linear,
-                        });
-                    },
-                });
+                    player.inventory.viewModel.AddTween(new LocalRotationTween {
+                        from = shovelItemData.animationRotation,
+                        to = shovelItemData.viewModelRotationOffset,
+                        duration = 0.2f,
+                        easeType = EaseType.Linear,
+                    });
+                },
+            });
 
-                Utils.PlaySound(player.interactions.lookingAt.Value.point, Registries.snowBrickPlace);
-
-                /*
-                player.viewModel.AddTween(new LocalPositionTween {
-                    from = shovelItemData.viewModelPositionOffset,
-                    to = shovelItemData.animationPosition,
-                    duration = 0.2f,
-                    easeType = EaseType.ExpoIn,
-                    usePingPong = true,
-                });
-                */
-
-
-            }
+            Utils.PlaySound(player.interactions.lookingAt.Value.point, Registries.snowBrickPlace);
         }
     }
 

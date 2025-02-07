@@ -52,10 +52,13 @@ public class PlayerMovement : PlayerBehaviour {
         } else {
             inner.speedModifier = 1f;
         }
+
+        FOVTween();
     }
 
     public void ResetMovement(bool resetRotation = false) {
         inner.localWishMovement = Vector2.zero;
+        localWishMovement = Vector2.zero;
         mouseDelta = Vector2.zero;
         player.bobbing.smoothedMouseDelta = Vector2.zero;
 
@@ -71,37 +74,35 @@ public class PlayerMovement : PlayerBehaviour {
         stepValue = 0f;
     }
 
-    public void Crouch(InputAction.CallbackContext context) {
-        if (!isSprinting && Pressed(context)) {
-            isCrouching = context.ReadValue<float>() > 0.5f;
-        }
+    public void Crouch(bool crouching) {
+        isCrouching = crouching;
     }
 
-    public void Jump(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
-            inner.Jump();
-        }
+    public void Jump() {
+        inner.Jump();
     }
 
-    public void Movement(InputAction.CallbackContext context) {
-        if (Performed(context)) {
-            localWishMovement = context.ReadValue<Vector2>();
-            inner.localWishMovement = localWishMovement;
-            FOVTween();
-        }
+    public void Movement(Vector2 dir) {
+        localWishMovement = dir;
+        inner.localWishMovement = localWishMovement;
+        //FOVTween();
     }
 
-    public void Sprint(InputAction.CallbackContext context) {
-        if (!isCrouching && Performed(context)) {
-            isSprinting = context.ReadValue<float>() > 0.5f;
-            FOVTween();
-        }
+    public void Sprint(bool sprinting) {
+        isSprinting = sprinting;
+        //FOVTween();
+    }
+
+    public void Look(Vector2 looking) {
+        ApplyMouseDelta(looking);
     }
 
     public void FOVTween() {
+        bool movingHorizontally = new Vector2(inner.Velocity.x, inner.Velocity.z).magnitude > 5.5f || localWishMovement.magnitude > 0.5f;
+
         var tween = new FloatTween {
             from = player.camera.fieldOfView,
-            to = isSprinting && localWishMovement.magnitude > 0.0f ? defaultFOV + 10 : defaultFOV,
+            to = isSprinting && movingHorizontally ? defaultFOV + 10 : defaultFOV,
             duration = 0.2f,
             onUpdate = (instance, value) => {
                 player.camera.fieldOfView = value;
@@ -109,12 +110,6 @@ public class PlayerMovement : PlayerBehaviour {
             easeType = EaseType.QuadOut,
         };
         gameObject.AddTween(tween);
-    }
-
-    public void Look(InputAction.CallbackContext context) {
-        if (Cursor.lockState != CursorLockMode.None && Performed(context)) {
-            ApplyMouseDelta(context.ReadValue<Vector2>());
-        }
     }
 
     public void ApplyMouseDelta(Vector2 delta) {

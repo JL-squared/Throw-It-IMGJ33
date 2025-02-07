@@ -321,10 +321,10 @@ GameObject:
   - component: {fileID: 37526116491265086}
   - component: {fileID: 3400830642981070834}
   - component: {fileID: 4217417654151337624}
-  - component: {fileID: 5170455056947594119}
   - component: {fileID: 7260989372531060555}
   - component: {fileID: 2771658500311237328}
   - component: {fileID: 1761805463429731269}
+  - component: {fileID: 8774647842230484772}
   m_Layer: 3
   m_Name: Player
   m_TagString: PlayerTag
@@ -377,8 +377,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5724637495373332539}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Movement
         m_Mode: 0
         m_Arguments:
@@ -393,8 +393,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5724637495373332539}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Look
         m_Mode: 0
         m_Arguments:
@@ -409,8 +409,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Look[/Mouse/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5724637495373332539}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -425,8 +425,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5724637495373332539}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Crouch
         m_Mode: 0
         m_Arguments:
@@ -441,8 +441,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Crouch[/Keyboard/ctrl]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5222446351638355825}
-        m_TargetAssemblyTypeName: PlayerBuilding, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: TempActivateBuildingMode
         m_Mode: 0
         m_Arguments:
@@ -457,8 +457,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Build Button Temp[/Keyboard/b]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Scroll
         m_Mode: 0
         m_Arguments:
@@ -473,8 +473,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3400830642981070834}
-        m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: SelectSlot
         m_Mode: 0
         m_Arguments:
@@ -489,8 +489,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Select Slot[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: PrimaryAction
         m_Mode: 0
         m_Arguments:
@@ -505,8 +505,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Primary Action[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: SecondaryAction
         m_Mode: 0
         m_Arguments:
@@ -521,8 +521,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Secondary Action[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: PlayerScript, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: ExitButton
         m_Mode: 0
         m_Arguments:
@@ -537,8 +537,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Exit Button[/Keyboard/escape]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3400830642981070834}
-        m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: ToggleInventory
         m_Mode: 0
         m_Arguments:
@@ -553,8 +553,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Inventory Toggle[/Keyboard/tab]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: InteractAction
         m_Mode: 0
         m_Arguments:
@@ -569,8 +569,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Interact[/Keyboard/f]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3400830642981070834}
-        m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: DropItem
         m_Mode: 0
         m_Arguments:
@@ -589,8 +589,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Market Toggle[/Keyboard/capsLock]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5724637495373332539}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: Sprint
         m_Mode: 0
         m_Arguments:
@@ -605,7 +605,7 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5170455056947594119}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerConsole, Assembly-CSharp
         m_MethodName: ToggleDevConsole
         m_Mode: 0
@@ -637,8 +637,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Shift[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8669513143636214874}
-        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
         m_MethodName: TertiaryAction
         m_Mode: 0
         m_Arguments:
@@ -812,7 +812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6abdc9ac16372448c8c188ab66a11d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -841,7 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7e3eb4b8a0c38499c4002ae516baf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -866,7 +864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 187c84cb02967224280aa10c50d1742b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -877,7 +874,7 @@ MonoBehaviour:
   head: {fileID: 921606742461663924}
   mouseSensitivity: 1
   localWishMovement: {x: 0, y: 0}
-  sprintModifier: 1
+  sprintModifier: 1.2
   isSprinting: 0
   isCrouching: 0
   vehicle: {fileID: 0}
@@ -896,7 +893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7200f2108142ef84ea9e2e0e7f15d23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -923,7 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad10b730c8d36894e8b5f04d9b9b8d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -940,7 +935,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a48fc69dba559946a7879d677a3e460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -967,29 +961,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f3a6345ea272045acfff0e52448a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
   health: {fileID: 0}
---- !u!114 &5170455056947594119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6914026416981438280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 042dd210c70dc5a4d963c0f5b64aa166, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  settings:
-    mouseSensivity: 1
-    fov: 70
-    bobbing: 1
 --- !u!114 &7260989372531060555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1002,7 +978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9242728cfccc68c4084db10c13cdd45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -1037,7 +1012,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c603baf0c03bed94095f1be6b57d7df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   settings:
     mouseSensivity: 1
     fov: 70
@@ -1047,6 +1021,26 @@ MonoBehaviour:
   shiverer: {fileID: 4191656104483949294}
   tiltStrafeStrength: 2
   tiltStrafeSmoothingSpeed: 12
+  cameraShakeIntensity: 0.2
+  cameraShakeSmoothin: 12
+--- !u!114 &8774647842230484772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d30602a38e101439426ae8c3cd2140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    mouseSensivity: 1
+    fov: 70
+    bobbing: 1
+  PrimaryHeld: 0
+  SecondaryHeld: 0
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0

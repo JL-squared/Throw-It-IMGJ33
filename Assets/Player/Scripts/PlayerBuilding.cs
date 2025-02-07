@@ -51,30 +51,26 @@ public class PlayerBuilding : PlayerBehaviour {
         }
     }
 
-    public void PrimaryAction(InputAction.CallbackContext context) {
-        if (Pressed(context) && placementStatus) {
+    public void PrimaryAction() {
+        if (placementStatus) {
             BuildActionPrimary();
         }
     }
 
-    public void SecondaryAction(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
-            UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
-        }
+    public void SecondaryAction() {
+        UIScriptMaster.Instance.inGameHUD.ToggleBuilding();
     }
 
     public void Scroll(float scroll) {
         placementRotation += scroll * 22.5f;
     }
 
-    public void TertiaryAction(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
-            DestroySelectedBuilding();
-        }
+    public void TertiaryAction() {
+        DestroySelectedBuilding();
     }
 
-    public void TempActivateBuildingMode(InputAction.CallbackContext context) {
-        if (Pressed(context) && (player.state == Player.State.Default || player.state == Player.State.Building)) {
+    public void TempActivateBuildingMode() {
+        if (player.state == Player.State.Default || player.state == Player.State.Building) {
 
             if (player.state == Player.State.Default) {
                 player.state = Player.State.Building;

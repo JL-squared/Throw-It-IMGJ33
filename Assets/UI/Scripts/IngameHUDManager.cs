@@ -16,7 +16,7 @@ public class IngameHUDManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject screenGraphics;
 
-    private enum PanelState {
+    public enum PanelState {
         None,
         Crafting,
         Building
@@ -24,7 +24,7 @@ public class IngameHUDManager : MonoBehaviour {
 
     private PanelState panelState = PanelState.None;
 
-    private enum ScreenState {
+    public enum ScreenState {
         Default,
         Paused,
         GameOver,
@@ -80,8 +80,8 @@ public class IngameHUDManager : MonoBehaviour {
         pauseMenu.SetActive(false);
     }
 
-    public bool MovementPossible() {
-        return panelState == PanelState.None && screenState == ScreenState.Default && !consoleActivated;
+    public bool IsInState(PanelState planelState, ScreenState screenState) {
+        return this.panelState == planelState && this.screenState == screenState && !consoleActivated;
     }
 
     // Makes a single change to the state and breaks
@@ -155,7 +155,7 @@ public class IngameHUDManager : MonoBehaviour {
         if (GameManager.Instance != null)
             GameManager.Instance.UpdatePaused(screenState == ScreenState.Paused);
 
-        if (MovementPossible()) {
+        if (IsInState(PanelState.None, ScreenState.Default)) {
             Cursor.lockState = CursorLockMode.Locked;
         } else {
             Player.Instance.movement.ResetMovement();

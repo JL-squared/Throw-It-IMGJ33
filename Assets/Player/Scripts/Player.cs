@@ -72,97 +72,17 @@ public class Player : MonoBehaviour, IEntitySerializer {
         foreach (var item in GetComponents<PlayerBehaviour>()) {
             item.settings = settings;
             item.player = this;
+            item.bobbing = bobbing;
+            item.building = building;
+            item.movement = movement;
+            item.temperature = temperature;
+            item.interactions = interactions;
+            item.health = health;
+            item.inventory = inventory;
+            item.footsteps = footsteps;
         }
     }
 
-    // Checks if a button has been pressed in the current frame
-    public bool Pressed(InputAction.CallbackContext context) {
-        return !context.canceled && Performed(context);
-    }
-
-    // Checks if a button has been released in the current frame
-    public bool Released(InputAction.CallbackContext context) {
-        return context.canceled && Performed(context);
-    }
-
-    // Checks if we can do *any* movement
-    public bool Performed(InputAction.CallbackContext context) {
-        return (context.performed ^ context.canceled) && UIScriptMaster.Instance.inGameHUD.MovementPossible() && state != State.Dead && GameManager.Instance.initialized;
-    }
-
-    public void ExitButton(InputAction.CallbackContext context) {
-        UIScriptMaster.Instance.inGameHUD.EscPressed();
-    }
-
-    /*
-    public void AltAction(InputAction.CallbackContext context) {
-        if(context.performed) {
-            altAction = true;
-        } else if (context.canceled) {
-            altAction = false;
-        }
-    }
-    */
-
-
-    public void Scroll(InputAction.CallbackContext context) {
-        if (!Pressed(context))
-            return;
-
-        float scroll = -context.ReadValue<float>();
-        if (state == State.Building) {
-            building.Scroll(scroll);
-        } else {
-            inventory.Scroll(scroll);
-        }
-    }
-
-    public void PrimaryAction(InputAction.CallbackContext context) {
-        if (!Performed(context))
-            return;
-
-        PrimaryHeld = !context.canceled && state == State.Default;
-
-        if (state == State.Building) {
-            building.PrimaryAction(context);
-        } else {
-            inventory.PrimaryAction(context);
-        }
-    }
-
-    public void InteractAction(InputAction.CallbackContext context) {
-        if (!Pressed(context))
-            return;
-
-        if (state == State.Driving) {
-            movement.ExitVehicle();
-        } else {
-            interactions.Interact();
-        }
-    }
-
-    public void SecondaryAction(InputAction.CallbackContext context) {
-        if (!Performed(context))
-            return;
-
-        SecondaryHeld = !context.canceled && state == State.Default;
-
-        if (state == State.Building) {
-            building.SecondaryAction(context);
-        } else {
-            inventory.SecondaryAction(context);
-        }
-    }
-
-    public void TertiaryAction(InputAction.CallbackContext context) {
-        if (!Performed(context))
-            return;
-
-        if (state == State.Building) {
-            building.TertiaryAction(context);
-        }
-    }    
-        
     public void Serialize(EntityData data) {
         /*
         data.inventory = items;

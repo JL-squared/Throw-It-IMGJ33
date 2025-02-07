@@ -35,7 +35,7 @@ public class PlayerInventory : PlayerBehaviour {
         container.PutItem(new ItemStack("shovel", 1));
         container.PutItem(new ItemStack("wires", 1));
 
-        foreach(ItemStack item in container) {
+        foreach (ItemStack item in container) {
             item.onEmpty.AddListener(() => { SelectionChanged(() => { item.Data = null; }); });
         }
     }
@@ -53,16 +53,12 @@ public class PlayerInventory : PlayerBehaviour {
         }
     }
 
-    public void ToggleInventory(InputAction.CallbackContext context) {
-        if (context.performed && !context.canceled && player.state != Player.State.Dead && GameManager.Instance.initialized) {
-            UIScriptMaster.Instance.inGameHUD.ToggleInventory();
-        }
+    public void ToggleInventory() {
+        UIScriptMaster.Instance.inGameHUD.ToggleInventory();
     }
 
-    public void SelectSlot(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
-            SelectionChanged(() => { Equipped = (int)context.ReadValue<float>(); });
-        }
+    public void SelectSlot(int slotValue) {
+        SelectionChanged(() => { Equipped = slotValue; });
     }
 
     public void Scroll(float scroll) {
@@ -72,15 +68,15 @@ public class PlayerInventory : PlayerBehaviour {
         });
     }
 
-    public void PrimaryAction(InputAction.CallbackContext context) {
+    public void PrimaryAction(InputAction.CallbackContext passthrough) {
         if (!EquippedItem.IsEmpty()) {
-            EquippedItem.logic.PrimaryAction(context, player);
+            EquippedItem.logic.PrimaryAction(passthrough, player);
         }
     }
 
-    public void SecondaryAction(InputAction.CallbackContext context) {
+    public void SecondaryAction(InputAction.CallbackContext passthrough) {
         if (!EquippedItem.IsEmpty()) {
-            EquippedItem.logic.SecondaryAction(context, player);
+            EquippedItem.logic.SecondaryAction(passthrough, player);
         }
     }
 
@@ -88,9 +84,9 @@ public class PlayerInventory : PlayerBehaviour {
     // - User changes selected slot to new slot
     // - Item count gets changed from zero to positive value and vice versa
     private void SelectionChanged(Action function = null) {
-        EquippedItem.logic.Unequipped(player);
+        EquippedItem.logic?.Unequipped(player);
         function?.Invoke();
-        EquippedItem.logic.Equipped(player);
+        EquippedItem.logic?.Equipped(player);
 
         if (viewModel != null) {
             Destroy(viewModel);
@@ -104,13 +100,11 @@ public class PlayerInventory : PlayerBehaviour {
         }
     }
 
-    public void DropItem(InputAction.CallbackContext context) {
-        if (Pressed(context)) {
-            ItemStack item = container[equipped];
-            if (item.Count > 0) {
-                if (WorldItem.Spawn(container[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.movement.inner.Velocity))
-                    container.RemoveItem(equipped, 1);
-            }
+    public void DropItem() {
+        ItemStack item = container[equipped];
+        if (item.Count > 0) {
+            if (WorldItem.Spawn(container[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.movement.inner.Velocity))
+                container.RemoveItem(equipped, 1);
         }
     }
 }

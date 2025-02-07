@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public class ItemStack {
@@ -38,8 +39,7 @@ public class ItemStack {
     public ItemData Data { get { return data; } 
         set { 
             data = value;
-            logic = value != null ? Registries.GetItem(data) : new Item();
-            logic.ItemReference = this;
+            InternalRefreshItemLogic();
             onUpdate.Invoke(this); 
         } 
     }
@@ -51,16 +51,27 @@ public class ItemStack {
     }
 
     // this would have to be assigned on data change?
+    // yes
     public Item logic;
+
+    private void InternalRefreshItemLogic() {
+        this.logic = data != null ? Registries.GetItem(data) : null;
+
+        if (this.logic != null) {
+            this.logic.ItemReference = this;
+        }
+    }
 
     public ItemStack(ItemData data, int count = 1) {
         this.count = count;
         this.Data = data;
+        InternalRefreshItemLogic();
     }
 
     public ItemStack(string id, int count) {
         this.Data = Registries.items[id];
         this.count = count;
+        InternalRefreshItemLogic();
     }
 
     public void CopyItem(ItemStack other) {
@@ -91,6 +102,7 @@ public class ItemStack {
     public ItemStack NewCount(int i) {
         ItemStack clone = Clone();
         clone.count = i;
+        clone.InternalRefreshItemLogic();
         return clone;
     }
 
