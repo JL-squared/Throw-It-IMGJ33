@@ -20,6 +20,8 @@ public class GraphicsQualitySettings {
     public bool vignette = true;
     public bool whiteBalance = true;
     public bool pixelatedDitherColorCompression = true;
+
+    public const float DEFAULT_PIXELIZATION_FACTOR = 0.4f;
     
     [Serializable]
     [JsonConverter(typeof(StringEnumConverter))]
@@ -72,7 +74,8 @@ public class GraphicsQualitySettings {
             features.Add(data2.name, data2);
         }
         features["SSAO"].SetActive(ambientOcclusion);
-        features["PixelationDitherColorCompression"].SetActive(pixelatedDitherColorCompression);
+        features["DitherColorCompressionRenderFeature"].SetActive(pixelatedDitherColorCompression);
+        asset.renderScale = pixelatedDitherColorCompression ? DEFAULT_PIXELIZATION_FACTOR : 1.0f;
 
         if (fpsLimit <= 0) {
             UnityEngine.QualitySettings.vSyncCount = 1;

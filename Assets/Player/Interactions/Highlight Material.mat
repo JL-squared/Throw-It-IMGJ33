@@ -46,7 +46,7 @@ Material:
     - _Scale: 600
     - _Sqrt: 0
     - _Strength: 0
-    - _Thickness: 0.0005
+    - _Thickness: 0.005
     m_Colors:
     - _Color: {r: 1, g: 0.68235296, b: 0, a: 0}
     - _Color_1: {r: 0.4433962, g: 0.09808862, b: 0, a: 0}

@@ -18,7 +18,6 @@ public class BrickDamaging : MonoBehaviour {
             for (int i = 0; i < states.Count; i++) {
                 states[i].toggableStateMesh.SetActive(false);
             }
-            Debug.Log(percentage);
 
             int newState = -1;
             for (int i = 0; i < states.Count; i++) {

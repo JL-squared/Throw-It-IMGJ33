@@ -2,6 +2,8 @@ using Tweens;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.ParticleSystem;
+using jedjoud.VoxelTerrain;
+using jedjoud.VoxelTerrain.Edits;
 
 public class ShovelItem : ToolItem {
     bool canPickupSnow;
@@ -11,22 +13,20 @@ public class ShovelItem : ToolItem {
     public override void SecondaryAction(InputAction.CallbackContext context, Player player) {
         base.SecondaryAction(context, player);
 
-        if (canPickupSnow && !context.canceled) {
+        if (canPickupSnow && !context.canceled && player.interactions.lookingAt.HasValue) {
             ShovelItemData data = (ShovelItemData)player.inventory.EquippedItem.Data;
             
-            /*
             if (VoxelTerrain.Instance != null) {
-                VoxelTerrain.Instance.ApplyVoxelEdit(new AddVoxelEdit {
-                    center = player.lookingAt.Value.point,
+                VoxelTerrain.Instance.edits.ApplyVoxelEdit(new AddVoxelEdit {
+                    center = player.interactions.lookingAt.Value.point,
                     maskMaterial = true,
                     material = 0,
                     radius = data.digRadius,
                     strength = data.digStrength,
                     writeMaterial = false,
-                    scale = new float3(1f),
-                });
+                    scale = Vector3.one,
+                }, true);
             }
-            */
 
             player.inventory.container.PutItem(new ItemStack("snowball", 1));
         }
@@ -86,19 +86,15 @@ public class ShovelItem : ToolItem {
 
     public override void EquippedUpdate(Player player) {
         canPickupSnow = false;
-        /*
-        if (player.lookingAt != null) {
-            RaycastHit info = player.lookingAt.Value;
+        if (player.interactions.lookingAt != null && player.interactions.lookingAt.Value.collider != null) {
+            RaycastHit info = player.interactions.lookingAt.Value;
+            VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
 
+            // chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 
+            if (chunk != null) {
+                canPickupSnow = true && player.inventory.container.CanFitItem(new ItemStack("snowball", 1));
+            }
         }
-        */
-
-        /*
-        VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
-        if (chunk != null) {
-            canPickupSnow = chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 && player.CanFitItem(new ItemStack("snowball", 1));
-        }
-        */
 
         UIScriptMaster.Instance.crosshairHints.SetRightClickHint(canPickupSnow);
     }

@@ -21,8 +21,8 @@ MonoBehaviour:
   prefab: {fileID: 2361069447993902772, guid: 1aa041a09a1c0f948bf31481f4b54724, type: 3}
   title: Shovel
   description: A digging tool.
-  digRadius: 0.5
-  digStrength: 100
+  digRadius: 1
+  digStrength: 20
   animationRotation: {x: 0, y: 0, z: 0, w: 1}
   animationPosition: {x: 0.5, y: -1, z: 0.5}
   particles: {fileID: 7842012705416066582, guid: 5b29c2ce46bcaa54e84780ce036e0d61,
