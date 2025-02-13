@@ -22,6 +22,8 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
             items.Add(emptySlot);
             emptySlot.onUpdate?.AddListener((ItemStack item) => { onUpdate.Invoke(items); });
         }
+
+        onUpdate.Invoke(items);
     }
 
 

@@ -12,6 +12,7 @@ public class UIScriptMaster : MonoBehaviour {
     public BuildingMenu buildingMenu;
     public CraftingMenu craftingMenu;
     public HealthBar healthBar;
+    public TemperatureDisplay temperatureDisplay;
     public HotbarUI hotbarUI;
     public CrosshairHints crosshairHints;
     public IngameHUDManager inGameHUD;

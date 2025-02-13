@@ -27,10 +27,8 @@ public class HotbarUI : MonoBehaviour {
     public void Select(int slot) {
         foreach(VisualSlot _slot in slots) {
             _slot.background.color = deselected;
-            _slot.GetComponent<RectTransform>().sizeDelta = new Vector2(43, 43);
         }
 
         slots[slot].background.color = selected;
-        slots[slot].GetComponent<RectTransform>().sizeDelta = new Vector2(45, 45);
     }
 }

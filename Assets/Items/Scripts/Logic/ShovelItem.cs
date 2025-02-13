@@ -12,24 +12,6 @@ public class ShovelItem : ToolItem {
 
     public override void SecondaryAction(InputAction.CallbackContext context, Player player) {
         base.SecondaryAction(context, player);
-
-        if (canPickupSnow && !context.canceled && player.interactions.lookingAt.HasValue) {
-            ShovelItemData data = (ShovelItemData)player.inventory.EquippedItem.Data;
-            
-            if (VoxelTerrain.Instance != null) {
-                VoxelTerrain.Instance.edits.ApplyVoxelEdit(new AddVoxelEdit {
-                    center = player.interactions.lookingAt.Value.point,
-                    maskMaterial = true,
-                    material = 0,
-                    radius = data.digRadius,
-                    strength = data.digStrength,
-                    writeMaterial = false,
-                    scale = Vector3.one,
-                }, true);
-            }
-
-            player.inventory.container.PutItem(new ItemStack("snowball", 1));
-        }
     }
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
@@ -71,6 +53,24 @@ public class ShovelItem : ToolItem {
             });
 
             Utils.PlaySound(player.interactions.lookingAt.Value.point, Registries.snowBrickPlace);
+
+            if (canPickupSnow) {
+                ShovelItemData data = (ShovelItemData)player.inventory.EquippedItem.Data;
+
+                if (VoxelTerrain.Instance != null) {
+                    VoxelTerrain.Instance.edits.ApplyVoxelEdit(new AddVoxelEdit {
+                        center = player.interactions.lookingAt.Value.point,
+                        maskMaterial = true,
+                        material = 0,
+                        radius = data.digRadius,
+                        strength = data.digStrength,
+                        writeMaterial = false,
+                        scale = Vector3.one,
+                    }, true);
+                }
+
+                player.inventory.container.PutItem(new ItemStack("snowball", 1));
+            }
         }
     }
 

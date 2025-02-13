@@ -55,5 +55,7 @@ public class PlayerTemperature : PlayerBehaviour {
 
         shivering = Mathf.Clamp01(shivering);
         cameraShake.shivering = shivering;
+
+        UIScriptMaster.Instance.temperatureDisplay.SetDisplay(bodyTemp);
     }
 }

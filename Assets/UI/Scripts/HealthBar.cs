@@ -27,12 +27,12 @@ public class HealthBar : MonoBehaviour {
             to = percent,
             duration = healthDuration,
             onUpdate = (instance, value) => {
-                bar.localScale = new Vector3(value, 1f);
+                bar.localScale = new Vector3(value, 1f, 1f);
 
                 // since the linger bar is underneath the health bar we have to set it exactly underneath it
                 // otherwise the next time the player is damaged after a heal you won't be able to see the linger bar
                 if (healed) {
-                    lingerBar.localScale = new Vector3(value, 1f);
+                    lingerBar.localScale = new Vector3(value, 1f, 1f);
                 }
             },
             easeType = type,
@@ -56,7 +56,7 @@ public class HealthBar : MonoBehaviour {
                 to = currentPercent,
                 duration = lingerDuration,
                 onUpdate = (instance, value) => {
-                    lingerBar.localScale = new Vector3(value, 1f);
+                    lingerBar.localScale = new Vector3(value, 1f, 1f);
                 },
                 easeType = type,
             };
