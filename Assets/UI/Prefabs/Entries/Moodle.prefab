@@ -128,7 +128,7 @@ MonoBehaviour:
   background: {fileID: 262745169836481651}
   icon: {fileID: 4421980814333192910}
   definition: {fileID: 0}
-  strength: 5
+  strength: 4
 --- !u!1 &8681623837061249889
 GameObject:
   m_ObjectHideFlags: 0

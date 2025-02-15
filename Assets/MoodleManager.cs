@@ -57,6 +57,8 @@ public class MoodleManager : MonoBehaviour {
         moodleParent = UIScriptMaster.Instance.inGameHUD.moodleParent;
     }
 
+    int timer = 0;
+
     private void FixedUpdate() {
         if (temperature.bodyTemp <= minBadHypo) {
             Moodlify(hypothermia, MoodleStrength.Bad);
@@ -68,6 +70,13 @@ public class MoodleManager : MonoBehaviour {
             Moodlify(hypothermia, MoodleStrength.Neutral);
         } else {
             Moodlify(hypothermia, MoodleStrength.None);
+        }
+        timer++;
+
+        if (timer > 500) {
+            Moodlify(cold, MoodleStrength.Weak);
+        } else if (timer > 10) {
+            Moodlify(cold, MoodleStrength.Neutral);
         }
     }
 
@@ -92,8 +101,8 @@ public class MoodleManager : MonoBehaviour {
 
                 activeMoodle.gameObject.AddTween(tween);
             } else if (activeMoodle.definition == definition) {
+                // We know that items are comparing to themselves
                 if (strength == MoodleStrength.None) {
-                    Destroy(activeMoodle.gameObject);
                     thingHasBeenYeeted = true;
                 } else if (strength != activeMoodle.strength) {
                     activeMoodle.Initialize(definition, strength); // Just replace the existing one with a different intensity
@@ -104,13 +113,15 @@ public class MoodleManager : MonoBehaviour {
             } 
         }
 
-        if (thingHasBeenYeeted) // Since we have to go through the rest of the list make sure to return here
+        if (thingHasBeenYeeted || strength == MoodleStrength.None) // Since we have to go through the rest of the list make sure to return here
             return;
 
         CreateMoodle(definition, strength);
     }
 
     public void CreateMoodle(MoodleDefinition definition, MoodleStrength strength) {
+        Debug.Log("Makin a moodle!!!");
+
         var gameObject = Instantiate(UIScriptMaster.Instance.moodlePrefab, moodleParent.transform); // Otherwise make a new moodle!!!!!!!!!
         gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, -80, gameObject.transform.localPosition.z);
         var moodle = gameObject.GetComponent<Moodle>();
