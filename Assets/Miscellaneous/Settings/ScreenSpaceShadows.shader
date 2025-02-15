@@ -1,8 +1,14 @@
 Shader "Custom/ScreenSpaceShadows"
 {
+    // Yeeted from
+    // https://github.com/Unity-Technologies/Graphics/blob/a36d8dd13ab32c6f3436004677a8a83c5096659a/Packages/com.unity.render-pipelines.universal/Shaders/Utils/ScreenSpaceShadows.shader
+
     SubShader
     {
         Tags{ "RenderPipeline" = "UniversalPipeline" "IgnoreProjector" = "True"}
+        
+
+
 
         HLSLINCLUDE
 
@@ -15,7 +21,34 @@ Shader "Custom/ScreenSpaceShadows"
         #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RealtimeLights.hlsl"
+        #include "Assets/Miscellaneous/Shaders/CloudValue.cginc"
 
+        float4x4 _sunMatrix;
+        float4x4 _invSunMatrix;
+        
+        float checkScreenSpaceShadows(float3 position) {
+            /*
+            float3 sun_direction = mul(_sunMatrix, float4(0, 0, 1, 0)).xyz;
+            float alpha;
+            sampleAllClouds_float(position, sun_direction, alpha);
+            return alpha;
+            */
+        	float product = 0.0;
+            float factor = 0.01;
+            const int total = 2;
+        	for	(int x = -total; x <= total; x++) {
+        		for	(int y = -total; y <= total; y++) {
+                    float alpha;
+        			float3 shadowCoord = mul(_sunMatrix, float4(y * factor, x * factor, 1, 0)).xyz;
+                    sampleAllClouds_float(position, shadowCoord, alpha);
+        			product += alpha;
+        		}
+        	}
+        	return 1 - product / ((total+1) * (total+1));
+        }
+
+        float _generalShadowStrength;
         half4 Fragment(Varyings input) : SV_Target
         {
             UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
@@ -34,7 +67,7 @@ Shader "Custom/ScreenSpaceShadows"
             // Screenspace shadowmap is only used for directional lights which use orthogonal projection.
             half realtimeShadow = MainLightRealtimeShadow(coords);
 
-            return realtimeShadow;
+            return realtimeShadow * checkScreenSpaceShadows(wpos) * _generalShadowStrength;
         }
 
         ENDHLSL

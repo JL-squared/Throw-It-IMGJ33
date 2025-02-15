@@ -200,7 +200,8 @@ MonoBehaviour:
   - {fileID: 7765192333281831144}
   - {fileID: -3797480856183668076}
   - {fileID: 8147176350267984228}
-  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36b9482d3fd47a34ccb64c92f98b9951071
+  - {fileID: 4922525787962051939}
+  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36b9482d3fd47a34ccb64c92f98b9951071638d2d9d1f535044
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -226,6 +227,21 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
+--- !u!114 &4922525787962051939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a186ff174653c4e8a1f07828619c79, type: 3}
+  m_Name: CustomShadows
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  customShader: {fileID: 4800000, guid: a76132e603fedd449bf2757b717bd667, type: 3}
+  generalShadowStrength: 1
 --- !u!114 &7765192333281831144
 MonoBehaviour:
   m_ObjectHideFlags: 0

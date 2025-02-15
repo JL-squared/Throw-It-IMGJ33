@@ -58,7 +58,8 @@ public class WeatherManager : MonoBehaviour {
 
         float basic = coverageCurve.Evaluate(cloudCoverageOffset);
         float invert = 1 - coverageCurve.Evaluate(cloudCoverageOffset);
-        directionalLight.shadowStrength = invert;
+        // TODO: Update render feature shadow strength instead!!
+        //directionalLight.shadowStrength = invert;
         directionalLight.color = Color.Lerp(baseSunColor, overcastSunColor, basic);
         directionalLight.intensity = Mathf.Lerp(baseSunIntensity, overcastSunIntensity, basic);
         skybox.SetFloat("_Cloud_Coverage", Mathf.Pow(basic, 2f));
