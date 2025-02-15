@@ -20,7 +20,7 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
         for (int i = 0; i < size; i++) {
             ItemStack emptySlot = new ItemStack();
             items.Add(emptySlot);
-            emptySlot.onUpdate?.AddListener((ItemStack item) => { onUpdate.Invoke(items); });
+            emptySlot.onUpdate?.AddListener(() => { onUpdate.Invoke(items); });
         }
 
         onUpdate.Invoke(items);
@@ -122,7 +122,7 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
             return ogCount - currentCount;
         }
 
-        return -1;
+        return 0;
     }
 
     // Returns slot number (0-9) if we have item of specified count (default 1), otherwise returns -1

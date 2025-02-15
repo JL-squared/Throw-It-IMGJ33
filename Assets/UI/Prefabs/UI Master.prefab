@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9003773554955073272}
   - component: {fileID: 1883133402518499331}
   - component: {fileID: 8479254909985001471}
+  - component: {fileID: 62601035134820907}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -57,11 +58,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: e07222f86ecf5144b918035fe4c2ed7b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -75,6 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &62601035134820907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100225743234671193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb16316440f8b7d49836e9b6bff6cfda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 21300000, guid: ea5d1607909ed8347b2b32031a3ebe7d, type: 3}
+  alpha: {fileID: 21300000, guid: f637f8a561f917b4d983cbf8fba6d0cc, type: 3}
+  shader: {fileID: -6465566751694194690, guid: 7b630201a6f8af24ba3499b9a8101ab7, type: 3}
 --- !u!1 &170796428931241525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,6 +1025,7 @@ GameObject:
   - component: {fileID: 4930890294783597240}
   - component: {fileID: 1370980933033312565}
   - component: {fileID: 112753935254720293}
+  - component: {fileID: 9127805748556785160}
   m_Layer: 5
   m_Name: LingerHealth
   m_TagString: Untagged
@@ -1059,7 +1076,7 @@ MonoBehaviour:
   m_Color: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1073,6 +1090,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9127805748556785160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875239475670588562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb16316440f8b7d49836e9b6bff6cfda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 21300000, guid: ea5d1607909ed8347b2b32031a3ebe7d, type: 3}
+  alpha: {fileID: 21300000, guid: f637f8a561f917b4d983cbf8fba6d0cc, type: 3}
+  shader: {fileID: -6465566751694194690, guid: 7b630201a6f8af24ba3499b9a8101ab7, type: 3}
 --- !u!1 &2431450926701493619
 GameObject:
   m_ObjectHideFlags: 0

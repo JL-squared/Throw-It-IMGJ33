@@ -1,7 +1,11 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
-RWTexture2D<float4> test;
+RWTexture2D<float4> screenTexture;
+
+float compressionDepth;
+float multiplier;
+float tightness;
 
 float invlerp(float a, float b, float c) {
 	return (c - a) / (b - a);
@@ -14,11 +18,8 @@ float3 invlerp(float3 a, float3 b, float3 c) {
 [numthreads(16,16,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	float depth1 = 7.0;
-	float multiplier = 128.0;
-	float tightness = 0.0;
-	float3 coloured = test[id.xy].xyz;
-	int depth = int(depth1);
+	float3 coloured = screenTexture[id.xy].xyz;
+	int depth = int(compressionDepth);
 
 	uint3 rounded2 = uint3(round(coloured * 255.0));
 	float3 occured = (float3(rounded2 >> (8 - depth)) / float(1 << depth));
@@ -47,5 +48,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
 	rounded >>= (8 - depth);
 	float3 tahini = float3(rounded) / float(1 << depth);
-	test[id.xy] = float4(tahini, 0);
+	screenTexture[id.xy] = float4(tahini, 0);
 }

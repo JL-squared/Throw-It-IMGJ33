@@ -1,0 +1,30 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#include <ShadowerTest.cginc>
+
+#pragma kernel CSMain
+
+//Texture2D oldTexture;
+RWTexture2D<float4> newTexture;
+Texture2D<float> depthTexture;
+
+
+float3 position;
+float4x4 viewMatrix;
+float4x4 projMatrix;
+float2 screenResolution;
+
+[numthreads(16,16,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	float2 uv = (float2(id.xy) / screenResolution) * 2.0 - 1.0;
+	float4 pos = float4(uv, 1, 1);
+	pos = mul(projMatrix, pos);
+	pos.w = 0;
+	float3 dir = normalize(mul(viewMatrix, pos).xyz);
+	float3 dingalus = position + dir * depthTexture[id.xy];
+
+	//float value = Load(oldTexture, id.xy).x;
+	//float value = sin(float(id.x) / 10);
+	float value = valueTest();
+	newTexture[id.xy] = float4(dingalus.x, 0, 0, 0);
+}

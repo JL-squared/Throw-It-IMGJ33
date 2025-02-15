@@ -7,21 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SnowMat
-  m_Shader: {fileID: -6465566751694194690, guid: 79c9fabe168263a48ad2e1a60dcfc446,
+  m_Name: TestSnowMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: e0a17a20d5d8a9c45b6cda1462581a7f,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _MAIN_LIGHT_SHADOWS
-  - _MAIN_LIGHT_SHADOWS_CASCADE
-  - _MAIN_LIGHT_SHADOWS_SCREEN
-  m_InvalidKeywords:
-  - MAIN_LIGHT_CALCULATE_SHADOWS
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -43,29 +39,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - MAIN_LIGHT_CALCULATE_SHADOWS: 1
-    - Screen_Noise_Scale: 1
-    - _Emission_Strength: 10
-    - _Float: 0.01
-    - _Float_1: 20
-    - _Float_2: 0.006
-    - _Float_3: 2
-    - _Float_4: 4
-    - _MAIN_LIGHT_SHADOWS: 1
-    - _MAIN_LIGHT_SHADOWS_CASCADE: 1
-    - _MAIN_LIGHT_SHADOWS_SCREEN: 1
-    - _Offset: 0.01
-    - _Pixelation_Size: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Screen_Noise_Power: 5
-    - _Smoothness: 0.2
-    - _Strength: 1
-    m_Colors:
-    - _Color: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 0}
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4442637452743812877
+--- !u!114 &6200719111597638978
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

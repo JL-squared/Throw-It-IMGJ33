@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using static UnityEditor.Progress;
 
 public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;
@@ -35,9 +36,25 @@ public class PlayerInventory : PlayerBehaviour {
         container.PutItem(new ItemStack("shovel", 1));
         container.PutItem(new ItemStack("wires", 1));
 
-        foreach (ItemStack item in container) {
-            item.onEmpty.AddListener(() => { SelectionChanged(() => { item.Data = null; }); });
+        for (int i = 0; i < container.size; i++) {
+            ItemStack item = container[i];
+            int copy = i;
+            item.onEmpty.AddListener(() => {
+                if (this.equipped == copy) {
+                    Unequip();
+                }
+            });
+
+            item.onUpdate.AddListener(() => {
+                if (this.equipped == copy) {
+                    Unequip();
+                    Equip();
+                }
+            });
         }
+
+        Unequip();
+        Equip();
     }
 
     private void Update() {
@@ -58,14 +75,16 @@ public class PlayerInventory : PlayerBehaviour {
     }
 
     public void SelectSlot(int slotValue) {
-        SelectionChanged(() => { Equipped = slotValue; });
+        Unequip();
+        Equipped = slotValue;
+        Equip();
     }
 
     public void Scroll(float scroll) {
-        SelectionChanged(() => {
-            int newSelected = (Equipped + (int)scroll) % 10;
-            Equipped = (newSelected < 0) ? 9 : newSelected;
-        });
+        Unequip();
+        int newSelected = (Equipped + (int)scroll) % 10;
+        Equipped = (newSelected < 0) ? 9 : newSelected;
+        Equip();
     }
 
     public void PrimaryAction(InputAction.CallbackContext passthrough) {
@@ -79,18 +98,17 @@ public class PlayerInventory : PlayerBehaviour {
             EquippedItem.logic.SecondaryAction(passthrough, player);
         }
     }
-
-    // Only called when the following happens:
-    // - User changes selected slot to new slot
-    // - Item count gets changed from zero to positive value and vice versa
-    private void SelectionChanged(Action function = null) {
+    
+    private void Unequip() {
         EquippedItem.logic?.Unequipped(player);
-        function?.Invoke();
-        EquippedItem.logic?.Equipped(player);
 
         if (viewModel != null) {
             Destroy(viewModel);
         }
+    }
+
+    private void Equip() {
+        EquippedItem.logic?.Equipped(player);
 
         if (!EquippedItem.IsNullOrDestroyed() && !EquippedItem.IsEmpty()) {
             viewModel = Instantiate(EquippedItem.Data.prefab, player.bobbing.viewModelHolster.transform);
