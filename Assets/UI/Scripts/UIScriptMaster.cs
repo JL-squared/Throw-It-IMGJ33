@@ -20,6 +20,7 @@ public class UIScriptMaster : MonoBehaviour {
     [Header("Prefabs")]
     public GameObject pieceEntryPrefab;
     public GameObject recipeEntryPrefab;
+    public GameObject moodlePrefab;
 
     public static UIScriptMaster Instance;
 
