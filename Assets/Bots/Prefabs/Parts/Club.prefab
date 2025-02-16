@@ -53,9 +53,10 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   targetVelocity: {x: 0, y: 0, z: 0}
   deathFactor: 0
+  baseDamage: 5
   rpm: 4
   rotatingPart: {fileID: 2611278010397442733}
-  hurtyPart: {fileID: 8502701418704366159}
+  rerouter: {fileID: 8502701418704366159}
 --- !u!1 &5436368193771934070
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +107,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -267,7 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915b66f9c67d86947807d383d0c18d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  onTriggerEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8649068568786262172
 PrefabInstance:
   m_ObjectHideFlags: 0

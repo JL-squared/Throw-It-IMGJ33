@@ -6,7 +6,7 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 public class CustomShadows : ScriptableRendererFeature {
     class CustomPass1 : ScriptableRenderPass {
-        private Material material;
+        public Material material;
         public float generalShadowStrength;
 
         public CustomPass1(Shader shader, float generalShadowStrength) {
@@ -65,6 +65,10 @@ public class CustomShadows : ScriptableRendererFeature {
     public override void Create() {
         customPass = new CustomPass1(customShader, generalShadowStrength);
         customPass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
+    }
+
+    public Material GetInternalMat() {
+        return customPass.material;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData) {

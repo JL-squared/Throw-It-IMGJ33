@@ -28,14 +28,14 @@ Shader "Custom/ScreenSpaceShadows"
         float4x4 _invSunMatrix;
         
         float checkScreenSpaceShadows(float3 position) {
-            /*
             float3 sun_direction = mul(_sunMatrix, float4(0, 0, 1, 0)).xyz;
             float alpha;
-            sampleAllClouds_float(position, sun_direction, alpha);
-            return alpha;
-            */
+            sampleAllClouds_float(position, sun_direction, true, alpha);
+            return 1-alpha;
+            
+            /*
         	float product = 0.0;
-            float factor = 0.01;
+            float factor = 0.0003;
             const int total = 2;
         	for	(int x = -total; x <= total; x++) {
         		for	(int y = -total; y <= total; y++) {
@@ -46,6 +46,7 @@ Shader "Custom/ScreenSpaceShadows"
         		}
         	}
         	return 1 - product / ((total+1) * (total+1));
+            */
         }
 
         float _generalShadowStrength;

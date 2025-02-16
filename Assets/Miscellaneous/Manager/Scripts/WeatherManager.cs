@@ -1,12 +1,17 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using static Unity.Collections.AllocatorManager;
 
 public class WeatherManager : MonoBehaviour {
     [Header("Main")]
     public Light directionalLight;
     public float globalTimeScale = 1.0f;
+    private float time;
 
     [Header("Clouds")]
-    public GameObject[] cloudLayers;
+    public MeshRenderer clouds;
     public float[] cloudLayersSpeeds;
     public float cloudCoverageOffset = 0.0f;
     public AnimationCurve coverageCurve;
@@ -37,24 +42,41 @@ public class WeatherManager : MonoBehaviour {
     }
 
     private void Start() {
-        uvOffsetsCloud = new Vector2[cloudLayers.Length];
+        uvOffsetsCloud = new Vector2[cloudLayersSpeeds.Length];
+    }
+
+    // Accumulates the wind UV offset directions and sets the coverage offset
+    // We use this for both the visible clouds and cloud shadows
+    public void ApplyCloudsProperties(Material material) {
+        for (int i = 0; i < cloudLayersSpeeds.Length; i++) {
+            material.SetVector($"_baseOffset{i}", uvOffsetsCloud[i]);
+        }
+        material.SetFloat("_coverageOffset", cloudCoverageOffset - 0.5f);
     }
 
     public void Update() {
         if (Player.Instance == null) return;
-        float time = globalTimeScale * Time.time;
+        time += Time.deltaTime * globalTimeScale;
 
-        // Accumulates the wind UV offset directions and applies them to the cloud materials
-        for (int i = 0; i < cloudLayers.Length; i++) {
-            // Accumulate wind offset
+        // Accumulate!!
+        for (int i = 0; i < cloudLayersSpeeds.Length; i++) {
             uvOffsetsCloud[i] += Time.deltaTime * globalTimeScale * Vector2.one * cloudWindFactor * cloudLayersSpeeds[i];
-            
-            // Apply the UV offsets and overcast values to the clouds
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            block.SetVector("_UV_Offset", uvOffsetsCloud[i]);
-            block.SetFloat("_Coverage_Offset", cloudCoverageOffset - 0.5f);
-            cloudLayers[i].GetComponent<MeshRenderer>().SetPropertyBlock(block);
         }
+
+        // Set visible property blocks
+        ApplyCloudsProperties(clouds.material);
+
+
+        UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
+        FieldInfo propertyInfo = asset.GetType().GetField("m_RendererDataList", BindingFlags.Instance | BindingFlags.NonPublic);
+        var data = ((ScriptableRendererData[])propertyInfo?.GetValue(asset))?[0];
+
+        Dictionary<string, ScriptableRendererFeature> features = new Dictionary<string, ScriptableRendererFeature>();
+        foreach (var data2 in data.rendererFeatures) {
+            features.Add(data2.name, data2);
+        }
+        CustomShadows shadows = (CustomShadows)features["CustomShadows"];
+        ApplyCloudsProperties(shadows.GetInternalMat());
 
         float basic = coverageCurve.Evaluate(cloudCoverageOffset);
         float invert = 1 - coverageCurve.Evaluate(cloudCoverageOffset);

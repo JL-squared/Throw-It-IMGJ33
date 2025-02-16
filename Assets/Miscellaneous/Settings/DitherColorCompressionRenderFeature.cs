@@ -4,14 +4,17 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.RenderGraphModule.Util;
 using UnityEngine.Rendering.Universal;
 public class DitherColorCompressionRenderFeature : ScriptableRendererFeature {
-    class CustomPass : ScriptableRenderPass {
+    class DitherColorCompressionPass : ScriptableRenderPass {
         private ComputeShader shader;
-        public int compressionDepth = 7;
-        public float multiplier = 128f;
-        public float tightness = 0.0f;
+        private int compressionDepth = 7;
+        private float multiplier = 128f;
+        private float tightness = 0.0f;
 
-        public CustomPass(ComputeShader shader) {
+        public DitherColorCompressionPass(ComputeShader shader, int compressionDepth, float multiplier, float tightness) {
             this.shader = shader;
+            this.compressionDepth = compressionDepth;
+            this.multiplier = multiplier;
+            this.tightness = tightness;
         }
 
         private class PassData {
@@ -41,20 +44,18 @@ public class DitherColorCompressionRenderFeature : ScriptableRendererFeature {
                 builder.AllowPassCulling(false);
                 builder.SetRenderFunc((PassData data, ComputeGraphContext context) => {
                     context.cmd.SetComputeTextureParam(data.shader, 0, "screenTexture", data.src);
-                    context.cmd.SetComputeFloatParam(data.shader, "compressionDepth", compressionDepth);
+                    context.cmd.SetComputeIntParam(data.shader, "cDepth", compressionDepth);
                     context.cmd.SetComputeFloatParam(data.shader, "multiplier", multiplier);
                     context.cmd.SetComputeFloatParam(data.shader, "tightness", tightness);
                     context.cmd.DispatchCompute(data.shader, 0, Mathf.CeilToInt((float)data.width / 16.0f), Mathf.CeilToInt((float)data.height / 16.0f), 1);
                 });
-
-                
             }
 
             renderGraph.AddBlitPass(new RenderGraphUtils.BlitMaterialParameters(tempTexture, resourceData.cameraColor, blitterMat, 0));
         }
     }
 
-    CustomPass customPass;
+    DitherColorCompressionPass pass;
 
     [Range(1, 8)]
     public int compressionDepth = 7;
@@ -65,17 +66,13 @@ public class DitherColorCompressionRenderFeature : ScriptableRendererFeature {
     public ComputeShader customShader;
 
     public override void Create() {
-        customPass = new CustomPass(customShader);
-        customPass.compressionDepth = compressionDepth;
-        customPass.multiplier = multiplier; 
-        customPass.tightness = tightness;
-
-        customPass.renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
+        pass = new DitherColorCompressionPass(customShader, compressionDepth, multiplier, tightness);
+        pass.renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData) {
         if (renderingData.cameraData.cameraType == CameraType.Game) {
-            renderer.EnqueuePass(customPass);
+            renderer.EnqueuePass(pass);
         }
     }
 }
