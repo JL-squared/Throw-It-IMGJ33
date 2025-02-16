@@ -89,6 +89,7 @@ public class IngameHUDManager : MonoBehaviour {
         // Remove console
         if (consoleActivated) {
             consoleActivated = false;
+            Evaluate();
             return;
         }
 
