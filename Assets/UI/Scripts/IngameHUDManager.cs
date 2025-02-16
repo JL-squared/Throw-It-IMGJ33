@@ -95,6 +95,7 @@ public class IngameHUDManager : MonoBehaviour {
         // Remove panel
         if (panelState != PanelState.None) {
             panelState = PanelState.None;
+            Evaluate();
             return;
         }
 

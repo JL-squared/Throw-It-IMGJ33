@@ -260,7 +260,7 @@ public class PlayerBuilding : PlayerBehaviour {
         if (piece != currentOutline) {
             ClearOutline();
             currentOutline = piece;
-            if (piece != null) {
+            if (piece != null && piece.gameObject != null) {
                 var outline = piece.gameObject.AddComponent<Outline>();
                 outline.OutlineColor = outlineColor;
                 outline.OutlineWidth = outlineWidth;
