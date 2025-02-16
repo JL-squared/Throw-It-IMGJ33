@@ -48,6 +48,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
     private int jumpCounter = 0;
     private bool buffered;
     private bool groundJustExploded;
+    private bool lastJump;
     public EntityMovementFlags entityMovementFlags = EntityMovementFlags.Default;
 
     [HideInInspector]
@@ -122,6 +123,10 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             lastGroundedTime = Time.time;
             jumpCounter = 0;
         } else {
+            if (lastTimeGrounded && !isJumping && !lastJump) {
+                movement.y = 0.0f;
+            }
+
             lastTimeGrounded = false;
             Ground = null;
         }
@@ -134,6 +139,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         if (isJumping && jumpCounter == 0) {
             movement.y = jump;
             onJumpStart?.Invoke();
+            lastJump = true;
             isJumping = false;
             jumpCounter++;
         }

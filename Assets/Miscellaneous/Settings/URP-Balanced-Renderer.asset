@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Active: 1
   customShader: {fileID: 4800000, guid: a76132e603fedd449bf2757b717bd667, type: 3}
   generalShadowStrength: 1
+  allowInSceneView: 0
 --- !u!114 &7765192333281831144
 MonoBehaviour:
   m_ObjectHideFlags: 0

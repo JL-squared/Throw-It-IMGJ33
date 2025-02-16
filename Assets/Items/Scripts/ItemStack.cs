@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public class ItemStack {

@@ -751,6 +751,7 @@ MonoBehaviour:
   health: {fileID: 0}
   footsteps: {fileID: 3488795955197241747}
   cameraShake: {fileID: 0}
+  input: {fileID: 0}
   camera: {fileID: 2262149761271955649}
   state: 0
   music: {fileID: 8029250893140543358}
@@ -758,8 +759,6 @@ MonoBehaviour:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
-  PrimaryHeld: 0
-  SecondaryHeld: 0
 --- !u!143 &8428834152011970357
 CharacterController:
   m_ObjectHideFlags: 0
@@ -902,7 +901,7 @@ MonoBehaviour:
   minBodyTemp: 30
   maxBodyTemp: 37
   maxSourcesTemp: 50
-  maxAllowedSecondsHypothermia: 35
+  maxAllowedSecondsHypothermia: 5
   currentHypothermiaSeconds: 0
   reachSpeedIncrease: 0.05
   reachSpeedDecrease: 0.001
@@ -1023,6 +1022,8 @@ MonoBehaviour:
   tiltStrafeSmoothingSpeed: 12
   cameraShakeIntensity: 0.2
   cameraShakeSmoothin: 12
+  shivering: 0
+  shiveringStrength: 0.0002
 --- !u!114 &8774647842230484772
 MonoBehaviour:
   m_ObjectHideFlags: 0

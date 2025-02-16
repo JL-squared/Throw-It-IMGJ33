@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Playables;
 
 // Full Player script holding all necessary functions and variables
 public class PlayerInputHandler : PlayerBehaviour {

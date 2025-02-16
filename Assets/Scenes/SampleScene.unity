@@ -547,20 +547,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
-        type: 3}
-      propertyPath: speed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
-        type: 3}
-      propertyPath: maxHeight
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_Name
       value: Cannon (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -863,7 +858,7 @@ MonoBehaviour:
   permutationSeed: {x: 966, y: -154, z: 805}
   moduloSeed: {x: 85, y: -360, z: -691}
   asyncReadbackPerTick: 1
-  hash: -909809265
+  hash: -1476383699
   debugName: 1
   autoCompile: 1
   transformed:
@@ -4630,6 +4625,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
+      propertyPath: inp
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: outp
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
       propertyPath: speed
       value: 15
       objectReference: {fileID: 0}
@@ -4642,6 +4647,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cannon (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6430,7 +6440,7 @@ PrefabInstance:
     - target: {fileID: 1679815499248925888, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5281816153287127206, guid: 82a4cf1f03a5827428a45efc70738c15,
         type: 3}
@@ -7032,7 +7042,7 @@ PrefabInstance:
     - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: overcastSunIntensity
-      value: 0.2
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
@@ -7047,7 +7057,7 @@ PrefabInstance:
     - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: 'cloudLayersSpeeds.Array.data[1]'
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
@@ -7390,6 +7400,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7823,17 +7838,17 @@ PrefabInstance:
     - target: {fileID: 4392259301960969222, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4392259301960969222, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4392259301960969222, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4392259301960969222, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
@@ -7894,6 +7909,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8267247879346996897, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: groundedOffsetVelocity
+      value: -12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,6 +1,5 @@
 using Tweens;
 using UnityEngine;
-using static UnityEditor.LightingExplorerTableColumn;
 
 public class Eye : BotBehaviour {
     private bool tahinieed = false;

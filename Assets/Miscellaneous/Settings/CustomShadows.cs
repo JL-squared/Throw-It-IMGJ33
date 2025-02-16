@@ -1,4 +1,3 @@
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
@@ -24,6 +23,10 @@ public class CustomShadows : ScriptableRendererFeature {
             UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
             UniversalLightData lights = frameData.Get<UniversalLightData>();
             UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
+
+            if (lights.mainLightIndex == -1) {
+                return;
+            }
 
             var desc = cameraData.cameraTargetDescriptor;
             desc.msaaSamples = 1;
@@ -62,6 +65,10 @@ public class CustomShadows : ScriptableRendererFeature {
     public Shader customShader;
     public float generalShadowStrength;
 
+    // TODO: find fix for this pls
+    [Tooltip("Decided to make this toggable since the screen space shadows effect seems fucked up in prefabs??")]
+    public bool allowInSceneView;
+
     public override void Create() {
         customPass = new CustomPass1(customShader, generalShadowStrength);
         customPass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
@@ -72,6 +79,8 @@ public class CustomShadows : ScriptableRendererFeature {
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData) {
-        renderer.EnqueuePass(customPass);
+        if (renderingData.cameraData.cameraType != CameraType.SceneView || allowInSceneView) {
+            renderer.EnqueuePass(customPass);
+        }
     }
 }

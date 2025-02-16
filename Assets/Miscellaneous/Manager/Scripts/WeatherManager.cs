@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using static Unity.Collections.AllocatorManager;
 
 public class WeatherManager : MonoBehaviour {
     [Header("Main")]

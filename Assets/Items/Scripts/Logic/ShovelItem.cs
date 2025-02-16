@@ -1,7 +1,6 @@
 using Tweens;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.ParticleSystem;
 using jedjoud.VoxelTerrain;
 using jedjoud.VoxelTerrain.Edits;
 

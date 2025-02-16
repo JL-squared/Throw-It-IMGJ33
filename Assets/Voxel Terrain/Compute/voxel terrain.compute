@@ -1,14 +1,7 @@
 
-float4x4 matrix_0;
 float inj_0;
 float inj_1;
-float inj_2;
-float inj_3;
-float inj_4;
-float inj_5;
-Texture2D _gradient_texture_0_read;
-SamplerState sampler_gradient_texture_0_read;
-float inj_6;
+float4x4 matrix_0;
 RWTexture3D<float> voxels_write;
 RWTexture3D<float3> colors_write;
 RWTexture3D<float2> uvs_write;
@@ -63,43 +56,23 @@ uint3 indexToPos(uint index)
     return uint3(x, y, z);
 }
 
-// defined nodes: 35, depth: 0, index: 0, total lines: 33, argument count: 3 
+// defined nodes: 16, depth: 0, index: 0, total lines: 13, argument count: 3 
 void Voxel(float3 position, out float voxel, out float3 color) {
 	float3 projected_0 = mul(matrix_0, float4(position, 1.0)).xyz;
 	float3 projected2_0 = projected_0;
-	float projected2_0_swizzled_0 = projected2_0.y;
-	float inj_0_func_0 = (-(inj_0));
-	float2 projected2_0_swizzled_1 = projected2_0.xz;
-	float projected2_0_swizzled_1_fbm_0 = 0.0;
-	float projected2_0_swizzled_1_fbm_scale_0 = 1.0;
-	float projected2_0_swizzled_1_fbm_amplitude_0 = 1.0;
-	[unroll]
-	for(uint i = 0; i < 3; i++) {
-		float2 projected2_0_swizzled_1_fmb_pos_0 = projected2_0_swizzled_1 * projected2_0_swizzled_1_fbm_scale_0 + hash21(float(i) * 6543.26912) * 2366.5437;
-		float2 projected2_0_swizzled_1_fbm_scale_0_swizzled_0 = projected2_0_swizzled_1_fbm_scale_0.xx;
-		float2 projected2_0_swizzled_1_fmb_pos_0_op_projected2_0_swizzled_1_fbm_scale_0_swizzled_0_0 = projected2_0_swizzled_1_fmb_pos_0 * projected2_0_swizzled_1_fbm_scale_0_swizzled_0;
-		float projected2_0_swizzled_1_fmb_pos_0_op_projected2_0_swizzled_1_fbm_scale_0_swizzled_0_0_noised_0 = (snoise((projected2_0_swizzled_1_fmb_pos_0_op_projected2_0_swizzled_1_fbm_scale_0_swizzled_0_0) * inj_5)) * inj_4;
-		float huh_0 = 2 * abs(projected2_0_swizzled_1_fmb_pos_0_op_projected2_0_swizzled_1_fbm_scale_0_swizzled_0_0_noised_0) - abs(inj_4);
-		float huh_0_op_projected2_0_swizzled_1_fbm_amplitude_0_0 = huh_0 * projected2_0_swizzled_1_fbm_amplitude_0;
-		float projected2_0_swizzled_1_fbm_0_op_huh_0_op_projected2_0_swizzled_1_fbm_amplitude_0_0_0 = projected2_0_swizzled_1_fbm_0 + huh_0_op_projected2_0_swizzled_1_fbm_amplitude_0_0;
-		projected2_0_swizzled_1_fbm_0 = projected2_0_swizzled_1_fbm_0_op_huh_0_op_projected2_0_swizzled_1_fbm_amplitude_0_0_0;
-		projected2_0_swizzled_1_fbm_scale_0 *= inj_2;
-		projected2_0_swizzled_1_fbm_amplitude_0 *= inj_3;
-	}
-	float projected2_0_swizzled_1_fbm_1 = projected2_0_swizzled_1_fbm_0;
-	float projected2_0_swizzled_1_fbm_1_gradient_remapped_0 = Remap(projected2_0_swizzled_1_fbm_1, inj_0_func_0, inj_1, 0.0, 1.0);
-	float _gradient_texture_0_gradient_0 = _gradient_texture_0_read.SampleLevel(sampler_gradient_texture_0_read, float2(projected2_0_swizzled_1_fbm_1_gradient_remapped_0, 0), 0).x;
-	float projected2_0_swizzled_1_fbm_1_gradient_second_remapped_0 = Remap(_gradient_texture_0_gradient_0, 0.0, 1.0, inj_0_func_0, inj_1);
-	float _gradient_texture_0_gradient_sampled_0 = projected2_0_swizzled_1_fbm_1_gradient_second_remapped_0;
-	float projected2_0_swizzled_0_op__gradient_texture_0_gradient_sampled_0_0 = projected2_0_swizzled_0 + _gradient_texture_0_gradient_sampled_0;
-	float projected2_0_swizzled_0_op_inj_6_0 = projected2_0_swizzled_0 / inj_6;
-	const float c_0 = 0.5;
-	float projected2_0_swizzled_0_op_inj_6_0_op_c_0_0 = projected2_0_swizzled_0_op_inj_6_0 * c_0;
-	const float c_1 = 0.5;
-	float projected2_0_swizzled_0_op_inj_6_0_op_c_0_0_op_c_1_0 = projected2_0_swizzled_0_op_inj_6_0_op_c_0_0 + c_1;
-	float3 projected2_0_swizzled_0_op_inj_6_0_op_c_0_0_op_c_1_0_swizzled_0 = projected2_0_swizzled_0_op_inj_6_0_op_c_0_0_op_c_1_0.xxx;
-	voxel = projected2_0_swizzled_0_op__gradient_texture_0_gradient_sampled_0_0;
-	color = projected2_0_swizzled_0_op_inj_6_0_op_c_0_0_op_c_1_0_swizzled_0;
+	float2 projected2_0_swizzled_0 = projected2_0.xz;
+	float projected2_0_swizzled_0_noised_0 = (snoise((projected2_0_swizzled_0) * inj_1)) * inj_0;
+	float projected2_0_swizzled_1 = projected2_0.y;
+	float projected2_0_swizzled_0_noised_0_op_projected2_0_swizzled_1_0 = projected2_0_swizzled_0_noised_0 + projected2_0_swizzled_1;
+	float projected2_0_swizzled_0_noised_0_op_projected2_0_swizzled_1_0_func_0 = (-(projected2_0_swizzled_0_noised_0_op_projected2_0_swizzled_1_0));
+	const float3 c_0 = float3(30,10,30);
+	float projected2_0_box_sdf_0 = sdBox(projected2_0, c_0);
+	float projected2_0_box_sdf_0_func_0 = (-(projected2_0_box_sdf_0));
+	float sdf_temp_0 = opSubtraction(projected2_0_swizzled_0_noised_0_op_projected2_0_swizzled_1_0_func_0, projected2_0_box_sdf_0_func_0);
+	float sdf_subtraction_0 = sdf_temp_0;
+	const float3 c_1 = float3(0,0,0);
+	voxel = sdf_subtraction_0;
+	color = c_1;
 }
 
 

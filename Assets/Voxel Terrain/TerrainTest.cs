@@ -1,4 +1,3 @@
-using UnityEngine;
 using jedjoud.VoxelTerrain.Generation;
 using Unity.Mathematics;
 

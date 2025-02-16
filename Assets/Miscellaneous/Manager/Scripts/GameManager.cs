@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour {
         */
         initialized = true;
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
+        Time.timeScale = 1.0f;
+        Physics.simulationMode = SimulationMode.FixedUpdate;
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json", resave: true);
         graphicsSettings.Apply(volume.profile);
 

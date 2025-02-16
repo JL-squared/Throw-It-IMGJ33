@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerBuilding : PlayerBehaviour {
     public bool noBuildingCost;
@@ -251,6 +250,7 @@ public class PlayerBuilding : PlayerBehaviour {
             }
 
         } else {
+            placementStatus = false;
             OutlineObject(null);
             placementTarget.SetActive(false);
         }
