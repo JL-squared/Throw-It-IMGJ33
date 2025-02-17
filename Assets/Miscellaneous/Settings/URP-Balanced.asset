@@ -53,12 +53,12 @@ MonoBehaviour:
   m_AdditionalLightsShadowResolutionTierHigh: 512
   m_ReflectionProbeBlending: 0
   m_ReflectionProbeBoxProjection: 0
-  m_ShadowDistance: 100
+  m_ShadowDistance: 500
   m_ShadowCascadeCount: 4
   m_Cascade2Split: 0.25
   m_Cascade3Split: {x: 0.1, y: 0.3}
-  m_Cascade4Split: {x: 0.09081912, y: 0.24695748, z: 0.4055}
-  m_CascadeBorder: 0.28006727
+  m_Cascade4Split: {x: 0.041188966, y: 0.17388533, z: 0.39999998}
+  m_CascadeBorder: 0.056069568
   m_ShadowDepthBias: 1
   m_ShadowNormalBias: 0
   m_AnyShadowsSupported: 1
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_PrefilterSoftShadowsQualityMedium: 1
   m_PrefilterSoftShadowsQualityHigh: 1
   m_PrefilterSoftShadows: 0
-  m_PrefilterScreenCoord: 1
+  m_PrefilterScreenCoord: 0
   m_PrefilterNativeRenderPass: 1
   m_PrefilterUseLegacyLightmaps: 0
   m_ShaderVariantLogLevel: 0

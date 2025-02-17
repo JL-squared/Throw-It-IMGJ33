@@ -1,6 +1,5 @@
 using Tweens;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : PlayerBehaviour {
     public float defaultFOV;

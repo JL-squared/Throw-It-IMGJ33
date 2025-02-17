@@ -7,12 +7,14 @@ public class Projectile : MonoBehaviour {
     protected Collider shooterCollider;
     protected new Collider collider;
     protected bool justSpawnedVehicle;
+    protected bool ignoringSpawner;
 
     public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
         if (shooter != null && shooter.collider != null) {
             shooterPosition = shooter.transform.position;
             shooterCollider = shooter.collider;            
             Physics.IgnoreCollision(collider, shooterCollider, true);
+            ignoringSpawner = true;
         }
 
         gameObject.SetActive(true);
@@ -71,9 +73,10 @@ public class Projectile : MonoBehaviour {
     }
 
     public void Update() {
-        if (shooterCollider != null && Vector3.Distance(transform.position, shooterPosition) >= 2.0f) {
+        if (shooterCollider != null && Vector3.Distance(transform.position, shooterPosition) >= 2.0f && ignoringSpawner) {
             Physics.IgnoreCollision(collider, shooterCollider, false);
             collider.excludeLayers = 0;
+            ignoringSpawner = false;
         }
     }
 }

@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.Rendering.DebugUI;
 
 [Serializable]
 public class ItemStack {
@@ -20,7 +19,7 @@ public class ItemStack {
                 Data = null;
                 onEmpty?.Invoke();
             }
-            onUpdate.Invoke(this);
+            onUpdate?.Invoke();
         }
     }
 
@@ -29,7 +28,7 @@ public class ItemStack {
     public UnityEvent onEmpty = new UnityEvent();
     [HideInInspector]
     [JsonIgnore]
-    public UnityEvent<ItemStack> onUpdate = new UnityEvent<ItemStack>();
+    public UnityEvent onUpdate = new UnityEvent();
 
     [JsonProperty(PropertyName = "id")]
     [JsonConverter(typeof(ItemDataConverter))]
@@ -40,7 +39,7 @@ public class ItemStack {
         set { 
             data = value;
             InternalRefreshItemLogic();
-            onUpdate.Invoke(this); 
+            onUpdate?.Invoke(); 
         } 
     }
 

@@ -80,6 +80,20 @@ MonoBehaviour:
     verticalBlur: 0
   material: {fileID: -876546973899608171, guid: f955b7038265efc4f976d32a4d23f41e,
     type: 3}
+--- !u!114 &-3797480856183668076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32e72b6a3f58a24c9033e2b9275eea0, type: 3}
+  m_Name: ScreenSpaceShadows
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
 --- !u!114 &-2969218522768344747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +107,9 @@ MonoBehaviour:
   m_Name: BlurRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
+  compressionDepth: 7
+  multiplier: 128
+  tightness: 0
   customShader: {fileID: 0}
 --- !u!114 &-2352578931427388645
 MonoBehaviour:
@@ -151,26 +168,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
   - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
---- !u!114 &-1555696903276264221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: PixelationDitherColorCompression
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  injectionPoint: 600
-  fetchColorBuffer: 1
-  requirements: 4
-  passMaterial: {fileID: 2100000, guid: 21c9bf0de96661c48a090cf5651779eb, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,10 +198,10 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: -2352578931427388645}
   - {fileID: 7765192333281831144}
-  - {fileID: -1555696903276264221}
-  - {fileID: 7967009761062845159}
   - {fileID: 8147176350267984228}
-  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36be3040baee80d69eae77a38aa2a81906e64c92f98b9951071
+  - {fileID: -3797480856183668076}
+  - {fileID: 4922525787962051939}
+  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36b64c92f98b99510719482d3fd47a34ccb638d2d9d1f535044
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -230,6 +227,22 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
+--- !u!114 &4922525787962051939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a186ff174653c4e8a1f07828619c79, type: 3}
+  m_Name: CustomShadows
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  material: {fileID: 2100000, guid: 6133a4787c021d142bfada2ea2c05156, type: 2}
+  generalShadowStrength: 1
+  allowInSceneView: 1
 --- !u!114 &7765192333281831144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,26 +285,6 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
---- !u!114 &7967009761062845159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  injectionPoint: 550
-  fetchColorBuffer: 0
-  requirements: 0
-  passMaterial: {fileID: 2100000, guid: 03e86ef93e54fad4e9b94fe580ff1fc9, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
 --- !u!114 &8147176350267984228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,4 +298,7 @@ MonoBehaviour:
   m_Name: DitherColorCompressionRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
+  compressionDepth: 7
+  multiplier: 128
+  tightness: 0
   customShader: {fileID: 7200000, guid: eb95fb1a6853b984f9a45c96c08da8b4, type: 3}

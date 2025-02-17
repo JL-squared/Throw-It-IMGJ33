@@ -90,12 +90,14 @@ public class IngameHUDManager : MonoBehaviour {
         // Remove console
         if (consoleActivated) {
             consoleActivated = false;
+            Evaluate();
             return;
         }
 
         // Remove panel
         if (panelState != PanelState.None) {
             panelState = PanelState.None;
+            Evaluate();
             return;
         }
 

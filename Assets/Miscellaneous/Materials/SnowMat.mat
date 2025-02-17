@@ -12,12 +12,16 @@ Material:
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - _MAIN_LIGHT_SHADOWS
+  - _MAIN_LIGHT_SHADOWS_CASCADE
+  - _MAIN_LIGHT_SHADOWS_SCREEN
+  m_InvalidKeywords:
+  - MAIN_LIGHT_CALCULATE_SHADOWS
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -39,6 +43,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - MAIN_LIGHT_CALCULATE_SHADOWS: 1
     - Screen_Noise_Scale: 1
     - _Emission_Strength: 10
     - _Float: 0.01
@@ -46,6 +51,9 @@ Material:
     - _Float_2: 0.006
     - _Float_3: 2
     - _Float_4: 4
+    - _MAIN_LIGHT_SHADOWS: 1
+    - _MAIN_LIGHT_SHADOWS_CASCADE: 1
+    - _MAIN_LIGHT_SHADOWS_SCREEN: 1
     - _Offset: 0.01
     - _Pixelation_Size: 0.02
     - _QueueControl: 0

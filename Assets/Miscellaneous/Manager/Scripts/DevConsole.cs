@@ -61,18 +61,34 @@ public class DevConsole : MonoBehaviour {
             },
             new ConsoleCommand {
                 main = "heal",
-                desc = "Heals the player by the ammount specified by #1",
+                desc = "Heals the player by the amount specified by #1",
                 moment = (args, player) => {
-                    float ammount = float.Parse(args[0]);
-                    player.health.health.Heal(ammount);
+                    float amount = float.Parse(args[0]);
+                    player.health.health.Heal(amount);
                 },
             },
             new ConsoleCommand {
                 main = "damage",
-                desc = "Damages the player by the ammount specified by #1",
+                desc = "Damages the player by the amount specified by #1",
                 moment = (args, player) => {
-                    float ammount = float.Parse(args[0]);
-                    player.health.health.Damage(ammount);
+                    float amount = float.Parse(args[0]);
+                    player.health.health.Damage(amount);
+                },
+            },
+            new ConsoleCommand {
+                main = "cool",
+                desc = "Cools the player by the amount specified by #1",
+                moment = (args, player) => {
+                    float amount = float.Parse(args[0]);
+                    player.temperature.bodyTemp -= amount;
+                },
+            },
+            new ConsoleCommand {
+                main = "warm",
+                desc = "Warms the player by the amount specified by #1",
+                moment = (args, player) => {
+                    float amount = float.Parse(args[0]);
+                    player.temperature.bodyTemp += amount;
                 },
             },
             new ConsoleCommand {

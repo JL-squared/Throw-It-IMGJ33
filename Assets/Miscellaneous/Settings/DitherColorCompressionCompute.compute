@@ -1,12 +1,13 @@
-// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
-RWTexture2D<float4> test;
+// Properties!!
+RWTexture2D<float4> screenTexture;
+int cDepth;
+float multiplier;
+float tightness;
 
-float invlerp(float a, float b, float c) {
-	return (c - a) / (b - a);
-}
-
+// Stolen from
+// https://www.gamedev.net/articles/programming/general-and-gameplay-programming/inverse-lerp-a-super-useful-yet-often-overlooked-function-r5230/
 float3 invlerp(float3 a, float3 b, float3 c) {
 	return (c - a) / (b - a);
 }
@@ -14,38 +15,46 @@ float3 invlerp(float3 a, float3 b, float3 c) {
 [numthreads(16,16,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	float depth1 = 7.0;
-	float multiplier = 128.0;
-	float tightness = 0.0;
-	float3 coloured = test[id.xy].xyz;
-	int depth = int(depth1);
+	// This NEEDS to be stored inside the function otherwise it won't work!!!
+	// Thanks Unity!!!
+	// Stolen from the unity URP shader graph dither node
+	// https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Dither-Node.html
+	const float DITHER_THRESHOLDS[16] = {
+	    1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+	    13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+	    4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+	    16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+	};
 
-	uint3 rounded2 = uint3(round(coloured * 255.0));
-	float3 occured = (float3(rounded2 >> (8 - depth)) / float(1 << depth));
+	// Dithering index
+	uint index = id.x % 4 * 4 + id.y % 4;
+
+	// Sample the screen textures at the appropriate coordinates
+	float3 coloured = screenTexture[id.xy].xyz;
+
+	// Convert the f32 rgb values to u8 (for bitshifting)
+	uint3 converted = uint3(round(coloured * 255.0));
+
+	// Do the bitshifting and covert back to float
+	converted >>= (8 - cDepth);
+	float3 occured = (float3(converted) / float(1 << cDepth));
+
+	// Calculate some arbitrary "distance" between the compressed values and non-compressed values
 	float3 dist = coloured - occured;
+
+	// Some remapping logic? I think? Also actually samples the dither value
 	float3 diffs = (dist * multiplier - 0.5) * 0.5 + 0.5;
+	float3 temp = clamp(invlerp(tightness, 1.0, abs(diffs)), 0, 1);
+	float3 dithering = temp * 2.0f - DITHER_THRESHOLDS[index];
+	dithering = clamp(dithering, 0.0, 1.0);	
 
-	const float DITHER_THRESHOLDS[16] =
-    {
-        1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
-        13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
-        4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
-        16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
-    };
-
-    uint index = id.x % 4 * 4 + id.y % 4;
-
-	float3 offset = 0.0;
-	float3 val2 = clamp(invlerp(tightness, 1.0, abs(diffs)), 0, 1);
-	float3 temp2 = val2 * 2.0f - DITHER_THRESHOLDS[index];
-	offset = clamp(temp2, 0.0, 1.0);	
-	uint3 rounded = uint3(round((coloured + offset / 255.0) * 255.0));
-	int3 val = int3(rounded);
-	val = max(val, 0);
-	rounded = uint3(val);
+	// Kinda stupid to do this again but yea..
+	uint3 rounded = uint3(round((coloured + dithering / 255.0) * 255.0));
+	rounded = uint3(max(int3(rounded), 0));
 	rounded = clamp(rounded, 0, 255);
 
-	rounded >>= (8 - depth);
-	float3 tahini = float3(rounded) / float(1 << depth);
-	test[id.xy] = float4(tahini, 0);
+	// Shift back and write to the texture!!
+	rounded >>= (8 - cDepth);
+	float3 tahini = float3(rounded) / float(1 << cDepth);
+	screenTexture[id.xy] = float4(tahini, 0);
 }

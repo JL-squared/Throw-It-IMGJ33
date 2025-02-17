@@ -903,7 +903,7 @@ MonoBehaviour:
   minBodyTemp: 30
   maxBodyTemp: 36
   maxSourcesTemp: 50
-  maxAllowedSecondsHypothermia: 35
+  maxAllowedSecondsHypothermia: 5
   currentHypothermiaSeconds: 0
   reachSpeedIncrease: 0.05
   reachSpeedDecrease: 0.001

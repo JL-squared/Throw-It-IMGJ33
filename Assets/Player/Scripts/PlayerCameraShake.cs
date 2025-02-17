@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static IngameHUDManager;
 
 public class PlayerCameraShake : PlayerBehaviour {
     struct ShakeData {

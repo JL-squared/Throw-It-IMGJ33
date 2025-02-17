@@ -50,11 +50,9 @@ public class GraphicsQualitySettings {
         }
 
         UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
-        var res = Select(mainLightShadows, ShadowResolution._256, ShadowResolution._256, ShadowResolution._1024, ShadowResolution._4096);
+        var res = Select(mainLightShadows, ShadowResolution._256, ShadowResolution._512, ShadowResolution._1024, ShadowResolution._4096);
         UnityGraphicsBullshitWtf.MainLightCastShadows = mainLightShadows != Quality.Disabled;
         UnityGraphicsBullshitWtf.MainLightShadowResolution = res;
-        var distance = Select(mainLightShadows, 0f, 25f, 100f, 200f);
-        UnityGraphicsBullshitWtf.MainLightShadowDistance = distance;
 
         asset.maxAdditionalLightsCount = additionalLightPerObjectLimit;
         var res2 = Select(additionalLightShadows, ShadowResolution._256, ShadowResolution._256, ShadowResolution._1024, ShadowResolution._4096);
