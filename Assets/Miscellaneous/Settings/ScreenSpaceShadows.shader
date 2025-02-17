@@ -65,7 +65,7 @@ Shader "Custom/ScreenSpaceShadows"
             float3 wpos = ComputeWorldSpacePosition(input.texcoord.xy, deviceDepth, unity_MatrixInvVP);
             float4 coords = TransformWorldToShadowCoord(wpos);
 
-            return SAMPLE_TEXTURE2D_X(_ScreenSpaceShadowmapTexture, sampler_PointClamp, input.texcoord.xy).r * checkScreenSpaceShadows(wpos) * _generalShadowStrength;
+            return 0.0;
         }
 
         ENDHLSL

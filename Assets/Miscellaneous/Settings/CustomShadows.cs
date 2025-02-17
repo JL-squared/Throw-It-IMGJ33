@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.RenderGraphModule.Util;
 using UnityEngine.Rendering.Universal;
 public class CustomShadows : ScriptableRendererFeature {
     class CustomPass1 : ScriptableRenderPass {
+        public ComputeShader shader;
         public Material material;
         public float generalShadowStrength;
 
@@ -14,111 +16,89 @@ public class CustomShadows : ScriptableRendererFeature {
         }
 
         private class PassData {
-            internal TextureHandle target;
-            internal Material material;
-            internal int shadowmapID;
+            internal TextureHandle depth;
         }
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData) {
             UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
             UniversalLightData lights = frameData.Get<UniversalLightData>();
             UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
-
-
+            UniversalShadowData shadowData = frameData.Get<UniversalShadowData>();
 
             if (lights.mainLightIndex == -1) {
                 return;
             }
 
-            var desc = cameraData.cameraTargetDescriptor;
-            desc.msaaSamples = 1;
-            desc.depthBufferBits = 0;
-            desc.depthStencilFormat = GraphicsFormat.None;
-            desc.graphicsFormat = GraphicsFormat.R8_UNorm;
-            var tempTexture = UniversalRenderer.CreateRenderGraphTexture(renderGraph, desc, "_ScreenSpaceShadowmapTexture", true);
-
-            using (var builder = renderGraph.AddComputePass<PassData>("Custom shadows pass 1 amogus", out var passData)) {
-                builder.SetRenderFunc((PassData data, ComputeGraphContext rgContext) => {
-                });
-            }
-
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 1", out var passData)) {
-                passData.target = tempTexture;
+            var desc = resourceData.mainShadowsTexture.GetDescriptor(renderGraph);
+            var rdesc = new RenderTextureDescriptor(desc.width, desc.height, GraphicsFormat.None, desc.format);
+            var tempTexture = UniversalRenderer.CreateRenderGraphTexture(renderGraph, rdesc, "TempTexture", false);
+            
+            /*
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 1 amogus", out var passData)) {
                 builder.AllowPassCulling(false);
-                builder.SetRenderAttachment(tempTexture, 0, AccessFlags.Write);
+                builder.UseTexture(resourceData.mainShadowsTexture);
+                builder.SetRenderAttachmentDepth(resourceData.mainShadowsTexture, AccessFlags.ReadWrite);
+                passData.depth = resourceData.mainShadowsTexture;
 
-                passData.material = material;
-                passData.shadowmapID = Shader.PropertyToID("_ScreenSpaceShadowmapTexture");
-
-                builder.UseAllGlobalTextures(true);
-                builder.AllowGlobalStateModification(true);
-                builder.UseGlobalTexture(passData.shadowmapID);
-                builder.SetGlobalTextureAfterPass(tempTexture, passData.shadowmapID);
-
-                builder.SetRenderFunc((PassData data, RasterGraphContext context) => {
-                    data.material.SetFloat("_generalShadowStrength", generalShadowStrength);
-                    Matrix4x4 matrix = lights.visibleLights[lights.mainLightIndex].localToWorldMatrix;
-                    data.material.SetMatrix("_sunMatrix", matrix);
-                    data.material.SetMatrix("_invSunMatrix", matrix.inverse);
-                    data.material.SetFloat("_generalShadowStrength", generalShadowStrength);
-                    Blitter.BlitTexture(context.cmd, data.target, Vector2.one, data.material, 0);
-                    /*
-                    context.cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS"), false);
-                    context.cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS_CASCADE"), false);
-                    context.cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS_SCREEN"), true);
-                    */
+                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) => {
+                    //rgContext.cmd.ClearRenderTarget(true, false, Color.black);
+                    Blitter.BlitTexture(rgContext.cmd, Vector2.one, material, 0);
                 });
             }
-        }
-    }
+            */
 
-    class CustomPass2 : ScriptableRenderPass {
-        private static void ExecutePass(RasterCommandBuffer cmd, UniversalShadowData shadowData) {
-            int cascadesCount = shadowData.mainLightShadowCascadesCount;
-            bool mainLightShadows = shadowData.supportsMainLightShadows;
-            bool receiveShadowsNoCascade = mainLightShadows && cascadesCount == 1;
-            bool receiveShadowsCascades = mainLightShadows && cascadesCount > 1;
-
-            // Before transparent object pass, force to disable screen space shadow of main light
-            cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS_SCREEN"), false);
-
-            // then enable main light shadows with or without cascades
-            cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS"), receiveShadowsNoCascade);
-            cmd.SetKeyword(GlobalKeyword.Create("_MAIN_LIGHT_SHADOWS_CASCADE"), receiveShadowsCascades);
-        }
-
-        internal class PassData {
-            internal CustomPass2 pass;
-            internal UniversalShadowData shadowData;
-        }
-
-        public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData) {
-            using (var builder = renderGraph.AddComputePass<PassData>("Custom shadows pass 2 amogus", out var passData)) {
-                builder.SetRenderFunc((PassData data, ComputeGraphContext rgContext) => {
-                });
-            }
-
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 2", out var passData)) {
-                UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
-
-                TextureHandle color = resourceData.activeColorTexture;
-                builder.SetRenderAttachment(color, 0, AccessFlags.Write);
-                passData.shadowData = frameData.Get<UniversalShadowData>();
-                passData.pass = this;
-
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 1 amogus", out var passData)) {
                 builder.AllowPassCulling(false);
-                builder.AllowGlobalStateModification(true);
+                builder.UseTexture(resourceData.mainShadowsTexture);
+                builder.SetRenderAttachmentDepth(tempTexture, AccessFlags.Write);
+                passData.depth = resourceData.mainShadowsTexture;
 
-                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) =>
-                {
-                    ExecutePass(rgContext.cmd, data.shadowData);
+                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) => {
+                    //rgContext.cmd.ClearRenderTarget(true, false, Color.black, 1.0f);
+                    material.SetTexture("_MainTexture", data.depth);
+                    Blitter.BlitTexture(rgContext.cmd, Vector2.one, material, 0);
                 });
             }
+            /*
+            using (var builder = renderGraph.AddComputePass<PassData>("Fucking understand??", out var passData)) {
+                passData.depth = tempTexture;
+                builder.SetRenderFunc((PassData data, ComputeGraphContext context) => {
+                    context.cmd.SetComputeTextureParam(shader, 0, "screenTexture", data.depth);
+                    context.cmd.DispatchCompute(shader, 0, 1, 1, 1);
+                });
+            }
+            */
+
+
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 1 amogus", out var passData)) {
+                builder.AllowPassCulling(false);
+                builder.UseTexture(tempTexture);
+                builder.SetRenderAttachmentDepth(resourceData.mainShadowsTexture, AccessFlags.Write);
+                passData.depth = tempTexture;
+
+                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) => {
+                    //Blitter.(rgContext.cmd, data.depth, Vector4.one, 0f, false);
+                    Blitter.BlitColorAndDepth(rgContext.cmd, data.depth, data.depth, Vector2.one, 0f, true);
+                });
+            }
+
+            //renderGraph.AddCopyPass(tempTexture, resourceData.mainShadowsTexture);
+
+            /*
+            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Custom shadows pass 1 amogus", out var passData)) {
+                builder.AllowPassCulling(false);
+                builder.SetRenderAttachmentDepth(resourceData.mainShadowsTexture, AccessFlags.ReadWrite);
+
+                builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) => {
+                    rgContext.cmd.ClearRenderTarget(true, true, Color.black);
+                });
+            }
+            */
         }
     }
 
     CustomPass1 customPass;
-    CustomPass2 customPass2;
+    public ComputeShader shader;
     public Material material;
     public float generalShadowStrength;
 
@@ -131,24 +111,20 @@ public class CustomShadows : ScriptableRendererFeature {
         //customPass2 = new CustomPass2();
 
         //customPass.material = CoreUtils.CreateEngineMaterial(Shader.Find("Hidden/Universal Render Pipeline/ScreenSpaceShadows"));
-        customPass.ConfigureInput(ScriptableRenderPassInput.Depth);
         customPass.renderPassEvent = RenderPassEvent.AfterRenderingPrePasses+2;
         //customPass2.renderPassEvent = RenderPassEvent.BeforeRenderingTransparents+2;
     }
 
     public Material GetInternalMat() {
-        return material;
+        return null;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData) {
-        if (UniversalRenderer.IsOffscreenDepthTexture(ref renderingData.cameraData))
-            return;
-
-
         bool allowMainLightShadows = renderingData.shadowData.supportsMainLightShadows && renderingData.lightData.mainLightIndex != -1;
         bool shouldEnqueue = allowMainLightShadows;
 
         if (shouldEnqueue) {
+            customPass.shader = shader;
             customPass.material = material;
             renderer.EnqueuePass(customPass);
             //renderer.EnqueuePass(customPass2);

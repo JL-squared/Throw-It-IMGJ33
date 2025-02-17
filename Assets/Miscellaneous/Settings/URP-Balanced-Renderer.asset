@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32e72b6a3f58a24c9033e2b9275eea0, type: 3}
   m_Name: ScreenSpaceShadows
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
 --- !u!114 &-2969218522768344747
 MonoBehaviour:
@@ -240,7 +240,8 @@ MonoBehaviour:
   m_Name: CustomShadows
   m_EditorClassIdentifier: 
   m_Active: 1
-  material: {fileID: 2100000, guid: 6133a4787c021d142bfada2ea2c05156, type: 2}
+  shader: {fileID: 0}
+  material: {fileID: 2100000, guid: 46c99997e0417464c8ca4d63179ac4b6, type: 2}
   generalShadowStrength: 1
   allowInSceneView: 1
 --- !u!114 &7765192333281831144

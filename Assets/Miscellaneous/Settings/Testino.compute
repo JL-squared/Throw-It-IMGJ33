@@ -1,0 +1,8 @@
+#pragma kernel CSMain
+
+RWTexture2D<float4> screenTexture;
+[numthreads(16,16,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	screenTexture[id.xy] = 0.0;
+}
