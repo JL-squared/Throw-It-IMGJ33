@@ -65,10 +65,7 @@ Shader "Custom/ScreenSpaceShadows"
             float3 wpos = ComputeWorldSpacePosition(input.texcoord.xy, deviceDepth, unity_MatrixInvVP);
             float4 coords = TransformWorldToShadowCoord(wpos);
 
-            // Screenspace shadowmap is only used for directional lights which use orthogonal projection.
-            half realtimeShadow = MainLightRealtimeShadow(coords);
-
-            return realtimeShadow * checkScreenSpaceShadows(wpos) * _generalShadowStrength;
+            return SAMPLE_TEXTURE2D_X(_ScreenSpaceShadowmapTexture, sampler_PointClamp, input.texcoord.xy).r * checkScreenSpaceShadows(wpos) * _generalShadowStrength;
         }
 
         ENDHLSL

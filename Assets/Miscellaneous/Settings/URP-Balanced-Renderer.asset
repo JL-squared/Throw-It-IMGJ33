@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32e72b6a3f58a24c9033e2b9275eea0, type: 3}
   m_Name: ScreenSpaceShadows
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
 --- !u!114 &-2969218522768344747
 MonoBehaviour:
@@ -198,10 +198,10 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: -2352578931427388645}
   - {fileID: 7765192333281831144}
-  - {fileID: -3797480856183668076}
   - {fileID: 8147176350267984228}
+  - {fileID: -3797480856183668076}
   - {fileID: 4922525787962051939}
-  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36b9482d3fd47a34ccb64c92f98b9951071638d2d9d1f535044
+  m_RendererFeatureMap: adc0de57c6d2eee51bd33326edf559dfe8a8d90d4981c36b64c92f98b99510719482d3fd47a34ccb638d2d9d1f535044
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -240,9 +240,9 @@ MonoBehaviour:
   m_Name: CustomShadows
   m_EditorClassIdentifier: 
   m_Active: 1
-  customShader: {fileID: 4800000, guid: a76132e603fedd449bf2757b717bd667, type: 3}
+  material: {fileID: 2100000, guid: 6133a4787c021d142bfada2ea2c05156, type: 2}
   generalShadowStrength: 1
-  allowInSceneView: 0
+  allowInSceneView: 1
 --- !u!114 &7765192333281831144
 MonoBehaviour:
   m_ObjectHideFlags: 0

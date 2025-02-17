@@ -75,7 +75,7 @@ public class WeatherManager : MonoBehaviour {
             features.Add(data2.name, data2);
         }
         CustomShadows shadows = (CustomShadows)features["CustomShadows"];
-        ApplyCloudsProperties(shadows.GetInternalMat());
+        //ApplyCloudsProperties(shadows.GetInternalMat());
 
         float basic = coverageCurve.Evaluate(cloudCoverageOffset);
         float invert = 1 - coverageCurve.Evaluate(cloudCoverageOffset);

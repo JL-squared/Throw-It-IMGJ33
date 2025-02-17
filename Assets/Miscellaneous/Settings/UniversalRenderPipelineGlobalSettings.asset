@@ -33,27 +33,27 @@ MonoBehaviour:
   m_Settings:
     m_SettingsList:
       m_List:
-      - rid: 7888014332314779715
-      - rid: 7888014332314779716
+      - rid: 8773367602559582309
+      - rid: 8773367602559582310
       - rid: 8335022535475202
       - rid: 8335022535475203
       - rid: 8335022535475204
       - rid: 8335022535475205
-      - rid: 7888014332314779717
+      - rid: 8773367602559582311
       - rid: 8335022535475207
       - rid: 8335022535475208
       - rid: 8335022535475209
-      - rid: 7888014332314779718
-      - rid: 7888014332314779719
+      - rid: 8773367602559582312
+      - rid: 8773367602559582313
       - rid: 8335022535475212
-      - rid: 7888014332314779720
-      - rid: 7888014332314779721
-      - rid: 7888014332314779722
-      - rid: 7888014332314779723
+      - rid: 8773367602559582314
+      - rid: 8773367602559582315
+      - rid: 8773367602559582316
+      - rid: 8773367602559582317
       - rid: 8335022535475217
-      - rid: 7888014332314779724
-      - rid: 7888014332314779725
-      - rid: 8335022535475220
+      - rid: 8773367602559582318
+      - rid: 8773367602559582319
+      - rid: 8773367596644827580
     m_RuntimeSettings:
       m_List:
       - rid: 8335022535475202
@@ -65,7 +65,7 @@ MonoBehaviour:
       - rid: 8335022535475209
       - rid: 8335022535475212
       - rid: 8335022535475217
-      - rid: 8335022535475220
+      - rid: 8773367596644827580
   m_AssetVersion: 8
   m_ObsoleteDefaultVolumeProfile: {fileID: 0}
   m_RenderingLayerNames:
@@ -169,14 +169,14 @@ MonoBehaviour:
       data:
         m_Version: 0
         m_CoreCopyPS: {fileID: 4800000, guid: 12dc59547ea167a4ab435097dd0f9add, type: 3}
-    - rid: 8335022535475220
+    - rid: 8773367596644827580
       type: {class: ShaderStrippingSetting, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_Version: 0
         m_ExportShaderVariants: 1
-        m_ShaderVariantLogLevel: 0
+        m_ShaderVariantLogLevel: 2
         m_StripRuntimeDebugShaders: 1
-    - rid: 7888014332314779715
+    - rid: 8773367602559582309
       type: {class: UniversalRenderPipelineEditorMaterials, ns: UnityEngine.Rendering.Universal,
         asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -190,7 +190,7 @@ MonoBehaviour:
           type: 2}
         m_DefaultDecalMaterial: {fileID: 2100000, guid: 31d0dcc6f2dd4e4408d18036a2c93862,
           type: 2}
-    - rid: 7888014332314779716
+    - rid: 8773367602559582310
       type: {class: UniversalRenderPipelineEditorShaders, ns: UnityEngine.Rendering.Universal,
         asm: Unity.RenderPipelines.Universal.Runtime}
       data:
@@ -212,15 +212,15 @@ MonoBehaviour:
           type: 3}
         m_DefaultSpeedTree9Shader: {fileID: -6465566751694194690, guid: cbd3e1cc4ae141c42a30e33b4d666a61,
           type: 3}
-    - rid: 7888014332314779717
+    - rid: 8773367602559582311
       type: {class: URPShaderStrippingSetting, ns: UnityEngine.Rendering.Universal,
         asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_Version: 0
         m_StripUnusedPostProcessingVariants: 0
         m_StripUnusedVariants: 1
-        m_StripScreenCoordOverrideVariants: 1
-    - rid: 7888014332314779718
+        m_StripScreenCoordOverrideVariants: 0
+    - rid: 8773367602559582312
       type: {class: Renderer2DResources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
       data:
         m_Version: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
           type: 2}
         m_DefaultMaskMaterial: {fileID: 2100000, guid: 15d0c3709176029428a0da2f8cecf0b5,
           type: 2}
-    - rid: 7888014332314779719
+    - rid: 8773367602559582313
       type: {class: GPUResidentDrawerResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.GPUDriven.Runtime}
       data:
         m_Version: 0
@@ -266,7 +266,7 @@ MonoBehaviour:
           type: 3}
         m_DebugOccluderPS: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248,
           type: 3}
-    - rid: 7888014332314779720
+    - rid: 8773367602559582314
       type: {class: ProbeVolumeRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_Version: 1
@@ -276,14 +276,14 @@ MonoBehaviour:
           type: 3}
         probeVolumeUploadDataL2CS: {fileID: 7200000, guid: 6196f34ed825db14b81fb3eb0ea8d931,
           type: 3}
-    - rid: 7888014332314779721
+    - rid: 8773367602559582315
       type: {class: IncludeAdditionalRPAssets, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_version: 0
         m_IncludeReferencedInScenes: 0
         m_IncludeAssetsByLabel: 0
         m_LabelToInclude: 
-    - rid: 7888014332314779722
+    - rid: 8773367602559582316
       type: {class: ProbeVolumeBakingResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_Version: 1
@@ -305,13 +305,13 @@ MonoBehaviour:
           type: 3}
         renderingLayerRT: {fileID: -5126288278712620388, guid: 94a070d33e408384bafc1dea4a565df9,
           type: 3}
-    - rid: 7888014332314779723
+    - rid: 8773367602559582317
       type: {class: STP/RuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_setupCS: {fileID: 7200000, guid: 33be2e9a5506b2843bdb2bdff9cad5e1, type: 3}
         m_preTaaCS: {fileID: 7200000, guid: a679dba8ec4d9ce45884a270b0e22dda, type: 3}
         m_taaCS: {fileID: 7200000, guid: 3923900e2b41b5e47bc25bfdcbcdc9e6, type: 3}
-    - rid: 7888014332314779724
+    - rid: 8773367602559582318
       type: {class: ProbeVolumeDebugResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_Version: 1
@@ -327,7 +327,7 @@ MonoBehaviour:
           type: 3}
         numbersDisplayTex: {fileID: 2800000, guid: 73fe53b428c5b3440b7e87ee830b608a,
           type: 3}
-    - rid: 7888014332314779725
+    - rid: 8773367602559582319
       type: {class: ProbeVolumeGlobalSettings, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
       data:
         m_Version: 1
