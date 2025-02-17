@@ -11,7 +11,6 @@ public class HealthBar : MonoBehaviour {
     public EaseType type;
 
     public float currentPercent;
-    TweenInstance<Transform, float> a;
     private float lingerCounter;
     private bool lingerate;
 
@@ -63,40 +62,5 @@ public class HealthBar : MonoBehaviour {
 
             gameObject.AddTween(secondTween);
         }
-
-
-
-
-        /*
-        bar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tBar), 1f);
-        lingerBar.localScale = new Vector3(Mathf.SmoothStep(lastPosition, actualPosition, tLinger), 1f);
-
-        if (actualPosition != lastFrameActualPosition) {
-            lastPosition = Mathf.SmoothStep(lastPosition, lastFrameActualPosition, tBar);
-            
-            if (Mathf.Abs(actualPosition - lastFrameActualPosition) < 0.05) {
-                tBar = 1f;
-            }
-        }
-
-        if(tBar >= 1.0f) {
-            if (tLinger >= 1.0f) {
-                // Reset state
-                lastPosition = actualPosition;
-                tBar = 0.0f;
-                tLinger = 0.0f;
-            } else {
-                tLinger += 5.0f * Time.deltaTime;
-            }
-        } else if (lastPosition != actualPosition) {
-            tBar += lerpSpeed * Time.deltaTime;
-        }
-
-        lastFrameActualPosition = actualPosition;
-        */
-
-
-        //bar.localScale = new Vector3(healthScale, 1f);
-        //lingerBar.localScale = new Vector3(lingerScale, 1f);
     }
 }

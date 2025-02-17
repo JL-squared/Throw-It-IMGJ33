@@ -41,6 +41,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
     [HideInInspector]
     public PlayerInputHandler input;
 
+    [HideInInspector]
+    public MoodleManager moodleManager;
+
     public new Camera camera;
 
     public State state;
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         footsteps = GetComponent<PlayerFootsteps>();
         cameraShake = GetComponent<PlayerCameraShake>();
         input = GetComponent<PlayerInputHandler>();
+        moodleManager = GetComponent<MoodleManager>();
 
         foreach (var item in GetComponents<PlayerBehaviour>()) {
             item.settings = settings;

@@ -65,8 +65,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 100000
+  near clip plane: 0.01
+  far clip plane: 5000
   field of view: 90
   orthographic: 0
   orthographic size: 5
@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 2771658500311237328}
   - component: {fileID: 1761805463429731269}
   - component: {fileID: 8774647842230484772}
+  - component: {fileID: 1307260640715973675}
   m_Layer: 3
   m_Name: Player
   m_TagString: PlayerTag
@@ -605,8 +606,8 @@ MonoBehaviour:
     m_ActionName: 'Player Map/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerConsole, Assembly-CSharp
+      - m_Target: {fileID: 8774647842230484772}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
         m_MethodName: ToggleDevConsole
         m_Mode: 0
         m_Arguments:
@@ -752,6 +753,7 @@ MonoBehaviour:
   footsteps: {fileID: 3488795955197241747}
   cameraShake: {fileID: 0}
   input: {fileID: 0}
+  moodleManager: {fileID: 0}
   camera: {fileID: 2262149761271955649}
   state: 0
   music: {fileID: 8029250893140543358}
@@ -843,7 +845,7 @@ MonoBehaviour:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
-  noBuildingCost: 1
+  noBuildingCost: 0
   selectedPiece: {fileID: 11400000, guid: c106ec65469740b4a9ae8b9061db0fbb, type: 2}
   hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
@@ -897,9 +899,9 @@ MonoBehaviour:
     fov: 70
     bobbing: 1
   shiveringShakeRotationFactor: 0.01
-  bodyTemp: 36
+  bodyTemp: 35
   minBodyTemp: 30
-  maxBodyTemp: 37
+  maxBodyTemp: 36
   maxSourcesTemp: 50
   maxAllowedSecondsHypothermia: 5
   currentHypothermiaSeconds: 0
@@ -1042,6 +1044,39 @@ MonoBehaviour:
     bobbing: 1
   PrimaryHeld: 0
   SecondaryHeld: 0
+--- !u!114 &1307260640715973675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9622acb58bfbdd4e9d48ee4aab82ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 31
+  duration: 0.4
+  neutralBackground: {fileID: 21300000, guid: e6c22837143305f4b9ec39d794fe849e, type: 3}
+  weakBackground: {fileID: 21300000, guid: cdfbc5afcf25ef34599dd468e8e6d972, type: 3}
+  mediumBackground: {fileID: 21300000, guid: 29c20203a85ce7f46b22fc1fe0bb952c, type: 3}
+  badBackground: {fileID: 21300000, guid: ac93946995f6f3c4284de5e1ca9cc06c, type: 3}
+  minNeutralWind: 0
+  minWeakWind: 0
+  minMedWind: 0
+  minBadWind: 0
+  wind: {fileID: 11400000, guid: a8539cb1378010c4ba566b0249cf93b5, type: 2}
+  minNeutralCold: 18
+  minWeakCold: 5
+  minMedCold: -10
+  minBadCold: -20
+  cold: {fileID: 11400000, guid: e55d59a1c6ebbe043b50397119548c9f, type: 2}
+  minNeutralHypo: 36.5
+  minWeakHypo: 36
+  minMedHypo: 35.5
+  minBadHypo: 35
+  hypothermia: {fileID: 11400000, guid: 8105fa2613f01c04a824a77522ee1829, type: 2}
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0

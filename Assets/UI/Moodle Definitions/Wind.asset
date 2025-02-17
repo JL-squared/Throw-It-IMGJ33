@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a13d881ac3016449972e785b00482dc, type: 3}
+  m_Name: Wind
+  m_EditorClassIdentifier: 
+  id: wind
+  sprite: {fileID: 21300000, guid: 725f32f0e9347b043a5437abd4d70db2, type: 3}
+  neutralName: Breeze
+  neutralDesc: You feel a tingle on your cheek.
+  weakName: Windy
+  weakDesc: Whistling winds about you.
+  mediumName: Turbulent wind
+  mediumDesc: Gusts of wild wind upset your surroundings and your warmth.
+  badName: Stormy wind
+  badDesc: You're getting pushed around with how windy it is.

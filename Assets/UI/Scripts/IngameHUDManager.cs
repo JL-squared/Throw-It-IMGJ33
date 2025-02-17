@@ -15,6 +15,7 @@ public class IngameHUDManager : MonoBehaviour {
     public GameObject deathScreen;
     public GameObject pauseMenu;
     public GameObject screenGraphics;
+    public GameObject moodleParent;
 
     public enum PanelState {
         None,
