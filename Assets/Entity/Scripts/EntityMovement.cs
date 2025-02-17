@@ -136,6 +136,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             groundJustExploded = false;
 
         // Could change the restriction on jumpCounter to enable double jumping
+        lastJump = false;
         if (isJumping && jumpCounter == 0) {
             movement.y = jump;
             onJumpStart?.Invoke();
