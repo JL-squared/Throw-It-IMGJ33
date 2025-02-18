@@ -555,7 +555,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -858,7 +858,7 @@ MonoBehaviour:
   permutationSeed: {x: 966, y: -154, z: 805}
   moduloSeed: {x: 85, y: -360, z: -691}
   asyncReadbackPerTick: 2
-  hash: 1744982157
+  hash: 32075452
   debugName: 1
   autoCompile: 1
   transformed:
@@ -4627,7 +4627,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7073,7 +7073,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7553,6 +7553,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447629618250251395, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
+        type: 3}
+      propertyPath: maxBodyTemp
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 5222446351638355825, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
