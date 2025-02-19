@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: -8984028548373348783}
   - component: {fileID: 8793629792860420648}
   - component: {fileID: 6409706943229287151}
-  - component: {fileID: 4779897854915661125}
+  - component: {fileID: 4207400233700925563}
   m_Layer: 8
-  m_Name: Evil Snowball
+  m_Name: Snowball Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   identifier: projectiles:snowball
   flags: 7
   unityFlags: 1
---- !u!114 &4779897854915661125
+--- !u!114 &4207400233700925563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5488373698599033194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad432ea9a443b342b26c3097d0289b5, type: 3}
+  m_Script: {fileID: 11500000, guid: e75d0cb4fbc0ead4db732f13ca081238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dataParent: {fileID: 0}
@@ -187,21 +187,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 918f323274fcc494d91d58a057538b1f,
         type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 918f323274fcc494d91d58a057538b1f,
-        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: -5847212306330589106, guid: 7b5fbf2e59da6064793d553dd03621d2,
-        type: 3}
-    - target: {fileID: -7511558181221131132, guid: 918f323274fcc494d91d58a057538b1f,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: -5847212306330589106, guid: 7b5fbf2e59da6064793d553dd03621d2,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 231d1e2f405ee1f4e8855e6ebfd292f4, type: 2}
     - target: {fileID: 919132149155446097, guid: 918f323274fcc494d91d58a057538b1f,
         type: 3}
       propertyPath: m_Name

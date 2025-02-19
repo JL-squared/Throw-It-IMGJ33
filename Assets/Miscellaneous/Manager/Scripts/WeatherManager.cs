@@ -63,16 +63,19 @@ public class WeatherManager : MonoBehaviour {
     private void UpdateCloudProperties() {
         ApplyCloudsProperties(clouds.sharedMaterial);
 
+        // Most cursed thing ever but honestly whatever
         UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
         FieldInfo propertyInfo = asset.GetType().GetField("m_RendererDataList", BindingFlags.Instance | BindingFlags.NonPublic);
         var data = ((ScriptableRendererData[])propertyInfo?.GetValue(asset))?[0];
 
-        Dictionary<string, ScriptableRendererFeature> features = new Dictionary<string, ScriptableRendererFeature>();
-        foreach (var data2 in data.rendererFeatures) {
-            features.Add(data2.name, data2);
+        if (data != null) {
+            Dictionary<string, ScriptableRendererFeature> features = new Dictionary<string, ScriptableRendererFeature>();
+            foreach (var data2 in data.rendererFeatures) {
+                features.Add(data2.name, data2);
+            }
+            CustomShadows shadows = (CustomShadows)features["CustomShadows"];
+            ApplyCloudsProperties(shadows.GetInternalMat());
         }
-        CustomShadows shadows = (CustomShadows)features["CustomShadows"];
-        ApplyCloudsProperties(shadows.GetInternalMat());
     }
 
     public void Update() {

@@ -58,6 +58,7 @@ public class Cannon : MonoBehaviour {
             Vector3 flattened = new Vector3(transform.position.x, target.y, transform.position.z);
             Vector3[] points = new Vector3[32];
             for (int i = 0; i < 32; i++) {
+                // TODO: FIX THIS!!!!
                 float dist = targetDistance * ((float)i / 32.0f);
                 Vector3 tempForward = new Vector3(forward.x, 0f, forward.y).normalized;
                 points[i] = flattened + Calc(dist) * Vector3.up + tempForward * dist;

@@ -84,6 +84,14 @@ public class DevConsole : MonoBehaviour {
                 },
             },
             new ConsoleCommand {
+                main = "warm",
+                desc = "Warms the player by the amount specified by #1",
+                moment = (args, player) => {
+                    float amount = float.Parse(args[0]);
+                    player.temperature.bodyTemp += amount;
+                },
+            },
+            new ConsoleCommand {
                 main = "moodle",
                 desc = "Adds a moodle of type #1 and strength #2",
                 moment = (args, player) => {
@@ -192,7 +200,7 @@ public class DevConsole : MonoBehaviour {
         descStyle.fontSize = 30;
         descStyle.normal.textColor = new Color(0.8f, 0.8f, 0.8f, 1.0f);
 
-        Rect rect = new Rect(0f, Screen.height - 30, Screen.width, 30);
+        Rect rect = new Rect(0f, Screen.height - 34, Screen.width, 30);
         GUI.Box(rect, "");
         GUI.SetNextControlName("console");
         GUI.contentColor = Color.white;
@@ -214,9 +222,9 @@ public class DevConsole : MonoBehaviour {
             .ToArray();
 
         float value = 30 * cmds.Length;
-        Rect anotherRect = new Rect(0f, Screen.height - value - 30, Screen.width, value);
+        Rect anotherRect = new Rect(0f, Screen.height - value - 30 - 4, Screen.width, value);
         GUI.Box(anotherRect, "");
-        float offset = 30 * 2;
+        float offset = 30 * 2 + 4;
         foreach (ConsoleCommand cmd in cmds) {
             Rect aaa = new Rect(0f, Screen.height - offset, Screen.width, 30);
             offset += 30;

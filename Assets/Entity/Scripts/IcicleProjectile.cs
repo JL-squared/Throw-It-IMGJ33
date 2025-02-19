@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Icicle : Projectile, IEntitySerializer {
+public class IcicleProjectile : Projectile, IEntitySerializer {
     bool hit = false;
 
     public override void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter) {
@@ -18,7 +18,7 @@ public class Icicle : Projectile, IEntitySerializer {
     }
 
     protected override bool ShouldCollideWith(Collider other) {
-        if (other.gameObject.GetComponent<Icicle>() != null) {
+        if (other.gameObject.GetComponent<IcicleProjectile>() != null) {
             return false;
         }
 

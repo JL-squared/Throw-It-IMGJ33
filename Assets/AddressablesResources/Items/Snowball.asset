@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stackSize: 20
   marketLimit: 0
-  marketBuyCost: 0
-  marketSellCost: 0
   icon: {fileID: 21300000, guid: add0a19a1ebc9f54fa7bf86d7fbef2a7, type: 3}
   viewModelPositionOffset: {x: 0, y: 0, z: 0}
   viewModelScaleOffset: {x: 1, y: 1, z: 1}

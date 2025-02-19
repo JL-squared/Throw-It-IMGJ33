@@ -45,11 +45,16 @@ public class Player : MonoBehaviour, IEntitySerializer {
     public MoodleManager moodleManager;
 
     public new Camera camera;
+    public GameObject head;
 
     public State state;
     public AudioSource music;
 
     public PlayerControlsSettings settings;
+
+    [HideInInspector]
+    public RaycastHit? lookingAt;
+
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -114,6 +119,12 @@ public class Player : MonoBehaviour, IEntitySerializer {
     private void Update() {
         if (!music.isPlaying && !GameManager.Instance.paused) {
             PlayMusic();
+        }
+
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
+            lookingAt = info;
+        } else {
+            lookingAt = null;
         }
     }
 

@@ -15,16 +15,20 @@ public class ShovelItem : ToolItem {
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
         base.PrimaryAction(context, player);
+
         var shovelItemData = ((ShovelItemData)ItemReference.Data);
-        if (!context.canceled && player.interactions.lookingAt.HasValue) {
-            Rigidbody rb = player.interactions.lookingAt.Value.rigidbody;
-            if (rb != null) {
+
+        if (!context.canceled && player.lookingAt.HasValue) {
+            Vector3 point = player.lookingAt.Value.point;
+            Vector3 normal = player.lookingAt.Value.normal;
+            GameObject go = player.lookingAt.Value.collider.gameObject;
+
+            if (go.GetComponent<Rigidbody>() is Rigidbody rb && rb != null) {
                 Vector3 forward = player.camera.transform.forward;
-                rb.AddForceAtPosition(forward * 500.0f, player.interactions.lookingAt.Value.point);
+                rb.AddForceAtPosition(forward * 500.0f, point);
             }
 
-            EntityHealth health = player.interactions.lookingAt.Value.collider.gameObject.GetComponent<EntityHealth>();
-            if (health != null) {
+            if (go.GetComponent<EntityHealth>() is EntityHealth health && health != null) {
                 health.Damage(5.0f, new EntityHealth.DamageSourceData {
                     source = player.gameObject,
                     direction = player.camera.transform.forward,
@@ -32,8 +36,7 @@ public class ShovelItem : ToolItem {
             }
 
             player.inventory.viewModel.CancelTweens();
-            var gm = GameObject.Instantiate(shovelItemData.particles, player.interactions.lookingAt.Value.point, Quaternion.LookRotation(player.interactions.lookingAt.Value.normal));
-            GameObject.Destroy(gm, 0.2f);
+            
             player.inventory.viewModel.AddTween(new LocalRotationTween {
                 from = shovelItemData.viewModelRotationOffset,
                 to = shovelItemData.animationRotation,
@@ -51,14 +54,17 @@ public class ShovelItem : ToolItem {
                 },
             });
 
-            Utils.PlaySound(player.interactions.lookingAt.Value.point, Registries.snowBrickPlace);
+            var gm = GameObject.Instantiate(shovelItemData.particles, point, Quaternion.LookRotation(normal));
+            GameObject.Destroy(gm, 0.2f);
+
+            Utils.PlaySound(point, Registries.snowBrickPlace);
 
             if (canPickupSnow) {
-                ShovelItemData data = (ShovelItemData)player.inventory.EquippedItem.Data;
+                ShovelItemData data = (ShovelItemData)ItemReference.Data;
 
                 if (VoxelTerrain.Instance != null) {
                     VoxelTerrain.Instance.edits.ApplyVoxelEdit(new AddVoxelEdit {
-                        center = player.interactions.lookingAt.Value.point,
+                        center = point,
                         maskMaterial = true,
                         material = 0,
                         radius = data.digRadius,
@@ -85,8 +91,8 @@ public class ShovelItem : ToolItem {
 
     public override void EquippedUpdate(Player player) {
         canPickupSnow = false;
-        if (player.interactions.lookingAt != null && player.interactions.lookingAt.Value.collider != null) {
-            RaycastHit info = player.interactions.lookingAt.Value;
+        if (player.lookingAt.HasValue && player.lookingAt.Value.collider != null) {
+            RaycastHit info = player.lookingAt.Value;
             VoxelChunk chunk = info.collider.GetComponent<VoxelChunk>();
 
             // chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 

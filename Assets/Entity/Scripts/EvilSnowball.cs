@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EvilSnowball : Snowball {
+public class EvilSnowball : SnowballProjectile {
     protected override void OnHit(Collider other, Vector3 relativeVelocity) {
         base.OnHit(other, relativeVelocity);
 

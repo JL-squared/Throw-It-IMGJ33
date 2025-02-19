@@ -11,7 +11,7 @@ public class Club : BotBehaviour {
         damage = baseDamage;
         rerouter.onTriggerEnter.AddListener((Collider other) => {
             EntityHealth health = other.gameObject.GetComponent<EntityHealth>();
-            if (health != null) {
+            if (health != null && deathFactor < 0.9) {
                 health.Damage(damage, new EntityHealth.DamageSourceData() {
                     source = gameObject,
                     direction = (transform.position - other.gameObject.transform.position).normalized,
@@ -23,9 +23,5 @@ public class Club : BotBehaviour {
     // Update is called once per frame
     void Update() {
         rotatingPart.Rotate(new Vector3(rpm * 360f * Time.deltaTime * (1 - deathFactor), 0, 0), Space.Self);
-
-        if (deathFactor > 0) {
-            damage = 0;
-        }
     }
 }

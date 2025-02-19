@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Snowball : Projectile {
+public class SnowballProjectile : Projectile {
     [HideInInspector]
     public SnowballItemData dataParent;
 
@@ -11,7 +11,7 @@ public class Snowball : Projectile {
     }
 
     protected override bool ShouldCollideWith(Collider other) {
-        return base.ShouldCollideWith(other) || other.gameObject.GetComponent<Snowball>() != null;
+        return base.ShouldCollideWith(other) || other.gameObject.GetComponent<SnowballProjectile>() != null;
     }
 
     protected override void OnHit(Collider other, Vector3 relativeVelocity) {

@@ -11,12 +11,14 @@ public class Crate : MonoBehaviour {
     private Vector3 velocity;
     private Vector3 next;
     private Vector3 current;
+    private Vector3 angularVelocity;
     private Rigidbody rb;
     float test1;
     float test2;
 
     private void Start() {
         rb = GetComponent<Rigidbody>();
+        angularVelocity = UnityEngine.Random.onUnitSphere * 360;
     }
 
     public void Update() {
@@ -35,6 +37,7 @@ public class Crate : MonoBehaviour {
 
             test1 = (float)index / speed;
             test2 = (float)(index+1) / speed;
+            rb.rotation *= Quaternion.Euler(angularVelocity * Time.fixedDeltaTime);
             //Debug.Log(index);
 
             if (index < 30 && positions.Length > 0) {

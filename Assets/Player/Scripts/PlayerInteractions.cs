@@ -1,19 +1,15 @@
 using UnityEngine;
 
 public class PlayerInteractions : PlayerBehaviour {
-    [HideInInspector]
-    public RaycastHit? lookingAt;
+
     private IInteraction interaction;
     private IInteraction lastInteraction;
 
     private void Update() {
         if (player.movement.vehicle == null) {
-            if (Physics.Raycast(player.camera.transform.position, player.camera.transform.forward, out RaycastHit info, 5f, ~LayerMask.GetMask("Player"))) {
-                GameObject other = info.collider.gameObject;
-                interaction = other.GetComponent<IInteraction>();
-                lookingAt = info;
+            if (player.lookingAt.HasValue) {
+                interaction = player.lookingAt.Value.collider.GetComponent<IInteraction>();
             } else {
-                lookingAt = null;
                 interaction = null;
             }
         }

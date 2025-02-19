@@ -18,7 +18,7 @@ public class PlayerCameraShake : PlayerBehaviour {
 
     public float cameraShakeIntensity;
     public float cameraShakeSmoothin;
-    private Quaternion cameraShake;
+    private Quaternion cameraShakeRot;
 
     [HideInInspector]
     public float shivering;
@@ -60,7 +60,7 @@ public class PlayerCameraShake : PlayerBehaviour {
             temp *= Quaternion.Slerp(Quaternion.identity, Random.rotation, shakes[i].intensity * cameraShakeIntensity);
         }
 
-        cameraShake = Quaternion.Slerp(temp, cameraShake, Time.deltaTime * cameraShakeSmoothin);
+        cameraShakeRot = Quaternion.Slerp(temp, cameraShakeRot, Time.deltaTime * cameraShakeSmoothin);
 
         tiltStrafe = Quaternion.Euler(0f, 0f, horizontal * tiltStrafeStrength);
         damageRotation = Quaternion.Lerp(damageRotation, Quaternion.identity, Time.deltaTime * damageSmoothinSpeed);
@@ -68,7 +68,7 @@ public class PlayerCameraShake : PlayerBehaviour {
         Quaternion shiverRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shivering * shiveringStrength);
 
         if (!UIScriptMaster.Instance.inGameHUD.Paused) {
-            shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShake * shiverRotation;
+            shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShakeRot * shiverRotation;
         }
     }
 
