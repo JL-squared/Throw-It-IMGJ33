@@ -102,6 +102,7 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
 
     private void SpawnPart(GameObject holster, BotPartData part) {
         GameObject spawned = Instantiate(part.prefab, holster.transform);
+        
         ApplyModifiers(part.modifiers);
 
         BotBehaviour worldPart = spawned.GetComponent<BotBehaviour>();
