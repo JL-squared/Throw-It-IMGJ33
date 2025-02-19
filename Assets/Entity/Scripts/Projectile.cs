@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
     protected new Collider collider;
     protected bool justSpawnedVehicle;
     protected bool ignoringSpawner;
+    protected ProjectileShooter shooter;
 
     public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
         if (shooter != null && shooter.collider != null) {
@@ -16,6 +17,9 @@ public class Projectile : MonoBehaviour {
             Physics.IgnoreCollision(collider, shooterCollider, true);
             ignoringSpawner = true;
         }
+
+        if(shooter != null)
+            this.shooter = shooter;
 
         gameObject.SetActive(true);
     }

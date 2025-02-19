@@ -62,11 +62,15 @@ public class Crate : MonoBehaviour {
             }
 
             if (factorino > 10) {
-                BotBase.Summon(Registries.bots["tall"], transform.position, Quaternion.identity);
-                BotBase.Summon(Registries.bots["base"], transform.position, Quaternion.identity);
-                Destroy(gameObject);
+                BreakOpen();
             }
         }
+    }
+
+    public void BreakOpen() {
+        BotBase.Summon(Registries.bots["tall"], transform.position, Quaternion.identity);
+        BotBase.Summon(Registries.bots["base"], transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     public void PlayVisual(float speed) {

@@ -6,9 +6,9 @@ public class SnowballItem : Item {
     public float minFactor = 0.2f;
     public float maxThrowDelay = 0.5f;
 
-    private float time = 0.0f;
-    private bool isCharging;
-    private float throwDelay;
+    protected float time = 0.0f;
+    protected bool isCharging;
+    protected float throwDelay;
 
     public override void PrimaryAction(InputAction.CallbackContext context, Player player) {
         base.PrimaryAction(context, player);
