@@ -194,7 +194,7 @@ MonoBehaviour:
   botPrefab: {fileID: 8265144308201479040, guid: 1e6558cfda0e0b649bdddafef7e9aaaa,
     type: 3}
   movementFlags: -1
-  baseMovementSpeed: 3
+  baseMovementSpeed: 5
   baseAttackSpeed: 1
   baseBodyHealth: 20
   baseHeadHealth: 10

@@ -29,7 +29,7 @@ MonoBehaviour:
       tags: []
       modifiers:
       - attribute: 0
-        delta: -2
+        delta: -0.5
     - enabled: 1
       weight: 1
       prefab: {fileID: 6817891542182959447, guid: 92f961df6d6e8b64bb8fc315254b1dcd,
@@ -37,7 +37,7 @@ MonoBehaviour:
       tags: []
       modifiers:
       - attribute: 0
-        delta: -2
+        delta: -0.5
     - enabled: 1
       weight: 1
       prefab: {fileID: 1934811558212736242, guid: 71d278c08e66aa74cb5844066a3a990c,
@@ -45,19 +45,31 @@ MonoBehaviour:
       tags: []
       modifiers:
       - attribute: 0
-        delta: -2
+        delta: -0.5
     useLastAsFallback: 0
     noneSubset:
       enabled: 1
       weight: 5
   left:
-    list: []
+    list:
+    - enabled: 0
+      weight: 1
+      prefab: {fileID: 4708860668138106003, guid: 4fbeb4ab1a0147442b9b21ab2d693989,
+        type: 3}
+      tags: []
+      modifiers: []
     useLastAsFallback: 0
     noneSubset:
       enabled: 0
       weight: 1
   right:
-    list: []
+    list:
+    - enabled: 0
+      weight: 1
+      prefab: {fileID: 4708860668138106003, guid: 4fbeb4ab1a0147442b9b21ab2d693989,
+        type: 3}
+      tags: []
+      modifiers: []
     useLastAsFallback: 0
     noneSubset:
       enabled: 0
@@ -182,10 +194,10 @@ MonoBehaviour:
   botPrefab: {fileID: 8265144308201479040, guid: 0768291fb90048f4dbe2e1383191a8a0,
     type: 3}
   movementFlags: -1
-  baseMovementSpeed: 3
+  baseMovementSpeed: 5
   baseAttackSpeed: 1
-  baseBodyHealth: 20
-  baseHeadHealth: 10
-  baseAccuracy: 0.4
+  baseBodyHealth: 40
+  baseHeadHealth: 20
+  baseAccuracy: 0.8
   baseDamageResistance: 0
   baseKnockbackResistance: 0.2
