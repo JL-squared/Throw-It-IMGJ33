@@ -33,12 +33,12 @@ Shader "Custom/ScreenSpaceShadows"
             random = frac((p3.xxy + p3.yxx) * p3.zyx);    
         }
         
-        float checkScreenSpaceShadows(float3 position) {
+        float checkScreenSpaceShadows(float3 position, float2 screen) {
             float3 sun_direction = mul(_sunMatrix, float4(0, 0, 1, 0)).xyz;
             float alpha;
             float color;
             float3 offset;
-            hash33(position * float3(12.23123, 34.23423, -2313.324), offset);
+            hash33(float3(screen, 1) * float3(12.23123, 340.23423, -2313.324), offset);
             //sun_direction += offset * 0.001;
             sun_direction = normalize(sun_direction);
             sampleAllClouds_float(position, sun_direction, sun_direction, true, alpha, color);
@@ -79,7 +79,7 @@ Shader "Custom/ScreenSpaceShadows"
             float3 wpos = ComputeWorldSpacePosition(input.texcoord.xy, deviceDepth, unity_MatrixInvVP);
             float4 coords = TransformWorldToShadowCoord(wpos);
 
-            return SAMPLE_TEXTURE2D_X(_ScreenSpaceShadowmapTexture, sampler_PointClamp, input.texcoord.xy).r * checkScreenSpaceShadows(wpos) * _generalShadowStrength;
+            return SAMPLE_TEXTURE2D_X(_ScreenSpaceShadowmapTexture, sampler_PointClamp, input.texcoord.xy).r * checkScreenSpaceShadows(wpos, input.texcoord.xy) * _generalShadowStrength;
         }
 
         ENDHLSL
