@@ -24,11 +24,11 @@ void fractalnate(float2 position, float scale, out float3 val) {
 
 
 void doTheThing(float2 position, bool shadowed, out float alpha, out float2 derivative) {
-	float pixelization = 20;
+	float pixelization = 200;
 	//float pixelization = shadowed ? 1.0 : 20;
 	float separation = 0.03;
 	float base = 0.5;
-	float scale = 0.01;
+	float scale = 0.0001;
 	
 
 	if (!shadowed) {
@@ -81,13 +81,13 @@ void sampleAllClouds_float(float3 ray_start, float3 ray_dir, float3 sun, bool sh
 
 	float alpha1 = 1.0;
 	float2 derivative1 = 0.0;
-	doTheThing(cloudinate(ray_start, ray_dir, 350, _baseOffset0), shadowed, alpha1, derivative1);
+	doTheThing(cloudinate(ray_start, ray_dir, 2000, _baseOffset0), shadowed, alpha1, derivative1);
 	alpha = alpha1;
 	float light1 = light(derivative1, sun, ray_dir);
 
 	float alpha2 = 1.0;
 	float2 derivative2 = 0.0;
-	doTheThing(cloudinate(ray_start, ray_dir, 550, _baseOffset1), shadowed, alpha2, derivative2);
+	doTheThing(cloudinate(ray_start, ray_dir, 3000, _baseOffset1), shadowed, alpha2, derivative2);
 	alpha += alpha2;
 	float light2 = light(derivative2, sun, ray_dir);
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -8,6 +9,17 @@ public class WeatherManager : MonoBehaviour {
     public Light directionalLight;
     public float globalTimeScale = 1.0f;
     private float time;
+
+    public float humidity; // this determines cloud size idk what the metrics are for this // but it is random
+    public float windSpeed; // probably going to be determined by derivative of temperature function times some constant
+    public float windMultConstant;
+    public float windBearing; // angle of wind from north (-Z) // probably random lowkey!!!
+
+    public float temperature; // outside temperature !! (random emoji)
+    public float temperatureMin; // constraints
+    public float temperatureMax; // im touching you.....
+
+    public float snowfall; // temp and humidity
 
     [Header("Clouds")]
     public MeshRenderer clouds;
@@ -25,16 +37,6 @@ public class WeatherManager : MonoBehaviour {
 
     [Header("Skybox")]
     public Material skybox;
-
-    public enum WeatherType {
-        Calm,
-        Wind,
-        Snowing,
-        Overcast,
-        Storm,
-    }
-
-    public WeatherType status = WeatherType.Calm;
 
     public float GetOutsideTemperature() {
         return -20.0f;
