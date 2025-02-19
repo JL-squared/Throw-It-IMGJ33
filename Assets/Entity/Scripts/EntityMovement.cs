@@ -157,14 +157,14 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             }
         }
 
-        if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate)) {
+        if (entityMovementFlags.HasFlag(EntityMovementFlags.AllowedToRotate) && !GameManager.Instance.paused) {
             Quaternion q = Quaternion.identity;
             if (rotationSmoothing == 0f) {
                 q = localWishRotation;
             } else {
                 float lerper = (1f / rotationSmoothing) * Time.deltaTime;
-                if (transform.rotation != new Quaternion(0,0,0,0) && localWishRotation != new Quaternion(0, 0, 0, 0) && lerper > 0 && lerper < 1) {
-                    q = Quaternion.Slerp(transform.rotation, localWishRotation, lerper);
+                if (transform.rotation != new Quaternion(0,0,0,0) && localWishRotation != new Quaternion(0, 0, 0, 0)) {
+                    q = Quaternion.Slerp(transform.rotation, localWishRotation, Mathf.Clamp01(lerper));
                 }
             }
 

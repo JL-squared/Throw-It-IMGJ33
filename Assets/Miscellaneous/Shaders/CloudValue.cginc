@@ -1,6 +1,7 @@
 
 #ifndef CLOUDS
 #define CLOUDS
+#include "IntersectPlane.cginc"
 #include "SimpleValueNoise.cginc"
 #include "IqNoise.cginc"
 
@@ -47,17 +48,10 @@ void doTheThing(float2 position, bool shadowed, out float alpha, out float2 deri
 	alpha = smoothstep(base - separation, base + separation, value.x + _coverageOffset * 0.25 + 0.35);
 }
 
-void intersectPlane(float3 position, float3 normal, float3 ray_start, float3 ray_dir, out bool hit, out float3 target_position) {
-	float3 origin = position - ray_start;
-	float dotted = dot(origin, normal) / dot(ray_dir, normal);
-	target_position = ray_dir * dotted + ray_start;
-	hit = dotted >= 0.0;
-}
-
 float2 cloudinate(float3 position, float3 sun_direction, float height, float2 offset) {
 	bool hit;
 	float3 final_position;
-	intersectPlane(float3(0, height, 0), float3(0, 1, 0), position, -sun_direction, hit, final_position);
+	intersectPlane_float(float3(0, height, 0), float3(0, 1, 0), position, -sun_direction, hit, final_position);
 	return hit ? (final_position.xz + unity_noise_randomValue(float2(height, 1123.321)) * 11232.231 + offset) : 0.0; 
 }
 

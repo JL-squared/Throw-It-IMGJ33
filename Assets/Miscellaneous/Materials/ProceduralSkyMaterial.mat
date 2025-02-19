@@ -53,7 +53,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Anisotropic_Intensity: 0.2
-    - _Cloud_Coverage: 1.0290002
+    - _Cloud_Coverage: 0.015947634
     - _Density: 0.3
     - _Float: 0.04
     - _Multi_Scatter_Phase: 0.02
