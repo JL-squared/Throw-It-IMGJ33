@@ -547,6 +547,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: cratePerSecond
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_Name
@@ -4619,6 +4624,11 @@ PrefabInstance:
       propertyPath: maxHeight
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: cratePerSecond
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_Name
@@ -4904,6 +4914,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1344168601
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Clouds (Instance)
+  m_Shader: {fileID: -6465566751694194690, guid: 32058c22571cb294191fc25eea40b5a3,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Anisotropic_Intensity: 0
+    - _Cloud_Coverage: 0
+    - _Density: 0
+    - _Float: 0
+    - _Multi_Scatter_Phase: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Zenith_Offset: 0
+    m_Colors:
+    - _Color: {r: 2, g: 2, b: 2, a: 0}
+    - _Gray_Skybox_Color: {r: 0, g: 0, b: 0, a: 0}
+    - _Sky_Colour: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1358761322
 GameObject:
   m_ObjectHideFlags: 0
@@ -6947,6 +7011,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2258512633546519133, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1344168601}
+    - target: {fileID: 4677534628707742450, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6216006554208934372, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7001,6 +7075,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Game Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.49784386
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0879192
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.729033
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.4614463
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 49.496
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -96.936
+      objectReference: {fileID: 0}
+    - target: {fileID: 7804653338174137517, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -329.33398
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: cloudCoverageOffset
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7064,6 +7178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692651699625440429, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
+        type: 3}
+      propertyPath: cratePerSecond
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}

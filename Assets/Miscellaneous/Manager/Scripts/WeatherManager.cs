@@ -44,13 +44,35 @@ public class WeatherManager : MonoBehaviour {
         uvOffsetsCloud = new Vector2[cloudLayersSpeeds.Length];
     }
 
+    private void OnValidate() {
+        UpdateCloudProperties();
+    }
+
     // Accumulates the wind UV offset directions and sets the coverage offset
     // We use this for both the visible clouds and cloud shadows
     public void ApplyCloudsProperties(Material material) {
-        for (int i = 0; i < cloudLayersSpeeds.Length; i++) {
-            material.SetVector($"_baseOffset{i}", uvOffsetsCloud[i]);
+        if (uvOffsetsCloud != null && uvOffsetsCloud.Length > 0) {
+            for (int i = 0; i < cloudLayersSpeeds.Length; i++) {
+                material.SetVector($"_baseOffset{i}", uvOffsetsCloud[i]);
+            }
         }
-        material.SetFloat("_coverageOffset", cloudCoverageOffset - 0.5f);
+        material.SetFloat("_coverageOffset", cloudCoverageOffset);
+    }
+
+    // Called with OnValidate in the editor!!
+    private void UpdateCloudProperties() {
+        ApplyCloudsProperties(clouds.sharedMaterial);
+
+        UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
+        FieldInfo propertyInfo = asset.GetType().GetField("m_RendererDataList", BindingFlags.Instance | BindingFlags.NonPublic);
+        var data = ((ScriptableRendererData[])propertyInfo?.GetValue(asset))?[0];
+
+        Dictionary<string, ScriptableRendererFeature> features = new Dictionary<string, ScriptableRendererFeature>();
+        foreach (var data2 in data.rendererFeatures) {
+            features.Add(data2.name, data2);
+        }
+        CustomShadows shadows = (CustomShadows)features["CustomShadows"];
+        ApplyCloudsProperties(shadows.GetInternalMat());
     }
 
     public void Update() {
@@ -62,27 +84,14 @@ public class WeatherManager : MonoBehaviour {
             uvOffsetsCloud[i] += Time.deltaTime * globalTimeScale * Vector2.one * cloudWindFactor * cloudLayersSpeeds[i];
         }
 
-        // Set visible property blocks
-        ApplyCloudsProperties(clouds.material);
-
-
-        UniversalRenderPipelineAsset asset = (UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset);
-        FieldInfo propertyInfo = asset.GetType().GetField("m_RendererDataList", BindingFlags.Instance | BindingFlags.NonPublic);
-        var data = ((ScriptableRendererData[])propertyInfo?.GetValue(asset))?[0];
-
-        Dictionary<string, ScriptableRendererFeature> features = new Dictionary<string, ScriptableRendererFeature>();
-        foreach (var data2 in data.rendererFeatures) {
-            features.Add(data2.name, data2);
-        }
-        CustomShadows shadows = (CustomShadows)features["CustomShadows"];
-        //ApplyCloudsProperties(shadows.GetInternalMat());
+        UpdateCloudProperties();
 
         float basic = coverageCurve.Evaluate(cloudCoverageOffset);
         float invert = 1 - coverageCurve.Evaluate(cloudCoverageOffset);
-        // TODO: Update render feature shadow strength instead!!
-        //directionalLight.shadowStrength = invert;
         directionalLight.color = Color.Lerp(baseSunColor, overcastSunColor, basic);
         directionalLight.intensity = Mathf.Lerp(baseSunIntensity, overcastSunIntensity, basic);
         skybox.SetFloat("_Cloud_Coverage", Mathf.Pow(basic, 2f));
     }
+
+    
 }

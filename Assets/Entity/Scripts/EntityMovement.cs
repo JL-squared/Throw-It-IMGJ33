@@ -57,6 +57,9 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
     public Vector3 Velocity {
         get {
+            if (cc == null)
+                return Vector3.zero;
+
             if (cc.enabled) {
                 return cc.velocity;
             } else {
@@ -159,7 +162,10 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
             if (rotationSmoothing == 0f) {
                 q = localWishRotation;
             } else {
-                q = Quaternion.Lerp(transform.rotation, localWishRotation, (1f / rotationSmoothing) * Time.deltaTime);
+                float lerper = (1f / rotationSmoothing) * Time.deltaTime;
+                if (transform.rotation != new Quaternion(0,0,0,0) && localWishRotation != new Quaternion(0, 0, 0, 0) && lerper > 0 && lerper < 1) {
+                    q = Quaternion.Slerp(transform.rotation, localWishRotation, lerper);
+                }
             }
 
             if (rotationIsLocal) {

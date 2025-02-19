@@ -84,11 +84,46 @@ public class DevConsole : MonoBehaviour {
                 },
             },
             new ConsoleCommand {
-                main = "warm",
-                desc = "Warms the player by the amount specified by #1",
+                main = "moodle",
+                desc = "Adds a moodle of type #1 and strength #2",
                 moment = (args, player) => {
-                    float amount = float.Parse(args[0]);
-                    player.temperature.bodyTemp += amount;
+                    string type = args[0];
+                    string strength = args[1];
+
+                    MoodleDefinition def = null;
+                    switch (type) {
+                        case "hypothermia":
+                            def = player.moodleManager.hypothermia;
+                            break;
+                        case "cold":
+                            def = player.moodleManager.cold;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    MoodleManager.MoodleStrength _strength = MoodleManager.MoodleStrength.None;
+                    switch (strength) {
+                        case "none":
+                            _strength = MoodleManager.MoodleStrength.None;
+                            break;
+                        case "neutral":
+                            _strength = MoodleManager.MoodleStrength.Neutral;
+                            break;
+                        case "weak":
+                            _strength = MoodleManager.MoodleStrength.Weak;
+                            break;
+                        case "medium":
+                            _strength = MoodleManager.MoodleStrength.Medium;
+                            break;
+                        case "bad":
+                            _strength = MoodleManager.MoodleStrength.Bad;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    player.moodleManager.CreateMoodle(def, _strength);
                 },
             },
             new ConsoleCommand {

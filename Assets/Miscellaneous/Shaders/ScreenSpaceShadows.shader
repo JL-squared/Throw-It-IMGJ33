@@ -26,22 +26,36 @@ Shader "Custom/ScreenSpaceShadows"
 
         float4x4 _sunMatrix;
         float4x4 _invSunMatrix;
+
+        void hash33(float3 p3, out float3 random) {
+            p3 = frac(p3 * float3(.1031, .1030, .0973));
+            p3 += dot(p3, p3.yxz + 33.33);
+            random = frac((p3.xxy + p3.yxx) * p3.zyx);    
+        }
         
         float checkScreenSpaceShadows(float3 position) {
             float3 sun_direction = mul(_sunMatrix, float4(0, 0, 1, 0)).xyz;
             float alpha;
-            sampleAllClouds_float(position, sun_direction, true, alpha);
+            float color;
+            float3 offset;
+            hash33(position * float3(12.23123, 34.23423, -2313.324), offset);
+            //sun_direction += offset * 0.001;
+            sun_direction = normalize(sun_direction);
+            sampleAllClouds_float(position, sun_direction, sun_direction, true, alpha, color);
             return 1-alpha;
             
+            
             /*
+            SLOW!!!!
         	float product = 0.0;
             float factor = 0.0003;
-            const int total = 2;
+            const int total = 1;
         	for	(int x = -total; x <= total; x++) {
         		for	(int y = -total; y <= total; y++) {
                     float alpha;
+                    float color;
         			float3 shadowCoord = mul(_sunMatrix, float4(y * factor, x * factor, 1, 0)).xyz;
-                    sampleAllClouds_float(position, shadowCoord, alpha);
+                    sampleAllClouds_float(position, shadowCoord, shadowCoord, true, alpha, color);
         			product += alpha;
         		}
         	}

@@ -64,5 +64,6 @@ Material:
     - _Color: {r: 2, g: 2, b: 2, a: 0}
     - _Gray_Skybox_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Sky_Colour: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
