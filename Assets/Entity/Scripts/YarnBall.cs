@@ -6,9 +6,9 @@ public class YarnBall : SnowballProjectile {
 
         if (shooter.transform.tag == "PlayerTag") {
             if (Random.value * 2 > 1) {
-                BotBase.Summon(Registries.bots["momohsin"], transform.position, Quaternion.identity);
+                BotBase.Summon(Registries.bots["momohsin"], lastPosition, Quaternion.identity);
             } else {
-                BotBase.Summon(Registries.bots["belbelbel"], transform.position, Quaternion.identity);
+                BotBase.Summon(Registries.bots["belbelbel"], lastPosition, Quaternion.identity);
             }
         }
     }

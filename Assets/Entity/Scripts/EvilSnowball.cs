@@ -5,7 +5,7 @@ public class EvilSnowball : SnowballProjectile {
         base.OnHit(other, relativeVelocity);
 
         if (shooter.transform.tag == "PlayerTag") {
-            BotBase.Summon(Registries.bots["base"], transform.position, Quaternion.identity);
+            BotBase.Summon(Registries.bots["base"], lastPosition, Quaternion.identity);
         }
     }
 }
