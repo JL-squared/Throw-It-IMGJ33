@@ -55,9 +55,10 @@ float3 getAtmosphericScattering(float2 p, float2 lp, float multiScatterPhase, fl
 	float3 sun = getSunPoint(p, lp) * absorption;
 	float3 mie = getMie(p, lp) * sunAbsorption;
 	
+	//float3 totalSky = sunPointDistMult;
 	float3 totalSky = lerp(sky * absorption, sky / (sky + 0.5), sunPointDistMult);
-         totalSky += mie * 0.2;
-	     totalSky *= sunAbsorption * 0.5 + 0.5 * length(sunAbsorption);
+	totalSky += mie * 0.2;
+	totalSky *= sunAbsorption * 0.5 + 0.5 * length(sunAbsorption);
 	return totalSky;
 }
 
