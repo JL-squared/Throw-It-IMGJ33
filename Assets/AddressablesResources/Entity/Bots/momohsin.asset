@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 278e8b01da2784d4eb38c0962ccdff07, type: 3}
+  m_Name: momohsin
+  m_EditorClassIdentifier: 
+  center:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  left:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  right:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  hat:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  neck:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  leftEye:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  rightEye:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  nose:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  heads:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  spawnAtLeastOneDefaultEye: 1
+  defaultEye: {fileID: 0}
+  angryChance: 0.5
+  angryModifiers: []
+  applyFace: 0
+  loot:
+    list: []
+    useLastAsFallback: 0
+    noneSubset:
+      enabled: 0
+      weight: 1
+  botPrefab: {fileID: 3142931615088445075, guid: b6f8bfe12785dd0409ba2c5aec239924,
+    type: 3}
+  movementFlags: -1
+  baseMovementSpeed: 20
+  baseAttackSpeed: 5
+  baseBodyHealth: 1e+10
+  baseHeadHealth: 0
+  baseAccuracy: 0
+  baseDamageResistance: 0
+  baseKnockbackResistance: 0
