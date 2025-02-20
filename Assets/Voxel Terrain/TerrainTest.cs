@@ -16,7 +16,6 @@ public class TerrainTest : VoxelGenerator {
         var box = new SdfBox(new float3(30f, 10f, 30f));
         var blended = SdfOps.Subtraction(-(simplex+y), -box.Evaluate(position));
 
-
         density = (Variable<float>) blended;
 
         color = float3.zero;
