@@ -118,7 +118,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
         // Handles being grounded (resets jump buffer and coyote time thing)
         if (cc.isGrounded && !groundJustExploded) {
             if (!lastTimeGrounded) {
-                onTouchedGround?.Invoke(movement.y);
+                //onTouchedGround?.Invoke(movement.y);
             }
 
             movement.y = groundedOffsetVelocity;

@@ -66,7 +66,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 5000
+  far clip plane: 20000
   field of view: 90
   orthographic: 0
   orthographic size: 5
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Version: 2
   m_TaaSettings:
     m_Quality: 3
-    m_FrameInfluence: 0.1
+    m_FrameInfluence: 0.100000024
     m_JitterScale: 1
     m_MipBias: 0
     m_VarianceClampScale: 0.9
@@ -211,10 +211,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6c8e04d007d42904b9948a9bd294840f, type: 3}
-  m_Resource: {fileID: 8300000, guid: 6c8e04d007d42904b9948a9bd294840f, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -684,7 +684,7 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   gravity: -9.81
   knockbackResistance: 0.3
-  groundedOffsetVelocity: -6
+  groundedOffsetVelocity: -12
   rotationIsLocal: 0
   isJumping: 0
   pushForce: 8
@@ -755,6 +755,7 @@ MonoBehaviour:
   input: {fileID: 0}
   moodleManager: {fileID: 0}
   camera: {fileID: 2262149761271955649}
+  head: {fileID: 0}
   state: 0
   music: {fileID: 8029250893140543358}
   settings:
@@ -845,7 +846,7 @@ MonoBehaviour:
     mouseSensivity: 1
     fov: 70
     bobbing: 1
-  noBuildingCost: 0
+  noBuildingCost: 1
   selectedPiece: {fileID: 11400000, guid: c106ec65469740b4a9ae8b9061db0fbb, type: 2}
   hologramMaterial: {fileID: 2100000, guid: dae47088867cf7147a2f48c8f9be9f85, type: 2}
   placementTarget: {fileID: 0}
@@ -901,7 +902,7 @@ MonoBehaviour:
   shiveringShakeRotationFactor: 0.01
   bodyTemp: 35
   minBodyTemp: 30
-  maxBodyTemp: 36
+  maxBodyTemp: 37
   maxSourcesTemp: 50
   maxAllowedSecondsHypothermia: 5
   currentHypothermiaSeconds: 0
@@ -1025,7 +1026,7 @@ MonoBehaviour:
   cameraShakeIntensity: 0.2
   cameraShakeSmoothin: 12
   shivering: 0
-  shiveringStrength: 0.0002
+  shiveringStrength: 0.0005
 --- !u!114 &8774647842230484772
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,6 +21,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Snow Jump
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14dad7e64bef6464a86aadda48532133
+    m_Address: "Assets/AddressablesResources/Music/Debussy - R\xEAverie.mp3"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1f76e87534e72e44ea7373dd73ab86d6
     m_Address: Assets/Footsteps - Essentials/Footsteps_Snow/Footsteps_Snow_Run
     m_ReadOnly: 0
@@ -75,11 +80,23 @@ MonoBehaviour:
     m_SerializedLabels:
     - Rock Run
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae1ee21a75314b241b60453bed2b4f76
+    m_Address: Assets/Music/Debussy - Arabesque No. 1 (Ciccolini).mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Music
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b09cc9d38e1fcfb48ba8ff3af96df662
     m_Address: Assets/AddressablesResources/Entity/Bots
     m_ReadOnly: 0
     m_SerializedLabels:
     - Bots
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b22f88fd233f3034d94a84afd82ba958
+    m_Address: Assets/AddressablesResources/Music/Claude Debussy - Clair de Lune 
+      Royalty Free Classical Music.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5cdcc0bf71a7db4eb22861ef8c76a07
     m_Address: Assets/AddressablesResources/Items

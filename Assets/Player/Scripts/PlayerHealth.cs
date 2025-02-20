@@ -17,6 +17,7 @@ public class PlayerHealth : PlayerBehaviour {
         Debug.Log("Skill issue, you dead");
         player.state = Player.State.Dead;
         player.movement.ResetMovement();
+        Cursor.lockState = CursorLockMode.None;
 
         // Literal hell
         //ambatakamChoir.Play();
