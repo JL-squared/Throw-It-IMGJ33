@@ -4897,7 +4897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceTemperature: 50
   maxRangeRadius: 5
-  minRangeRadius: 0.5
+  minRangeRadius: 0.8
 --- !u!135 &1322084850
 SphereCollider:
   m_ObjectHideFlags: 0
