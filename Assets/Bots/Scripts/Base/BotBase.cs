@@ -197,7 +197,7 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
         
 
         // Check if we have a head we can apply hats on
-        if (head.tags.Contains("hattable")) {
+        if (head != null && head.tags.Contains("hattable")) {
             PickPartForHolsterType(hatHolster, data.hat, ref savedBotData.hat);
         }
 

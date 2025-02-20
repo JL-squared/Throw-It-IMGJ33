@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cecd09a5ec7549b46abe66f8ec5fff22, type: 3}
+  m_Name: Yarn_ball
+  m_EditorClassIdentifier: 
+  stackSize: 20
+  marketLimit: 0
+  icon: {fileID: 21300000, guid: de90a7474ab63fd46a8491b393b9cbe3, type: 3}
+  viewModelPositionOffset: {x: 0, y: 0, z: 0}
+  viewModelScaleOffset: {x: 1, y: 1, z: 1}
+  viewModelRotationOffset: {x: 0, y: 0, z: 0, w: 1}
+  prefab: {fileID: 6738572504615155268, guid: ebcbb8175c27f7248a2354d22d9788fb, type: 3}
+  title: Yarn ball
+  description: Kitties!!!!!!!!!!!!!
+  projectile: {fileID: 5488373698599033194, guid: fb803a10eaaf8cf4e90446051008d1db,
+    type: 3}
+  lifetime: 15
+  knockbackFactor: 1.5
+  rigidbodyForceFactor: 1.5
+  particles: {fileID: 6242322385690944836, guid: 6e26490abae80954b970693a1afc1641,
+    type: 3}
+  baseDamage: 1.5
+  speedFactor: 0.4
