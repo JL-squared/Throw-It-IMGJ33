@@ -565,7 +565,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1887,6 +1887,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Momohsin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142931615088445075, guid: b6f8bfe12785dd0409ba2c5aec239924,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4710,7 +4715,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7297,7 +7302,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
