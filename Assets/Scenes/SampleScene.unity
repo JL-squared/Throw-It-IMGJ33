@@ -1893,6 +1893,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3142931615088445075, guid: b6f8bfe12785dd0409ba2c5aec239924,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4902,7 +4907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceTemperature: 50
   maxRangeRadius: 5
-  minRangeRadius: 0.5
+  minRangeRadius: 0.8
 --- !u!135 &1322084850
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7206,8 +7211,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
         type: 3}
+      propertyPath: cloudWindFactor.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
+      propertyPath: cloudWindFactor.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780433711588789733, guid: 48e2f2103aa5c9945ac555e37167a823,
+        type: 3}
       propertyPath: cloudCoverageOffset
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

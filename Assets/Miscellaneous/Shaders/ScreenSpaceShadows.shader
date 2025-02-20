@@ -36,7 +36,7 @@ Shader "Custom/ScreenSpaceShadows"
         float checkScreenSpaceShadows(float3 position, float2 screen) {
             float3 sun_direction = mul(_sunMatrix, float4(0, 0, 1, 0)).xyz;
             float alpha;
-            float color;
+            float3 color;
             float3 offset;
             hash33(float3(screen, 1) * float3(12.23123, 340.23423, -2313.324), offset);
             //sun_direction += offset * 0.001;
