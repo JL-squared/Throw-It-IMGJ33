@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
     protected bool justSpawnedVehicle;
     protected bool ignoringSpawner;
     protected ProjectileShooter shooter;
+    protected Vector3 lastPosition;
 
     public virtual void Spawned(Vector3 pos, Vector3 velocity, ProjectileShooter shooter = null) {
         if (shooter != null && shooter.collider != null) {
@@ -76,11 +77,13 @@ public class Projectile : MonoBehaviour {
         OnHit(other, relativeVelocity);
     }
 
-    public void Update() {
+    void FixedUpdate() {
         if (shooterCollider != null && Vector3.Distance(transform.position, shooterPosition) >= 2.0f && ignoringSpawner) {
             Physics.IgnoreCollision(collider, shooterCollider, false);
             collider.excludeLayers = 0;
             ignoringSpawner = false;
         }
+        
+        lastPosition = rb.position;
     }
 }
