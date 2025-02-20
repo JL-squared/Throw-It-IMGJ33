@@ -89,6 +89,8 @@ public class MoodleManager : MonoBehaviour {
 
         foreach (Moodle activeMoodle in activeMoodles) {
             if (thingHasBeenYeeted) {
+
+                Debug.Log("Adding a tween cause one of our moodles got yeeted");
                 var tween = new FloatTween {
                     from = activeMoodle.transform.localPosition.y,
                     to = activeMoodle.transform.localPosition.y - 80,

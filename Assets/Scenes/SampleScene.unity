@@ -565,7 +565,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1886,7 +1886,12 @@ PrefabInstance:
     - target: {fileID: 3142931615088445075, guid: b6f8bfe12785dd0409ba2c5aec239924,
         type: 3}
       propertyPath: m_Name
-      value: Momohsin
+      value: Lurking momo
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142931615088445075, guid: b6f8bfe12785dd0409ba2c5aec239924,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4710,7 +4715,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7287,7 +7292,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7821,7 +7826,7 @@ PrefabInstance:
     - target: {fileID: 8029250893140543358, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
       propertyPath: m_Volume
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8267247879346996897, guid: 5d1fe24bbdd40634ca2c453b7c1fe9f4,
         type: 3}
