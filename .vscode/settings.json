@@ -45,6 +45,7 @@
         "**/*.shadergraph": true,
         "**/*.shadersubgraph": true,
         "**/*.shadervariants": true,
+        "**/*.vfx": true,
         "**/*.inputactions": true,
         "build/": true,
         "Build/": true,

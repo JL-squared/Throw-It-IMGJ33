@@ -49,7 +49,7 @@ public class BombHead : BotBehaviour {
     public void Update() {
         timer -= Time.deltaTime;
 
-        if (timer <= 0) {
+        if (timer <= 0 && deathFactor == 0) {
             Destroy(botBase.gameObject);
 
             /*

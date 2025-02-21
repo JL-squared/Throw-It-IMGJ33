@@ -129,11 +129,9 @@ public class Player : MonoBehaviour, IEntitySerializer {
     }
 
 
-    int lastPlayedMusicIndex = -1;
     public void PlayMusic() {
-        var temp = Registries.music.data.Random(lastPlayedMusicIndex);
+        var temp = Registries.music.data.Random();
         music.clip = temp.Item2;
-        lastPlayedMusicIndex = temp.Item1;
         music.Play();
     }
 }

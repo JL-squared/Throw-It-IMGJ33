@@ -1,3 +1,4 @@
+using Tweens;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -34,9 +35,11 @@ public class SnowballItem : Item {
             throwDelay = maxThrowDelay * charge;
             time = 0;
             player.inventory.container.RemoveItem(player.inventory.Equipped, 1);
+
             return;
         }
     }
+
 
     public override void EquippedUpdate(Player player) {
         if (isCharging) {
@@ -46,15 +49,19 @@ public class SnowballItem : Item {
         throwDelay = Mathf.Clamp(throwDelay, 0.0f, maxThrowDelay);
 
         float charge = Mathf.Clamp01(time / timeForMaxCharge);
-        float s = 16.0f;
-        //swayOffset = new Vector3(Mathf.PerlinNoise1D(Time.time * s), Mathf.PerlinNoise1D(Time.time * s - 12.31546f), Mathf.PerlinNoise1D(Time.time * s + 3.5654f)) * charge * 0.035f;
-        //swayOffset += (-Vector3.forward + Vector3.right * 0.2f) * charge * 0.125f;
-
+        
         UIScriptMaster.Instance.crosshairHints.UpdateChargeMeter(isCharging ? charge : Mathf.InverseLerp(0.0f, maxThrowDelay, throwDelay));
 
         if (player.input.PrimaryHeld && !isCharging) {
-            if (throwDelay == 0.0f) isCharging = true;
+            if (throwDelay == 0.0f) {
+                isCharging = true;
+            }
         }
+
+        float curved = EaseFunctions.SineInOut(charge);
+        Vector3 shake = Utils.WarpNoise(Time.time * 25);
+        Vector3 localPosition = new Vector3(0, 0, -curved * 0.1f) + shake * 0.01f * curved;
+        player.inventory.viewModel.transform.localPosition = localPosition;
     }
 
     public override void Update(Player player) {

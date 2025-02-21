@@ -72,10 +72,9 @@ public class Crate : MonoBehaviour {
 
     public void BreakOpen() {
         BotBase.Summon(Registries.bots["tall"], transform.position, Quaternion.identity);
-        //BotBase.Summon(Registries.bots["momohsin"], transform.position, Quaternion.identity);
-        //BotBase.Summon(Registries.bots["belbelbel"], transform.position, Quaternion.identity);
         BotBase.Summon(Registries.bots["base"], transform.position, Quaternion.identity);
         Destroy(gameObject);
+        Utils.BlowUp(transform.position, 20, 10, 5);
     }
 
     public void PlayVisual(float speed) {
