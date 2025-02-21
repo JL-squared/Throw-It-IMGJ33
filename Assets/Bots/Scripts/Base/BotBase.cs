@@ -142,13 +142,17 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
     }
 
     private void OnKilled(bool headshot) {
-        //Destroy(gameObject);
+    }
 
-        /*
-        BotLootData loot = data.loot.PickRandom();
-        if (loot != null)
-            WorldItem.Spawn(loot.item, transform.position, Quaternion.identity);
-        */
+    private void FallOver() {
+        var characterController = GetComponent<CharacterController>();
+        characterController.enabled = false;
+
+        var OTHERTHING = gameObject.AddComponent<Rigidbody>();
+        OTHERTHING.angularDamping = 0.4f;
+        var THISGJSKDJGHKS = gameObject.AddComponent<CapsuleCollider>();
+        THISGJSKDJGHKS.radius = characterController.radius;
+        THISGJSKDJGHKS.height = characterController.height;
     }
 
     private void ApplyAttributes() {
@@ -271,6 +275,7 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
 
     float offset = 0.247f;
 
+    bool fellOver = false;
     public void Update() {
         GameObject player = Player.Instance.gameObject;
         Vector3 velocity = player.GetComponent<EntityMovement>().Velocity;
@@ -307,6 +312,11 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
 
             if (timeSinceDeath > 1) {
                 em.entityMovementFlags.RemoveFlag(EntityMovementFlags.AllowedToRotate | EntityMovementFlags.ApplyMovement);
+            }
+
+            if (timeSinceDeath > 10 && !fellOver) {
+                fellOver = true;
+                FallOver();
             }
         }
     }
