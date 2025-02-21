@@ -15,6 +15,7 @@
         "**/*.mid": true,
         "**/*.midi": true,
         "**/*.wav": true,
+        "**/*.mp3": true,
         "**/*.gif": true,
         "**/*.ico": true,
         "**/*.jpg": true,
@@ -41,6 +42,11 @@
         "**/*.meta": true,
         "**/*.prefab": true,
         "**/*.unity": true,
+        "**/*.shadergraph": true,
+        "**/*.shadersubgraph": true,
+        "**/*.shadervariants": true,
+        "**/*.vfx": true,
+        "**/*.inputactions": true,
         "build/": true,
         "Build/": true,
         "Library/": true,
@@ -49,7 +55,8 @@
         "Obj/": true,
         "ProjectSettings/": true,
         "temp/": true,
-        "Temp/": true
+        "Temp/": true,
     },
+    "explorer.excludeGitIgnore": true,
     "dotnet.defaultSolution": "Throw It! (IMGJ 33).sln"
 }

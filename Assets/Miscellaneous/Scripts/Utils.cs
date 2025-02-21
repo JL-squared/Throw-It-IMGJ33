@@ -19,6 +19,10 @@ public static class Utils {
         source.Play();
     }
 
+    public static Vector3 WarpNoise(float x) {
+        return new Vector3(Mathf.PerlinNoise1D(x), Mathf.PerlinNoise1D(x - 12.31546f), Mathf.PerlinNoise1D(x + 3.5654f)) * 2f - Vector3.one;
+    }
+
     public static void PlaySound(AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         GameObject obj = new GameObject();
         AudioSource source = obj.AddComponent<AudioSource>();
@@ -190,21 +194,6 @@ public static class Utils {
         return (index, dict.ToList()[index].Value);
     }
 
-    // Jarvis, randomize his balls but exclude a single number
-    public static (int, V) Random<K, V>(this Dictionary<K, V> dict, int exclusionIndex) {
-        if (exclusionIndex >= (dict.Count-1) || exclusionIndex < 0) {
-            return Random(dict);
-        }
-
-        int lower = UnityEngine.Random.Range(0, exclusionIndex);
-        int upper = UnityEngine.Random.Range(exclusionIndex+1, dict.Count);
-        int rng = UnityEngine.Random.value > 0.5f ? lower : upper;
-
-        // very stupid but it works
-        // https://stackoverflow.com/questions/1028136/random-entry-from-dictionary
-        return (rng, dict.ToList()[rng].Value);
-    }
-
     // Jarvis, calculate the absolute whilst somehow smoothing and keeping the range 0-1
     public static float SmoothAbsClamped01(float x, float h) {
         float J(float x) {
@@ -214,19 +203,6 @@ public static class Utils {
         float b = 1f / J(1);
         float a = J(x) * b;
         return Mathf.Clamp01(a);
-    }
-
-
-    // Load all the types of an Adressable using its label into memory
-    public static void GetAllTypes<T>(ref Dictionary<string, T> types, string label) where T : ScriptableObject {
-        var temp = new Dictionary<string, T>();
-        types = temp;
-
-        AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(label, (x) => {
-            temp.TryAdd(x.name, x);
-        });
-
-        handle.WaitForCompletion();
     }
 
     public static bool IsNullOrDestroyed(this object value) {

@@ -68,7 +68,6 @@ float3 light(float2 deriv, float3 sun, float3 ray) {
 	float3 normal = normalize(float3(deriv.x, 1, deriv.y));
 	float d = clamp(dot(sun, normal) * 0.5 + 0.5, 0, 1);
 	float s = pow(max(dot(sun, normalize(ray + abs(normal) * 0.4)), 0), 30);
-	//float ss = pow(dot(reflect(ray, normal), sun) * 0.5 + 0.5, 20);
 	float ss = pow(length(abs(normal).xz), 5);
 
 	float strength = 1.0 * (1 - abs(sun.y) * 0.3);
@@ -78,14 +77,7 @@ float3 light(float2 deriv, float3 sun, float3 ray) {
 	float sunlight_but_visible = clamp(raw_sun_factor, 0.01, 1);
 	float3 ambient = EvaluateAmbientProbe(normal);
 	//float t = dot(normalize(sun), abs(normal)) * 0.5 + 0.5;
-	//return d + ss;
-	//return float3(0,0,0);
 	
-	//return s;
-	//return 	SAMPLE_TEXTURECUBE_LOD(unity_SpecCube0, my_point_clamp_sampler, -ray, 0).xyz;
-	//return SampleSH9(SHCoefficients, normal);
-	//return ambientLighting;
-	//return lerp(d * strength, 1.0, s) * ambient;
 	return lerp(ambient * 0.5 * sunlight_but_visible, sunlight, d + ss * 0.5) + 0.002;
 }
 

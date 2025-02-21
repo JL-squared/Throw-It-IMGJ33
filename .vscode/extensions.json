@@ -1,5 +1,8 @@
 {
     "recommendations": [
-      "visualstudiotoolsforunity.vstuc"
+      "visualstudiotoolsforunity.vstuc",
+      "ms-dotnettools.csharp",
+      "ms-dotnettools.csdevkit",
+      "gruntfuggly.todo-tree"
     ]
 }
