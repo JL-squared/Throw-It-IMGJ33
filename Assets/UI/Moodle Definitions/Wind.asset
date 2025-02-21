@@ -18,7 +18,8 @@ MonoBehaviour:
   neutralDesc: You feel a tingle on your cheek.
   weakName: Windy
   weakDesc: Whistling winds about you.
-  mediumName: Turbulent wind
+  mediumName: Gale
   mediumDesc: Gusts of wild wind upset your surroundings and your warmth.
-  badName: Stormy wind
-  badDesc: You're getting pushed around with how windy it is.
+  badName: Storm
+  badDesc: It's windy enough to cause structural damage. You're barely standing on
+    your feet.

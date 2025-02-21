@@ -11,16 +11,17 @@ public class PlayerTemperature : PlayerBehaviour {
     public float reachSpeedIncrease = 4.0f;
     public float reachSpeedDecrease = 0.25f;
     public float shivering;
+    public float sourcesTemp;
 
     private void Start() {
-        bodyTemp = maxBodyTemp;
+        //bodyTemp = maxBodyTemp;
     }
 
     private void FixedUpdate() {
         // Calculate heat from sources
-        HeatSource[] sources = GameObject.FindObjectsOfType<HeatSource>();
-        float outsideTemp = GameManager.Instance.weatherManager.GetOutsideTemperature();
-        float sourcesTemp = outsideTemp;
+        HeatSource[] sources = FindObjectsByType<HeatSource>(FindObjectsSortMode.None);
+        float outsideTemp = GameManager.Instance.weatherManager.GetOutsideTemperature() - 20.0f;
+        sourcesTemp = outsideTemp;
         foreach (var source in sources) {
             float dist = Vector3.Distance(transform.position, source.transform.position);
             float invLerp = Mathf.InverseLerp(source.minRangeRadius, source.maxRangeRadius, dist);

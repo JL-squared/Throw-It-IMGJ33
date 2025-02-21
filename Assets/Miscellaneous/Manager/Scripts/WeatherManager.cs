@@ -17,6 +17,7 @@ public class WeatherManager : MonoBehaviour {
     public Light directionalLight;
     public float globalTimeScale = 1.0f;
     private float time;
+    public bool updateWeather;
 
     [Header("Humidity")]
     [Range(0f, 1f)]
@@ -74,7 +75,7 @@ public class WeatherManager : MonoBehaviour {
     public Material skybox;
 
     public float GetOutsideTemperature() {
-        return -20.0f;
+        return temperature + CalculateWindchill();
     }
 
     private void Start() {
@@ -136,10 +137,11 @@ public class WeatherManager : MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        UpdateValues();
+        if(updateWeather)
+            UpdateValues();
     }
 
-    public float lastAirPressure;
+    private float lastAirPressure;
     public void UpdateValues() {
         temperature = (temperatureMax - temperatureMin) / 2 * (float)Math.Sin(0.00001f * Time.fixedTime) + (temperatureMax + temperatureMin) / 2;
         airPressure = proportionalityConstant * (temperature + 273.15f);
@@ -159,7 +161,7 @@ public class WeatherManager : MonoBehaviour {
         }
 
         if (cloudCoverage > 0.5f && (temperature + 273.15f) < snowfallTemperatureThreshold) {
-            snowfall = (float)(Math.Pow(cloudCoverage, 0.5f) * snowfallToCloud);
+            snowfall = humidity * (float)(Math.Pow(cloudCoverage, 0.5f) * snowfallToCloud);
             cloudCoverage -= cloudPrecipitationDecay * Time.fixedDeltaTime;
         } else {
             snowfall = 0.0f;
@@ -180,5 +182,14 @@ public class WeatherManager : MonoBehaviour {
         }
 
         snowVFX.gameObject.transform.position = Player.Instance.gameObject.transform.position;
+    }
+
+    public static float CalculateWindchill(float temperature, float windSpeed) {
+        float kmh = windSpeed * 3.6f;
+        return 13.12f + 0.6215f * temperature - 11.37f * kmh + 0.3965f * temperature * kmh; // actual irl windchill calculation
+    }
+
+    public float CalculateWindchill() {
+        return CalculateWindchill(temperature, windSpeed);
     }
 }

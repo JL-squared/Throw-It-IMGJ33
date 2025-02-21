@@ -9,6 +9,8 @@ public class Moodle : MonoBehaviour {
     public MoodleDefinition definition;
     public MoodleStrength strength;
 
+    public bool toDestroy = false;
+
     public void Initialize(MoodleDefinition definition, MoodleStrength strength) {
         this.definition = definition;
         this.strength = strength;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Tweens;
 using UnityEngine;
@@ -15,8 +16,14 @@ public class MoodleManager : MonoBehaviour {
         Bad
     }
 
+    public int spacing;
+
     public EaseType type;
     public float duration;
+
+    public EaseType shakeType;
+    public float shakeDuration;
+    public int timesShaken;
 
     public Sprite neutralBackground;
     public Sprite weakBackground;
@@ -44,6 +51,12 @@ public class MoodleManager : MonoBehaviour {
     public float minBadHypo;
     public MoodleDefinition hypothermia;
 
+    private enum ComparisonType {
+        Equal,
+        GreaterThanOrEqual,
+        LesserThanOrEqual,
+    }
+
     PlayerTemperature temperature;
     WeatherManager weatherManager;
 
@@ -51,98 +64,168 @@ public class MoodleManager : MonoBehaviour {
 
     List<Moodle> activeMoodles = new List<Moodle>();
 
+    int timer = 0;
+
     private void Start() {
         temperature = Player.Instance.temperature;
         weatherManager = GameManager.Instance.weatherManager;
         moodleParent = UIScriptMaster.Instance.inGameHUD.moodleParent;
     }
 
-    int timer = 0;
-
     private void FixedUpdate() {
-        if (temperature.bodyTemp <= minBadHypo) {
-            Moodlify(hypothermia, MoodleStrength.Bad);
-        } else if (temperature.bodyTemp <= minMedHypo) {
-            Moodlify(hypothermia, MoodleStrength.Medium);
-        } else if (temperature.bodyTemp <= minWeakHypo) {
-            Moodlify(hypothermia, MoodleStrength.Weak);
-        } else if (temperature.bodyTemp <= minNeutralHypo) {
-            Moodlify(hypothermia, MoodleStrength.Neutral);
+        if (timer > 2) {
+            Thresholdify(temperature.bodyTemp, minNeutralHypo, minWeakHypo, minMedHypo, minBadHypo, hypothermia);
+            Thresholdify(Player.Instance.temperature.sourcesTemp, minNeutralCold, minWeakCold, minMedCold, minBadCold, cold);
+            Thresholdify(weatherManager.windSpeed, minNeutralWind, minWeakWind, minMedWind, minBadWind, wind, ComparisonType.GreaterThanOrEqual);
         } else {
-            Moodlify(hypothermia, MoodleStrength.None);
-        }
-        timer++;
-
-        if (timer > 500) {
-            Moodlify(cold, MoodleStrength.Weak);
-        } else if (timer > 10) {
-            Moodlify(cold, MoodleStrength.Neutral);
+            timer++;
         }
     }
 
     public void Moodlify(MoodleDefinition definition, MoodleStrength strength) {
-        bool thingHasBeenYeeted = false; // Have we found something to delete (in the case of None)
+        bool foundDestroyMoodle = false; // Have we found something to delete (in the case of None)
+        int destroyMoodleIndex = 0;
 
         if (activeMoodles.Count <= 0 && strength == MoodleStrength.None) {
             return;
         }
 
+        int index = 0;
         foreach (Moodle activeMoodle in activeMoodles) {
-            if (thingHasBeenYeeted) {
+            if (foundDestroyMoodle) {
+                Debug.Log($"Adding a downward tween to moodle {activeMoodle.definition.id}; moodle {activeMoodles[destroyMoodleIndex].definition.id} is to be destroyed");
 
-                Debug.Log("Adding a tween cause one of our moodles got yeeted");
+                var toGo = index * spacing - spacing;
                 var tween = new FloatTween {
                     from = activeMoodle.transform.localPosition.y,
-                    to = activeMoodle.transform.localPosition.y - 80,
+                    to = toGo,
                     duration = duration,
-                    onUpdate = (instance, value) => {
-                        activeMoodle.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, value, gameObject.transform.localPosition.z);
+                    onUpdate = (_, value) => {
+                        activeMoodle.transform.localPosition = new Vector3(activeMoodle.gameObject.transform.localPosition.x, value, activeMoodle.gameObject.transform.localPosition.z);
                     },
                     easeType = type,
+                    dontInvokeWhenDestroyed = true
                 };
 
                 activeMoodle.gameObject.AddTween(tween);
-            } else if (activeMoodle.definition == definition) {
-                // We know that items are comparing to themselves
+            } else if (activeMoodle.definition.id == definition.id) {
+                // Debug.Log($"Found a matching moodle: {activeMoodle.definition.id}");
                 if (strength == MoodleStrength.None) {
-                    thingHasBeenYeeted = true;
+                    foundDestroyMoodle = true;
                 } else if (strength != activeMoodle.strength) {
+                    Debug.Log($"Adding shake tween to {activeMoodle.definition.id}");
                     activeMoodle.Initialize(definition, strength); // Just replace the existing one with a different intensity
+                    var tween = new FloatTween {
+                        from = 0,
+                        to = timesShaken,
+                        duration = shakeDuration,
+                        onUpdate = (instance, value) => {
+                            if (!activeMoodle.IsNullOrDestroyed() && !activeMoodle.gameObject.IsNullOrDestroyed())
+                                activeMoodle.transform.localPosition = new Vector3(Mathf.Sin(value * Mathf.PI * 2) * 6, activeMoodle.gameObject.transform.localPosition.y, activeMoodle.gameObject.transform.localPosition.z);
+                        },
+                        easeType = EaseType.Linear,
+                        fillMode = FillMode.None,
+                        onCancel = (instance) => {
+                            if (!activeMoodle.IsNullOrDestroyed() && !activeMoodle.gameObject.IsNullOrDestroyed())
+                                activeMoodle.transform.localPosition = new Vector3(0, activeMoodle.transform.localPosition.y, activeMoodle.transform.localPosition.z);
+                        },
+                        dontInvokeWhenDestroyed = true
+                    };
+
+                    activeMoodle.gameObject.AddTween(tween);
                     return;
                 } else {
                     return;
                 }
-            } 
+            } else {
+                destroyMoodleIndex++;
+            }
+            index++;
         }
 
-        if (thingHasBeenYeeted || strength == MoodleStrength.None) // Since we have to go through the rest of the list make sure to return here
+        if (foundDestroyMoodle) {
+            var destroyMoodle = activeMoodles[destroyMoodleIndex];
+            Debug.Log("Cancelling tweens on " + destroyMoodle.definition.id);
+            gameObject.CancelTweens(destroyMoodle.gameObject);
+            activeMoodles.RemoveAt(destroyMoodleIndex);
+            Destroy(destroyMoodle.gameObject);
             return;
+        }
 
         CreateMoodle(definition, strength);
     }
 
     public void CreateMoodle(MoodleDefinition definition, MoodleStrength strength) {
-        Debug.Log("Makin a moodle!!!");
+        if (strength == MoodleStrength.None) // Since we have to go through the rest of the list make sure to return here
+            return;
+
+        Debug.Log($"Creating new moodle {definition.id}");
 
         var gameObject = Instantiate(UIScriptMaster.Instance.moodlePrefab, moodleParent.transform); // Otherwise make a new moodle!!!!!!!!!
-        gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, -80, gameObject.transform.localPosition.z);
+        gameObject.transform.localPosition = new Vector3(0, -spacing, 0);
         var moodle = gameObject.GetComponent<Moodle>();
         moodle.Initialize(definition, strength);
-
         activeMoodles.Insert(0, moodle);
 
+        int index = 0;
         foreach (Moodle activeMoodle in activeMoodles) {
+            Debug.Log($"Adding an upward tween to moodle {activeMoodle.definition.id}; moodle {moodle.definition.id} has been added");
+
+            var toGo = index * spacing; // THIS IS WRONG!!!!
             var tween = new FloatTween {
                 from = activeMoodle.transform.localPosition.y,
-                to = activeMoodle.transform.localPosition.y + 80,
+                to = toGo,
                 duration = duration,
-                onUpdate = (instance, value) => {
-                    activeMoodle.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, value, gameObject.transform.localPosition.z);
+                dontInvokeWhenDestroyed = true,
+                onUpdate = (_, value) => {
+                    if (!activeMoodle.IsNullOrDestroyed() && !activeMoodle.gameObject.IsNullOrDestroyed())
+                        activeMoodle.gameObject.transform.localPosition = new Vector3(activeMoodle.gameObject.transform.localPosition.x, value, activeMoodle.gameObject.transform.localPosition.z);
                 },
                 easeType = type,
             };
 
             activeMoodle.gameObject.AddTween(tween);
+            index++;
+        }
+    }
+
+    private void Thresholdify<T>(T value, T neutral, T weak, T medium, T bad, MoodleDefinition moodle, ComparisonType comparisonType = ComparisonType.LesserThanOrEqual) where T : IComparable<T> {
+        switch (comparisonType) {
+            case (ComparisonType.LesserThanOrEqual):
+                if (value.CompareTo(bad) <= 0) {
+                    Moodlify(moodle, MoodleStrength.Bad);
+                }
+                else if (value.CompareTo(medium) <= 0) {
+                    Moodlify(moodle, MoodleStrength.Medium);
+                }
+                else if (value.CompareTo(weak) <= 0) {
+                    Moodlify(moodle, MoodleStrength.Weak);
+                }
+                else if (value.CompareTo(neutral) <= 0) {
+                    Moodlify(moodle, MoodleStrength.Neutral);
+                }
+                else {
+                    Moodlify(moodle, MoodleStrength.None);
+                }
+                break;
+
+            case (ComparisonType.GreaterThanOrEqual):
+                if (value.CompareTo(bad) >= 0) {
+                    Moodlify(moodle, MoodleStrength.Bad);
+                }
+                else if (value.CompareTo(medium) >= 0) {
+                    Moodlify(moodle, MoodleStrength.Medium);
+                }
+                else if (value.CompareTo(weak) >= 0) {
+                    Moodlify(moodle, MoodleStrength.Weak);
+                }
+                else if (value.CompareTo(neutral) >= 0) {
+                    Moodlify(moodle, MoodleStrength.Neutral);
+                }
+                else {
+                    Moodlify(moodle, MoodleStrength.None);
+                }
+                break;
         }
     }
 }
