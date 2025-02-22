@@ -17,7 +17,7 @@ public class CustomAlphaCopy : MonoBehaviour {
 
     private void Update() {
         if (copy != null) {
-            copy.SetVector("Scaler", GetComponent<RectTransform>().localScale);
+            copy.SetVector("Scalar", GetComponent<RectTransform>().localScale);
         } else {
             Start();
         }

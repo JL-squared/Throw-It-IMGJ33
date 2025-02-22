@@ -884,7 +884,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
     "m_ObjectId": "76b078d40ccb4e5ea3d4f58a373fad8e",
     "m_Id": 0,
-    "m_DisplayName": "Scaler",
+    "m_DisplayName": "Scalar",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -988,10 +988,10 @@
     "m_Guid": {
         "m_GuidSerialized": "77f731ab-75ea-477c-b2bc-f35858a13781"
     },
-    "m_Name": "Scaler",
+    "m_Name": "Scalar",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Scaler",
-    "m_DefaultReferenceName": "_Scaler",
+    "m_RefNameGeneratedByDisplayName": "Scalar",
+    "m_DefaultReferenceName": "_Scalar",
     "m_OverrideReferenceName": "Scaler",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
