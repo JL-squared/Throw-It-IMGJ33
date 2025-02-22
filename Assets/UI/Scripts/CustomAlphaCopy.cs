@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class CustomAlphaCopy : MonoBehaviour {
     public Sprite source;
     public Sprite alpha;
@@ -15,6 +16,10 @@ public class CustomAlphaCopy : MonoBehaviour {
     }
 
     private void Update() {
-        copy.SetVector("Scaler", GetComponent<RectTransform>().localScale);
+        if (copy != null) {
+            copy.SetVector("Scaler", GetComponent<RectTransform>().localScale);
+        } else {
+            Start();
+        }
     }
 }
