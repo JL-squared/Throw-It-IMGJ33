@@ -16,6 +16,8 @@ public class MoodleManager : MonoBehaviour {
         Bad
     }
 
+    public bool Logging;
+
     public int spacing;
 
     public EaseType type;
@@ -93,7 +95,7 @@ public class MoodleManager : MonoBehaviour {
         int index = 0;
         foreach (Moodle activeMoodle in activeMoodles) {
             if (foundDestroyMoodle) {
-                Debug.Log($"Adding a downward tween to moodle {activeMoodle.definition.id}; moodle {activeMoodles[destroyMoodleIndex].definition.id} is to be destroyed");
+                LogStuff($"Adding a downward tween to moodle {activeMoodle.definition.id}; moodle {activeMoodles[destroyMoodleIndex].definition.id} is to be destroyed");
 
                 var toGo = index * spacing - spacing;
                 var tween = new FloatTween {
@@ -109,11 +111,11 @@ public class MoodleManager : MonoBehaviour {
 
                 activeMoodle.gameObject.AddTween(tween);
             } else if (activeMoodle.definition.id == definition.id) {
-                // Debug.Log($"Found a matching moodle: {activeMoodle.definition.id}");
+                // LogStuff($"Found a matching moodle: {activeMoodle.definition.id}");
                 if (strength == MoodleStrength.None) {
                     foundDestroyMoodle = true;
                 } else if (strength != activeMoodle.strength) {
-                    Debug.Log($"Adding shake tween to {activeMoodle.definition.id}");
+                    LogStuff($"Adding shake tween to {activeMoodle.definition.id}");
                     activeMoodle.Initialize(definition, strength); // Just replace the existing one with a different intensity
                     var tween = new FloatTween {
                         from = 0,
@@ -145,7 +147,7 @@ public class MoodleManager : MonoBehaviour {
 
         if (foundDestroyMoodle) {
             var destroyMoodle = activeMoodles[destroyMoodleIndex];
-            Debug.Log("Cancelling tweens on " + destroyMoodle.definition.id);
+            LogStuff("Cancelling tweens on " + destroyMoodle.definition.id);
             gameObject.CancelTweens(destroyMoodle.gameObject);
             activeMoodles.RemoveAt(destroyMoodleIndex);
             Destroy(destroyMoodle.gameObject);
@@ -159,7 +161,7 @@ public class MoodleManager : MonoBehaviour {
         if (strength == MoodleStrength.None) // Since we have to go through the rest of the list make sure to return here
             return;
 
-        Debug.Log($"Creating new moodle {definition.id}");
+        LogStuff($"Creating new moodle {definition.id}");
 
         var gameObject = Instantiate(UIScriptMaster.Instance.moodlePrefab, moodleParent.transform); // Otherwise make a new moodle!!!!!!!!!
         gameObject.transform.localPosition = new Vector3(0, -spacing, 0);
@@ -169,7 +171,7 @@ public class MoodleManager : MonoBehaviour {
 
         int index = 0;
         foreach (Moodle activeMoodle in activeMoodles) {
-            Debug.Log($"Adding an upward tween to moodle {activeMoodle.definition.id}; moodle {moodle.definition.id} has been added");
+            LogStuff($"Adding an upward tween to moodle {activeMoodle.definition.id}; moodle {moodle.definition.id} has been added");
 
             var toGo = index * spacing; // THIS IS WRONG!!!!
             var tween = new FloatTween {
@@ -226,6 +228,12 @@ public class MoodleManager : MonoBehaviour {
                     Moodlify(moodle, MoodleStrength.None);
                 }
                 break;
+        }
+    }
+
+    private void LogStuff(object message) {
+        if(Logging) {
+            Debug.Log(message);
         }
     }
 }
