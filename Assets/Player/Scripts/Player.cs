@@ -89,6 +89,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.inventory = inventory;
             item.footsteps = footsteps;
             item.cameraShake = cameraShake;
+            item.moodleManager = moodleManager;
         }
     }
 

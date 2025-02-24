@@ -44,6 +44,10 @@ public class PlayerBehaviour : MonoBehaviour {
     public PlayerCameraShake cameraShake;
 
     [HideInInspector]
+    [NonSerialized]
+    public MoodleManager moodleManager;
+
+    [HideInInspector]
     public Player.State state => player.state; 
 
     [NonSerialized]

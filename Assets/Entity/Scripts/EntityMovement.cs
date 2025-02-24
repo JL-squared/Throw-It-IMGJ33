@@ -150,7 +150,7 @@ public class EntityMovement : MonoBehaviour, IEntitySerializer {
 
         // Move the character and fix head bump problem
         if (cc.enabled) {
-            Debug.DrawRay(transform.position, movement);
+            //Debug.DrawRay(transform.position, movement);
             CollisionFlags flags = cc.Move((movement) * Time.deltaTime);
             if (flags == CollisionFlags.CollidedAbove && movement.y > 0.0) {
                 movement.y = 0;

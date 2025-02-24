@@ -21,19 +21,19 @@ public class PlayerCameraShake : PlayerBehaviour {
     private Quaternion cameraShakeRot;
 
     [HideInInspector]
-    public float shivering;
-    public float shiveringStrength = 0.0002f;
+    public float hypothermiaShivering;
+    public float hypothermiaShiveringStrength = 0.0002f;
 
     private List<ShakeData> shakes;
 
 
     private void Start() {
-        player.health.health.OnDamaged += Health_OnDamaged;
+        player.health.health.OnDamaged += OnDamaged;
         damageRotation = Quaternion.identity;
         shakes = new List<ShakeData>();
     }
 
-    private void Health_OnDamaged(float damage, EntityHealth.DamageSourceData data) {
+    private void OnDamaged(float damage, EntityHealth.DamageSourceData data) {
         Vector3 diff = data.direction;
         diff.y = 0;
         diff.Normalize();
@@ -43,33 +43,44 @@ public class PlayerCameraShake : PlayerBehaviour {
     }
 
     private void Update() {
-        Vector3 velocity = player.movement.inner.Velocity;
-        velocity.y = 0f;
-        velocity = Vector3.ClampMagnitude(velocity / player.movement.inner.speed, 1);
-        horizontal = Mathf.Lerp(horizontal, -Vector3.Dot(player.transform.right, velocity), Time.deltaTime * tiltStrafeSmoothingSpeed);
+        if (!UIScriptMaster.Instance.inGameHUD.Paused) {
+            CalculateAndApply();
+        }
+    }
 
-        Quaternion temp = Quaternion.identity;
-
+    private void CalculateAndApply() {
+        // Get rid of old shakes that have completely elapsed their duration
         for (int i = shakes.Count - 1; i >= 0; i--) {
             if (Time.time > shakes[i].nextTime) {
                 shakes.RemoveAt(i);
             }
         }
 
+        // Calculate accumulated camera shake from all sources
+        Quaternion temp = Quaternion.identity;
         for (int i = 0; i < shakes.Count; i++) {
             temp *= Quaternion.Slerp(Quaternion.identity, Random.rotation, shakes[i].intensity * cameraShakeIntensity);
         }
-
         cameraShakeRot = Quaternion.Slerp(temp, cameraShakeRot, Time.deltaTime * cameraShakeSmoothin);
 
+        // Calculate some tilt-strafe rotation based on horizontal movement
+        Vector3 velocity = player.movement.inner.Velocity;
+        velocity.y = 0f;
+        velocity = Vector3.ClampMagnitude(velocity / player.movement.inner.speed, 1);
+        horizontal = Mathf.Lerp(horizontal, -Vector3.Dot(player.transform.right, velocity), Time.deltaTime * tiltStrafeSmoothingSpeed);
         tiltStrafe = Quaternion.Euler(0f, 0f, horizontal * tiltStrafeStrength);
+
+        // We can convert MoodleStrength to an integer (knowing that Bad=8)
+        // We can use this as an indicator for hypothermia shake
+        hypothermiaShivering = (int)moodleManager.bodyTempMoodleStrength > 7 ? 1f : 0f;
+        Quaternion shiverRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, hypothermiaShivering * hypothermiaShiveringStrength);
+
+        // Damage rotation calculation (that brings it back to the default value)
         damageRotation = Quaternion.Lerp(damageRotation, Quaternion.identity, Time.deltaTime * damageSmoothinSpeed);
-
-        Quaternion shiverRotation = Quaternion.Lerp(Quaternion.identity, Random.rotation, shivering * shiveringStrength);
-
-        if (!UIScriptMaster.Instance.inGameHUD.Paused) {
-            shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShakeRot * shiverRotation;
-        }
+            
+            
+        // Apply all rotation
+        shiverer.transform.localRotation = damageRotation * tiltStrafe * cameraShakeRot * shiverRotation;
     }
 
     public void ShakeCamera(float duration, float intensity, Vector3 position) {

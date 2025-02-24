@@ -11,6 +11,7 @@ float2 _baseOffset0;
 float2 _baseOffset1;
 float _coverageOffset;
 
+// TODO: needs to be rewritten
 void fractalnate(float2 position, float scale, out float3 val) {
 	float ampl = 1.0;
 	val = 0.0;
@@ -50,7 +51,7 @@ void doTheThing(float2 position, bool shadowed, out float alpha, out float2 deri
 	fractalnate(position, scale * 0.2, value2);
 	value.x *= (value2.x + 0.4);
 	derivative = value.yz;
-	alpha = smoothstep(base - separation, base + separation, value.x + _coverageOffset * 0.25 + 0.35);
+	alpha = smoothstep(base - separation, base + separation, value.x + _coverageOffset * 0.18 + 0.35);
 }
 
 float2 cloudinate(float3 position, float3 sun_direction, float height, float2 offset) {

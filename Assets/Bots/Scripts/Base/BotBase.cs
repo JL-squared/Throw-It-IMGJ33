@@ -295,9 +295,9 @@ public class BotBase : MonoBehaviour, IEntitySerializer {
         //neckObject.transform.eulerAngles = new Vector3(Mathf.Rad2Deg * Mathf.Acos(offset / distance) - 90f, Mathf.Rad2Deg * Mathf.Atan2(thingyMaBob.x, thingyMaBob.z));
         //headMeshObject.transform.SetPositionAndRotation(headObject.transform.position, headObject.transform.rotation);
 
-        Debug.DrawLine(lookTarget, neckObject.transform.position);
-        Debug.DrawLine(neckObject.transform.position, headObject.transform.position);
-        Debug.DrawLine(lookTarget, headObject.transform.position);
+        //Debug.DrawLine(lookTarget, neckObject.transform.position);
+        //Debug.DrawLine(neckObject.transform.position, headObject.transform.position);
+        //Debug.DrawLine(lookTarget, headObject.transform.position);
 
         float interpolationDeathTime = 2;
         if (_bodyHealth.AlreadyKilled || _headHealth.AlreadyKilled) {

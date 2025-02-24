@@ -1,34 +1,50 @@
+using NUnit.Framework.Constraints;
+using Tweens;
 using UnityEngine;
 
 public class PlayerTemperature : PlayerBehaviour {
-    public float shiveringShakeRotationFactor = 0.01f;
     public float bodyTemp;
     public float minBodyTemp;
     public float maxBodyTemp = 37.0f;
     public float maxSourcesTemp = 50f;
-    public float maxAllowedSecondsHypothermia = 10f;
-    public float currentHypothermiaSeconds;
     public float reachSpeedIncrease = 4.0f;
     public float reachSpeedDecrease = 0.25f;
-    public float shivering;
     public float sourcesTemp;
+    public float stefan_boltzman_constant = 5.67e-8f;
+
+
 
     private void Start() {
-        //bodyTemp = maxBodyTemp;
+        bodyTemp = maxBodyTemp;
+    }
+
+    // NOT PHYSICALLY ACCURATE BUT BETTER THAN THE OLD ONE!!!
+    // TODO: should be executed every few ticks, not every tick
+    // ugh atp rewrite this too this is ass
+    private void UpdateHeatSources() {
+        HeatSource[] sources = FindObjectsByType<HeatSource>(FindObjectsSortMode.None);
+
+        sourcesTemp = GameManager.Instance.weatherManager.GetOutsideTemperature() - 15;
+        foreach (var source in sources) {
+            float sourceTemp = source.sourceTemperature * 1.5f;
+            float distance = Vector3.Distance(transform.position, source.transform.position);
+            float invSquareLaw = distance * distance;
+            sourcesTemp += (sourceTemp / invSquareLaw) * Time.fixedDeltaTime;
+        }
+        Debug.Log(sourcesTemp);
     }
 
     private void FixedUpdate() {
-        // Calculate heat from sources
-        HeatSource[] sources = FindObjectsByType<HeatSource>(FindObjectsSortMode.None);
-        float outsideTemp = GameManager.Instance.weatherManager.GetOutsideTemperature() - 20.0f;
-        sourcesTemp = outsideTemp;
-        foreach (var source in sources) {
-            float dist = Vector3.Distance(transform.position, source.transform.position);
-            float invLerp = Mathf.InverseLerp(source.minRangeRadius, source.maxRangeRadius, dist);
-            invLerp = Mathf.Pow(1 - Mathf.Clamp01(invLerp), 2);
-            sourcesTemp = Mathf.Max(sourcesTemp, source.sourceTemperature * invLerp + (1-invLerp) * outsideTemp);
-        }
+        UpdateHeatSources();
 
+        float transfer = bodyTemp - sourcesTemp;
+        float speed = transfer > 0.0f ? reachSpeedIncrease : reachSpeedDecrease; 
+        float change = speed * transfer * Time.fixedDeltaTime;
+        bodyTemp += change;
+        bodyTemp = Mathf.Clamp(bodyTemp, minBodyTemp, maxBodyTemp);
+        UIScriptMaster.Instance.temperatureDisplay.SetDisplay(bodyTemp);
+
+        /*
         float targetTemp = sourcesTemp;
         targetTemp = Mathf.Min(targetTemp, maxSourcesTemp);
 
@@ -40,23 +56,9 @@ public class PlayerTemperature : PlayerBehaviour {
         }
         
         bodyTemp = Mathf.Lerp(bodyTemp, targetTemp, reachSpeed * Time.fixedDeltaTime);
-        bodyTemp = Mathf.Min(bodyTemp, maxBodyTemp);
-
-        if (bodyTemp < minBodyTemp) {
-            currentHypothermiaSeconds += Time.fixedDeltaTime;
-        } else {
-            currentHypothermiaSeconds = 0f;
-        }
-
-        if (currentHypothermiaSeconds > maxAllowedSecondsHypothermia) {
-            shivering += Time.fixedDeltaTime;
-        } else {
-            shivering -= Time.fixedDeltaTime;
-        }
-
-        shivering = Mathf.Clamp01(shivering);
-        cameraShake.shivering = shivering;
 
         UIScriptMaster.Instance.temperatureDisplay.SetDisplay(bodyTemp);
+        */
+
     }
 }

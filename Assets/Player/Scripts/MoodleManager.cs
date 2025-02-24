@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tweens;
 using UnityEngine;
 
-public class MoodleManager : MonoBehaviour {
+public class MoodleManager : PlayerBehaviour {
     public enum MoodleStrength {
         Best,
         Fantastic,
@@ -65,6 +65,8 @@ public class MoodleManager : MonoBehaviour {
     GameObject moodleParent;
 
     List<Moodle> activeMoodles = new List<Moodle>();
+    [HideInInspector]
+    public MoodleStrength bodyTempMoodleStrength;
 
     int timer = 0;
 
@@ -76,7 +78,7 @@ public class MoodleManager : MonoBehaviour {
 
     private void FixedUpdate() {
         if (timer > 2) {
-            Thresholdify(temperature.bodyTemp, minNeutralHypo, minWeakHypo, minMedHypo, minBadHypo, hypothermia);
+            bodyTempMoodleStrength = Thresholdify(temperature.bodyTemp, minNeutralHypo, minWeakHypo, minMedHypo, minBadHypo, hypothermia);
             Thresholdify(Player.Instance.temperature.sourcesTemp, minNeutralCold, minWeakCold, minMedCold, minBadCold, cold);
             Thresholdify(weatherManager.windSpeed, minNeutralWind, minWeakWind, minMedWind, minBadWind, wind, ComparisonType.GreaterThanOrEqual);
         } else {
@@ -191,44 +193,49 @@ public class MoodleManager : MonoBehaviour {
         }
     }
 
-    private void Thresholdify<T>(T value, T neutral, T weak, T medium, T bad, MoodleDefinition moodle, ComparisonType comparisonType = ComparisonType.LesserThanOrEqual) where T : IComparable<T> {
+    private MoodleStrength Thresholdify<T>(T value, T neutral, T weak, T medium, T bad, MoodleDefinition moodle, ComparisonType comparisonType = ComparisonType.LesserThanOrEqual) where T : IComparable<T> {
+        MoodleStrength strength = MoodleStrength.None;
+
         switch (comparisonType) {
             case (ComparisonType.LesserThanOrEqual):
                 if (value.CompareTo(bad) <= 0) {
-                    Moodlify(moodle, MoodleStrength.Bad);
+                    strength = MoodleStrength.Bad;
                 }
                 else if (value.CompareTo(medium) <= 0) {
-                    Moodlify(moodle, MoodleStrength.Medium);
+                    strength = MoodleStrength.Medium;
                 }
                 else if (value.CompareTo(weak) <= 0) {
-                    Moodlify(moodle, MoodleStrength.Weak);
+                    strength = MoodleStrength.Weak;
                 }
                 else if (value.CompareTo(neutral) <= 0) {
-                    Moodlify(moodle, MoodleStrength.Neutral);
+                    strength = MoodleStrength.Neutral;
                 }
                 else {
-                    Moodlify(moodle, MoodleStrength.None);
+                    strength = MoodleStrength.None;
                 }
                 break;
 
             case (ComparisonType.GreaterThanOrEqual):
                 if (value.CompareTo(bad) >= 0) {
-                    Moodlify(moodle, MoodleStrength.Bad);
+                    strength = MoodleStrength.Bad;
                 }
                 else if (value.CompareTo(medium) >= 0) {
-                    Moodlify(moodle, MoodleStrength.Medium);
+                    strength = MoodleStrength.Medium;
                 }
                 else if (value.CompareTo(weak) >= 0) {
-                    Moodlify(moodle, MoodleStrength.Weak);
+                    strength = MoodleStrength.Weak;
                 }
                 else if (value.CompareTo(neutral) >= 0) {
-                    Moodlify(moodle, MoodleStrength.Neutral);
+                    strength = MoodleStrength.Neutral;
                 }
                 else {
-                    Moodlify(moodle, MoodleStrength.None);
+                    strength = MoodleStrength.None;
                 }
                 break;
         }
+
+        Moodlify(moodle, strength);
+        return strength;
     }
 
     private void LogStuff(object message) {

@@ -237,4 +237,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189a4c7f6f7af2442937bc3fe020a140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  momoTransform: {fileID: 2535340351805385776}
+  kitty: {fileID: 2535340351805385776}
