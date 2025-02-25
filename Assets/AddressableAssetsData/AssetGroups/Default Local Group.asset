@@ -24,7 +24,8 @@ MonoBehaviour:
   - m_GUID: 14dad7e64bef6464a86aadda48532133
     m_Address: "Assets/AddressablesResources/Music/Debussy - R\xEAverie.mp3"
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Music
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1f76e87534e72e44ea7373dd73ab86d6
     m_Address: Assets/Footsteps - Essentials/Footsteps_Snow/Footsteps_Snow_Run
@@ -96,7 +97,8 @@ MonoBehaviour:
     m_Address: Assets/AddressablesResources/Music/Claude Debussy - Clair de Lune 
       Royalty Free Classical Music.mp3
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Music
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5cdcc0bf71a7db4eb22861ef8c76a07
     m_Address: Assets/AddressablesResources/Items
