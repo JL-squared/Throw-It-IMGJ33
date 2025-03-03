@@ -20,6 +20,4 @@ public class MoodleDefinition : ScriptableObject {
     [Header("Bad")]
     public string badName;
     public string badDesc;
-
-
 }
