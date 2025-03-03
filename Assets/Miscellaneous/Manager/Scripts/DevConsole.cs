@@ -98,7 +98,7 @@ public class DevConsole : MonoBehaviour {
                     string type = args[0];
                     string strength = args[1];
 
-                    MoodleDefinition def = null;
+                    MoodleClassDefinition def = null;
                     switch (type) {
                         case "hypothermia":
                             def = player.moodleManager.hypothermia;

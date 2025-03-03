@@ -6,12 +6,12 @@ public class Moodle : MonoBehaviour {
     public Image background;
     public Image icon;
 
-    public MoodleDefinition definition;
+    public MoodleClassDefinition definition;
     public MoodleStrength strength;
 
     public bool toDestroy = false;
 
-    public void Initialize(MoodleDefinition definition, MoodleStrength strength) {
+    public void Initialize(MoodleClassDefinition definition, MoodleStrength strength) {
         this.definition = definition;
         this.strength = strength;
 

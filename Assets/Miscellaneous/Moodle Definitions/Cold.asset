@@ -14,11 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: cold
   sprite: {fileID: 21300000, guid: 89161f51768f94641bb5adc46c14cdf4, type: 3}
-  neutralName: Nippy
-  neutralDesc: Could find someplace warmer...
-  weakName: Chilly
-  weakDesc: It's uncomfortably cold around here.
-  mediumName: Wintry
-  mediumDesc: You'll lose heat quickly here without sufficient cover.
-  badName: Biting
-  badDesc: It's so cold here that it's painful.
+  neutral:
+    name: Nippy
+    desc: Could find someplace warmer...
+    effects: []
+  weak:
+    name: Chilly
+    desc: It's uncomfortably cold around here.
+    effects: []
+  medium:
+    name: Wintry
+    desc: You'll lose heat quickly here without sufficient cover.
+    effects: []
+  bad:
+    name: Biting
+    desc: It's so cold here that it's painful.
+    effects: []

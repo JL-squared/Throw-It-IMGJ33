@@ -37,21 +37,21 @@ public class MoodleManager : MonoBehaviour {
     public float minWeakWind;
     public float minMedWind;
     public float minBadWind;
-    public MoodleDefinition wind;
+    public MoodleClassDefinition wind;
 
     [Header("Cold Environment")]
     public float minNeutralCold;
     public float minWeakCold;
     public float minMedCold;
     public float minBadCold;
-    public MoodleDefinition cold;
+    public MoodleClassDefinition cold;
     
     [Header("Hypothermia")]
     public float minNeutralHypo;
     public float minWeakHypo;
     public float minMedHypo;
     public float minBadHypo;
-    public MoodleDefinition hypothermia;
+    public MoodleClassDefinition hypothermia;
 
     private enum ComparisonType {
         Equal,
@@ -84,7 +84,7 @@ public class MoodleManager : MonoBehaviour {
         }
     }
 
-    public void Moodlify(MoodleDefinition definition, MoodleStrength strength) {
+    public void Moodlify(MoodleClassDefinition definition, MoodleStrength strength) {
         bool foundDestroyMoodle = false; // Have we found something to delete (in the case of None)
         int destroyMoodleIndex = 0;
 
@@ -157,7 +157,7 @@ public class MoodleManager : MonoBehaviour {
         CreateMoodle(definition, strength);
     }
 
-    public void CreateMoodle(MoodleDefinition definition, MoodleStrength strength) {
+    public void CreateMoodle(MoodleClassDefinition definition, MoodleStrength strength) {
         if (strength == MoodleStrength.None) // Since we have to go through the rest of the list make sure to return here
             return;
 
@@ -191,7 +191,7 @@ public class MoodleManager : MonoBehaviour {
         }
     }
 
-    private void Thresholdify<T>(T value, T neutral, T weak, T medium, T bad, MoodleDefinition moodle, ComparisonType comparisonType = ComparisonType.LesserThanOrEqual) where T : IComparable<T> {
+    private void Thresholdify<T>(T value, T neutral, T weak, T medium, T bad, MoodleClassDefinition moodle, ComparisonType comparisonType = ComparisonType.LesserThanOrEqual) where T : IComparable<T> {
         switch (comparisonType) {
             case (ComparisonType.LesserThanOrEqual):
                 if (value.CompareTo(bad) <= 0) {

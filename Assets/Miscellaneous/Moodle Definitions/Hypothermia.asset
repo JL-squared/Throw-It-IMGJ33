@@ -14,11 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: hypothermia
   sprite: {fileID: 21300000, guid: 4543eed534cb9b145984686e4b04ac4f, type: 3}
-  neutralName: Chilly
-  neutralDesc: Feeling a distinct lack of warmth.
-  weakName: Cold
-  weakDesc: This cold is slowing me down.
-  mediumName: Freezing
-  mediumDesc: Shivering, clenching teeth.
-  badName: Hypothermic
-  badDesc: You're so cold it's making you delirious.
+  neutral:
+    name: Chilly
+    desc: Feeling a distinct lack of warmth.
+    effects: []
+  weak:
+    name: Cold
+    desc: This cold is slowing me down.
+    effects: []
+  medium:
+    name: Freezing
+    desc: Shivering, clenching teeth.
+    effects: []
+  bad:
+    name: Hypothermic
+    desc: You're so cold it's making you delirious.
+    effects: []

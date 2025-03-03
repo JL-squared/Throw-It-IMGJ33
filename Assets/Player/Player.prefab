@@ -226,7 +226,7 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
+  BypassEffects: 1
   BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 1761805463429731269}
   - component: {fileID: 8774647842230484772}
   - component: {fileID: 1307260640715973675}
+  - component: {fileID: 4690683385253834932}
   m_Layer: 3
   m_Name: Player
   m_TagString: PlayerTag
@@ -901,7 +902,7 @@ MonoBehaviour:
     bobbing: 1
   shiveringShakeRotationFactor: 0.01
   bodyTemp: 35
-  minBodyTemp: 30
+  minBodyTemp: 35
   maxBodyTemp: 37
   maxSourcesTemp: 50
   maxAllowedSecondsHypothermia: 5
@@ -909,6 +910,7 @@ MonoBehaviour:
   reachSpeedIncrease: 0.05
   reachSpeedDecrease: 0.001
   shivering: 0
+  sourcesTemp: 0
 --- !u!114 &37526116491265086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,16 +1059,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9622acb58bfbdd4e9d48ee4aab82ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Logging: 0
+  spacing: 70
   type: 31
   duration: 0.4
+  shakeType: 0
+  shakeDuration: 0.2
+  timesShaken: 2
   neutralBackground: {fileID: 21300000, guid: e6c22837143305f4b9ec39d794fe849e, type: 3}
   weakBackground: {fileID: 21300000, guid: cdfbc5afcf25ef34599dd468e8e6d972, type: 3}
   mediumBackground: {fileID: 21300000, guid: 29c20203a85ce7f46b22fc1fe0bb952c, type: 3}
   badBackground: {fileID: 21300000, guid: ac93946995f6f3c4284de5e1ca9cc06c, type: 3}
-  minNeutralWind: 0
-  minWeakWind: 0
-  minMedWind: 0
-  minBadWind: 0
+  minNeutralWind: 1.7
+  minWeakWind: 8
+  minMedWind: 14
+  minBadWind: 20
   wind: {fileID: 11400000, guid: a8539cb1378010c4ba566b0249cf93b5, type: 2}
   minNeutralCold: 18
   minWeakCold: 5
@@ -1078,6 +1085,18 @@ MonoBehaviour:
   minMedHypo: 35.5
   minBadHypo: 35
   hypothermia: {fileID: 11400000, guid: 8105fa2613f01c04a824a77522ee1829, type: 2}
+--- !u!114 &4690683385253834932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914026416981438280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67d1591a59a15614ab5fea2fe445a3bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7052703045771101861
 GameObject:
   m_ObjectHideFlags: 0
