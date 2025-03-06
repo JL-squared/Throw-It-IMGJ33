@@ -100,9 +100,9 @@ public class PlayerBuilding : PlayerBehaviour {
         builtPiece.layer = LayerMask.NameToLayer("Piece");
         Utils.PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
         if (!noBuildingCost) {
-            player.inventory.container.TakeItems(selectedPiece.requirement1);
-            player.inventory.container.TakeItems(selectedPiece.requirement2);
-            player.inventory.container.TakeItems(selectedPiece.requirement3);
+            player.inventory.container.TakeItem(selectedPiece.requirement1);
+            player.inventory.container.TakeItem(selectedPiece.requirement2);
+            player.inventory.container.TakeItem(selectedPiece.requirement3);
         }
     }
 

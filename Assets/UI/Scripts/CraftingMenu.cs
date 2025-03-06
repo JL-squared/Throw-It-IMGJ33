@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Tweens;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,13 @@ public class CraftingMenu : MonoBehaviour {
     public Button craftingButton;
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
-    public GameObject itemDisplay;
+    public Image itemDisplay;
+    public GameObject recipeRequirementsContent;
+    public List<RecipeRequirement> recipeRequirements;
+    public GameObject recipeRequirementPrefab;
+
+    public float iconBumpDuration;
+    public float iconBumpAmplitude;
 
     private void Awake() {
         UIScriptMaster.Instance.loadCall.AddListener(Load);
@@ -33,45 +40,54 @@ public class CraftingMenu : MonoBehaviour {
         }
     }
 
-    void Refresh(List<ItemStack> items) {
-        /*
-        foreach(CraftingListEntry entry in craftingListEntries) {
-            entry.Refresh(entry.recipe.CheckForRequirements(items));
+    void Refresh(List<ItemStack> items) { // fix this later
+        var i = 0;
+        foreach(RecipeRequirement entry in recipeRequirements) {
+            entry.Refresh(Player.Instance.inventory.container, selectedRecipe.requirements[i]);
+            i++;
         }
-        */
 
         if(selectedRecipe != null) {
-            craftingButton.interactable = Player.Instance.inventory.container.CheckForRequirements(selectedRecipe.requirements);
+            craftingButton.interactable = Player.Instance.inventory.container.CheckForItems(selectedRecipe.requirements);
         }
     }
 
     public void SelectRecipe(CraftingRecipe recipe) {
-        /*
-        if(!image.gameObject.activeSelf) {
-            image.gameObject.SetActive(true);
-        }
-        */
+        if (recipe == selectedRecipe)
+            return;
 
         selectedRecipe = recipe;
+
+        if(!itemDisplay.gameObject.activeSelf) {
+            itemDisplay.gameObject.SetActive(true);
+        }
+
         // refresh the thingy stuff
-        title.text = recipe.m_name;
-        //description.text = recipe.output.Data.description;
-        //image.sprite = recipe.output.Data.icon;
+        title.text = selectedRecipe.m_name;
+        description.text = selectedRecipe.output.Data.description;
+        itemDisplay.sprite = selectedRecipe.output.Data.icon;
         // this is when we put in requirements into the requirement slot
         // this is when we update the status of the crafting button (this will require that we scan the inventory) (we need an inventory reference probably)
-        
+        Utils.KillChildren(recipeRequirementsContent.transform);
+        recipeRequirements.Clear();
+        foreach (ItemStack stack in selectedRecipe.requirements) {
+            var gO = Instantiate(recipeRequirementPrefab, recipeRequirementsContent.transform);
+            var c = gO.GetComponent<RecipeRequirement>();
+            c.Refresh(Player.Instance.inventory.container, stack);
+            recipeRequirements.Add(c);
+        }
+
+        craftingButton.interactable = Player.Instance.inventory.container.CheckForItems(selectedRecipe.requirements);
     }
 
     public void CraftRecipeTemp() {
         if (selectedRecipe != null) {
-            bool i = true;
+            if (Player.Instance.inventory.container.CheckForItems(selectedRecipe.requirements)) {
+                Player.Instance.inventory.container.TakeItems(selectedRecipe.requirements);
 
-            if (i) {
-                foreach (ItemStack requirement in selectedRecipe.requirements) {
-                    Player.Instance.inventory.container.TakeItems(requirement);
-                }
+                Player.Instance.inventory.container.PutItem(selectedRecipe.output); // Shrimple as that
 
-                Player.Instance.inventory.container.PutItem(selectedRecipe.output);
+                Utils.Bump(itemDisplay.gameObject, iconBumpDuration, iconBumpAmplitude);
             }
         }
     }

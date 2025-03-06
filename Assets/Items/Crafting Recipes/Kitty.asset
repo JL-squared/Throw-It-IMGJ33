@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a46ca6bf0aecfb439f67f36284ccc32, type: 3}
-  m_Name: Snow Duplication
+  m_Name: Kitty
   m_EditorClassIdentifier: 
   requirements:
   - count: 1
@@ -21,14 +21,22 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
-  output:
-    count: 2
+  - count: 1
     onEmpty:
       m_PersistentCalls:
         m_Calls: []
     onUpdate:
       m_PersistentCalls:
         m_Calls: []
-    data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
-  craftingTime: 10
-  m_name: Snow Duplication
+    data: {fileID: 11400000, guid: f2a31b0cf954c2e4d93d1dbefb25739b, type: 2}
+  output:
+    count: 1
+    onEmpty:
+      m_PersistentCalls:
+        m_Calls: []
+    onUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 11400000, guid: e1193cdc9159a5b42aa9d14b2762698c, type: 2}
+  craftingTime: 0
+  m_name: Kitty???

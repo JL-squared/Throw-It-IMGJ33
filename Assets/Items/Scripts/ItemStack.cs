@@ -15,6 +15,7 @@ public class ItemStack {
             return count; 
         } 
         set {
+            Debug.Log($"Item going from count {count} to {value}");
             count = value;
             if (count == 0) {
                 Data = null;

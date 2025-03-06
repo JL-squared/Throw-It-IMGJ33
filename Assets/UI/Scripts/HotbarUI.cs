@@ -11,16 +11,15 @@ public class HotbarUI : MonoBehaviour {
         if (Player.Instance != null) {
             Player.Instance.inventory.selectedEvent?.AddListener(Select);
             Select(0); // might wanna make this a saved and loaded value (save scum maxxing)
-            Player.Instance.inventory.container.onUpdate.AddListener(Refresh);
-        }
-    }
-
-    // This code kinda sucks but it's okay
-    void Refresh(List<ItemStack> items) {
-        int i = 0;
-        foreach(VisualSlot slot in slots) {
-            slot.Refresh(items[i]);
-            i++;
+            var i = 0;
+            foreach (var slot in slots) {
+                var j = i;
+                Player.Instance.inventory.container.items[j].onUpdate?.AddListener(() => {
+                    var k = j;
+                    slot.Refresh(Player.Instance.inventory.container.items[k]); 
+                });
+                i++;
+            }
         }
     }
 

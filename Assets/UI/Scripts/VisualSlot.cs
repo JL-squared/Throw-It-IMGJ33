@@ -5,6 +5,7 @@ using Image = UnityEngine.UI.Image;
 public class VisualSlot : MonoBehaviour {
     public Image background;
     public ItemDisplay display;
+    [HideInInspector]
     public UnityEvent onClick;
     public ItemStack itemStack = new ItemStack();
 

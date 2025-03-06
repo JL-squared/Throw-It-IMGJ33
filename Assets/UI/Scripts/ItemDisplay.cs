@@ -1,4 +1,5 @@
 using TMPro;
+using Tweens;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 // Only used for the item itself. Background and other items should be stored in a separate component
 public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
+    private ItemStack lastItem = new ItemStack();
     public ItemStack item {
         private get { return null; }
         set {
@@ -30,6 +32,7 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
         if (item_.IsEmpty() && modifyEnabled) {
             SetEnabled(false);
         } else {
+            Debug.Log(item_);
             if (modifyEnabled) SetEnabled(true);
             if (countDisplay != null) countDisplay.text = item_.Count > 1 ? item_.Count.ToString() : "";
             UpdateValues(item_.Data);
@@ -42,6 +45,13 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
         if (descriptionDisplay != null) descriptionDisplay.text = data.description;
         if (icon != null) icon.sprite = data.icon;
         miniIcon = null;
+    }
+
+    public void UpdateValues(ItemData data, string customNumberText) {
+        UpdateValues(data);
+        if (countDisplay != null) {
+            countDisplay.text = customNumberText;
+        }
     }
 
     public void SetEnabled(bool enabled = true) {
@@ -60,5 +70,9 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
                 rightClicked.Invoke();
             }
         }
+    }
+
+    public void Bump() {
+        Utils.Bump(icon.gameObject, 0.2f, 0.3f);
     }
 }

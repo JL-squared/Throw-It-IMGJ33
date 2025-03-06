@@ -38,7 +38,7 @@ public class PlayerInventory : PlayerBehaviour {
         container.PutItem(new ItemStack("shovel", 1));
         container.PutItem(new ItemStack("wires", 1));
 
-        for (int i = 0; i < container.size; i++) {
+        for (int i = 0; i < 10; i++) {
             ItemStack item = container[i];
             int copy = i;
             item.onEmpty.AddListener(() => {

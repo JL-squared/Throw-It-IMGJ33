@@ -24,16 +24,14 @@ public class ItemDisplayCustomEditor : Editor {
         miniIcon = serializedObject.FindProperty("miniIcon");
         countDisplay = serializedObject.FindProperty("countDisplay");
         interactable = serializedObject.FindProperty("interactable");
-        button = serializedObject.FindProperty("button");
     }
 
     public override void OnInspectorGUI() {
-        using (new EditorGUI.DisabledScope(true))
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
-
         ItemDisplay display = (ItemDisplay)target;
 
         serializedObject.Update();
+        using (new EditorGUI.DisabledScope(true))
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
         string testItemID = EditorGUILayout.DelayedTextField("Test Item", "");
         if (testItemID != "") {
             ItemData itemData = Registries.items[testItemID];
@@ -45,7 +43,6 @@ public class ItemDisplayCustomEditor : Editor {
         EditorGUILayout.PropertyField(miniIcon);
         EditorGUILayout.PropertyField(countDisplay);
         EditorGUILayout.PropertyField(interactable);
-        EditorGUILayout.PropertyField(button);
         serializedObject.ApplyModifiedProperties();
     }
 }

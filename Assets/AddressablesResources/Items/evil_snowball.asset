@@ -20,7 +20,7 @@ MonoBehaviour:
   viewModelRotationOffset: {x: 0, y: 0, z: 0, w: 1}
   prefab: {fileID: 6738572504615155268, guid: ebcbb8175c27f7248a2354d22d9788fb, type: 3}
   title: Evil snowball
-  description: Im going to fuck you in the ass
+  description: I am going to do evil things
   projectile: {fileID: 5488373698599033194, guid: fb803a10eaaf8cf4e90446051008d1db,
     type: 3}
   lifetime: 15

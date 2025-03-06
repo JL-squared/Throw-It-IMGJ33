@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Linq;
+using Tweens;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
@@ -215,5 +216,19 @@ public static class Utils {
         } else {
             return Quaternion.LookRotation(lookAt);
         }
+    }
+
+    // Jarvis, add a "bump" effect to a gameObject
+    public static void Bump(GameObject target, float duration, float amplitude) {
+        var tween = new FloatTween {
+            from = 0,
+            to = Mathf.PI,
+            duration = duration,
+            onUpdate = (_, value) => {
+                target.transform.localScale = Vector3.one + (Vector3.one * Mathf.Sin(value) * amplitude);
+            }
+        };
+
+        target.AddTween(tween);
     }
 }

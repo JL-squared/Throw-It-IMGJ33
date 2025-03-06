@@ -21,6 +21,14 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     data: {fileID: 11400000, guid: 9d89b807ff17f144ca577e205874d3f2, type: 2}
+  - count: 1
+    onEmpty:
+      m_PersistentCalls:
+        m_Calls: []
+    onUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 11400000, guid: 20e62cf7196fb4349aba90eb0585d5ee, type: 2}
   output:
     count: 1
     onEmpty:

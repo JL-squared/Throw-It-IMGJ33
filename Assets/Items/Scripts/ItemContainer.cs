@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,6 +22,7 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
             items.Add(emptySlot);
             emptySlot.onUpdate?.AddListener(() => { onUpdate.Invoke(items); });
         }
+        Debug.Log("have we yet sigmafied?");
 
         onUpdate.Invoke(items);
     }
@@ -154,7 +156,21 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
         return false;
     }
 
-    public bool CheckForRequirements(List<ItemStack> items) {
+    public int GetItemAmount(string id) {
+        int count = 0;
+        foreach (ItemStack item in items) {
+            if (item.Data == Registries.items.data[id]) {
+                count += item.Count;
+            }
+        }
+        return count;
+    }
+
+    public int GetItemAmount(ItemStack itemStack) {
+        return GetItemAmount(itemStack.data.name);
+    }
+
+    public bool CheckForItems(List<ItemStack> items) {
         bool i = true;
         foreach (ItemStack item in items) {
             i = i && CheckForItems(item);
@@ -162,8 +178,15 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
         return i;
     }
 
+    // Unsafe, 
+    public void TakeItems(List<ItemStack> items) {
+        foreach (ItemStack item in items) {
+            TakeItem(item);
+        }
+    }
+
     // Both of these functions are super unsafe, fix later
-    public void TakeItems(ItemStack stack) {
+    public void TakeItem(ItemStack stack) {
         if (!stack.IsNullOrDestroyed() && !stack.IsEmpty()) {
             TakeItemAmount(stack.data.name, stack.count);
         }
