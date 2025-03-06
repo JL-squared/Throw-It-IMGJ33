@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingMenu : MonoBehaviour {
+    [Header("List")]
+    public GameObject content;
+
+    [Header("Recipe Display")]
     public CraftingRecipe selectedRecipe;
     public Button craftingButton;
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
-    public Image image;
-    public GameObject content;
+    public GameObject itemDisplay;
 
     private void Awake() {
         UIScriptMaster.Instance.loadCall.AddListener(Load);
@@ -25,6 +28,7 @@ public class CraftingMenu : MonoBehaviour {
         foreach (CraftingRecipe definition in Registries.craftingRecipes.data.Values) {
             var thing = Instantiate(UIScriptMaster.Instance.recipeEntryPrefab);
             thing.transform.SetParent(content.transform);
+            thing.transform.localScale = Vector3.one;
             thing.GetComponent<RecipeEntry>().Init(definition);
         }
     }
@@ -42,9 +46,11 @@ public class CraftingMenu : MonoBehaviour {
     }
 
     public void SelectRecipe(CraftingRecipe recipe) {
+        /*
         if(!image.gameObject.activeSelf) {
             image.gameObject.SetActive(true);
         }
+        */
 
         selectedRecipe = recipe;
         // refresh the thingy stuff
