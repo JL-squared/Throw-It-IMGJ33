@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
 // Only used for the item itself. Background and other items should be stored in a separate component
-public class ItemDisplay : MonoBehaviour {
+public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
     public ItemStack item {
         private get { return null; }
         set {
@@ -19,7 +21,11 @@ public class ItemDisplay : MonoBehaviour {
     public Image icon = null;
     public Image miniIcon = null;
     public TextMeshProUGUI countDisplay = null;
+    public bool interactable = false;
+    public UnityEvent leftClicked = new UnityEvent();
+    public UnityEvent rightClicked = new UnityEvent();
 
+    // sigma
     public void UpdateValues(ItemStack item_, bool modifyEnabled = true) {
         if (item_.IsEmpty() && modifyEnabled) {
             SetEnabled(false);
@@ -44,5 +50,15 @@ public class ItemDisplay : MonoBehaviour {
         if (icon != null) icon.gameObject.SetActive(enabled);
         if (miniIcon != null) miniIcon.gameObject.SetActive(enabled);
         if (countDisplay != null) countDisplay.gameObject.SetActive(enabled);
+    }
+
+    public void OnPointerClick(PointerEventData eventData) {
+        if(interactable) {
+            if (eventData.button == PointerEventData.InputButton.Left) {
+                leftClicked.Invoke();
+            } else if (eventData.button == PointerEventData.InputButton.Right) {
+                rightClicked.Invoke();
+            }
+        }
     }
 }

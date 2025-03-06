@@ -6,6 +6,7 @@ public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;
     public GameObject viewModel;
     public ItemContainer container;
+    public ItemStack cursorItem = new ItemStack();
 
     [SerializeField]
     private int equipped;
@@ -27,6 +28,10 @@ public class PlayerInventory : PlayerBehaviour {
     public UnityEvent<int, bool> slotUpdateEvent;
 
     public void Start() {
+        cursorItem.onUpdate.AddListener(() => {
+            UIScriptMaster.Instance.cursorItemDrag.Refresh(cursorItem);
+        });
+
         // Add temp items at start
         container.PutItem(new ItemStack("snowball", 1));
         container.PutItem(new ItemStack("battery", 1));

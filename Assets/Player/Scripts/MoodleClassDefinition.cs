@@ -6,6 +6,8 @@ public class MoodleClassDefinition : ScriptableObject {
     public string id;
     public Sprite sprite;
 
+    // sigma
+
     [Header("Neutral")]
     public MoodleDefinition neutral;
 

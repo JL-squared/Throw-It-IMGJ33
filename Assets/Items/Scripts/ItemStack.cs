@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class ItemStack {
@@ -71,6 +72,38 @@ public class ItemStack {
         this.Data = Registries.items[id];
         this.count = count;
         InternalRefreshItemLogic();
+    }
+
+    public void SwapItem(ref ItemStack other, bool partial = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
+        // logic for if item types aren't the same
+        if ((other.IsEmpty() && !IsEmpty() || !other.IsEmpty() && IsEmpty()) && partial) { // Initiate swap
+            if(IsEmpty()) { // This is just completely mimicking minecraft's item slot controls
+                Debug.Log("Slot is empty, sigma");
+                CopyItem(new ItemStack(other.Data, 1));
+                other.Count = other.Count - 1;
+            } else {
+                int half = Count / 2;
+                int otherHalf = Count - half;
+                var data = Data;
+                Count = half;
+                other.CopyItem(new ItemStack(data, otherHalf));
+            }
+        } else if (other.Data == this.Data) { // otherwise
+            // sigma sigma boy sigma boy sigma boy
+            if(partial && !IsFull()) {
+                other.Count -= 1;
+                Count += 1;
+            } else if (!IsFull()) { // if we can fit anything, take as much possible from other
+                var amountWeCanPutIn = Data.stackSize - Count;
+                amountWeCanPutIn = Math.Min(amountWeCanPutIn, other.Count);
+                other.Count -= amountWeCanPutIn;
+                Count += amountWeCanPutIn;
+            }
+        } else { // Generic swap
+            var temp = Clone();
+            CopyItem(other);
+            other.CopyItem(temp);
+        }
     }
 
     public void CopyItem(ItemStack other) {

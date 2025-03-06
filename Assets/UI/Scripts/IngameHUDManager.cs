@@ -16,6 +16,7 @@ public class IngameHUDManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject screenGraphics;
     public GameObject moodleParent;
+    public GameObject cursorItemDrag;
 
     public enum PanelState {
         None,

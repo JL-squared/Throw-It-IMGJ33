@@ -12,6 +12,8 @@ public class ItemDisplayCustomEditor : Editor {
     SerializedProperty icon;
     SerializedProperty miniIcon;
     SerializedProperty countDisplay;
+    SerializedProperty interactable;
+    SerializedProperty button;
 
     // Add preset thingy
 
@@ -21,9 +23,14 @@ public class ItemDisplayCustomEditor : Editor {
         icon = serializedObject.FindProperty("icon");
         miniIcon = serializedObject.FindProperty("miniIcon");
         countDisplay = serializedObject.FindProperty("countDisplay");
+        interactable = serializedObject.FindProperty("interactable");
+        button = serializedObject.FindProperty("button");
     }
 
     public override void OnInspectorGUI() {
+        using (new EditorGUI.DisabledScope(true))
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+
         ItemDisplay display = (ItemDisplay)target;
 
         serializedObject.Update();
@@ -37,6 +44,8 @@ public class ItemDisplayCustomEditor : Editor {
         EditorGUILayout.PropertyField(icon);
         EditorGUILayout.PropertyField(miniIcon);
         EditorGUILayout.PropertyField(countDisplay);
+        EditorGUILayout.PropertyField(interactable);
+        EditorGUILayout.PropertyField(button);
         serializedObject.ApplyModifiedProperties();
     }
 }
