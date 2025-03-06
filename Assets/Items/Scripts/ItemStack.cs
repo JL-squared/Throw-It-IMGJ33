@@ -75,6 +75,9 @@ public class ItemStack {
     }
 
     public void SwapItem(ref ItemStack other, bool partial = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
+        if (IsEmpty() && other.IsEmpty())
+            return; // nothing burger ahh interaction
+
         // logic for if item types aren't the same
         if ((other.IsEmpty() && !IsEmpty() || !other.IsEmpty() && IsEmpty()) && partial) { // Initiate swap
             if(IsEmpty()) { // This is just completely mimicking minecraft's item slot controls
