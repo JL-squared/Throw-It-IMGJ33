@@ -20,7 +20,7 @@ MonoBehaviour:
   viewModelRotationOffset: {x: 0, y: 0, z: 0, w: 1}
   prefab: {fileID: 6738572504615155268, guid: b18dddce7dc48834e85fa638c842c7d6, type: 3}
   title: Yarn ball
-  description: Kitties!!!!!!!!!!!!!
+  description: Summons The Children
   projectile: {fileID: 5488373698599033194, guid: 212c6fda1182cf042a368fc2cf296637,
     type: 3}
   lifetime: 15
