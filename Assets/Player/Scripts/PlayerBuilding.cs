@@ -22,8 +22,14 @@ public class PlayerBuilding : PlayerBehaviour {
     [Range(0f, 10f)]
     public float outlineWidth = 2f;
 
+    private int pieceLayer;
+    private int ghostLayer;
+    private int terrainLayer;
+
     private void Awake() {
-        placeRayMask = LayerMask.GetMask("Default", "Piece");
+        placeRayMask = LayerMask.GetMask("Default", "Piece", "Terrain");
+        pieceLayer = LayerMask.NameToLayer("Piece");
+        ghostLayer = LayerMask.NameToLayer("Ghost");
         //placeRayMask = ~LayerMask.GetMask("Player");
     }
 
@@ -97,7 +103,7 @@ public class PlayerBuilding : PlayerBehaviour {
         GameObject builtPiece = Instantiate(selectedPiece.piecePrefab);
         builtPiece.transform.SetPositionAndRotation(placementTarget.transform.position, placementTarget.transform.rotation);
         builtPiece.SetActive(true);
-        builtPiece.layer = LayerMask.NameToLayer("Piece");
+        builtPiece.layer = pieceLayer;
         Utils.PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
         if (!noBuildingCost) {
             player.inventory.container.TakeItem(selectedPiece.requirement1);
@@ -136,7 +142,7 @@ public class PlayerBuilding : PlayerBehaviour {
         }
 
         Transform[] componentsInChildren2 = placementTarget.GetComponentsInChildren<Transform>();
-        int layer = LayerMask.NameToLayer("Ghost");
+        int layer = ghostLayer;
         Transform[] array = componentsInChildren2;
         for (int i = 0; i < array.Length; i++) {
             array[i].gameObject.layer = layer;
@@ -175,6 +181,9 @@ public class PlayerBuilding : PlayerBehaviour {
             if ((bool)hitInfo.collider && !hitInfo.collider.attachedRigidbody) {
                 point = hitInfo.point;
                 normal = hitInfo.normal;
+                if (hitInfo.collider.transform.gameObject.layer == terrainLayer) {
+                    normal = new Vector3(0.0f, 1.0f, 0.0f);
+                }
                 piece = hitInfo.collider.GetComponentInParent<Piece>(); // this can either return a piece or just not do anything
                 return true;
             }
@@ -194,7 +203,6 @@ public class PlayerBuilding : PlayerBehaviour {
         bool manualPlacement = altAction; // this currently cannot be changed
         if (PieceRayTest(out var point, out var normal, out Piece piece)) { // check for a place first
             OutlineObject(piece);
-
 
             placementTarget.SetActive(true); // yess we found one get the hologram working
             placementStatus = true; // cant remember what this was used for

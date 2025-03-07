@@ -6,7 +6,7 @@ public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;
     public GameObject viewModel;
     public ItemContainer container;
-    public ItemStack cursorItem = new ItemStack();
+    public ItemStack cursorItem;
 
     [SerializeField]
     private int equipped;
@@ -28,8 +28,11 @@ public class PlayerInventory : PlayerBehaviour {
     public UnityEvent<int, bool> slotUpdateEvent;
 
     public void Start() {
+        cursorItem = new ItemStack();
+
         cursorItem.onUpdate.AddListener(() => {
             UIScriptMaster.Instance.cursorItemDrag.Refresh(cursorItem);
+            UIScriptMaster.Instance.cursorItemDrag.itemDisplay.index = -1000;
         });
 
         // Add temp items at start
@@ -54,6 +57,9 @@ public class PlayerInventory : PlayerBehaviour {
                 }
             });
         }
+
+        container[4].SwapItem(container[0]);
+        container[5].SwapItem(new ItemStack());
 
         Unequip();
         Equip();
