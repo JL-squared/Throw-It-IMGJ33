@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Linq;
 using Tweens;
+using TMPro;
 
 public static class Utils {
     private static AddressablesRegistry<ItemData> itemRegistry;
@@ -230,5 +231,21 @@ public static class Utils {
         };
 
         target.AddTween(tween);
+    }
+
+    public static void WriteTextEffect(TextMeshProUGUI textComponent, float timePerLetter = 0.02f) {
+        var length = textComponent.text.Length;
+        var text = textComponent.text;
+
+        var tween = new FloatTween {
+            from = 0,
+            to = length,
+            duration = timePerLetter * length,
+            onUpdate = (_, value) => {
+                textComponent.text = text.Substring(0, (int)value);
+            }
+        };
+
+        textComponent.gameObject.AddTween(tween);
     }
 }

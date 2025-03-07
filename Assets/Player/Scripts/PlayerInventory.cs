@@ -1,11 +1,21 @@
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerInventory : PlayerBehaviour {
     public bool keepUpdatingHolsterTransform;
     public GameObject viewModel;
-    public ItemContainer container;
+    public ItemContainer hotbar = new ItemContainer(10);
+    public ItemContainer backpack = new ItemContainer(16);
+    public ItemContainer Inventory {
+        get {
+            return new ItemContainer(hotbar.Concat(backpack).ToList());
+        } 
+        private set {}
+    }
+    
     public ItemStack cursorItem;
 
     [SerializeField]
@@ -20,14 +30,29 @@ public class PlayerInventory : PlayerBehaviour {
         }
     }
     [HideInInspector]
-    public ItemStack EquippedItem { get { return container[equipped]; } }
+    public ItemStack EquippedItem { get { return hotbar[equipped]; } }
 
     [HideInInspector]
     public UnityEvent<int> selectedEvent;
     [HideInInspector]
     public UnityEvent<int, bool> slotUpdateEvent;
 
+    public UnityEvent<List<ItemStack>> onInventoryUpdate;
+
+    public UnityEvent initializedInventory;
+
     public void Start() {
+        hotbar.Initialize();
+        backpack.Initialize();
+        hotbar.onUpdate.AddListener((container) => {
+            onInventoryUpdate.Invoke(container);
+        });
+        backpack.onUpdate.AddListener((container) => {
+            onInventoryUpdate.Invoke(container);
+        });
+        initializedInventory.Invoke();
+        UIScriptMaster.Instance.inventory.Initialize(backpack);
+
         cursorItem = new ItemStack();
 
         cursorItem.onUpdate.AddListener(() => {
@@ -36,13 +61,13 @@ public class PlayerInventory : PlayerBehaviour {
         });
 
         // Add temp items at start
-        container.PutItem(new ItemStack("snowball", 1));
-        container.PutItem(new ItemStack("battery", 1));
-        container.PutItem(new ItemStack("shovel", 1));
-        container.PutItem(new ItemStack("wires", 1));
+        hotbar.PutItem(new ItemStack("snowball", 1));
+        hotbar.PutItem(new ItemStack("battery", 1));
+        hotbar.PutItem(new ItemStack("shovel", 1));
+        hotbar.PutItem(new ItemStack("wires", 1));
 
         for (int i = 0; i < 10; i++) {
-            ItemStack item = container[i];
+            ItemStack item = hotbar[i];
             int copy = i;
             item.onEmpty.AddListener(() => {
                 if (this.equipped == copy) {
@@ -58,8 +83,10 @@ public class PlayerInventory : PlayerBehaviour {
             });
         }
 
+        /*
         container[4].SwapItem(container[0]);
         container[5].SwapItem(new ItemStack());
+        */
 
         Unequip();
         Equip();
@@ -67,7 +94,7 @@ public class PlayerInventory : PlayerBehaviour {
 
     private void Update() {
         EquippedItem.logic?.EquippedUpdate(player);
-        foreach (ItemStack item in container) {
+        foreach (ItemStack item in Inventory) {
             item.logic?.Update(player);
         }
 
@@ -76,6 +103,10 @@ public class PlayerInventory : PlayerBehaviour {
             viewModel.transform.localRotation = EquippedItem.Data.viewModelRotationOffset;
             viewModel.transform.localScale = EquippedItem.Data.viewModelScaleOffset;
         }
+    }
+
+    public void InitializeBackpack() {
+       
     }
 
     public void ToggleInventory() {
@@ -127,10 +158,10 @@ public class PlayerInventory : PlayerBehaviour {
     }
 
     public void DropItem() {
-        ItemStack item = container[equipped];
+        ItemStack item = hotbar[equipped];
         if (item.Count > 0) {
-            if (WorldItem.Spawn(container[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.movement.inner.Velocity))
-                container.RemoveItem(equipped, 1);
+            if (WorldItem.Spawn(hotbar[equipped].NewCount(1), player.camera.transform.position + player.camera.transform.forward, Quaternion.identity, player.movement.inner.Velocity))
+                hotbar.RemoveItem(equipped, 1);
         }
     }
 }

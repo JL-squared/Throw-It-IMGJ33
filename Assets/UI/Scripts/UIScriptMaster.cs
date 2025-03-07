@@ -17,6 +17,7 @@ public class UIScriptMaster : MonoBehaviour {
     public CrosshairHints crosshairHints;
     public IngameHUDManager inGameHUD;
     public CursorItemDrag cursorItemDrag;
+    public Inventory inventory;
 
     [Header("Prefabs")]
     public GameObject pieceEntryPrefab;

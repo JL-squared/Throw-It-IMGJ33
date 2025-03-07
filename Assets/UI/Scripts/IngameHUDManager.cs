@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// State manager for ingame menu objects.

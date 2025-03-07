@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour, IInteraction, IEntitySerializer {
     public ItemStack item;
-    public bool Interactable => Player.Instance.inventory.container.CanFitItem(item);
+    public bool Interactable => Player.Instance.inventory.Inventory.CanFitItem(item);
     public bool Highlight => true;
     public GameObject GameObject => gameObject;
 
     public void Interact(Player player) {
         Destroy(gameObject);
-        player.inventory.container.PutItem(item);
+        player.inventory.Inventory.PutItem(item);
     }
 
     public static GameObject Spawn(ItemStack item, Vector3 position, Quaternion rotation, Vector3 velocity=default) {

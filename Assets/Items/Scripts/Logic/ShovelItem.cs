@@ -74,7 +74,7 @@ public class ShovelItem : ToolItem {
                     }, true);
                 }
 
-                player.inventory.container.PutItem(new ItemStack("snowball", 1));
+                player.inventory.Inventory.PutItem(new ItemStack("snowball", 1));
             }
         }
     }
@@ -97,7 +97,7 @@ public class ShovelItem : ToolItem {
 
             // chunk.GetTriangleIndexMaterialType(info.triangleIndex) == 0 
             if (chunk != null) {
-                canPickupSnow = true && player.inventory.container.CanFitItem(new ItemStack("snowball", 1));
+                canPickupSnow = true && player.inventory.Inventory.CanFitItem(new ItemStack("snowball", 1));
             }
         }
 

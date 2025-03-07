@@ -1,15 +1,21 @@
 using UnityEngine;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class VisualSlot : MonoBehaviour {
     public Image background;
     public ItemDisplay display;
     public ItemStack itemStack; // NOT A REFERENCE, CLONING, OTHERWISE KNOWN AS "OTHER"
+    public GenericInteractable interactable;
+
+    public readonly Color deselectedColor = new Color(0f, 0f, 0f, .73f);
+    public readonly Color highlightedColor = new Color(.5f, .5f, .5f, 1f);
 
     void Awake() {
         display = GetComponent<ItemDisplay>();
-        display.leftClicked.AddListener(OnClick);
-        display.rightClicked.AddListener(OnRightClick);
+        interactable.onPointerClick.AddListener(OnClick);
+        interactable.onPointerEnter.AddListener(OnEnter);
+        interactable.onPointerExit.AddListener(OnExit);
     }
 
     public void Refresh(ItemStack item) {
@@ -18,11 +24,19 @@ public class VisualSlot : MonoBehaviour {
         display.UpdateValues(item);
     }
 
-    public void OnClick() {
-        itemStack.SwapItem(Player.Instance.inventory.cursorItem);
+    public void OnClick(PointerEventData pointerEventData) {
+        if (pointerEventData.button == PointerEventData.InputButton.Left) {
+            itemStack.SwapItem(Player.Instance.inventory.cursorItem);
+        } else if (pointerEventData.button == PointerEventData.InputButton.Right) {
+            itemStack.SwapItem(Player.Instance.inventory.cursorItem, true);
+        }
     }
 
-    public void OnRightClick() {
-        itemStack.SwapItem(Player.Instance.inventory.cursorItem, true);
+    public void OnEnter() {
+        background.color = highlightedColor;
+    }
+
+    public void OnExit() {
+        background.color = deselectedColor;
     }
 }

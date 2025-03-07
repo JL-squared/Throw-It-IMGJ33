@@ -322,7 +322,6 @@ GameObject:
   - component: {fileID: 3400830642981070834}
   - component: {fileID: 4217417654151337624}
   - component: {fileID: 7260989372531060555}
-  - component: {fileID: 2771658500311237328}
   - component: {fileID: 1761805463429731269}
   - component: {fileID: 8774647842230484772}
   - component: {fileID: 1307260640715973675}
@@ -945,12 +944,35 @@ MonoBehaviour:
     bobbing: 1
   keepUpdatingHolsterTransform: 0
   viewModel: {fileID: 0}
-  container: {fileID: 2771658500311237328}
+  hotbar:
+    size: 0
+    items: []
+    onUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+  backpack:
+    size: 0
+    items: []
+    onUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+  cursorItem:
+    count: 0
+    onEmpty:
+      m_PersistentCalls:
+        m_Calls: []
+    onUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+    data: {fileID: 0}
   equipped: 0
   selectedEvent:
     m_PersistentCalls:
       m_Calls: []
   slotUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  initializedInventory:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &4217417654151337624
@@ -987,23 +1009,6 @@ MonoBehaviour:
     fov: 70
     bobbing: 1
   footsteps: {fileID: 3488795955197241747}
---- !u!114 &2771658500311237328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6914026416981438280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e654e6fe84e2441afbef7a5ad34595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: 10
-  items: []
-  onUpdate:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1761805463429731269
 MonoBehaviour:
   m_ObjectHideFlags: 0

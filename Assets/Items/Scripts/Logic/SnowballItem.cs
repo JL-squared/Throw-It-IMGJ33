@@ -34,7 +34,7 @@ public class SnowballItem : Item {
 
             throwDelay = maxThrowDelay * charge;
             time = 0;
-            player.inventory.container.RemoveItem(player.inventory.Equipped, 1);
+            player.inventory.hotbar.RemoveItem(player.inventory.Equipped, 1); // Not sure why this is a method
 
             return;
         }

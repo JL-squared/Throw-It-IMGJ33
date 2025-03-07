@@ -43,7 +43,7 @@ public class PlayerBuilding : PlayerBehaviour {
             if (player.state == Player.State.Building)
                 UpdatePlacementTarget();
 
-            if (!noBuildingCost && !(player.inventory.container.CheckForItems(selectedPiece.requirement1) && player.inventory.container.CheckForItems(selectedPiece.requirement2) && player.inventory.container.CheckForItems(selectedPiece.requirement3))) {
+            if (!noBuildingCost && !(player.inventory.Inventory.CheckForItems(new List<ItemStack> { selectedPiece.requirement1, selectedPiece.requirement2, selectedPiece.requirement3 }))) {
                 placementStatus = false;
             }
 
@@ -106,9 +106,7 @@ public class PlayerBuilding : PlayerBehaviour {
         builtPiece.layer = pieceLayer;
         Utils.PlaySound(builtPiece.transform.position, Registries.snowBrickPlace);
         if (!noBuildingCost) {
-            player.inventory.container.TakeItem(selectedPiece.requirement1);
-            player.inventory.container.TakeItem(selectedPiece.requirement2);
-            player.inventory.container.TakeItem(selectedPiece.requirement3);
+            player.inventory.Inventory.TakeItems(new List<ItemStack> { selectedPiece.requirement1, selectedPiece.requirement2, selectedPiece.requirement3 });
         }
     }
 

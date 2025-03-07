@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 [ExecuteInEditMode]
 // Only used for the item itself. Background and other items should be stored in a separate component
-public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
+public class ItemDisplay : MonoBehaviour {
     public ItemStack item {
         private get { return null; }
         set {
@@ -16,15 +16,13 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
             }
         }
     }
+    public int count;
 
     public TextMeshProUGUI nameDisplay = null;
     public TextMeshProUGUI descriptionDisplay = null;
     public Image icon = null;
     public Image miniIcon = null;
     public TextMeshProUGUI countDisplay = null;
-    public bool interactable = false;
-    public UnityEvent leftClicked = new UnityEvent();
-    public UnityEvent rightClicked = new UnityEvent();
     public int index;
 
     // sigma
@@ -32,10 +30,13 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
         //Debug.Log("Update values being called on " + index);
         if (item_.IsEmpty() && modifyEnabled) {
             SetEnabled(false);
+            count = 0;
         } else {
             Debug.Log(item_);
             if (modifyEnabled) SetEnabled(true);
             if (countDisplay != null) countDisplay.text = item_.Count > 1 ? item_.Count.ToString() : "";
+            if (count < item_.Count) Bump();
+            count = item_.Count;
             UpdateValues(item_.Data);
         }
     }
@@ -62,16 +63,6 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
         if (icon != null) icon.gameObject.SetActive(enabled);
         if (miniIcon != null) miniIcon.gameObject.SetActive(enabled);
         if (countDisplay != null) countDisplay.gameObject.SetActive(enabled);
-    }
-
-    public void OnPointerClick(PointerEventData eventData) {
-        if(interactable) {
-            if (eventData.button == PointerEventData.InputButton.Left) {
-                leftClicked.Invoke();
-            } else if (eventData.button == PointerEventData.InputButton.Right) {
-                rightClicked.Invoke();
-            }
-        }
     }
 
     public void Bump() {

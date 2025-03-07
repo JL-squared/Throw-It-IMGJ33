@@ -1,23 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
-    [Min(1)]
-    public int size;
-    public List<ItemStack> items;
+[System.Serializable]
+public class ItemContainer : IEnumerable<ItemStack> {
+    public int size = 0;
+    public List<ItemStack> items = new List<ItemStack>();
 
-    public UnityEvent<List<ItemStack>> onUpdate;
+    public UnityEvent<List<ItemStack>> onUpdate = new UnityEvent<List<ItemStack>>();
 
     public ItemStack this[int i] {
         get => items[i];
         set => items[i] = value;
     }
 
-    private void Awake() {
-        for (int i = 0; i < size; i++) {
+    public ItemContainer(int size, bool fill = true) {
+        this.size = size;
+        if(fill) {
+            Initialize();
+        }
+    }
+
+    public ItemContainer(List<ItemStack> container) {
+        this.items = container;
+    }
+
+    public void Initialize() {
+        for (int i = 0; i < this.size; i++) {
             ItemStack emptySlot = new ItemStack();
             items.Add(emptySlot);
             emptySlot.onUpdate?.AddListener(() => { onUpdate.Invoke(items); });
@@ -25,7 +35,6 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
 
         onUpdate.Invoke(items);
     }
-
 
     // Add item to inventory if possible,
     // Works with invalid stack sizes

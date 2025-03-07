@@ -42,7 +42,6 @@ public class ItemDisplayCustomEditor : Editor {
         EditorGUILayout.PropertyField(icon);
         EditorGUILayout.PropertyField(miniIcon);
         EditorGUILayout.PropertyField(countDisplay);
-        EditorGUILayout.PropertyField(interactable);
         serializedObject.ApplyModifiedProperties();
     }
 }

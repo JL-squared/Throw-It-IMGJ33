@@ -42,7 +42,7 @@ public class DevConsole : MonoBehaviour {
                 moment = (args, player) => {
                     string item = args[0];
                     int count = args.Length == 1 ? 1 : int.Parse(args[1]);
-                    player.inventory.container.PutItem(new ItemStack(item, count));
+                    player.inventory.Inventory.PutItem(new ItemStack(item, count));
                 },
             },
             new ConsoleCommand {
