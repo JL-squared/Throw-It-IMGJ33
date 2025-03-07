@@ -8,7 +8,6 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 // Only used for the item itself. Background and other items should be stored in a separate component
 public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
-    private ItemStack lastItem = new ItemStack();
     public ItemStack item {
         private get { return null; }
         set {
@@ -26,9 +25,11 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
     public bool interactable = false;
     public UnityEvent leftClicked = new UnityEvent();
     public UnityEvent rightClicked = new UnityEvent();
+    public int index;
 
     // sigma
     public void UpdateValues(ItemStack item_, bool modifyEnabled = true) {
+        //Debug.Log("Update values being called on " + index);
         if (item_.IsEmpty() && modifyEnabled) {
             SetEnabled(false);
         } else {
@@ -55,6 +56,7 @@ public class ItemDisplay : MonoBehaviour, IPointerClickHandler {
     }
 
     public void SetEnabled(bool enabled = true) {
+        //Debug.Log("Item display content becoming " + enabled + " at " + index);
         if (nameDisplay != null) nameDisplay.gameObject.SetActive(enabled);
         if (descriptionDisplay != null) descriptionDisplay.gameObject.SetActive(enabled);
         if (icon != null) icon.gameObject.SetActive(enabled);

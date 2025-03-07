@@ -15,7 +15,7 @@ public class ItemStack {
             return count; 
         } 
         set {
-            Debug.Log($"Item going from count {count} to {value}");
+            //Debug.Log($"Item going from count {count} to {value}");
             count = value;
             if (count == 0) {
                 Data = null;
@@ -75,14 +75,16 @@ public class ItemStack {
         InternalRefreshItemLogic();
     }
 
-    public void SwapItem(ref ItemStack other, bool partial = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
+    public void SwapItem(ItemStack other, bool partial = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
         if (IsEmpty() && other.IsEmpty())
             return; // nothing burger ahh interaction
+
+        //Debug.Log("Swap item start");
 
         // logic for if item types aren't the same
         if ((other.IsEmpty() && !IsEmpty() || !other.IsEmpty() && IsEmpty()) && partial) { // Initiate swap
             if(IsEmpty()) { // This is just completely mimicking minecraft's item slot controls
-                Debug.Log("Slot is empty, sigma");
+                //Debug.Log("Slot is empty, sigma");
                 CopyItem(new ItemStack(other.Data, 1));
                 other.Count = other.Count - 1;
             } else {
@@ -104,13 +106,15 @@ public class ItemStack {
                 Count += amountWeCanPutIn;
             }
         } else { // Generic swap
-            var temp = Clone();
-            CopyItem(other);
-            other.CopyItem(temp);
+            //Debug.Log("Generic swap is being called");
+            var temp = other.Clone();
+            other.CopyItem(this);
+            CopyItem(temp);
         }
     }
 
     public void CopyItem(ItemStack other) {
+        //Debug.Log("Copy item is being called");
         Data = other.Data;
         Count = other.Count;
     }

@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityEngine.Events;
 using Image = UnityEngine.UI.Image;
 
 public class VisualSlot : MonoBehaviour {
     public Image background;
     public ItemDisplay display;
-    [HideInInspector]
-    public UnityEvent onClick;
-    public ItemStack itemStack = new ItemStack();
+    public ItemStack itemStack; // NOT A REFERENCE, CLONING, OTHERWISE KNOWN AS "OTHER"
 
     void Awake() {
         display = GetComponent<ItemDisplay>();
@@ -16,15 +13,16 @@ public class VisualSlot : MonoBehaviour {
     }
 
     public void Refresh(ItemStack item) {
+        //Debug.Log("Refresh is being called");
         itemStack = item;
         display.UpdateValues(item);
     }
 
     public void OnClick() {
-        itemStack.SwapItem(ref Player.Instance.inventory.cursorItem);
+        itemStack.SwapItem(Player.Instance.inventory.cursorItem);
     }
 
     public void OnRightClick() {
-        itemStack.SwapItem(ref Player.Instance.inventory.cursorItem, true);
+        itemStack.SwapItem(Player.Instance.inventory.cursorItem, true);
     }
 }

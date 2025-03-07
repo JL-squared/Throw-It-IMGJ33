@@ -22,7 +22,6 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
             items.Add(emptySlot);
             emptySlot.onUpdate?.AddListener(() => { onUpdate.Invoke(items); });
         }
-        Debug.Log("have we yet sigmafied?");
 
         onUpdate.Invoke(items);
     }
@@ -60,12 +59,14 @@ public class ItemContainer : MonoBehaviour, IEnumerable<ItemStack> {
             }
         }
 
+        // THE PROBLEM CODE
         foreach (ItemStack item in items) { // Iterate over empty stacks and subtract
             if (itemIn.IsEmpty()) {
                 onUpdate.Invoke(items);
                 return;
             }
 
+            // THE EVEN MORE PROBLEM CODE
             if (item.IsEmpty()) {
                 item.Data = itemIn.Data;
                 if (itemIn.Count < itemIn.Data.stackSize) {

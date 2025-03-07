@@ -14,11 +14,12 @@ public class HotbarUI : MonoBehaviour {
             var i = 0;
             foreach (var slot in slots) {
                 var j = i;
-                Player.Instance.inventory.container.items[j].onUpdate?.AddListener(() => {
-                    var k = j;
-                    slot.Refresh(Player.Instance.inventory.container.items[k]); 
+                Player.Instance.inventory.container.items[j].onUpdate.AddListener(() => {
+                    slot.Refresh(Player.Instance.inventory.container.items[j]); 
                 });
+                slot.display.index = i;
                 i++;
+                slot.Refresh(Player.Instance.inventory.container.items[j]);
             }
         }
     }
