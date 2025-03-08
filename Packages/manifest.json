@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.jedjoud.voxelterrain": "https://github.com/jedjoud10/VoxelTerrain.git#revamp",
+    "com.olegknyazev.softmask": "https://github.com/olegknyazev/SoftMask.git?path=/Packages/com.olegknyazev.softmask#1.7.0",
     "com.unify.unified-universal-blur": "https://github.com/lukakldiashvili/Unified-Universal-Blur.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.2.2",
