@@ -7338,7 +7338,6 @@ PrefabInstance:
     - target: {fileID: 2245359957179840980, guid: 612cbea8d30f40a4183f35f7d38c74e7,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-<<<<<<< Updated upstream
       value: -0.000019073486
       objectReference: {fileID: 0}
     - target: {fileID: 2475787072889957656, guid: 612cbea8d30f40a4183f35f7d38c74e7,
@@ -7490,9 +7489,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-=======
-      value: 0.000009298325
->>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 3729128421011293930, guid: 612cbea8d30f40a4183f35f7d38c74e7,
         type: 3}
