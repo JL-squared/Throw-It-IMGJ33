@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class RecipeRequirement : MonoBehaviour {
     public Image background;
     public ItemDisplay itemDisplay;
-    Color notEnoughColor = new Color(150, 0, 0, 100);
+    Color notEnoughColor = new Color(.16f, 0, 0, 100);
     Color enoughColor = new Color(0, 0, 0, 100);
     bool firstTime = false;
 
