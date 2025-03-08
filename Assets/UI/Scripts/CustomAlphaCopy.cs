@@ -6,6 +6,7 @@ public class CustomAlphaCopy : MonoBehaviour {
     public Sprite source;
     public Sprite alpha;
     public Shader shader;
+    public bool inverted;
     private Material copy;
 
     private void Start() {
@@ -17,7 +18,8 @@ public class CustomAlphaCopy : MonoBehaviour {
 
     private void Update() {
         if (copy != null) {
-            copy.SetVector("Scalar", GetComponent<RectTransform>().localScale);
+            copy.SetInt("_Inverted", inverted ? 1 : 0);
+            copy.SetVector("_LocalScale", GetComponent<RectTransform>().localScale);
         } else {
             Start();
         }

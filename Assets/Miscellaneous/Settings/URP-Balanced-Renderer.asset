@@ -80,6 +80,19 @@ MonoBehaviour:
     verticalBlur: 0
   material: {fileID: -876546973899608171, guid: f955b7038265efc4f976d32a4d23f41e,
     type: 3}
+--- !u!114 &-4075110619071181749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d9874b4e298084abfd1aef1fb5a9bf, type: 3}
+  m_Name: CustomMaskRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
 --- !u!114 &-3797480856183668076
 MonoBehaviour:
   m_ObjectHideFlags: 0
