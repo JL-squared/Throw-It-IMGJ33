@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class VisualSlot : MonoBehaviour {
     public Image background;
     public ItemDisplay display;
-    public ItemStack itemStack; // NOT A REFERENCE, CLONING, OTHERWISE KNOWN AS "OTHER"
+    public ItemStack itemStack;
+    public string id;
     public GenericInteractable interactable;
 
     public readonly Color deselectedColor = new Color(0f, 0f, 0f, .73f);
@@ -25,7 +27,9 @@ public class VisualSlot : MonoBehaviour {
     }
 
     public void OnClick(PointerEventData pointerEventData) {
-        if (pointerEventData.button == PointerEventData.InputButton.Left) {
+        if (Keyboard.current.leftShiftKey.wasPressedThisFrame) {
+            UIScriptMaster.Instance.inGameHUD.ShiftClickedItem(id, itemStack);
+        } else if (pointerEventData.button == PointerEventData.InputButton.Left) {
             itemStack.SwapItem(Player.Instance.inventory.cursorItem);
         } else if (pointerEventData.button == PointerEventData.InputButton.Right) {
             itemStack.SwapItem(Player.Instance.inventory.cursorItem, true);

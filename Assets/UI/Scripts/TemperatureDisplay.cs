@@ -10,7 +10,7 @@ public class TemperatureDisplay : MonoBehaviour {
     }
 
     private string TempFormat(float temperature) {
-        return temperature.ToString("F1") + "°C";
+        return temperature.ToString("F1") + "ï¿½C";
     }
 
     public void SetDisplay(float temperature) {

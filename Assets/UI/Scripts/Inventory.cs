@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour {
             item.onUpdate.AddListener(() => {
                 slotComponent.Refresh(item);
             });
+            slotComponent.id = "backpack";
             slotComponent.Refresh(item);
         }
     }

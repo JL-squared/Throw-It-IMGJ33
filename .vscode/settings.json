@@ -58,5 +58,5 @@
         "Temp/": true
     },
     "explorer.excludeGitIgnore": true,
-    "dotnet.defaultSolution": "Throw It! (IMGJ 33).sln"
+    "dotnet.defaultSolution": "Throw-It-IMGJ33.sln"
 }

@@ -170,4 +170,16 @@ public class IngameHUDManager : MonoBehaviour {
 
         GameManager.Instance.devConsole.fardNation = consoleActivated;
     }
+
+    public void ShiftClickedItem(string id, ItemStack item) {
+        switch(id) {
+            case "hotbar":
+                Player.Instance.inventory.backpack.TransferItem(item);
+            break;
+
+            case "backpack":
+                Player.Instance.inventory.hotbar.TransferItem(item);
+            break;
+        }
+    }
 }

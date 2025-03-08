@@ -22,6 +22,7 @@ public class HotbarUI : MonoBehaviour {
                     });
                     slot.display.index = i;
                     i++;
+                    slot.id = "hotbar";
                     slot.Refresh(Player.Instance.inventory.hotbar.items[j]);
                 }
             });
