@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Tweens;
 using UnityEngine;
@@ -69,7 +71,21 @@ public class CraftingMenu : MonoBehaviour {
         title.text = selectedRecipe.m_name;
         Utils.WriteTextEffect(title);
 
-        description.text = selectedRecipe.output.Data.description;
+        string text = selectedRecipe.output.Data.description;
+        TypeInfo data = recipe.output.Data.GetType().GetTypeInfo();
+        Attribute attribute = data.GetCustomAttribute(typeof(ItemAttribute));
+
+        foreach (var prop in recipe.output.Data.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+        {
+            Debug.Log(prop.Name);
+            var attrs = (ItemAttribute[])prop.GetCustomAttributes(typeof(ItemAttribute), true);
+            foreach (var attr in attrs)
+            {
+                text += string.Format("{0}\n", prop.GetValue(recipe.output.Data));
+            }
+        }
+
+        description.text = text; 
         Utils.WriteTextEffect(description, 0.01f);
 
         itemDisplay.sprite = selectedRecipe.output.Data.icon;

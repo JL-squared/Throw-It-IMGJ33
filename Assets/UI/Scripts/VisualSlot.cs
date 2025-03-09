@@ -27,7 +27,7 @@ public class VisualSlot : MonoBehaviour {
     }
 
     public void OnClick(PointerEventData pointerEventData) {
-        if (Keyboard.current.leftShiftKey.wasPressedThisFrame) {
+        if (Keyboard.current.leftShiftKey.isPressed) {
             UIScriptMaster.Instance.inGameHUD.ShiftClickedItem(id, itemStack);
         } else if (pointerEventData.button == PointerEventData.InputButton.Left) {
             itemStack.SwapItem(Player.Instance.inventory.cursorItem);
