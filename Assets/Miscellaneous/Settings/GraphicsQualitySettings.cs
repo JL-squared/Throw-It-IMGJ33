@@ -71,7 +71,10 @@ public class GraphicsQualitySettings {
         foreach (var data2 in data.rendererFeatures) {
             features.Add(data2.name, data2);
         }
-        features["SSAO"].SetActive(ambientOcclusion);
+
+        // There seems to be a weird artefact with SSAO and items close to the camera near frustum, before we fix that imma just disable this temporarily
+        features["SSAO"].SetActive(false);
+        //features["SSAO"].SetActive(ambientOcclusion);
         features["DitherColorCompressionRenderFeature"].SetActive(pixelatedDitherColorCompression);
         asset.renderScale = pixelatedDitherColorCompression ? DEFAULT_PIXELIZATION_FACTOR : 1.0f;
 
