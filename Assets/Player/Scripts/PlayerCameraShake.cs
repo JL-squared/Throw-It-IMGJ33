@@ -34,12 +34,21 @@ public class PlayerCameraShake : PlayerBehaviour {
     }
 
     private void Health_OnDamaged(float damage, EntityHealth.DamageSourceData data) {
-        Vector3 diff = data.direction;
-        diff.y = 0;
-        diff.Normalize();
-        float xValue = -damagedDirectionFactor * Vector3.Dot(diff, transform.forward);
-        float zValue = damagedDirectionFactor * Vector3.Dot(diff, transform.right);
-        damageRotation *= Quaternion.Euler(xValue, 0f, zValue);
+        if(data != null) {
+            Vector3 diff = data.direction;
+            diff.y = 0;
+            diff.Normalize();
+            float xValue = -damagedDirectionFactor * Vector3.Dot(diff, transform.forward);
+            float zValue = damagedDirectionFactor * Vector3.Dot(diff, transform.right);
+            damageRotation *= Quaternion.Euler(xValue, 0f, zValue);
+        } else {
+            Vector3 diff = Vector3.one;
+            diff.y = 0;
+            diff.Normalize();
+            float xValue = -damagedDirectionFactor * Vector3.Dot(diff, transform.forward);
+            float zValue = damagedDirectionFactor * Vector3.Dot(diff, transform.right);
+            damageRotation *= Quaternion.Euler(xValue, 0f, zValue);
+        }
     }
 
     private void Update() {
