@@ -79,7 +79,7 @@ public class MoodleManager : PlayerBehaviour {
     private void FixedUpdate() {
         if (timer > 2) {
             bodyTempMoodleStrength = Thresholdify(temperature.bodyTemp, minNeutralHypo, minWeakHypo, minMedHypo, minBadHypo, hypothermia);
-            Thresholdify(Player.Instance.temperature.sourcesTemp, minNeutralCold, minWeakCold, minMedCold, minBadCold, cold);
+            Thresholdify(Player.Instance.temperature.outsideTemp, minNeutralCold, minWeakCold, minMedCold, minBadCold, cold);
             Thresholdify(weatherManager.windSpeed, minNeutralWind, minWeakWind, minMedWind, minBadWind, wind, ComparisonType.GreaterThanOrEqual);
         } else {
             timer++;

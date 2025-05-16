@@ -97,11 +97,12 @@ public class PlayerMovement : PlayerBehaviour {
     }
 
     public void FOVTween() {
-        bool movingHorizontally = new Vector2(inner.Velocity.x, inner.Velocity.z).magnitude > 3.5f || localWishMovement.magnitude > 0.5f;
+        bool actuallyMovingHorizontally = new Vector2(inner.Velocity.x, inner.Velocity.z).magnitude > (sprintModifier * 0.80f * inner.speed);
+        bool inputMovingHorizontally = localWishMovement.magnitude > 0.5f;
 
         var tween = new FloatTween {
             from = player.camera.fieldOfView,
-            to = isSprinting && movingHorizontally ? defaultFOV + 10 : defaultFOV,
+            to = isSprinting && actuallyMovingHorizontally && inputMovingHorizontally ? defaultFOV + 10 : defaultFOV,
             duration = 0.2f,
             onUpdate = (instance, value) => {
                 player.camera.fieldOfView = value;

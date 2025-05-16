@@ -34,6 +34,9 @@ public class PlayerCameraShake : PlayerBehaviour {
     }
 
     private void OnDamaged(float damage, EntityHealth.DamageSourceData data) {
+        if (data == null)
+            return;
+
         Vector3 diff = data.direction;
         diff.y = 0;
         diff.Normalize();

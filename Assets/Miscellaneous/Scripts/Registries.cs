@@ -98,8 +98,7 @@ public static class Registries {
         itemsLogic.Add(typeof(T), item);
     }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void Reset() {
+    public static void Reset() {
         itemsLogic = new Dictionary<Type, Item>();
     }
 }

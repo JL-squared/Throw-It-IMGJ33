@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public WeatherManager weatherManager;
     [HideInInspector]
     public DevConsole devConsole;
-    public static GameManager Instance;
+    public static GameManager Instance { get; set; }
     [HideInInspector]
     private GraphicsQualitySettings graphicsSettings;
     public ReflectionProbe reflectionProbe;
@@ -39,22 +39,19 @@ public class GameManager : MonoBehaviour {
         }
         */
         initialized = true;
+
+        // TODO: Implement compute shader reflection probe capturing to reduce the massive amounts of stuttering that occurs due to this
+        // Removed the old system that does this each second because it really should be done in compute shaders instead
         reflectionProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
+        reflectionProbe.RenderProbe();
+        DynamicGI.UpdateEnvironment();
+
         Time.timeScale = 1.0f;
         Physics.simulationMode = SimulationMode.FixedUpdate;
         graphicsSettings = Utils.Load<GraphicsQualitySettings>("graphics.json", resave: true);
         graphicsSettings.Apply(volume.profile);
-
-        StartCoroutine("RefreshCoroutine");
     }
 
-    IEnumerator RefreshCoroutine() {
-        while (true) {
-            reflectionProbe.RenderProbe();
-            DynamicGI.UpdateEnvironment();
-            yield return new WaitForSeconds(1f);
-        }
-    }
 
     bool dead;
     float timeSinceDeath;
@@ -66,7 +63,6 @@ public class GameManager : MonoBehaviour {
     public event OnPauseChanged onPausedChanged;
     public bool paused;
     public bool initialized;
-    private bool toggle;
     private void Update() {
         if (dead) {
             timeSinceDeath += Time.unscaledDeltaTime * .1f;

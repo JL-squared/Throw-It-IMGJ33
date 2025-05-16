@@ -11,7 +11,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Linq;
 
 public static class Utils {
-    private static AddressablesRegistry<ItemData> itemRegistry;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void Reset() {
+        Registries.Reset();
+        Player.Instance = null;
+        GameManager.Instance = null;
+    }
 
     public static void PlaySound(AudioSource source, AddressablesRegistry<AudioClip> registry, float volume = 1.0f) {
         source.clip = registry.data.Random().Item2;
@@ -100,9 +105,9 @@ public static class Utils {
     }
 
     public static string PersistentDir = Application.persistentDataPath;
-    static JsonSerializerSettings settings2 = InitSerializer();
 
-    public static JsonSerializerSettings InitSerializer() {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void InitSerializer() {
         JsonSerializerSettings settings = new JsonSerializerSettings();
         settings.Converters.Add(new StringEnumConverter(new KebabCaseNamingStrategy()));
         settings.Converters.Add(new ItemDataConverter());
@@ -117,8 +122,6 @@ public static class Utils {
         settings.NullValueHandling = NullValueHandling.Ignore;
         settings.TypeNameHandling = TypeNameHandling.Auto;
         JsonConvert.DefaultSettings = () => settings;
-
-        return settings;
     }
 
     // Loads a string from a file, creating it if given a callback
@@ -215,5 +218,9 @@ public static class Utils {
         } else {
             return Quaternion.LookRotation(lookAt);
         }
+    }
+
+    public static float Sigmoid(float v) {
+        return Mathf.Exp(v) / (1f + Mathf.Exp(v));
     }
 }

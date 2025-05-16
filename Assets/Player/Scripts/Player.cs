@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IEntitySerializer {
         Dead,
     }
 
-    public static Player Instance { get; private set; }
+    public static Player Instance { get; set; }
 
     [HideInInspector]
     public PlayerBobbingSway bobbing;
@@ -91,6 +91,10 @@ public class Player : MonoBehaviour, IEntitySerializer {
             item.cameraShake = cameraShake;
             item.moodleManager = moodleManager;
         }
+
+        // don't ask me why. it sometimes get stuck. idk why
+        GetComponent<UnityEngine.InputSystem.PlayerInput>().enabled = false;
+        GetComponent<UnityEngine.InputSystem.PlayerInput>().enabled = true;
     }
 
     public void Serialize(EntityData data) {

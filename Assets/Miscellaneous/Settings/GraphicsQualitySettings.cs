@@ -9,8 +9,7 @@ using System.Collections.Generic;
 
 [Serializable]
 public class GraphicsQualitySettings {
-    public int fpsLimit = 144;
-    public int additionalLightPerObjectLimit = 5;
+    public int fpsLimit = -1;
     public Quality mainLightShadows = Quality.High;
     public Quality additionalLightShadows = Quality.High;
 
@@ -54,8 +53,8 @@ public class GraphicsQualitySettings {
         UnityGraphicsBullshitWtf.MainLightCastShadows = mainLightShadows != Quality.Disabled;
         UnityGraphicsBullshitWtf.MainLightShadowResolution = res;
 
-        asset.maxAdditionalLightsCount = additionalLightPerObjectLimit;
-        var res2 = Select(additionalLightShadows, ShadowResolution._256, ShadowResolution._256, ShadowResolution._1024, ShadowResolution._4096);
+        asset.maxAdditionalLightsCount = 5;
+        var res2 = Select(additionalLightShadows, ShadowResolution._256, ShadowResolution._512, ShadowResolution._1024, ShadowResolution._4096);
         UnityGraphicsBullshitWtf.AdditionalLightCastShadows = additionalLightShadows != Quality.Disabled;
         UnityGraphicsBullshitWtf.AdditionalLightShadowResolution = res2;
 
