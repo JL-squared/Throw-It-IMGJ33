@@ -7,6 +7,6 @@ public class SomethingSomethingQuitGame : MonoBehaviour {
     }
 
     public void Restart() {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("DevTesting");
     }
 }

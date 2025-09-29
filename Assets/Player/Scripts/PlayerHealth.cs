@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerHealth : PlayerBehaviour {
     [HideInInspector]
     public EntityHealth health;
+    public AudioSource ambatakamChoir;
 
     private void Start() {
         // Hook onto health component
@@ -20,7 +21,7 @@ public class PlayerHealth : PlayerBehaviour {
         Cursor.lockState = CursorLockMode.None;
 
         // Literal hell
-        //ambatakamChoir.Play();
+        ambatakamChoir.Play();
 
         // Make the camera a rigidbody
         Rigidbody rb = player.camera.gameObject.AddComponent<Rigidbody>();
