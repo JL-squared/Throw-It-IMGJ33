@@ -868,7 +868,7 @@ MonoBehaviour:
   permutationSeed: {x: 966, y: -154, z: 805}
   moduloSeed: {x: 85, y: -360, z: -691}
   asyncReadbackPerTick: 2
-  hash: 863684620
+  hash: 1444777258
   debugName: 1
   autoCompile: 1
   transformed:
@@ -7013,7 +7013,7 @@ PrefabInstance:
     - target: {fileID: 8723774834072491533, guid: 4e5b1d5a0a47e9a458663cdc58493d49,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

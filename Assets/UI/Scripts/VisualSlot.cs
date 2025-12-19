@@ -15,7 +15,7 @@ public class VisualSlot : MonoBehaviour {
 
     void Awake() {
         display = GetComponent<ItemDisplay>();
-        interactable.onPointerClick.AddListener(OnClick);
+        interactable.onPointerDown.AddListener(OnDown);
         interactable.onPointerEnter.AddListener(OnEnter);
         interactable.onPointerExit.AddListener(OnExit);
     }
@@ -24,9 +24,10 @@ public class VisualSlot : MonoBehaviour {
         //Debug.Log("Refresh is being called");
         itemStack = item;
         display.UpdateValues(item);
+        itemStack.visualBumpEvent.AddListener(display.Bump);
     }
 
-    public void OnClick(PointerEventData pointerEventData) {
+    public void OnDown(PointerEventData pointerEventData) {
         if (Keyboard.current.leftShiftKey.isPressed) {
             UIScriptMaster.Instance.inGameHUD.ShiftClickedItem(id, itemStack);
         } else if (pointerEventData.button == PointerEventData.InputButton.Left) {
@@ -36,8 +37,13 @@ public class VisualSlot : MonoBehaviour {
         }
     }
 
-    public void OnEnter() {
+    public void OnEnter(PointerEventData pointerEventData) {
         background.color = highlightedColor;
+        /* // not sure why i implemented this lol we don't have normal crafting
+        if (Mouse.current != null && Mouse.current.rightButton.isPressed) {
+            itemStack.SwapItem(Player.Instance.inventory.cursorItem, true, true);
+        }
+        */
     }
 
     public void OnExit() {

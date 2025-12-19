@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-// Only used for the item itself. Background and other items should be stored in a separate component
+// Abstract visual item display element, does not actually contain item data.
 public class ItemDisplay : MonoBehaviour {
     public ItemStack item {
         private get { return null; }
@@ -25,7 +25,7 @@ public class ItemDisplay : MonoBehaviour {
     public TextMeshProUGUI countDisplay = null;
     public int index;
 
-    // sigma
+    // updates visual elements, not sure what modifyEnabled was supposed to do
     public void UpdateValues(ItemStack item_, bool modifyEnabled = true) {
         //Debug.Log("Update values being called on " + index);
         if (item_.IsEmpty() && modifyEnabled) {
@@ -35,7 +35,6 @@ public class ItemDisplay : MonoBehaviour {
             Debug.Log(item_);
             if (modifyEnabled) SetEnabled(true);
             if (countDisplay != null) countDisplay.text = item_.Count > 1 ? item_.Count.ToString() : "";
-            if (count < item_.Count) Bump();
             count = item_.Count;
             UpdateValues(item_.Data);
         }

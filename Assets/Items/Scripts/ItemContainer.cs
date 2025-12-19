@@ -50,10 +50,10 @@ public class ItemContainer : IEnumerable<ItemStack> {
 
     public void PutItem(ItemStack itemIn) {
         ItemStack item = itemIn.Clone();
-        TransferItem(item);
+        TransferItem(item, true);
     }
 
-    public void TransferItem(ItemStack itemIn) {
+    public void TransferItem(ItemStack itemIn, bool bump = false) {
         foreach (ItemStack item in items) { // Iterate over partial stacks and subtract
             if (itemIn.IsEmpty()) {
                 onUpdate.Invoke(items);
@@ -65,6 +65,8 @@ public class ItemContainer : IEnumerable<ItemStack> {
                 int amountWePutIn = itemIn.Count < amountWeCanPutIn ? itemIn.Count : amountWeCanPutIn;
                 item.Count += amountWePutIn;
                 itemIn.Count -= amountWePutIn;
+
+                if(bump) item.visualBumpEvent?.Invoke();
             }
         }
 
@@ -85,6 +87,7 @@ public class ItemContainer : IEnumerable<ItemStack> {
                     item.Count = itemIn.Data.stackSize;
                     itemIn.Count -= itemIn.Data.stackSize;
                 }
+                if (bump) item.visualBumpEvent?.Invoke();
             }
         }
 

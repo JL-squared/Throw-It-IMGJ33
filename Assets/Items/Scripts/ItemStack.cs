@@ -31,6 +31,9 @@ public class ItemStack {
     [HideInInspector]
     [JsonIgnore]
     public UnityEvent onUpdate = new UnityEvent();
+    [JsonIgnore]
+    [HideInInspector]
+    public UnityEvent visualBumpEvent = new UnityEvent();
 
     [JsonProperty(PropertyName = "id")]
     [JsonConverter(typeof(ItemDataConverter))]
@@ -75,14 +78,14 @@ public class ItemStack {
         InternalRefreshItemLogic();
     }
 
-    public void SwapItem(ItemStack other, bool partial = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
-        if (IsEmpty() && other.IsEmpty())
+    public void SwapItem(ItemStack other, bool partial = false, bool drag = false) { // Other is assumed to be the cursor since the slot is the one receiving events // Partial is essentially right click
+        if (IsEmpty() && other.IsEmpty() || drag && other.IsEmpty())
             return; // nothing burger ahh interaction
 
         //Debug.Log("Swap item start");
 
         // logic for if item types aren't the same
-        if ((other.IsEmpty() && !IsEmpty() || !other.IsEmpty() && IsEmpty()) && partial) { // Initiate swap
+        if (partial && (other.IsEmpty() && !IsEmpty() || !other.IsEmpty() && IsEmpty())) { // Initiate swap
             if(IsEmpty()) { // This is just completely mimicking minecraft's item slot controls
                 //Debug.Log("Slot is empty, sigma");
                 CopyItem(new ItemStack(other.Data, 1));
@@ -105,7 +108,7 @@ public class ItemStack {
                 other.Count -= amountWeCanPutIn;
                 Count += amountWeCanPutIn;
             }
-        } else { // Generic swap
+        } else if (!drag) { // Generic swap
             //Debug.Log("Generic swap is being called");
             var temp = other.Clone();
             other.CopyItem(this);
